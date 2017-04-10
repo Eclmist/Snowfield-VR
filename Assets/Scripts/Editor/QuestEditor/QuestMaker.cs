@@ -8,18 +8,15 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-//using System.Runtime.Serialization.Formatters.Binary;
 
-//[Serializable]
 public class QuestMaker : EditorWindow
 {
     public static QuestMaker questMaker;
 
-    //BinaryFormatter formatter = new BinaryFormatter();
+    List<Quest> questCollection;
 
     //-----Quests-----//
-    //[SerializeField]
-    //public List<Quest> quest = new List<Quest>();
+
     int questIndex;
 
     int experience;
@@ -51,9 +48,9 @@ public class QuestMaker : EditorWindow
 
     //-----Job-----//
     string[] job = new string[2] { "BlackSmith",  "Alchemy"};
-    int jobIndex = 0;
+    JobType jobIndex;
 
-    int jobItemIndex = 0;
+    JobType jobItemIndex;
 
     //-----ItemType-----//
     string[] alchemyItems = new string[2] { "Potions", "Dusts" };
@@ -70,10 +67,11 @@ public class QuestMaker : EditorWindow
 
     protected void OnEnable()
     {
+        //QuestManager.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
         ////---------------------------Init Quest-----------------------//
-        //Quest.QuestList = Deserialize();
+        //questCollection = QuestManager.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
 
-        questIndex = Quest.QuestList.Count;
+        questIndex = QuestManager.QuestList.Count;
 
         Debug.Log(questIndex + " quest(s) loaded");
 
@@ -116,7 +114,7 @@ public class QuestMaker : EditorWindow
     
     protected void OnGUI()
     {
-        GUILayout.Label(("Quest: " + Quest.QuestList.Count), EditorStyles.boldLabel);
+        GUILayout.Label(("Quest: " + QuestManager.QuestList.Count), EditorStyles.boldLabel);
         
         GUILayout.Label("Quest Title: ", EditorStyles.boldLabel);
         questTitle = EditorGUILayout.TextArea(questTitle, EditorStyles.textArea);
@@ -125,7 +123,7 @@ public class QuestMaker : EditorWindow
         questTypeIndex = EditorGUILayout.Popup("Quest Types", questTypeIndex, questType);
 
         GUILayout.Label("Required Experience", EditorStyles.boldLabel);
-        jobIndex = EditorGUILayout.Popup("Jobs", jobIndex, job);
+        jobIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobIndex);
         experience = EditorGUILayout.IntField("Required Experience: ", experience);
 
         GUILayout.Label("James' Rewards", EditorStyles.boldLabel);
@@ -146,11 +144,9 @@ public class QuestMaker : EditorWindow
         }
         else //If questType == Story Quest
         {
-            
+            jobItemIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobItemIndex);
 
-            jobItemIndex = EditorGUILayout.Popup("Jobs", jobItemIndex, job);
-
-            if (jobItemIndex == 0) //If job = Blacksmith
+            if (jobItemIndex == JobType.BLACKSMITH) //If job = Blacksmith
             {
                 itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, blacksmithItems);
 
@@ -236,13 +232,11 @@ public class QuestMaker : EditorWindow
 
         Array.Copy(playerText, tempDialog, textCount);
 
-        Quest quest = new Quest(Quest.QuestList.Count, questTitle, questEnum, jamesReward[jamesRewardIndex], questItem[questItemIndex], tempDialog, experience, job[jobIndex]);
+        Quest quest = new Quest(QuestManager.QuestList.Count, questTitle, questEnum, jamesReward[jamesRewardIndex], questItem[questItemIndex], tempDialog, experience, jobIndex);
 
-        Quest.QuestList.Add(quest);
+        QuestManager.QuestList.Add(quest);
 
-        quest.Save(Path.Combine(Application.persistentDataPath, "quests.xml"));       
-
-        Debug.Log("Quest (" + (Quest.QuestList.Count - 1) +"): " + questTitle +" added");
+        Debug.Log("Quest (" + (QuestManager.QuestList.Count - 1) +"): " + questTitle +" added");
     }
 
     protected void AddDialog()
@@ -265,27 +259,12 @@ public class QuestMaker : EditorWindow
 
     protected void Clear()
     {
-        Quest.QuestList.Clear();
+        QuestManager.QuestList.Clear();
     }
-
-    //public void Serialize()
-    //{
-    //    MemoryStream memoryStream = new MemoryStream();
-    //    formatter.Serialize(memoryStream, Quest.QuestList);
-    //    string temp = Convert.ToBase64String(memoryStream.ToArray());
-    //    PlayerPrefs.SetString("quests", temp);
-    //}
-
-    //public List<Quest> Deserialize()
-    //{
-    //    string temp = PlayerPrefs.GetString("quests");
-    //    MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(temp));
-    //    return (List<Quest>)formatter.Deserialize(memoryStream);
-    //}
 
     protected void OnDisable()
     {
-        //Serialize();
-        Debug.Log(Quest.QuestList.Count + " quest(s) saved");
+        QuestFactory.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
+        Debug.Log(QuestManager.QuestList.Count + " quest(s) saved");
     }
 }

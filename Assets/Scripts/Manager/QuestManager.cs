@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 
-public class QuestManager : MonoBehaviour {
+[XmlRoot("QuestCollection")]
+public class QuestManager{
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [XmlArray("Quests")]
+    [XmlArrayItem("Quest")]
+    public static List<Quest> QuestList = new List<Quest>();
+
+
+    protected void StartNewQuest()
+    {
+
+    }
+
+    //protected void CheckQuestStates()
+    //{
+
+    //}
 }

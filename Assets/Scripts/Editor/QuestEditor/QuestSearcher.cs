@@ -12,6 +12,9 @@ using UnityEditor;
 public class QuestSearcher : EditorWindow {
 
     static QuestSearcher questSearcher;
+
+    //QuestManager QuestManager;
+
     Quest quest;
     //QuestMaker questMaker;
 
@@ -57,7 +60,12 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnEnable()
     {
-        Debug.Log(Quest.QuestList.Count);
+        //if (QuestManager.Load(Path.Combine(Application.persistentDataPath, "quests.xml")) != null)
+        //{
+        //    QuestManager = QuestManager.Load(Path.Combine(Application.dataPath, "quests.xml"));
+        //}
+
+        Debug.Log(QuestManager.QuestList.Count);
 
         //----------Load Image----------//
         deleteButtonImage = Resources.Load("Editor/Image/trash") as Texture2D;
@@ -124,7 +132,7 @@ public class QuestSearcher : EditorWindow {
         {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Quest Index: ");
-            questIndex = EditorGUILayout.IntSlider(questIndex, 0, Quest.QuestList.Count - 1);
+            questIndex = EditorGUILayout.IntSlider(questIndex, 0, QuestManager.QuestList.Count - 1);
             EditorGUILayout.EndHorizontal();
         }
         else if(searchNameMethod)
@@ -140,29 +148,29 @@ public class QuestSearcher : EditorWindow {
         if (indexPassed)
         {
             EditorGUILayout.LabelField("Quest Index", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].index.ToString());
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].index.ToString());
 
-            EditorGUILayout.LabelField("Quest for: " + Quest.QuestList[questIndex].questJob, EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("Required Experience: " + Quest.QuestList[questIndex].requiredExperience, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Quest for: " + QuestManager.QuestList[questIndex].questJob, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Required Experience: " + QuestManager.QuestList[questIndex].requiredExperience, EditorStyles.boldLabel);
 
             EditorGUILayout.LabelField("Quest Title: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].title, EditorStyles.wordWrappedLabel);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].title, EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.LabelField("Quest Type: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].questType.ToString());
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].questType.ToString());
 
             EditorGUILayout.LabelField("James' Rewards: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].jamesReward);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].jamesReward);
 
             EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].requiredItem);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].requiredItem);
 
-            for (int i = 0; i < Quest.QuestList[questIndex].playerDialog.Length; i++)
+            for (int i = 0; i < QuestManager.QuestList[questIndex].playerDialog.Length; i++)
             {
-                if (Quest.QuestList[questIndex].playerDialog[i] != null)
+                if (QuestManager.QuestList[questIndex].playerDialog[i] != null)
                 {
                     EditorGUILayout.LabelField("Stanley Dialog: ");
-                    EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].playerDialog[i]);
+                    EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].playerDialog[i]);
                 }
             }
         }
@@ -170,29 +178,29 @@ public class QuestSearcher : EditorWindow {
         if (namePassed)
         {
             EditorGUILayout.LabelField("Quest Index: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].index.ToString());
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].index.ToString());
 
-            EditorGUILayout.LabelField("Quest for: " + Quest.QuestList[nameIndex].questJob, EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("Required Experience: " + Quest.QuestList[nameIndex].requiredExperience, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Quest for: " + QuestManager.QuestList[nameIndex].questJob, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Required Experience: " + QuestManager.QuestList[nameIndex].requiredExperience, EditorStyles.boldLabel);
 
             EditorGUILayout.LabelField("Quest Title: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].title, EditorStyles.wordWrappedLabel);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].title, EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.LabelField("Quest Type: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].questType.ToString());
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].questType.ToString());
 
             EditorGUILayout.LabelField("Quest Rewards: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].jamesReward);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].jamesReward);
 
             EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-            EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].requiredItem);
+            EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].requiredItem);
 
-            for (int i = 0; i < Quest.QuestList[nameIndex].playerDialog.Length; i++)
+            for (int i = 0; i < QuestManager.QuestList[nameIndex].playerDialog.Length; i++)
             {
-                if (Quest.QuestList[nameIndex].playerDialog[i] != null)
+                if (QuestManager.QuestList[nameIndex].playerDialog[i] != null)
                 {
                     EditorGUILayout.LabelField("Stanley Dialog: ");
-                    EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].playerDialog[i]);
+                    EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].playerDialog[i]);
                 }
             }
         }
@@ -273,9 +281,9 @@ public class QuestSearcher : EditorWindow {
     {
         if (searchIndexMethod)
         {
-            for (int i = 0; i < Quest.QuestList.Count; i++)
+            for (int i = 0; i < QuestManager.QuestList.Count; i++)
             {
-                if (questIndex < (Quest.QuestList.Count) && questIndex >= 0)
+                if (questIndex < (QuestManager.QuestList.Count) && questIndex >= 0)
                 {
                     indexPassed = true;
                 }
@@ -287,27 +295,26 @@ public class QuestSearcher : EditorWindow {
         }
         else if (searchNameMethod)
         {
-            for(int i = 0; i < Quest.QuestList.Count; i++)
+            for(int i = 0; i < QuestManager.QuestList.Count; i++)
             {
-                if(questName.ToLower() == (Quest.QuestList[i].title.ToLower()))
+                if(questName.ToLower() == (QuestManager.QuestList[i].title.ToLower()))
                 {
                     nameIndex = i;
                     namePassed = true;
                 }
             }
         }
-        
     }
 
     protected void DeleteQuest()
     {
         if (searchIndexMethod)
         {
-            Quest.QuestList.Remove(Quest.QuestList[questIndex]);
+            QuestManager.QuestList.Remove(QuestManager.QuestList[questIndex]);
         }
         else // searchNameMethod
         {
-            Quest.QuestList.Remove(Quest.QuestList[nameIndex]);
+            QuestManager.QuestList.Remove(QuestManager.QuestList[nameIndex]);
         }
 
     }
