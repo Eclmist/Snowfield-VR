@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RequestManager : MonoBehaviour {
+public class RequestManager : MonoBehaviour
+{
 
     public static RequestManager Instance;
 
-    
+
     // Use this for initialization
-    void Awake () {
+    void Awake()
+    {
         if (!Instance)
         {
             Instance = this;
@@ -24,25 +26,26 @@ public class RequestManager : MonoBehaviour {
     public void NewRequest()
     {
         int totalExperienceValue = 0;
-        foreach(Job job in Player.Instance.JobListReference)
+        foreach (Job job in Player.Instance.JobListReference)
         {
             totalExperienceValue += job.Experience;
         }
-        if(totalExperienceValue != 0)
+
+        int randomValue = Random.Range(0, totalExperienceValue);
+        totalExperienceValue = 0;
+        foreach (Job job in Player.Instance.JobListReference)
         {
-            int randomValue = Random.Range(1, totalExperienceValue);
-            totalExperienceValue = 0;
-            foreach (Job job in Player.Instance.JobListReference)
+            totalExperienceValue += job.Experience;
+            if (totalExperienceValue >= randomValue)
             {
-                totalExperienceValue += job.Experience;
-                if(totalExperienceValue > randomValue)
-                {
-                    //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
-                    //OrderBoard.Instance.SpawnOnBoard(newRequest);
-                }
+                //DataManager.OpenRequest
+                //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
+                //OrderBoard.Instance.SpawnOnBoard(newRequest);
+                //DataManager.CloseRequest
             }
         }
-        
     }
+
+
 
 }

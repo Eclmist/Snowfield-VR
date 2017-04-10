@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance;
 
     #region ClockRegion
+    [SerializeField] [Range(1, 10000)] private int secondsPerDay;
+
     private Clock gameClock;
-    [SerializeField]
-    private int secondsPerDay;
     #endregion
 
     #region RequestRegion
@@ -27,16 +27,6 @@ public class GameManager : MonoBehaviour {
             Debug.Log("There should only be one instance of gamemanager running");
             Destroy(this);
         }
-
-        if (secondsPerDay > 0)
-        {
-            gameClock = new Clock(secondsPerDay);
-        }
-        else
-        {
-            Debug.Log("Please set a value greater than 0 for secondsPerDay");
-        }
-
     }
 
     protected void Update()
@@ -46,7 +36,7 @@ public class GameManager : MonoBehaviour {
 
     private void RequestBoardUpdate()
     {
-        if(gameClock.TimeOfDay > nextRequest)
+        if(gameClock.SecondSinceStart > nextRequest)//update
         {
             nextRequest = (nextRequest + requestConstant / TownManager.Instance.CurrentTown.Population) % 1;
             RequestManager.Instance.NewRequest();

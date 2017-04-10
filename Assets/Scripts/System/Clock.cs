@@ -8,7 +8,14 @@ public class Clock {
 
     private float totalSecondsPerDay;
 
-    
+    public float SecondSinceStart
+    {
+        get
+        {
+            return Time.time - startTimeInSecond;
+        }
+    }
+
     public int Day
     {
         get
