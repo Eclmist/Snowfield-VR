@@ -8,18 +8,20 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-using System.Runtime.Serialization.Formatters.Binary;
+//using System.Runtime.Serialization.Formatters.Binary;
 
-[Serializable]
+//[Serializable]
 public class QuestMaker : EditorWindow
 {
     public static QuestMaker questMaker;
 
-    BinaryFormatter formatter = new BinaryFormatter();
+    //BinaryFormatter formatter = new BinaryFormatter();
 
     //-----Quests-----//
     //[SerializeField]
     //public List<Quest> quest = new List<Quest>();
+    int questIndex;
+
     int experience;
 
     string questTitle;
@@ -69,9 +71,11 @@ public class QuestMaker : EditorWindow
     protected void OnEnable()
     {
         ////---------------------------Init Quest-----------------------//
-        Quest.QuestList = Deserialize();
+        //Quest.QuestList = Deserialize();
 
-        Debug.Log(Quest.QuestList.Count + " quest(s) loaded");
+        questIndex = Quest.QuestList.Count;
+
+        Debug.Log(questIndex + " quest(s) loaded");
 
         //---------------------------Init QuestTypes-----------------------//
         questTypes = Resources.Load("Quests/QuestTypes") as TextAsset;
@@ -232,9 +236,13 @@ public class QuestMaker : EditorWindow
 
         Array.Copy(playerText, tempDialog, textCount);
 
-        Quest.QuestList.Add(new Quest(Quest.QuestList.Count, questTitle,questEnum, jamesReward[jamesRewardIndex], questItem[questItemIndex], tempDialog, experience, job[jobIndex]));
-    
-        Debug.Log("Quest (" + (Quest.QuestList.Count-1) +"): " + questTitle +" added");
+        Quest quest = new Quest(Quest.QuestList.Count, questTitle, questEnum, jamesReward[jamesRewardIndex], questItem[questItemIndex], tempDialog, experience, job[jobIndex]);
+
+        Quest.QuestList.Add(quest);
+
+        quest.Save(Path.Combine(Application.persistentDataPath, "quests.xml"));       
+
+        Debug.Log("Quest (" + (Quest.QuestList.Count - 1) +"): " + questTitle +" added");
     }
 
     protected void AddDialog()
@@ -253,8 +261,6 @@ public class QuestMaker : EditorWindow
             questMaker.minSize = new Vector2(questMaker.minSize.x, questMaker.minSize.y - 20);
             textCount--;
         }
-
-        //playerText = null;
     }
 
     protected void Clear()
@@ -262,24 +268,24 @@ public class QuestMaker : EditorWindow
         Quest.QuestList.Clear();
     }
 
-    public void Serialize()
-    {
-        MemoryStream memoryStream = new MemoryStream();
-        formatter.Serialize(memoryStream, Quest.QuestList);
-        string temp = Convert.ToBase64String(memoryStream.ToArray());
-        PlayerPrefs.SetString("quests", temp);
-    }
+    //public void Serialize()
+    //{
+    //    MemoryStream memoryStream = new MemoryStream();
+    //    formatter.Serialize(memoryStream, Quest.QuestList);
+    //    string temp = Convert.ToBase64String(memoryStream.ToArray());
+    //    PlayerPrefs.SetString("quests", temp);
+    //}
 
-    public List<Quest> Deserialize()
-    {
-        string temp = PlayerPrefs.GetString("quests");
-        MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(temp));
-        return (List<Quest>)formatter.Deserialize(memoryStream);
-    }
+    //public List<Quest> Deserialize()
+    //{
+    //    string temp = PlayerPrefs.GetString("quests");
+    //    MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(temp));
+    //    return (List<Quest>)formatter.Deserialize(memoryStream);
+    //}
 
     protected void OnDisable()
     {
-        Serialize();
+        //Serialize();
         Debug.Log(Quest.QuestList.Count + " quest(s) saved");
     }
 }

@@ -12,7 +12,7 @@ using UnityEditor;
 public class QuestSearcher : EditorWindow {
 
     static QuestSearcher questSearcher;
-
+    Quest quest;
     //QuestMaker questMaker;
 
     //-----Editable Variable-----//
@@ -57,7 +57,6 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnEnable()
     {
-        Quest.QuestList = QuestMaker.questMaker.Deserialize();
         Debug.Log(Quest.QuestList.Count);
 
         //----------Load Image----------//
@@ -315,6 +314,6 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnDisable()
     {
-        QuestMaker.questMaker.Serialize();
+        //QuestMaker.questMaker.Serialize();
     }
 }
