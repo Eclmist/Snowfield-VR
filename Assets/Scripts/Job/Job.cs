@@ -23,6 +23,14 @@ public class Job {
         }
     }
 
+    public int Experience
+    {
+        get
+        {
+            return currentExperience;
+        }
+    }
+
     public Job(JobType _currentJob)
     {
         currentJobType = _currentJob;

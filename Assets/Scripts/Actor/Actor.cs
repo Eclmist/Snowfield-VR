@@ -44,6 +44,13 @@ public class Actor : MonoBehaviour, IDamagable
 
     }
 
+    public List<Job> JobListReference
+    {
+        get
+        {
+            return jobList;
+        }
+    }
     public void TakeDamage(int damage)
     {
         health -= (damage >= health) ? 0 : health - damage;
