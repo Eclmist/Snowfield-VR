@@ -14,7 +14,6 @@ public class VR_Controller_Custom : MonoBehaviour {
     [SerializeField] private Controller_Handle handle;
     [SerializeField] private LayerMask interactableLayer;
 
-    private bool canBeInteracted = false;
     private SteamVR_TrackedObject trackedObject;
     private GameObject interactableObject;
 
@@ -25,9 +24,12 @@ public class VR_Controller_Custom : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
         SteamVR_Controller.Device device = SteamVR_Controller.Input((int)trackedObject.index);
-        if (canBeInteracted && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        Debug.Log(device);
+        if (interactableObject != null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
+            Debug.Log("gripped");
             switch (handle)
             {
                 case Controller_Handle.LEFT:
@@ -41,6 +43,7 @@ public class VR_Controller_Custom : MonoBehaviour {
         }
         else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && interactableObject != null)
         {
+            Debug.Log("released");
             interactableObject.transform.parent = null;
             switch (handle)
             {
@@ -57,21 +60,28 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Entered");
+       
         if(interactableObject == null && collider.gameObject.layer == (interactableLayer | (1 << collider.gameObject.layer)))
         {
-            canBeInteracted = true;
+            Debug.Log("EnteredTriggerable");
             interactableObject = collider.gameObject;
+        }else
+        {
+            Debug.Log("Entered");
         }
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        Debug.Log("Exit");
+        
         if (interactableObject != null && collider.gameObject == interactableObject)
         {
+            Debug.Log("ExitTriggerable");
             interactableObject = null;
-            canBeInteracted = false;
+        }
+        else
+        {
+            Debug.Log("Exited");
         }
     }
 }
