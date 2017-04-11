@@ -26,7 +26,6 @@ public class VR_Controller_Custom : MonoBehaviour {
 
         
         SteamVR_Controller.Device device = SteamVR_Controller.Input((int)trackedObject.index);
-        Debug.Log(device);
         if (interactableObject != null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
             Debug.Log("gripped");
@@ -59,9 +58,8 @@ public class VR_Controller_Custom : MonoBehaviour {
 	}
 
     private void OnTriggerEnter(Collider collider)
-    {
-       
-        if(interactableObject == null && collider.gameObject.layer == (interactableLayer | (1 << collider.gameObject.layer)))
+    {          
+        if(interactableObject == null)
         {
             Debug.Log("EnteredTriggerable");
             interactableObject = collider.gameObject;
