@@ -46,7 +46,7 @@ public class MorphVertex : MonoBehaviour
         }
 
         startingPhase =
-            startingPhase < 0 ? 0 : startingPhase > totalPhases ? totalPhases : startingPhase;
+            startingPhase < 1 ? 1 : startingPhase > totalPhases ? totalPhases : startingPhase;
 
         currentPhase = startingPhase;
         currentStep = 0;
@@ -75,7 +75,7 @@ public class MorphVertex : MonoBehaviour
             if (currentPhase >= totalPhases)
             {
                 currentPhase = totalPhases;
-                currentStep = stepsPerPhase;
+                currentStep = 0;
 
                 return;
             }
@@ -86,19 +86,29 @@ public class MorphVertex : MonoBehaviour
 
     private void UpdateMesh()
     {
-        Debug.Assert(currentPhase + 1 < totalPhases);
-
-        Mesh lhs = morphPhases[currentPhase];
-        Mesh rhs = morphPhases[currentPhase + 1];
-
-        activeMesh = lhs;
-
-        for (int i = 0; i < activeMesh.vertices.Length; i++)
+        if (currentPhase >= totalPhases)
         {
-            activeMesh.vertices[i] = Vector3.Lerp(activeMesh.vertices[i], rhs.vertices[i], currentStep);
+            return;
         }
 
-        meshFilter.mesh = activeMesh; 
+        Mesh lhs = morphPhases[currentPhase - 1];
+        Mesh rhs = morphPhases[currentPhase];
+
+        activeMesh = Instantiate(lhs);
+        Vector3[] vertex = activeMesh.vertices;
+
+        for (int i = 0; i < vertex.Length; i++)
+        {
+            vertex[i] = Vector3.Lerp(lhs.vertices[i], rhs.vertices[i], currentStep / (float)stepsPerPhase);
+        }
+
+        activeMesh.vertices = vertex;
+
+        activeMesh.RecalculateBounds();
+        activeMesh.RecalculateNormals();
+
+        meshFilter.mesh = activeMesh;
+        Debug.Log("Mesh Updated");
     }
 
     private void RecalculateColliders()
