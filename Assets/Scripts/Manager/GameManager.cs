@@ -13,14 +13,17 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region RequestRegion
+
+    [SerializeField] [Range(1, 100)] private float requestConstant;
     private float nextRequest = 0;
-    private float requestConstant;
+
     #endregion
     protected void Awake()
     {
         if (!Instance)
         {
             Instance = this;
+            gameClock = new Clock(secondsPerDay);
         }
         else
         {

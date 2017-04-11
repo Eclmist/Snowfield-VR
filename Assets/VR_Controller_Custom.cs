@@ -59,7 +59,7 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     private void OnTriggerEnter(Collider collider)
     {          
-        if(interactableObject == null)
+        if(interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
         {
             Debug.Log("EnteredTriggerable");
             interactableObject = collider.gameObject;
