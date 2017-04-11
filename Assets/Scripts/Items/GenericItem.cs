@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GenericItem : MonoBehaviour,IInteractable {
 
-    [SerializeField]    protected string name;
+    [SerializeField]    protected string m_name;
     [SerializeField]    protected float weight;
     [SerializeField]    protected AudioClip sound;
     [SerializeField]    protected AudioSource audioSource;
