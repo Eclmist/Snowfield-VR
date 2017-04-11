@@ -57,6 +57,7 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Entered");
         if(interactableObject == null && collider.gameObject.layer == (interactableLayer | (1 << collider.gameObject.layer)))
         {
             canBeInteracted = true;
@@ -66,7 +67,8 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     private void OnTriggerExit(Collider collider)
     {
-        if(interactableObject != null && collider.gameObject == interactableObject)
+        Debug.Log("Exit");
+        if (interactableObject != null && collider.gameObject == interactableObject)
         {
             interactableObject = null;
             canBeInteracted = false;

@@ -33,8 +33,8 @@ public class BlacksmithItem : GenericItem {
         RespondToHeat();
         ControlledHeatingProcess();
 
-        Debug.Log(heatSourceDetected);
-        Debug.Log(currentTemperature);
+        //Debug.Log(heatSourceDetected);
+        //Debug.Log(currentTemperature);
     }
 
     //--------------- Properties -----------------//
