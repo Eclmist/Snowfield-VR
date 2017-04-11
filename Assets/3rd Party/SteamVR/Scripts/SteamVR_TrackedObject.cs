@@ -30,6 +30,7 @@ public class SteamVR_TrackedObject : MonoBehaviour
 		Device15
 	}
 
+    
 	public EIndex index;
 	public Transform origin; // if not set, relative to parent
     public bool isValid = false;

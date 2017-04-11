@@ -33,7 +33,7 @@ public class Actor : MonoBehaviour, IDamagable
         }
     }
 
-    //protected IInteractable leftHand, rightHand;
+    protected IInteractable leftHand, rightHand;
 
     public int Health
     {
@@ -56,7 +56,7 @@ public class Actor : MonoBehaviour, IDamagable
         health -= (damage >= health) ? 0 : health - damage;
     }
 
-    /*
+
     public virtual void ChangeWield(EquipSlot slot, IInteractable item)
     {
         switch (slot)
@@ -69,5 +69,5 @@ public class Actor : MonoBehaviour, IDamagable
                 rightHand = item;
                 break;
         }
-    }*/
+    }
 }
