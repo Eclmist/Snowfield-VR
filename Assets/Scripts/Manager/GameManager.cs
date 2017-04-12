@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
         if(gameClock.SecondSinceStart > nextRequest)//update
         {
             nextRequest = (nextRequest + requestConstant / TownManager.Instance.CurrentTown.Population) % 1;
-            RequestManager.Instance.NewRequest();
+            OrderManager.Instance.NewRequest();
         }
     }
 

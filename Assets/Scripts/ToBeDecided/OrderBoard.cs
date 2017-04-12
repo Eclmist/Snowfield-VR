@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class OrderBoard : MonoBehaviour {
 
     public static OrderBoard Instance;
-    public GameObject test;
+    public GameObject order;
 
     private GameObject canvas;
     private GameObject panel;
@@ -27,7 +27,8 @@ public class OrderBoard : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 
         canvas = transform.Find("Canvas").gameObject;
         panel = canvas.transform.Find("RequestPanel").gameObject;
@@ -38,34 +39,44 @@ public class OrderBoard : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update ()
+    {
+
         if(Input.GetKeyDown(KeyCode.I))
         {
-            SpawnOnBoard();
-            
+            OrderManager.Instance.NewRequest();
         }
-
-        Debug.Log("orders: "+ currentNumberOfOrders);
         
 	}
     
-
-    public void SpawnOnBoard()
+    // Spawns an order slip on the order board
+    public void SpawnOnBoard(Order o)
     {
         if(currentNumberOfOrders < maxNumberOfOrders)
         {
-            Instantiate(test, panel.transform);
+            GameObject g = Instantiate(order, panel.transform);
+            GenerateOrderInfo(g,o);
             currentNumberOfOrders++;
         }
 
         
     }
 
-    // TO DO
-    public void SpawnOnBoard(Request r)
+    // Generates relevant order information on the order slip
+    private void GenerateOrderInfo(GameObject g, Order o)
     {
-        Instantiate(test, panel.transform);
+        GameObject paper = g.transform.Find("Paper").gameObject;
+        Text orderName = paper.transform.Find("OrderName").GetComponent<Text>();
+        Text orderCost = paper.transform.Find("OrderCost").GetComponent<Text>();
+        Text orderDuration = paper.transform.Find("OrderDuration").GetComponent<Text>();
+        Sprite orderSprite = paper.transform.Find("OrderImage").GetComponent<Image>().sprite;
+
+        orderName.text = o.Name.ToString();
+        orderCost.text = o.GoldReward.ToString();
+        orderDuration.text = o.Duration.ToString();
+        orderSprite = o.Sprite;
+
 
     }
+
 }

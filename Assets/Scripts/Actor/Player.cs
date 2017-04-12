@@ -17,6 +17,11 @@ public class Player : Actor
         }
     }
 
+    protected void Start()
+    {
+        AddJob(JobType.BLACKSMITH);
+    }
+
     protected void Awake()
     {
         if (!Instance)
