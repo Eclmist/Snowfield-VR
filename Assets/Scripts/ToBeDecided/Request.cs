@@ -7,7 +7,7 @@ public class Request {
 
     private string name;
     private Image image;
-    private float duration;//i feel like having an actual time here would be better 
+    private int duration;//i feel like having an actual time here would be better 
     private int goldReward;
     
     public Request(string _name, Image _image, float _duration, int _goldReward)

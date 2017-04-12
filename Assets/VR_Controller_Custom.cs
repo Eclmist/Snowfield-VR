@@ -49,7 +49,7 @@ public class VR_Controller_Custom : MonoBehaviour {
                 interactableObject.transform.localRotation = Quaternion.Euler(interactable.RotationalOffset);
             }
         }
-        else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && interactableObject != null)
+        else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
             interactableObject.transform.parent = null;
             IInteractable interactable = interactableObject.GetComponent<IInteractable>();
