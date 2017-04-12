@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour {
 
+    
     public static DialogManager Instance; // Static instance of dialog manager
+
+    [Range(0, 0.1F)]
+    [SerializeField]
+    private float textSpeed;    // Interval between text characters
+
 
     private GameObject dialogBox; // The dialog box containing the text
     private string[] lines;     // Split text resource into lines
@@ -20,12 +26,11 @@ public class DialogManager : MonoBehaviour {
     private List<string> messageOrder;  // List to store the messages in order
     private List<List<AudioClip>> audioClips;
 
-    [Range(0,0.1F)]
-    [SerializeField]
-    private float textSpeed;    // Interval between text characters
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
-    //Line l = new Line("s", Resources.Load("") as AudioClip);
+    
+    
+
     void Awake()
     {
         // Load the text resource
