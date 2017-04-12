@@ -1,11 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RequestManager : MonoBehaviour
+public class OrderManager : MonoBehaviour
 {
 
-    public static RequestManager Instance;
+    public static OrderManager Instance;
+    public List<Image> orderImages;
+    private string orderName;
+    private Image test;
+
+
+    public Dictionary<string, Image> itemMap;
+
+
 
 
     // Use this for initialization
@@ -42,8 +51,19 @@ public class RequestManager : MonoBehaviour
                 //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
                 //OrderBoard.Instance.SpawnOnBoard(newRequest);
                 //DataManager.CloseRequest
+                
+
+
+
             }
         }
+
+
+
+
+
+
+
     }
 
 

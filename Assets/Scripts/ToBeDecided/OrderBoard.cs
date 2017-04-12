@@ -40,36 +40,35 @@ public class OrderBoard : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            SpawnOnBoard();
-
-            
-        }
-
         Debug.Log("orders: "+ currentNumberOfOrders);
         
 	}
     
 
-    public void SpawnOnBoard(/*Order o*/)
+    public void SpawnOnBoard(Order o)
     {
         if(currentNumberOfOrders < maxNumberOfOrders)
         {
             GameObject g = Instantiate(order, panel.transform);
-            GenerateOrderInfo(g);
+            GenerateOrderInfo(g,o);
             currentNumberOfOrders++;
         }
 
         
     }
 
-    private void GenerateOrderInfo(GameObject g)
+    private void GenerateOrderInfo(GameObject g, Order o)
     {
         GameObject paper = g.transform.Find("Paper").gameObject;
         Text orderName = paper.transform.Find("OrderName").GetComponent<Text>();
         Text orderCost = paper.transform.Find("OrderCost").GetComponent<Text>();
         Text orderDuration = paper.transform.Find("OrderDuration").GetComponent<Text>();
+        Image orderImage = paper.transform.Find("OrderImage").GetComponent<Image>();
+
+        orderName.text = o.Name.ToString();
+        orderCost.text = o.GoldReward.ToString();
+        orderDuration.text = o.Duration.ToString();
+        orderImage = o.Image;
 
 
     }
