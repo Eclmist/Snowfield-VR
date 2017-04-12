@@ -6,7 +6,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SerializeManager
 {
-
     private static BinaryFormatter binaryFormatter = new BinaryFormatter();
 
     public static void Save(string fileName, object obj)

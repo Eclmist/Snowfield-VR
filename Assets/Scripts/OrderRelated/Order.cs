@@ -7,10 +7,10 @@ public class Order {
 
     private string name;
     private Sprite sprite;
-    private float duration;//i feel like having an actual time here would be better 
+    private int duration;//i feel like having an actual time here would be better 
     private int goldReward;
     
-    public Order(string _name, Sprite _sprite, float _duration, int _goldReward)
+    public Order(string _name, Sprite _sprite, int _duration, int _goldReward)
     {
         name = _name;
         sprite = _sprite;
@@ -28,7 +28,7 @@ public class Order {
         get { return this.sprite; }
     }
 
-    public float Duration
+    public int Duration
     {
         get { return this.duration; }
     }

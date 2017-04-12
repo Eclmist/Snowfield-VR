@@ -60,13 +60,7 @@ public class OrderManager : MonoBehaviour
             totalExperienceValue += job.Experience;
             if (totalExperienceValue >= randomValue)
             {
-                //DataManager.OpenRequest
-                //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
-                //OrderBoard.Instance.SpawnOnBoard(newRequest);
-                //DataManager.CloseRequest
                 GenerateOrder();
-
-
             }
         }
 
@@ -75,7 +69,7 @@ public class OrderManager : MonoBehaviour
 
     private void GenerateOrder()
     {
-        Order newOrder = new Order("Basic Sword",templateList[0].sprite,2f,1000);
+        Order newOrder = new Order("Basic Sword",templateList[0].sprite,10,2000);
 
         OrderBoard.Instance.SpawnOnBoard(newOrder);
     }
