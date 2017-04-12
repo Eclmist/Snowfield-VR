@@ -23,27 +23,37 @@ public class VR_Controller_Custom : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        ControllerInput();
+	}
 
-        
+    private void ControllerInput()
+    {
         SteamVR_Controller.Device device = SteamVR_Controller.Input((int)trackedObject.index);
         if (interactableObject != null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
-            Debug.Log("gripped");
+            IInteractable interactable = interactableObject.GetComponent<IInteractable>();
+            interactable.Interact();
             switch (handle)
             {
                 case Controller_Handle.LEFT:
-                    Player.Instance.ChangeWield(EquipSlot.LEFTHAND, interactableObject.GetComponent<IInteractable>());
+                    Player.Instance.ChangeWield(EquipSlot.LEFTHAND, interactable);
                     break;
                 case Controller_Handle.RIGHT:
-                    Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, interactableObject.GetComponent<IInteractable>());
+                    Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, interactable);
                     break;
             }
             interactableObject.transform.parent = transform;
+            if (interactable.HasPivot)
+            {
+                interactableObject.transform.localPosition = interactable.PositionalOffset;
+                interactableObject.transform.localRotation = Quaternion.Euler(interactable.RotationalOffset);
+            }
         }
         else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && interactableObject != null)
         {
-            Debug.Log("released");
             interactableObject.transform.parent = null;
+            IInteractable interactable = interactableObject.GetComponent<IInteractable>();
+            interactable.StopInteraction();
             switch (handle)
             {
                 case Controller_Handle.LEFT:
@@ -54,8 +64,7 @@ public class VR_Controller_Custom : MonoBehaviour {
                     break;
             }
         }
-
-	}
+    }
 
     private void OnTriggerEnter(Collider collider)
     {          
