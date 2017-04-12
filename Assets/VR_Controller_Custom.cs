@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SteamVR_TrackedObject))]
-public class VR_Controller_Custom : MonoBehaviour {
+public class VR_Controller_Custom : MonoBehaviour
+{
 
     public enum Controller_Handle
     {
@@ -13,26 +14,33 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     [SerializeField] private Controller_Handle handle;
     [SerializeField] private LayerMask interactableLayer;
-
+    [SerializeField] private Rigidbody attachedPoint;
+    private FixedJoint attachedJoint = null;
     private SteamVR_TrackedObject trackedObject;
     private GameObject interactableObject;
 
-    void Awake () {
+    
+    void Awake()
+    {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
-	}
+    }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         ControllerInput();
-	}
+    }
 
     private void ControllerInput()
     {
         SteamVR_Controller.Device device = SteamVR_Controller.Input((int)trackedObject.index);
-        if (interactableObject != null && device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        if (interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
         {
             IInteractable interactable = interactableObject.GetComponent<IInteractable>();
-            interactable.Interact();
+            interactable.Interact(transform);
+            attachedJoint = interactableObject.AddComponent<FixedJoint>();
+            attachedJoint.connectedBody = attachedPoint;
+
             switch (handle)
             {
                 case Controller_Handle.LEFT:
@@ -42,37 +50,42 @@ public class VR_Controller_Custom : MonoBehaviour {
                     Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, interactable);
                     break;
             }
-            interactableObject.transform.parent = transform;
-            if (interactable.HasPivot)
-            {
-                interactableObject.transform.localPosition = interactable.PositionalOffset;
-                interactableObject.transform.localRotation = Quaternion.Euler(interactable.RotationalOffset);
-            }
+
+            
+            
         }
         else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
-            interactableObject.transform.parent = null;
-            IInteractable interactable = interactableObject.GetComponent<IInteractable>();
-            interactable.StopInteraction();
+            IInteractable interactable = null;
+            DestroyImmediate(attachedJoint);
+            attachedJoint = null;
             switch (handle)
             {
                 case Controller_Handle.LEFT:
+                    interactable = Player.Instance.returnWield(EquipSlot.LEFTHAND);
                     Player.Instance.ChangeWield(EquipSlot.LEFTHAND, null);
+                    
                     break;
                 case Controller_Handle.RIGHT:
+                    interactable = Player.Instance.returnWield(EquipSlot.RIGHTHAND);
                     Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, null);
                     break;
+            }
+            if (interactable != null)
+            {
+                interactable.StopInteraction(transform);
             }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
-    {          
-        if(interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+    {
+        if (interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
         {
             Debug.Log("EnteredTriggerable");
             interactableObject = collider.gameObject;
-        }else
+        }
+        else
         {
             Debug.Log("Entered");
         }
@@ -80,7 +93,7 @@ public class VR_Controller_Custom : MonoBehaviour {
 
     private void OnTriggerExit(Collider collider)
     {
-        
+
         if (interactableObject != null && collider.gameObject == interactableObject)
         {
             Debug.Log("ExitTriggerable");

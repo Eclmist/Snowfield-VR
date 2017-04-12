@@ -12,6 +12,8 @@ public class GenericItem : MonoBehaviour,IInteractable {
     [SerializeField]    protected bool hasPivot;
     [SerializeField]    protected Vector3 positionalOffset, rotationalOffset;
 
+    private Transform linkedTransform = null;
+
     private Rigidbody rigidBody;
 
     protected void Awake()
@@ -19,7 +21,14 @@ public class GenericItem : MonoBehaviour,IInteractable {
         rigidBody = GetComponent<Rigidbody>();
     }
 
-
+    public Transform LinkedTransform
+    {
+        get
+        {
+            return linkedTransform;
+        }
+    }
+       
     public bool HasPivot
     {
         get
@@ -56,14 +65,23 @@ public class GenericItem : MonoBehaviour,IInteractable {
         set { this.weight = value; }
     }
 
-    public virtual void Interact()
+    public virtual void Interact(Transform referenceCheck)
     {
+        linkedTransform = referenceCheck;
         rigidBody.useGravity = false;
+        if (hasPivot)
+        {
+            transform.localPosition = referenceCheck.position + positionalOffset;
+            transform.rotation = Quaternion.Euler(referenceCheck.rotation.eulerAngles + rotationalOffset);
+        }
     }
 
-    public virtual void StopInteraction()
+    public virtual void StopInteraction(Transform referenceCheck)
     {
-        rigidBody.useGravity = true;
+        if (linkedTransform == referenceCheck)
+        {
+            rigidBody.useGravity = true;
+        }
     }
 
 

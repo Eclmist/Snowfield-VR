@@ -70,4 +70,19 @@ public class Actor : MonoBehaviour, IDamagable
                 break;
         }
     }
+
+    public IInteractable returnWield(EquipSlot slot)
+    {
+        switch (slot)
+        {
+            case EquipSlot.LEFTHAND:
+                return leftHand;
+
+            case EquipSlot.RIGHTHAND:
+                return rightHand;
+            default:
+                return null;
+        }
+        
+    }
 }

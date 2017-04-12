@@ -4,9 +4,14 @@ using UnityEngine;
 
 public interface IInteractable {
 
-    void Interact();
+    void Interact(Transform referenceCheck);
 
-    void StopInteraction();
+    void StopInteraction(Transform referenceCheck);
+
+    Transform LinkedTransform
+    {
+        get;
+    }
 
     bool HasPivot
     {
