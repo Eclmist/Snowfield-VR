@@ -51,15 +51,34 @@ public class OrderBoard : MonoBehaviour {
 	}
     
 
-    public void SpawnOnBoard()
+    public void SpawnOnBoard(/*Order o*/)
     {
         if(currentNumberOfOrders < maxNumberOfOrders)
         {
-            Instantiate(order, panel.transform);
+            GameObject g = Instantiate(order, panel.transform);
+            GenerateOrderInfo(g);
             currentNumberOfOrders++;
         }
 
         
+    }
+
+    private void GenerateOrderInfo(GameObject g)
+    {
+        Text orderName = g.transform.Find("OrderName").GetComponent<Text>();
+        Text orderCost = g.transform.Find("OrderCost").GetComponent<Text>();
+        Text orderDuration = g.transform.Find("OrderDuration").GetComponent<Text>();
+
+        if (!orderName || !orderCost || !orderDuration)
+        {
+            Debug.Log("Text components in order not found!");
+        }
+
+        
+
+
+
+
     }
 
     // TO DO
