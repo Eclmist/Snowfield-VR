@@ -44,6 +44,7 @@ public class OrderManager : MonoBehaviour
 
     }
 
+
     public void NewRequest()
     {
         int totalExperienceValue = 0;
@@ -74,9 +75,9 @@ public class OrderManager : MonoBehaviour
 
     private void GenerateOrder()
     {
+        Order newOrder = new Order("Basic Sword",templateList[0].sprite,2f,1000);
 
-
-
+        OrderBoard.Instance.SpawnOnBoard(newOrder);
     }
 
     //private OrderTemplate GetRandomTemplate()

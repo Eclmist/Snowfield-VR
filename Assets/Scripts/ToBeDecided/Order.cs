@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class Order {
 
     private string name;
-    private Image image;
+    private Sprite sprite;
     private float duration;//i feel like having an actual time here would be better 
     private int goldReward;
     
-    public Order(string _name, Image _image, float _duration, int _goldReward)
+    public Order(string _name, Sprite _sprite, float _duration, int _goldReward)
     {
         name = _name;
-        image = _image;
+        sprite = _sprite;
         duration = _duration;
         goldReward = _goldReward;
     }
@@ -23,9 +23,9 @@ public class Order {
         get{ return this.name; }
     }
 
-    public Image Image
+    public Sprite Sprite
     {
-        get { return this.image; }
+        get { return this.sprite; }
     }
 
     public float Duration

@@ -27,7 +27,8 @@ public class OrderBoard : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 
         canvas = transform.Find("Canvas").gameObject;
         panel = canvas.transform.Find("RequestPanel").gameObject;
@@ -38,13 +39,17 @@ public class OrderBoard : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
-        Debug.Log("orders: "+ currentNumberOfOrders);
+	void Update ()
+    {
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            OrderManager.Instance.NewRequest();
+        }
         
 	}
     
-
+    // Spawns an order slip on the order board
     public void SpawnOnBoard(Order o)
     {
         if(currentNumberOfOrders < maxNumberOfOrders)
@@ -57,26 +62,21 @@ public class OrderBoard : MonoBehaviour {
         
     }
 
+    // Generates relevant order information on the order slip
     private void GenerateOrderInfo(GameObject g, Order o)
     {
         GameObject paper = g.transform.Find("Paper").gameObject;
         Text orderName = paper.transform.Find("OrderName").GetComponent<Text>();
         Text orderCost = paper.transform.Find("OrderCost").GetComponent<Text>();
         Text orderDuration = paper.transform.Find("OrderDuration").GetComponent<Text>();
-        Image orderImage = paper.transform.Find("OrderImage").GetComponent<Image>();
+        Sprite orderSprite = paper.transform.Find("OrderImage").GetComponent<Image>().sprite;
 
         orderName.text = o.Name.ToString();
         orderCost.text = o.GoldReward.ToString();
         orderDuration.text = o.Duration.ToString();
-        orderImage = o.Image;
+        orderSprite = o.Sprite;
 
 
     }
 
-    // TO DO
-    //public void SpawnOnBoard(Order r)
-    //{
-    //    Instantiate(order, panel.transform);
-
-    //}
 }
