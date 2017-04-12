@@ -43,6 +43,7 @@ public class OrderBoard : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.I))
         {
             SpawnOnBoard();
+
             
         }
 
@@ -65,18 +66,10 @@ public class OrderBoard : MonoBehaviour {
 
     private void GenerateOrderInfo(GameObject g)
     {
-        Text orderName = g.transform.Find("OrderName").GetComponent<Text>();
-        Text orderCost = g.transform.Find("OrderCost").GetComponent<Text>();
-        Text orderDuration = g.transform.Find("OrderDuration").GetComponent<Text>();
-
-        if (!orderName || !orderCost || !orderDuration)
-        {
-            Debug.Log("Text components in order not found!");
-        }
-
-        
-
-
+        GameObject paper = g.transform.Find("Paper").gameObject;
+        Text orderName = paper.transform.Find("OrderName").GetComponent<Text>();
+        Text orderCost = paper.transform.Find("OrderCost").GetComponent<Text>();
+        Text orderDuration = paper.transform.Find("OrderDuration").GetComponent<Text>();
 
 
     }
