@@ -1,12 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RequestManager : MonoBehaviour
+public class OrderManager : MonoBehaviour
 {
+    [System.Serializable]
+    public struct OrderTemplate
+    {
+        public Sprite sprite;
+        public Mesh mesh;
+        public int baseGold;
 
-    public static RequestManager Instance;
+    }
 
+    [System.Serializable]
+    public struct PhysicalMaterial
+    {
+        public string name;
+        public int costMultiplier;
+    }
+
+    public static OrderManager Instance;
+
+    [SerializeField]
+    private List<OrderTemplate> templateList;
+    [SerializeField]
+    private List<PhysicalMaterial> materialList;
 
     // Use this for initialization
     void Awake()
@@ -20,8 +40,10 @@ public class RequestManager : MonoBehaviour
             Debug.Log("There should only be one instance of request board running");
             Destroy(this);
         }
+       
 
     }
+
 
     public void NewRequest()
     {
@@ -42,10 +64,27 @@ public class RequestManager : MonoBehaviour
                 //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
                 //OrderBoard.Instance.SpawnOnBoard(newRequest);
                 //DataManager.CloseRequest
+                GenerateOrder();
+
+
             }
         }
+
     }
 
+
+    private void GenerateOrder()
+    {
+        Order newOrder = new Order("Basic Sword",templateList[0].sprite,2f,1000);
+
+        OrderBoard.Instance.SpawnOnBoard(newOrder);
+    }
+
+    //private OrderTemplate GetRandomTemplate()
+    //{
+    //    int total = templateList.Count;
+        
+    //}
 
 
 }
