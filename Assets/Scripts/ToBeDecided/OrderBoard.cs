@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class OrderBoard : MonoBehaviour {
 
     public static OrderBoard Instance;
-    public GameObject test;
+    public GameObject order;
 
     private GameObject canvas;
     private GameObject panel;
@@ -55,7 +55,7 @@ public class OrderBoard : MonoBehaviour {
     {
         if(currentNumberOfOrders < maxNumberOfOrders)
         {
-            Instantiate(test, panel.transform);
+            Instantiate(order, panel.transform);
             currentNumberOfOrders++;
         }
 
@@ -63,9 +63,9 @@ public class OrderBoard : MonoBehaviour {
     }
 
     // TO DO
-    public void SpawnOnBoard(Request r)
-    {
-        Instantiate(test, panel.transform);
+    //public void SpawnOnBoard(Order r)
+    //{
+    //    Instantiate(order, panel.transform);
 
-    }
+    //}
 }
