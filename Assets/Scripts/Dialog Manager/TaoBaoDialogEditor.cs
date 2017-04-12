@@ -26,10 +26,19 @@ public class TaoBaoDialogEditor : MonoBehaviour {
     [SerializeField]
     private List<Session> sessions;
 
-    void Update()
+    private void Awake()
+    {
+        sessions = SerializeManager.Instance.Load("Dialogs") as List<Session>;
+    }
+
+    private void Update()
     {
         if (save = !save)
-            Debug.Log("Latest \""+ sessions[sessions.Count-1].title+"\" saved");
+        {
+            SerializeManager.Instance.Save("Dialogs",sessions);
+            Debug.Log("Latest \"" + sessions[sessions.Count - 1].title + "\" saved");
+        }
+            
     }
 
 
