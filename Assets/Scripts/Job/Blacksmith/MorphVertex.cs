@@ -10,6 +10,8 @@ public class MorphVertex : MonoBehaviour
     [SerializeField] [Range(1, 30)] private int stepsPerPhase;
     [SerializeField] private int startingPhase = 1;
 
+    [SerializeField] private bool continueFromCurrentMesh;
+
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
 
@@ -91,7 +93,7 @@ public class MorphVertex : MonoBehaviour
             return;
         }
 
-        Mesh lhs = morphPhases[currentPhase - 1];
+        Mesh lhs = continueFromCurrentMesh ? meshFilter.mesh : morphPhases[currentPhase - 1];
         Mesh rhs = morphPhases[currentPhase];
 
         activeMesh = Instantiate(lhs);
