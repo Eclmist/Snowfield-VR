@@ -5,17 +5,28 @@ using UnityEngine.UI;
 
 public class OrderManager : MonoBehaviour
 {
+    [System.Serializable]
+    public struct OrderTemplate
+    {
+        public Sprite sprite;
+        public Mesh mesh;
+        public int baseGold;
+
+    }
+
+    [System.Serializable]
+    public struct PhysicalMaterial
+    {
+        public string name;
+        public int costMultiplier;
+    }
 
     public static OrderManager Instance;
-    public List<Image> orderImages;
-    private string orderName;
-    private Image test;
 
-
-    public Dictionary<string, Image> itemMap;
-
-
-
+    [SerializeField]
+    private List<OrderTemplate> templateList;
+    [SerializeField]
+    private List<PhysicalMaterial> materialList;
 
     // Use this for initialization
     void Awake()
@@ -29,6 +40,7 @@ public class OrderManager : MonoBehaviour
             Debug.Log("There should only be one instance of request board running");
             Destroy(this);
         }
+       
 
     }
 
@@ -51,21 +63,27 @@ public class OrderManager : MonoBehaviour
                 //Request newRequest = new Request(null, null, 0, 0);//To be auto generated
                 //OrderBoard.Instance.SpawnOnBoard(newRequest);
                 //DataManager.CloseRequest
-                
-
+                GenerateOrder();
 
 
             }
         }
 
+    }
 
 
-
+    private void GenerateOrder()
+    {
 
 
 
     }
 
+    //private OrderTemplate GetRandomTemplate()
+    //{
+    //    int total = templateList.Count;
+        
+    //}
 
 
 }
