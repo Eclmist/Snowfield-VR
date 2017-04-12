@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Actor {
+public class Player : Actor
+{
 
     private int gold;
 
@@ -14,6 +15,11 @@ public class Player : Actor {
         {
             return gold;
         }
+    }
+
+    protected void Start()
+    {
+        AddJob(JobType.BLACKSMITH);
     }
 
     protected void Awake()
@@ -30,20 +36,12 @@ public class Player : Actor {
     public void AddGold(int value)
     {
         gold += value;
-        if(gold < 0)
+        if (gold < 0)
         {
             gold = 0;//for display purposes
             //set lose condition
         }
     }
 
-    protected void Update()
-    {
-        HandleInput();
-    }
-
-    protected void HandleInput()
-    {
-
-    }
+    
 }
