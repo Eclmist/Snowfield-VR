@@ -25,42 +25,11 @@ public static class Extensions
         return !hit;
 
     }
-    public static bool OverlapPoint(this Collider collider, Vector3 point)
+
+    public static float DistanceToClosestPoint(this Collider collider, Vector3 point)
     {
-        Vector3 temp;
-        Vector3 start = new Vector3(0, 100, 0); // This is defined to be some arbitrary point far away from the collider.
-        Vector3 direction = point - start; // This is the direction from start to goal.
-        direction.Normalize();
-        int itterations = 0; // If we know how many times the raycast has hit faces on its way to the target and back, we can tell through logic whether or not it is inside.
-        temp = start;
+        Vector3 closestPoint = collider.ClosestPoint(point);
 
-
-        while (temp != point) // Try to reach the point starting from the far off point.  This will pass through faces to reach its objective.
-        {
-            RaycastHit hit;
-            if (Physics.Linecast(temp, point, out hit)) // Progressively move the point forward, stopping everytime we see a new plane in the way.
-            {
-                itterations++;
-                temp = hit.point + (direction / 100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
-            }
-            else
-            {
-                temp = point; // If there is no obstruction to our goal, then we can reach it in one step.
-            }
-        }
-        while (temp != start) // Try to return to where we came from, this will make sure we see all the back faces too.
-        {
-            RaycastHit hit;
-            if (Physics.Linecast(temp, start, out hit))
-            {
-                itterations++;
-                temp = hit.point + (-direction / 100.0f);
-            }
-            else
-            {
-                temp = start;
-            }
-        }
-        return (itterations % 2 == 1);
+        return Vector3.Distance(point, closestPoint);
     }
 }

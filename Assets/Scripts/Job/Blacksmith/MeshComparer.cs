@@ -36,7 +36,7 @@ public class MeshComparer : MonoBehaviour
         else
         {
             Instance = this;
-            comparerSkinWidth = 0.2F;
+            comparerSkinWidth = 0.1F;
             comparismUID = 0;
             minUID = comparismUID + 1;
             dictionaryLength = 10;
@@ -79,56 +79,22 @@ public class MeshComparer : MonoBehaviour
         WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
         // Create 2 Mesh Colliders, one for inner one for outer
-        MeshCollider innerMeshCollider = gameObject.AddComponent<MeshCollider>();
-        MeshCollider outerMeshCollider = gameObject.AddComponent<MeshCollider>();
+        MeshCollider comparismMeshCollider = gameObject.AddComponent<MeshCollider>();
 
-        Mesh innerMesh = Instantiate(target);
-        Mesh outerMesh = Instantiate(target);
-
-        float innerModifier = 1 - comparerSkinWidth;
-        float outerModifier = 1 + comparerSkinWidth;
-
-        Vector3[] innerVertices = innerMesh.vertices;
-        Vector3[] outerVertices = outerMesh.vertices;
-
-        Debug.Assert(innerVertices.Length == outerVertices.Length);
-
-        float currentThreadStartTime = Time.realtimeSinceStartup;
-
-        for (int i = 0; i < innerVertices.Length; i++)
-        {
-            //innerVertices[i] = transform.TransformPoint(innerVertices[i]) * innerModifier;
-            //outerVertices[i] = transform.TransformPoint(outerVertices[i]) * outerModifier;
-            innerVertices[i] = (innerVertices[i] + target.bounds.center) * innerModifier - target.bounds.center;
-            outerVertices[i] = (outerVertices[i] + target.bounds.center) * outerModifier - target.bounds.center;
-
-            currentComparism.progress = (float)i / innerVertices.Length * 0.05F;
-            yield return wait;
-        }
-
-        innerMesh.vertices = innerVertices;
-        outerMesh.vertices = outerVertices;
+        Mesh comparismMesh = Instantiate(target);
 
         // assign mesh to collider
-        innerMeshCollider.sharedMesh = innerMesh;
-        outerMeshCollider.sharedMesh = outerMesh;
+        comparismMeshCollider.sharedMesh = comparismMesh;
 
         int totalVertices = comparer.vertexCount;
         int totalAccurateVertices = 0;
 
-        currentThreadStartTime = Time.realtimeSinceStartup;
-
         for (int i = 0; i < totalVertices; i++)
         {
-            // Check if its within outer mesh limit
-            if (outerMeshCollider.OverlapPointSimple(transform.TransformPoint(comparer.vertices[i])))
+            // Check if its within limits
+            if (comparismMeshCollider.DistanceToClosestPoint(transform.TransformPoint(comparer.vertices[i])) < comparerSkinWidth)
             {
-                //Check if outside inner mesh limit
-                if (!innerMeshCollider.OverlapPointSimple(transform.TransformPoint(comparer.vertices[i])))
-                {
-                    //Vertex accurate to skin
-                    totalAccurateVertices++;
-                }
+                totalAccurateVertices++;
             }
 
             currentComparism.progress = 0.05F + (float)i / totalVertices * 0.95F;
@@ -139,8 +105,7 @@ public class MeshComparer : MonoBehaviour
         currentComparism.comparismResult = (float)totalAccurateVertices / totalVertices;
 
         //Cleanup
-        //Destroy(innerMeshCollider);
-        //Destroy(outerMeshCollider);
+        Destroy(comparismMeshCollider);
     }
 
     private static void AddToLimitedDictionary(int UID, Comparism comparism)
