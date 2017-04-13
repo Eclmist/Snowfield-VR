@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class OrderBoard : MonoBehaviour {
 
@@ -11,15 +12,14 @@ public class OrderBoard : MonoBehaviour {
 
     private GameObject canvas;
     private GameObject panel;
-    [HideInInspector]
-    public const int maxNumberOfOrders = 12;
+    private List<OrderSlip> orderList = new List<OrderSlip>();
     //Do we want to keep a list of the orders? Feels more clean that way
-    private int currentNumberOfOrders;
 
+    [SerializeField] private int maxNumberOfOrders;
 
     public int CurrentNumberOfOrders
     {
-        get { return this.currentNumberOfOrders; }
+        get { return orderList.Count; }
     }
 
     void Awake()
@@ -53,18 +53,20 @@ public class OrderBoard : MonoBehaviour {
     // Spawns an order slip on the order board
     public void SpawnOnBoard(Order o)
     {
-        if(currentNumberOfOrders < maxNumberOfOrders)
+        if(orderList.Count < maxNumberOfOrders)
         {
             OrderSlip g = Instantiate(order, panel.transform).GetComponent<OrderSlip>();
-            g.StartOrder(o);
-            currentNumberOfOrders++;
+            g.StartOrder(o, CloseOrder);
         }
     }
 
-    public void CloseOrder()
+    public void CloseOrder(bool success,OrderSlip slip)
     {
-        currentNumberOfOrders--;
+        orderList.Remove(slip);
+        OrderManager.Instance.CompletedOrder(success, slip.Reward);
     }
+
+
     // Generates relevant order information on the order slip
  
 }
