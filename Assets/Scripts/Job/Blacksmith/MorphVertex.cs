@@ -7,7 +7,7 @@ using UnityEngine;
 public class MorphVertex : MonoBehaviour
 {
     [SerializeField] private Mesh[] morphPhases;
-    [SerializeField] [Range(1, 30)] private int stepsPerPhase;
+    [SerializeField] [Range(1, 30)] private int stepsPerPhase = 20;
     [SerializeField] private int startingPhase = 1;
 
     [SerializeField] private bool continueFromCurrentMesh;
@@ -59,7 +59,7 @@ public class MorphVertex : MonoBehaviour
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKey(KeyCode.O))
         {
             Morph(1);
         }
@@ -110,7 +110,6 @@ public class MorphVertex : MonoBehaviour
         activeMesh.RecalculateNormals();
 
         meshFilter.mesh = activeMesh;
-        Debug.Log("Mesh Updated");
     }
 
     private void RecalculateColliders()

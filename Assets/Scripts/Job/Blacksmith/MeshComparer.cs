@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Comparism
+public class Comparism
 {
     public int UID;
     public float comparismResult;
@@ -12,7 +12,7 @@ public struct Comparism
     {
         this.UID = UID;
         comparismResult = 0;
-        progress = 0;
+        progress = 0;               // 0 if no progress, 1 is completed.
     }
 }
 
@@ -20,12 +20,11 @@ public class MeshComparer : MonoBehaviour
 {
     public static MeshComparer Instance;
 
-    private static float progress;                          // 0 if no progress, 1 is completed.
     private static float comparerSkinWidth;
     private static int comparismUID;
+    private static int minUID;
+    private static int dictionaryLength;
     private static Dictionary<int, Comparism> UID_CompareResult_Pair;
-
-    private static float maxAllowedThreadTime;
 
     protected void Awake()
     {
@@ -37,11 +36,11 @@ public class MeshComparer : MonoBehaviour
         else
         {
             Instance = this;
-            progress = 0;
-            comparerSkinWidth = 0.1F;
+            comparerSkinWidth = 0.2F;
             comparismUID = 0;
+            minUID = comparismUID + 1;
+            dictionaryLength = 10;
             UID_CompareResult_Pair = new Dictionary<int, Comparism>();
-            maxAllowedThreadTime = 0.005F;
         }
     }
 
@@ -59,33 +58,32 @@ public class MeshComparer : MonoBehaviour
         }
     }
 
-    // Returns UID if comparism starts
-    // Returns -1 if a comparism is already in progress
-    public int StartCompare(Mesh comparer, Mesh target)
+    // Returns Comparism if comparism starts
+    // Returns null if a comparism is already in progress
+    public Comparism StartCompare(Mesh comparer, Mesh target)
     {
         if (ComparismInProgress(comparismUID))
-            return -1;
+            return null;
         else
         {
             comparismUID++;
-            StartCoroutine(Compare(comparer, target));
-            return comparismUID;
+            Comparism currentComparism = new Comparism(comparismUID);
+            AddToLimitedDictionary(comparismUID, currentComparism);
+            StartCoroutine(Compare(comparer, target, currentComparism));
+            return currentComparism;
         }
     }
 
-    private IEnumerator Compare(Mesh comparer, Mesh target)
+    private IEnumerator Compare(Mesh comparer, Mesh target, Comparism currentComparism)
     {
         WaitForFixedUpdate wait = new WaitForFixedUpdate();
 
-        Comparism currentComparism = new Comparism(comparismUID);
-        AddToLimitedDictionary(comparismUID, currentComparism);
-
         // Create 2 Mesh Colliders, one for inner one for outer
-        MeshCollider innerMeshCollider = new MeshCollider();
-        MeshCollider outerMeshCollider = new MeshCollider();
+        MeshCollider innerMeshCollider = gameObject.AddComponent<MeshCollider>();
+        MeshCollider outerMeshCollider = gameObject.AddComponent<MeshCollider>();
 
-        Mesh innerMesh = Object.Instantiate(target);
-        Mesh outerMesh = Object.Instantiate(target);
+        Mesh innerMesh = Instantiate(target);
+        Mesh outerMesh = Instantiate(target);
 
         float innerModifier = 1 - comparerSkinWidth;
         float outerModifier = 1 + comparerSkinWidth;
@@ -99,14 +97,13 @@ public class MeshComparer : MonoBehaviour
 
         for (int i = 0; i < innerVertices.Length; i++)
         {
-            innerVertices[i] *= innerModifier;
-            outerVertices[i] *= outerModifier;
+            //innerVertices[i] = transform.TransformPoint(innerVertices[i]) * innerModifier;
+            //outerVertices[i] = transform.TransformPoint(outerVertices[i]) * outerModifier;
+            innerVertices[i] = (innerVertices[i] + target.bounds.center) * innerModifier - target.bounds.center;
+            outerVertices[i] = (outerVertices[i] + target.bounds.center) * outerModifier - target.bounds.center;
 
-            if (Time.realtimeSinceStartup - currentThreadStartTime > maxAllowedThreadTime)
-            {
-                currentThreadStartTime = Time.realtimeSinceStartup;
-                yield return wait;
-            }
+            currentComparism.progress = (float)i / innerVertices.Length * 0.05F;
+            yield return wait;
         }
 
         innerMesh.vertices = innerVertices;
@@ -121,41 +118,44 @@ public class MeshComparer : MonoBehaviour
 
         currentThreadStartTime = Time.realtimeSinceStartup;
 
-        foreach (Vector3 vertex in comparer.vertices)
+        for (int i = 0; i < totalVertices; i++)
         {
             // Check if its within outer mesh limit
-            if (outerMeshCollider.OverlapPoint(vertex))
+            if (outerMeshCollider.OverlapPointSimple(transform.TransformPoint(comparer.vertices[i])))
             {
-                // Check if outside inner mesh limit
-                if (!innerMeshCollider.OverlapPoint(vertex))
+                //Check if outside inner mesh limit
+                if (!innerMeshCollider.OverlapPointSimple(transform.TransformPoint(comparer.vertices[i])))
                 {
                     //Vertex accurate to skin
                     totalAccurateVertices++;
                 }
             }
 
-            if (Time.realtimeSinceStartup - currentThreadStartTime > maxAllowedThreadTime)
-            {
-                currentThreadStartTime = Time.realtimeSinceStartup;
-                yield return wait;
-            }
+            currentComparism.progress = 0.05F + (float)i / totalVertices * 0.95F;
+            yield return wait;
         }
 
         currentComparism.progress = 1;
         currentComparism.comparismResult = (float)totalAccurateVertices / totalVertices;
+
+        //Cleanup
+        //Destroy(innerMeshCollider);
+        //Destroy(outerMeshCollider);
     }
 
-    private void AddToLimitedDictionary(int UID, Comparism comparism)
+    private static void AddToLimitedDictionary(int UID, Comparism comparism)
     {
+        if (UID - minUID >= dictionaryLength)
+        {
+            UID_CompareResult_Pair.Remove(minUID);
+            minUID++;
+        }
 
+        UID_CompareResult_Pair.Add(UID, comparism);
     }
 
-    public float GetLatestComparismResult()
-    {
-        return GetComparismResult(comparismUID);
-    }
-
-    public float GetComparismResult(int UID)
+    // Returns -1 if UID does not exist
+    public static float GetComparismResult(int UID)
     {
         Comparism comparism;
 
@@ -167,5 +167,26 @@ public class MeshComparer : MonoBehaviour
         {
             return comparism.comparismResult;
         }
+    }
+
+    // Returns -1 if UID does not exist
+    public static float GetComparismProgress(int UID)
+    {
+        Comparism comparism;
+
+        if (!UID_CompareResult_Pair.TryGetValue(UID, out comparism))
+        {
+            return -1;
+        }
+        else
+        {
+            return comparism.progress;
+        }
+    }
+
+    // UID starts at 1. Returns 0 if no comparism has been done before.
+    public static int GetLatestComparismUID()
+    {
+        return comparismUID;
     }
 }
