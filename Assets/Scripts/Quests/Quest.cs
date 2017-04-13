@@ -21,7 +21,7 @@ public class Quest
     public int requiredExperience;
     public JobType questJob;
 
-    private bool completed;
+    public bool completed;
 
     public Quest()
     {

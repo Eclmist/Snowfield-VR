@@ -8,28 +8,14 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using System.Xml;
+using System.Xml.Serialization;
 
 public class QuestSearcher : EditorWindow {
 
     static QuestSearcher questSearcher;
 
-    //QuestManager QuestManager;
-
     Quest quest;
-    //QuestMaker questMaker;
-
-    //-----Editable Variable-----//
-    //TextAsset questTypes;
-    //string[] questType;
-    //int questTypeIndex = 0;
-
-    //TextAsset jamesRewards;
-    //string[] jamesReward;
-    //int jamesRewardIndex = 0;
-
-    //TextAsset questItems;
-    //string[] questItem;
-    //int questItemIndex = 0;
 
     //-----Image-----//
     Texture2D deleteButtonImage;
@@ -50,6 +36,8 @@ public class QuestSearcher : EditorWindow {
     //-----Function Boolean-----//
     bool editable;
 
+    
+
     [MenuItem("Window/Quest/Quest Searcher")]
     protected static void Init()
     {
@@ -60,52 +48,13 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnEnable()
     {
-        //if (QuestManager.Load(Path.Combine(Application.persistentDataPath, "quests.xml")) != null)
-        //{
-        //    QuestManager = QuestManager.Load(Path.Combine(Application.dataPath, "quests.xml"));
-        //}
+        //QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
 
-        Debug.Log(QuestManager.QuestList.Count);
+        Debug.Log(QuestManager.QuestList.Count + " quest(s) loaded");
 
         //----------Load Image----------//
         deleteButtonImage = Resources.Load("Editor/Image/trash") as Texture2D;
         editButtonImage = Resources.Load("Editor/Image/edit.jpg") as Texture2D;
-
-        ////---------------------------Init QuestTypes-----------------------//
-        //questTypes = Resources.Load("Quests/QuestTypes") as TextAsset;
-
-        //if (questTypes == null)
-        //{
-        //    Debug.LogError("QuestTypes.txt is missing!");
-        //}
-        //else
-        //{
-        //    questType = questTypes.text.Split('\n');
-        //}
-
-        ////---------------------------Init jamesRewards-----------------------//
-        //jamesRewards = Resources.Load("Quests/questRewards") as TextAsset;
-
-        //if (jamesRewards == null)
-        //{
-        //    Debug.LogError("questReward.txt is missing!");
-        //}
-        //else
-        //{
-        //    jamesReward = jamesRewards.text.Split('\n');
-        //}
-
-        ////---------------------------Init QuestRequiredItems-----------------------//
-        //questItems = Resources.Load("Quests/QuestRequiredItems") as TextAsset;
-
-        //if (questItems == null)
-        //{
-        //    Debug.LogError("QuestRequiredItems.txt is missing!");
-        //}
-        //else
-        //{
-        //    questItem = questItems.text.Split('\n');
-        //}
     }
 
     protected void OnGUI()
@@ -143,8 +92,6 @@ public class QuestSearcher : EditorWindow {
             EditorGUILayout.EndHorizontal();
         }
 
-        //if (!editable)
-        //{
         if (indexPassed)
         {
             EditorGUILayout.LabelField("Quest Index", EditorStyles.boldLabel);
@@ -204,63 +151,6 @@ public class QuestSearcher : EditorWindow {
                 }
             }
         }
-        //}
-        //else //if editable
-        //{
-        //    if (indexPassed)
-        //    {
-        //        EditorGUILayout.LabelField("Quest Index", EditorStyles.boldLabel);
-        //        Quest.QuestList[questIndex].index = EditorGUILayout.IntField(Quest.QuestList[questIndex].index);
-
-        //        EditorGUILayout.LabelField("Quest Title: ", EditorStyles.boldLabel);
-        //        Quest.QuestList[questIndex].title = EditorGUILayout.TextArea(Quest.QuestList[questIndex].title);
-
-        //        EditorGUILayout.LabelField("Quest Type: ", EditorStyles.boldLabel);
-        //        questTypeIndex = EditorGUILayout.Popup("Quest Types", questTypeIndex, questType);
-
-        //        EditorGUILayout.LabelField("Quest Rewards: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].jamesReward);
-
-        //        EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].requiredItem);
-
-        //        for (int i = 0; i < Quest.QuestList[questIndex].playerDialog.Length; i++)
-        //        {
-        //            if (Quest.QuestList[questIndex].playerDialog[i] != null)
-        //            {
-        //                EditorGUILayout.LabelField("Stanley Dialog: ");
-        //                EditorGUILayout.SelectableLabel(Quest.QuestList[questIndex].playerDialog[i]);
-        //            }
-        //        }
-        //    }
-
-        //    if (namePassed)
-        //    {
-        //        EditorGUILayout.LabelField("Quest Index: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].index.ToString());
-
-        //        EditorGUILayout.LabelField("Quest Title: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].title, EditorStyles.wordWrappedLabel);
-
-        //        EditorGUILayout.LabelField("Quest Type: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].questType.ToString());
-
-        //        EditorGUILayout.LabelField("Quest Rewards: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].jamesReward);
-
-        //        EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-        //        EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].requiredItem);
-
-        //        for (int i = 0; i < Quest.QuestList[nameIndex].playerDialog.Length; i++)
-        //        {
-        //            if (Quest.QuestList[nameIndex].playerDialog[i] != null)
-        //            {
-        //                EditorGUILayout.LabelField("Stanley Dialog: ");
-        //                EditorGUILayout.SelectableLabel(Quest.QuestList[nameIndex].playerDialog[i]);
-        //            }
-        //        }
-        //    }
-        //}
 
         if (GUILayout.Button("Search"))
         {
@@ -321,6 +211,6 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnDisable()
     {
-        //QuestMaker.questMaker.Serialize();
+
     }
 }

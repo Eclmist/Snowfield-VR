@@ -10,14 +10,8 @@ public class QuestManager{
     [XmlArrayItem("Quest")]
     public static List<Quest> QuestList = new List<Quest>();
 
-
-    protected void StartNewQuest()
+    protected bool CheckQuestStates(int questIndex)
     {
-
+        return QuestList[questIndex].completed;
     }
-
-    //protected void CheckQuestStates()
-    //{
-
-    //}
 }

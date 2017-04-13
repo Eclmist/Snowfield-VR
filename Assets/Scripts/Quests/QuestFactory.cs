@@ -32,23 +32,39 @@ public class QuestFactory : MonoBehaviour {
         XmlSerializer serializer = new XmlSerializer(typeof(List<Quest>));
         return serializer.Deserialize(new StringReader(text)) as List<Quest>;
     }
-   
+
 
     // Returns null if no story quest avaliable
-    //public static Quest GetLatestAvaliableStoryQuest(Job)
-    //{
+    public static Quest GetLatestAvailableQuest(JobType job)
+    {
+        /*
+         * find all quest for jobtype
+         * get rid of locked quests (NOT ENOUGH MASTERY)
+         * get rid of all completed
+         * if multiple left, return smallest index
+         * if 1 left, return that 1
+         * if no left, return null
+         * */
 
+        List<Quest> availableQuest = new List<Quest>();
 
-    //    /*
-    //     * find all quest for jobtype
-    //     * get rid of locked quests (NOT ENOUGH MASTERY)
-    //     * get rid of all completed
-    //     * if multiple left, return smallest index
-    //     * if 1 left, return that 1
-    //     * if no left, return null
-    //     * */
+        for(int i = 0; i < QuestManager.QuestList.Count; i++)
+        {
+            if(QuestManager.QuestList[i].questJob == job)
+            {
+                //if(Player.Instance.getJob(job).Experience >= QuestManager.QuestList[i].requiredExperience && !QuestManager.QuestList[i].completed == false) //TODO: Delete this when getPlayerExperience is implemented
+                availableQuest.Add(QuestManager.QuestList[i]);
+            }
+        }
 
-    //    return null;
-    //}
+        if(availableQuest.Count > 0)
+        {
+            return availableQuest[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 }
