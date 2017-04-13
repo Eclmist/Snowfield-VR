@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : Actor
 {
-
+    [SerializeField]
     private int gold;
 
     public static Player Instance;
@@ -33,14 +33,10 @@ public class Player : Actor
         }
     }
 
-    public void AddGold(int value)
+    public bool AddGold(int value)
     {
         gold += value;
-        if (gold < 0)
-        {
-            gold = 0;//for display purposes
-            //set lose condition
-        }
+        return gold >= 0;
     }
 
     

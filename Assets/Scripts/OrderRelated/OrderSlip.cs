@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class OrderSlip : MonoBehaviour {
 
@@ -9,14 +10,23 @@ public class OrderSlip : MonoBehaviour {
     private int reward;
     private int duration;
     private Sprite image;
-
+    private Action<bool,OrderSlip> callback;
     private Text durationText;
+
+    public int Reward
+    {
+        get
+        {
+            return reward;
+        }
+    }
 	// Use this for initialization
-	public void StartOrder(Order o)
+	public void StartOrder(Order o,Action<bool,OrderSlip> _callback)
     {
         o_name = o.Name;
         reward = o.GoldReward;
         duration = o.Duration;
+        callback = _callback;
 
         GameObject paper = transform.Find("Paper").gameObject;
         paper.transform.Find("OrderName").GetComponent<Text>().text = o_name;
@@ -36,17 +46,26 @@ public class OrderSlip : MonoBehaviour {
             duration--;
             if(duration <= 0)
             {
-                OrderEnd();
+                OrderEnd(false);
             }
         }
     }
 
-    private void OrderEnd()
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            OrderEnd(true);
+        }
+    }
+
+    private void OrderEnd(bool success)
     {
         StopAllCoroutines();
-        OrderBoard.Instance.CloseOrder();
+        callback(success, this);
         Destroy(gameObject);//Do we want to keep a list of the orders? Feels more clean that way
     }
+
 
 
 }

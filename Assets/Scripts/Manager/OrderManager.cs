@@ -74,6 +74,13 @@ public class OrderManager : MonoBehaviour
         OrderBoard.Instance.SpawnOnBoard(newOrder);
     }
 
+    public void CompletedOrder(bool success,int reward)
+    {
+        if (success)
+        {
+            GameManager.Instance.AddPlayerGold(reward);
+        }
+    }
     //private OrderTemplate GetRandomTemplate()
     //{
     //    int total = templateList.Count;
