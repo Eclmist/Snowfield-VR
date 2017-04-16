@@ -6,7 +6,7 @@ using UnityEngine;
 public class Message : MonoBehaviour {
 
     [SerializeField]
-    private int index;
+    private string sessionTitle;
     private bool isCleared = false;
     
 	// Use this for initialization
@@ -20,14 +20,21 @@ public class Message : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-		
+        // For debugging purposes
+		if(Input.GetKeyDown(KeyCode.X))
+        {
+            DialogManager.Instance.LoadSessionByTitle(sessionTitle);
+            DialogManager.Instance.ShowDialogBox();
+            isCleared = true;
+        }
+
 	}
 
     void OnTriggerEnter(Collider other)
     {
         if(!isCleared)
         {
-            DialogManager.Instance.LoadConversationByIndex(index);
+            DialogManager.Instance.LoadSessionByTitle(sessionTitle);
             DialogManager.Instance.ShowDialogBox();
             isCleared = true;
         }

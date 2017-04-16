@@ -14,7 +14,6 @@ public class DialogManager : MonoBehaviour {
 
 
     private GameObject dialogBox; // The dialog box containing the text
-    private string[] lines;     // Split text resource into lines
     private Text currentText; // Text that is currently displayed
     private string currentLine; // The line that is currently being processed
     private IEnumerator typeWriter; // Coroutine that achieves the typewriter effect
@@ -25,6 +24,11 @@ public class DialogManager : MonoBehaviour {
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
     
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -57,26 +61,29 @@ public class DialogManager : MonoBehaviour {
     {
         isShowing = false;
     }
-  
+ 
 
-    public TaoBaoDialogEditor.Session LoadSessionByTitle(string title)
+    public void LoadSessionByTitle(string title)
     {
-        TaoBaoDialogEditor.Session temp = null;
+        bool isFound = false;
 
-        foreach(TaoBaoDialogEditor.Session s in sessionList)
+        foreach (TaoBaoDialogEditor.Session s in sessionList)
         {
             if (s.title == title)
             {
-                temp = s;
+                currentSession = s;
+                isFound = true;
                 break;
             }
-               
+
         }
 
         lineItor = 0;
-        return temp;
+        Debug.Log(isFound);
 
     }
+
+
 
 
     public void ToggleDialogBox()
@@ -133,9 +140,6 @@ public class DialogManager : MonoBehaviour {
     }
 
 
-
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------//
 
 
    
