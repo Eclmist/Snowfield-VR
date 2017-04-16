@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour {
-
+    
     
     public static DialogManager Instance; // Static instance of dialog manager
 
@@ -18,35 +18,24 @@ public class DialogManager : MonoBehaviour {
     private Text currentText; // Text that is currently displayed
     private string currentLine; // The line that is currently being processed
     private IEnumerator typeWriter; // Coroutine that achieves the typewriter effect
-    private int iterator = 0; // To iterate through conversations
-
-    private TextAsset conversations; // Text resource containing all conversation information
-    private List<string> retrievedLines; // List to store lines that belong to a particular conversation
-    //private List<AudioClip> audioClips; // The audio for each line
-    private List<string> messageOrder;  // List to store the messages in order
-    private List<List<AudioClip>> audioClips;
+    private int lineItor = 0; // To iterate through lines in a session
+    private List<TaoBaoDialogEditor.Session> sessionList;
+    private TaoBaoDialogEditor.Session currentSession;
 
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
     
-    
 
-    void Awake()
+    void Start()
     {
-        // Load the text resource
-        conversations = Resources.Load("testComm") as TextAsset;
-
-        if (conversations == null)
-            Debug.LogError("Conversations resource missing!");
-        else
-            lines = conversations.text.Split('\n');
-
+        sessionList = TaoBaoDialogEditor.Instance.Sessions;
 
         isTyping = false;
         isShowing = false;
         Instance = this;
         dialogBox = GameObject.FindWithTag("DialogBox");
         currentText = dialogBox.GetComponentInChildren<Text>();
+
     }
 
 
@@ -69,36 +58,24 @@ public class DialogManager : MonoBehaviour {
         isShowing = false;
     }
   
-    // Search through the text resource to find the specified conversation
-    // Accessed by outside gameobjects
-    public void LoadConversationByIndex(int conversationIndex)
+
+    public TaoBaoDialogEditor.Session LoadSessionByTitle(string title)
     {
-        retrievedLines = new List<string>();
-        ClearPreviousConversations();
-        bool storeLine = false;
+        TaoBaoDialogEditor.Session temp = null;
 
-        foreach(string line in lines)
+        foreach(TaoBaoDialogEditor.Session s in sessionList)
         {
-            // ***the following series of operations are in the RIGHT order***
-
-            if (line.Contains("--End") && retrievedLines.Count > 0)
+            if (s.title == title)
+            {
+                temp = s;
                 break;
-
-            // To stop storing lines
-            if (line.Contains("--End"))
-                storeLine = false;
-
-            // store the current line
-            if (storeLine == true)
-                retrievedLines.Add(line);
-
-            // This check is at the end to ensure that we only store the line after this header line
-            if (line.Contains("--Session " + conversationIndex))
-                storeLine = true;
-       
+            }
+               
         }
 
-        SortCharacterAndSpeech(retrievedLines);
+        lineItor = 0;
+        return temp;
+
     }
 
 
@@ -106,6 +83,7 @@ public class DialogManager : MonoBehaviour {
     {
         isShowing = !isShowing;
     }
+
 
 
     // type writing effect
@@ -131,11 +109,10 @@ public class DialogManager : MonoBehaviour {
         {
             if (!isTyping)
             {
-                if(iterator >= messageOrder.Count)
+                if(lineItor >= currentSession.lines.Count)
                 {
                     ToggleDialogBox();
-                    // Reset the iterator
-                    iterator = 0;
+                    lineItor = 0;
                 }
                 else
                 {
@@ -147,35 +124,21 @@ public class DialogManager : MonoBehaviour {
     
     private void ProceedMessage()
     {
-        currentLine = messageOrder[iterator];
+        currentLine = currentSession.lines[lineItor].message;
+
         // Store the coroutine to stop later
         typeWriter = WriteTextLikeATypeWriter();
         StartCoroutine(typeWriter);
-        iterator++;
-    }
-
-    // Core function to set up conversation
-    private void SortCharacterAndSpeech(List<string> retrievedConversation)
-    {
-        messageOrder = new List<string>();
-
-        foreach (string m in retrievedConversation)
-        {
-            messageOrder.Add(m);
-        }
+        lineItor++;
     }
 
 
-    // Removes previously added items in all lists
-    private void ClearPreviousConversations()
-    {
-        if (retrievedLines != null)
-            retrievedLines.Clear();
 
-        if (messageOrder != null)
-            messageOrder.Clear();
-    }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
+   
 
 
 

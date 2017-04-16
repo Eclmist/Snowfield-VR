@@ -32,14 +32,23 @@ public class TaoBaoDialogEditor : MonoBehaviour
 
     }
 
+    public static TaoBaoDialogEditor Instance;
 
     [SerializeField]
     private bool save;
     [SerializeField]
     private List<Session> sessions;
 
+    public List<Session> Sessions
+    {
+        get { return this.sessions; }
+    }
+
+
     private void Awake()
     {
+        Instance = this;
+
         sessions = SerializeManager.Instance.Load("Dialogs") as List<Session>;
         LoadAudioFiles();
 
