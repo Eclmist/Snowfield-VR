@@ -14,6 +14,9 @@ public class DialogManager : MonoBehaviour {
     [Range(0,3)]
     [SerializeField]
     private float maxDelay;
+    [Range(0, 1)]
+    [SerializeField]
+    private float skipPercentChance;
 
     [Range(0, 0.1F)]
     [SerializeField]
@@ -57,8 +60,7 @@ public class DialogManager : MonoBehaviour {
     {
         // Constantly check the status of the dialog box
         dialogBox.SetActive(isShowing);
-        HandleDialogBox();
-            
+        HandleDialogBox();            
     }
 
     public void ShowDialogBox()
@@ -149,6 +151,25 @@ public class DialogManager : MonoBehaviour {
         typeWriter = WriteTextLikeATypeWriter();
         StartCoroutine(typeWriter);
         lineItor++;
+    }
+
+    private void RandomlyCutMessageAndSkip()
+    {
+        if(isTyping)
+        {
+           if(Random.value > skipPercentChance)
+            {
+                StopCoroutine(typeWriter);
+                audioSource.Stop();
+                isTyping = false;
+            }
+        }
+ 
+    }
+
+    private void SyncAudioWithLine()
+    {
+        //TO DO
     }
 
     
