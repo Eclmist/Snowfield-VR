@@ -12,14 +12,15 @@ public class VR_Controller_Custom : MonoBehaviour
         RIGHT
     }
 
-    [SerializeField] private Controller_Handle handle;
-    [SerializeField] private LayerMask interactableLayer;
+    [SerializeField]
+    private Controller_Handle handle;
+    [SerializeField]
+    private LayerMask interactableLayer;
     private Rigidbody attachedPoint;
-    private FixedJoint attachedJoint = null;
     private SteamVR_TrackedObject trackedObject;
     private GameObject interactableObject;
+    private GameObject interactedObject;
 
-    
     void Awake()
     {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
@@ -35,13 +36,11 @@ public class VR_Controller_Custom : MonoBehaviour
     private void ControllerInput()
     {
         SteamVR_Controller.Device device = SteamVR_Controller.Input((int)trackedObject.index);
-        if (attachedJoint == null && interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
+        if (interactedObject == null && interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
         {
             IInteractable interactable = interactableObject.GetComponent<IInteractable>();
-            interactable.Interact(transform);
-            DestroyImmediate(interactableObject.GetComponent<FixedJoint>());
-            attachedJoint = interactableObject.AddComponent<FixedJoint>();
-            attachedJoint.connectedBody = attachedPoint;
+            interactable.Interact(transform, attachedPoint);
+
 
             switch (handle)
             {
@@ -53,28 +52,14 @@ public class VR_Controller_Custom : MonoBehaviour
                     break;
             }
 
-            
-            
+
+
         }
         else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
-            IInteractable interactable = null;
-            Rigidbody rigidBody = attachedJoint.GetComponent<Rigidbody>();
-            DestroyImmediate(attachedJoint);
-            attachedJoint = null;
-            
-            switch (handle)
-            {
-                case Controller_Handle.LEFT:
-                    interactable = Player.Instance.returnWield(EquipSlot.LEFTHAND);
-                    Player.Instance.ChangeWield(EquipSlot.LEFTHAND, null);
-                    
-                    break;
-                case Controller_Handle.RIGHT:
-                    interactable = Player.Instance.returnWield(EquipSlot.RIGHTHAND);
-                    Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, null);
-                    break;
-            }
+            IInteractable interactable = interactedObject.GetComponent<IInteractable>();
+            Rigidbody rigidBody = interactedObject.GetComponent<Rigidbody>();
+
             if (interactable != null)
             {
                 interactable.StopInteraction(transform);

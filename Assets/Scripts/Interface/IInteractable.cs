@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IInteractable {
 
-    void Interact(Transform referenceCheck);
+    void Interact(Transform referenceCheck,Rigidbody attachedPoint);
 
     void StopInteraction(Transform referenceCheck);
 
@@ -13,18 +13,6 @@ public interface IInteractable {
         get;
     }
 
-    bool HasPivot
-    {
-        get;
-    }
-
-    Vector3 PositionalOffset
-    {
-        get;
-    }
-
-    Vector3 RotationalOffset
-    {
-        get;
-    }
+    float GetVelocity();
+    
 }
