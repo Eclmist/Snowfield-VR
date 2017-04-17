@@ -83,7 +83,7 @@ public class TaoBaoDialogEditor : MonoBehaviour
 
     private string ConvertToPath(string s)
     {
-        return "Dialog expressions/" + s + ".wav";
+        return "Dialog expressions/" + s;
     }
 
 
