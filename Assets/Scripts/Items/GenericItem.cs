@@ -16,7 +16,7 @@ public class GenericItem : MonoBehaviour, IInteractable
     protected AudioSource audioSource;
     [SerializeField]
     private float maxForceRotation;
-    private CharacterJoint joint;
+    private HingeJoint joint;
     private Transform linkedTransform = null;
 
     private Rigidbody rigidBody;
@@ -52,15 +52,8 @@ public class GenericItem : MonoBehaviour, IInteractable
         rigidBody.useGravity = false;
         transform.localPosition = referenceCheck.position;
         transform.rotation = Quaternion.Euler(referenceCheck.rotation.eulerAngles);
-        joint = gameObject.AddComponent<CharacterJoint>();
+        joint = gameObject.AddComponent<HingeJoint>();
         joint.connectedBody = attachedPoint;
-        SoftJointLimitSpring spring = joint.swingLimitSpring;
-        spring.spring = 3.0f;
-        joint.swingLimitSpring = spring;
-        spring = joint.twistLimitSpring;
-        spring.spring = 3.0f;
-        joint.twistLimitSpring = spring;
-        ChangeLimit(false);
     }
 
     public virtual void StopInteraction(Transform referenceCheck)
@@ -73,18 +66,18 @@ public class GenericItem : MonoBehaviour, IInteractable
         }
     }
 
-    protected virtual void OnCollisionEnter(Collision col)
-    {
-        if (joint != null)
-        {
-            ChangeLimit(true);
-        }
-        float currentVelocity = GetVelocity();
-    }
+    //protected virtual void OnCollisionEnter(Collision col)
+    //{
+    //    if (joint != null)
+    //    {
+    //        ChangeLimit(true);
+    //    }
+    //    float currentVelocity = GetVelocity();//Do whateve u want
+    //}
 
     public float GetVelocity()
     {
-        if(joint == null)
+        if (joint == null)
         {
             return rigidBody.velocity.magnitude;
         }
@@ -94,65 +87,48 @@ public class GenericItem : MonoBehaviour, IInteractable
         }
     }
 
-    protected virtual void OnCollisionExit(Collision col)
-    {
-        if (joint != null)
-        {
-            ChangeLimit(false);
-        }
-    }
+    //protected virtual void OnCollisionExit(Collision col)
+    //{
+    //    if (joint != null)
+    //    {
+    //        ChangeLimit(false);
+    //    }
 
-    private void ChangeLimit(bool colliding)
-    {
-        if (colliding)
-        {
-            setLimitValues(maxForceRotation);
-        }
-        else
-        {
-            StopAllCoroutines();
-            StartCoroutine(LimitCoroutine(maxForceRotation));
-        }
-            
-    }
+    //    Debug.Log("hoit");
+    //}
 
-    private IEnumerator LimitCoroutine(float rotationLimit)
-    {
+    //private void ChangeLimit(bool colliding)
+    //{
+    //    if (colliding)
+    //    {
+    //        setLimitValues(maxForceRotation);
+    //    }
+    //    else
+    //    {
+    //        setLimitValues(0);
+    //    }
 
-        do
-        {
-            rotationLimit = Mathf.Lerp(rotationLimit, 0, Time.deltaTime*10);
-            setLimitValues(rotationLimit);
-            if (rotationLimit <= 1)
-            {
-                setLimitValues(0);
-                break;
-            }
+    //}
+    //private IEnumerator LimitCoroutine(float rotationLimit)
+    //{
+
+    //    do
+    //    {
+    //        rotationLimit = Mathf.Lerp(rotationLimit, 0, Time.deltaTime * 10);
+    //        setLimitValues(rotationLimit);
+    //        if (rotationLimit <= 1)
+    //        {
+    //            setLimitValues(0);
+    //            break;
+    //        }000000000000000000000000000000000000000000000000000000000000000000
 
 
-            yield return new WaitForEndOfFrame();
-        }
-        while (rotationLimit > 1);
-    }
+    //        yield return new WaitForEndOfFrame();
+    //    }
+    //    while (rotationLimit > 1);
+    //}
 
-    private void setLimitValues(float value)
-    {
-        SoftJointLimit limit = joint.lowTwistLimit;
-        limit.limit = value;
-        joint.lowTwistLimit = limit;
 
-        limit = joint.highTwistLimit;
-        limit.limit = value;
-        joint.highTwistLimit = limit;
-
-        limit = joint.swing1Limit;
-        limit.limit = value;
-        joint.swing1Limit = limit;
-
-        limit = joint.swing2Limit;
-        limit.limit = value;
-        joint.swing2Limit = limit;
-    }
 
 
 }
