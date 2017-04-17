@@ -28,6 +28,7 @@ public class TaoBaoDialogEditor : MonoBehaviour
         public AudioClip clip;
         [Tooltip("Name of audio that is going to play in this line")]
         public string audioName;
+        
 
 
     }

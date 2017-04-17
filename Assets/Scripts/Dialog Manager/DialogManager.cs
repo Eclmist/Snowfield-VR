@@ -8,10 +8,16 @@ public class DialogManager : MonoBehaviour {
     
     public static DialogManager Instance; // Static instance of dialog manager
 
+    [Range(0,3)]
+    [SerializeField]
+    private float minDelay;
+    [Range(0,3)]
+    [SerializeField]
+    private float maxDelay;
+
     [Range(0, 0.1F)]
     [SerializeField]
     private float textSpeed;    // Interval between text characters
-
 
     private GameObject dialogBox; // The dialog box containing the text
     private Text currentText; // Text that is currently displayed
@@ -41,6 +47,7 @@ public class DialogManager : MonoBehaviour {
         Instance = this;
         dialogBox = GameObject.FindWithTag("DialogBox");
         currentText = dialogBox.GetComponentInChildren<Text>();
+        
 
     }
 
@@ -106,6 +113,8 @@ public class DialogManager : MonoBehaviour {
             yield return new WaitForSeconds(0.1f - textSpeed);
         }
 
+        float delay = Random.Range(-minDelay, maxDelay);
+        yield return new WaitForSeconds(Mathf.Clamp01(delay));
         isTyping = false;
     }
 
@@ -141,6 +150,9 @@ public class DialogManager : MonoBehaviour {
         StartCoroutine(typeWriter);
         lineItor++;
     }
+
+    
+    
 
 
 
