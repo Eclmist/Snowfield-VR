@@ -20,6 +20,7 @@ public class DialogManager : MonoBehaviour {
     private int lineItor = 0; // To iterate through lines in a session
     private List<TaoBaoDialogEditor.Session> sessionList;
     private TaoBaoDialogEditor.Session currentSession;
+    private AudioSource audioSource;
 
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
@@ -32,6 +33,7 @@ public class DialogManager : MonoBehaviour {
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         sessionList = TaoBaoDialogEditor.Instance.Sessions;
 
         isTyping = false;
@@ -132,6 +134,7 @@ public class DialogManager : MonoBehaviour {
     private void ProceedMessage()
     {
         currentLine = currentSession.lines[lineItor].message;
+        audioSource.PlayOneShot(currentSession.lines[lineItor].clip);
 
         // Store the coroutine to stop later
         typeWriter = WriteTextLikeATypeWriter();
