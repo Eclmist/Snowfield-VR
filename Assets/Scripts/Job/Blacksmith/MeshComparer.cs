@@ -36,7 +36,7 @@ public class MeshComparer : MonoBehaviour
         else
         {
             Instance = this;
-            comparerSkinWidth = 0.1F;
+            comparerSkinWidth = 0.03F;
             comparismUID = 0;
             minUID = comparismUID + 1;
             dictionaryLength = 10;
@@ -92,7 +92,7 @@ public class MeshComparer : MonoBehaviour
         for (int i = 0; i < totalVertices; i++)
         {
             // Check if its within limits
-            if (comparismMeshCollider.DistanceToClosestPoint(transform.TransformPoint(comparer.vertices[i])) < comparerSkinWidth)
+            if (comparismMeshCollider.DistanceToClosestPointNonConvex(transform.TransformPoint(comparer.vertices[i])) < comparerSkinWidth)
             {
                 totalAccurateVertices++;
             }
