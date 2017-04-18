@@ -23,8 +23,7 @@ public class Message : MonoBehaviour {
         // For debugging purposes
 		if(Input.GetKeyDown(KeyCode.X))
         {
-            DialogManager.Instance.LoadSessionByTitle(sessionTitle);
-            DialogManager.Instance.ShowDialogBox();
+            DialogManager.Instance.DisplayDialogBox(sessionTitle);
             isCleared = true;
         }
 
@@ -34,8 +33,7 @@ public class Message : MonoBehaviour {
     {
         if(!isCleared)
         {
-            DialogManager.Instance.LoadSessionByTitle(sessionTitle);
-            DialogManager.Instance.ShowDialogBox();
+            DialogManager.Instance.DisplayDialogBox(sessionTitle);
             isCleared = true;
         }
     }

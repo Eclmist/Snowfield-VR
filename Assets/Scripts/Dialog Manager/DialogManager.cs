@@ -33,6 +33,7 @@ public class DialogManager : MonoBehaviour {
 
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
+    private bool isOccupied;
     
 
     void Awake()
@@ -47,6 +48,7 @@ public class DialogManager : MonoBehaviour {
 
         isTyping = false;
         isShowing = false;
+        isOccupied = false;
         Instance = this;
         dialogBox = GameObject.FindWithTag("DialogBox");
         currentText = dialogBox.GetComponentInChildren<Text>();
@@ -63,7 +65,18 @@ public class DialogManager : MonoBehaviour {
         HandleDialogBox();            
     }
 
-    public void ShowDialogBox()
+    public void DisplayDialogBox(string title)
+    {
+        if(!isOccupied)
+        {
+            isOccupied = true;
+            LoadSessionByTitle(title);
+            ShowDialogBox();
+        }
+        
+    }
+
+    private void ShowDialogBox()
     {
         isShowing = true;
     }
@@ -71,10 +84,11 @@ public class DialogManager : MonoBehaviour {
     public void HideDialogBox()
     {
         isShowing = false;
+        isOccupied = false;
     }
  
 
-    public void LoadSessionByTitle(string title)
+    private void LoadSessionByTitle(string title)
     {
         bool isFound = false;
 
@@ -90,7 +104,6 @@ public class DialogManager : MonoBehaviour {
         }
 
         lineItor = 0;
-        Debug.Log(isFound);
 
     }
 
@@ -100,6 +113,7 @@ public class DialogManager : MonoBehaviour {
     public void ToggleDialogBox()
     {
         isShowing = !isShowing;
+        isOccupied = !isOccupied;
     }
 
 

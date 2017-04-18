@@ -57,7 +57,8 @@ public class TaoBaoDialogEditor : MonoBehaviour
 
     private void Update()
     {
-        if (save = !save)
+        
+        if (save)
         {
             SerializeManager.Instance.Save("Dialogs", sessions);
             Debug.Log("Latest \"" + sessions[sessions.Count - 1].title + "\" saved");
