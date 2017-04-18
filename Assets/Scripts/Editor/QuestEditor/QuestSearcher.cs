@@ -19,7 +19,7 @@ public class QuestSearcher : EditorWindow {
 
     //-----Image-----//
     Texture2D deleteButtonImage;
-    Texture2D editButtonImage;
+    //Texture2D editButtonImage;
 
     //-----Input-----//
     int questIndex;
@@ -34,15 +34,13 @@ public class QuestSearcher : EditorWindow {
     bool searchNameMethod;
 
     //-----Function Boolean-----//
-    bool editable;
-
-    
+    //bool editable;
 
     [MenuItem("Window/Quest/Quest Searcher")]
     protected static void Init()
     {
         questSearcher = (QuestSearcher)EditorWindow.GetWindow(typeof(QuestSearcher));
-        questSearcher.minSize = new Vector2(800, 400);
+        questSearcher.minSize = new Vector2(800, 450);
         questSearcher.Show();
     }
 
@@ -54,7 +52,7 @@ public class QuestSearcher : EditorWindow {
 
         //----------Load Image----------//
         deleteButtonImage = Resources.Load("Editor/Image/trash") as Texture2D;
-        editButtonImage = Resources.Load("Editor/Image/edit.jpg") as Texture2D;
+        //editButtonImage = Resources.Load("Editor/Image/edit.jpg") as Texture2D;
     }
 
     protected void OnGUI()
@@ -157,14 +155,14 @@ public class QuestSearcher : EditorWindow {
             Search();
         }
 
-        GUILayout.BeginHorizontal();
-        editable = (GUILayout.Toggle(editable, editButtonImage, "Button"));
-        GUILayout.Space(650);
-        if(GUILayout.Button(deleteButtonImage))
-        {
-            DeleteQuest();
-        }
-        GUILayout.EndHorizontal();
+        //GUILayout.BeginHorizontal();
+        //editable = (GUILayout.Toggle(editable, editButtonImage, "Button"));
+        //GUILayout.Space(650);
+        //if(GUILayout.Button(deleteButtonImage))
+        //{
+        //    DeleteQuest();
+        //}
+        //GUILayout.EndHorizontal();
     }
 
     protected void Search()

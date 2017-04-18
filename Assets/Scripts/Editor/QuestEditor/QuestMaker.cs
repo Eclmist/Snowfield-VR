@@ -16,9 +16,6 @@ public class QuestMaker : EditorWindow
     List<Quest> questCollection;
 
     //-----Quests-----//
-
-    int questIndex;
-
     int experience;
 
     string questTitle;
@@ -71,9 +68,7 @@ public class QuestMaker : EditorWindow
         ////---------------------------Init Quest-----------------------//
         QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
 
-        questIndex = QuestManager.QuestList.Count;
-
-        Debug.Log(questIndex + " quest(s) loaded");
+        Debug.Log(QuestManager.QuestList.Count + " quest(s) loaded");
 
         //---------------------------Init QuestTypes-----------------------//
         questTypes = Resources.Load("Quests/QuestTypes") as TextAsset;
@@ -111,11 +106,11 @@ public class QuestMaker : EditorWindow
             questItem = questItems.text.Split('\n');
         }
     }
-    
+
     protected void OnGUI()
     {
         GUILayout.Label(("Quest: " + QuestManager.QuestList.Count), EditorStyles.boldLabel);
-        
+
         GUILayout.Label("Quest Title: ", EditorStyles.boldLabel);
         questTitle = EditorGUILayout.TextArea(questTitle, EditorStyles.textArea);
 
@@ -127,64 +122,63 @@ public class QuestMaker : EditorWindow
         experience = EditorGUILayout.IntField("Required Experience: ", experience);
 
         GUILayout.Label("James' Rewards", EditorStyles.boldLabel);
-        if (questTypeIndex == 0) //If questType == Daily Quest
+        //if (questTypeIndex == 0) //If questType == Daily Quest
+        //{
+        //    jamesRewards = Resources.Load("Quests/questRewards") as TextAsset;
+
+        //    if (jamesRewards == null)
+        //    {
+        //        Debug.LogError("questReward.txt is missing!");
+        //    }
+        //    else
+        //    {
+        //        jamesReward = jamesRewards.text.Split('\n');
+        //    }
+
+        //    jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
+        //}
+        //else //If questType == Story Quest
+        jobItemIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobItemIndex);
+
+        if (jobItemIndex == JobType.BLACKSMITH) //If job = Blacksmith
         {
-            jamesRewards = Resources.Load("Quests/questRewards") as TextAsset;
+            itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, blacksmithItems);
+
+            jamesRewards = Resources.Load("Quests/Items/" + blacksmithItems[itemTypeIndex]) as TextAsset;
 
             if (jamesRewards == null)
             {
-                Debug.LogError("questReward.txt is missing!");
+                Debug.LogError(blacksmithItems[itemTypeIndex] + ".txt is missing!");
             }
             else
             {
                 jamesReward = jamesRewards.text.Split('\n');
             }
-
-            jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
         }
-        else //If questType == Story Quest
+        else //If job = Alchemy
         {
-            jobItemIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobItemIndex);
+            itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, alchemyItems);
 
-            if (jobItemIndex == JobType.BLACKSMITH) //If job = Blacksmith
+            jamesRewards = Resources.Load("Quests/Items/" + alchemyItems[itemTypeIndex]) as TextAsset;
+
+            if (jamesRewards == null)
             {
-                itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, blacksmithItems);
-
-                jamesRewards = Resources.Load("Quests/Items/" + blacksmithItems[itemTypeIndex]) as TextAsset;
-
-                if (jamesRewards == null)
-                {
-                    Debug.LogError(blacksmithItems[itemTypeIndex] + ".txt is missing!");
-                }
-                else
-                {
-                    jamesReward = jamesRewards.text.Split('\n');
-                }
+                Debug.LogError(alchemyItems[itemTypeIndex] + ".txt is missing!");
             }
-            else //If job = Alchemy
+            else
             {
-                itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, alchemyItems);
-
-                jamesRewards = Resources.Load("Quests/Items/" + alchemyItems[itemTypeIndex]) as TextAsset;
-
-                if (jamesRewards == null)
-                {
-                    Debug.LogError(alchemyItems[itemTypeIndex] + ".txt is missing!");
-                }
-                else
-                {
-                    jamesReward = jamesRewards.text.Split('\n');
-                }
+                jamesReward = jamesRewards.text.Split('\n');
             }
-
-            jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
         }
+
+        jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
+
 
         GUILayout.Label("Quest Required Items", EditorStyles.boldLabel);
         questItemIndex = EditorGUILayout.Popup("Quest Required Items", questItemIndex, questItem);
 
         GUILayout.Label("Quest Dialog", EditorStyles.boldLabel);
-        for(int i = 0; i < textCount; i++)
+        for (int i = 0; i < textCount; i++)
         {
             playerText[i] = EditorGUILayout.TextField("Stanley Dialog", playerText[i]);
         }
@@ -194,22 +188,22 @@ public class QuestMaker : EditorWindow
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
-        if(GUILayout.Button("Create Quest"))
+        if (GUILayout.Button("Create Quest"))
         {
             CreateQuest();
         }
 
-        if(GUILayout.Button("Add Extra Dialog"))
+        if (GUILayout.Button("Add Extra Dialog"))
         {
             AddDialog();
         }
 
-        if(GUILayout.Button("Remove Extra Dialog"))
+        if (GUILayout.Button("Remove Extra Dialog"))
         {
             RemoveDialog();
         }
 
-        if(GUILayout.Button("Clear Quests List"))
+        if (GUILayout.Button("Clear Quests List"))
         {
             Clear();
         }
@@ -220,15 +214,7 @@ public class QuestMaker : EditorWindow
         string[] tempDialog = new string[10];
 
         //----------Write To List----------//
-
-        if (questTypeIndex == 0)
-        {
-            questEnum = Quest.QuestType.DailyQuest;
-        }
-        else
-        {
-            questEnum = Quest.QuestType.StoryQuest;
-        }
+        questEnum = Quest.QuestType.StoryQuest;
 
         Array.Copy(playerText, tempDialog, textCount);
 
