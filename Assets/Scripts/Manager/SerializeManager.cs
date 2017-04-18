@@ -6,12 +6,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class SerializeManager
 {
+    private static BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-    public static SerializeManager Instance = new SerializeManager();
-
-    private BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-    public void Save(string fileName, object obj)
+    public static void Save(string fileName, object obj)
     {
         MemoryStream memoryStream = new MemoryStream();
         binaryFormatter.Serialize(memoryStream, obj);
@@ -29,7 +26,7 @@ public class SerializeManager
 
     }
 
-    public object Load(string fileName)
+    public static object Load(string fileName)
     {
         string[] data = new string[1];
         MemoryStream memoryStream = null;

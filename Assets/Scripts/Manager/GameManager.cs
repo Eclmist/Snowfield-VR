@@ -13,14 +13,17 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region RequestRegion
+
+    [SerializeField] [Range(1, 100)] private float requestConstant;
     private float nextRequest = 0;
-    private float requestConstant;
+
     #endregion
     protected void Awake()
     {
         if (!Instance)
         {
             Instance = this;
+            gameClock = new Clock(secondsPerDay);
         }
         else
         {
@@ -36,10 +39,18 @@ public class GameManager : MonoBehaviour {
 
     private void RequestBoardUpdate()
     {
-        if(gameClock.SecondSinceStart > nextRequest)//update
+        if (gameClock.SecondSinceStart > nextRequest)//update
         {
-            nextRequest = (nextRequest + requestConstant / TownManager.Instance.CurrentTown.Population) % 1;
-            RequestManager.Instance.NewRequest();
+            nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
+            OrderManager.Instance.NewRequest();
+        }
+    }
+
+    public void AddPlayerGold(int value)
+    {
+        if (!Player.Instance.AddGold(value))
+        {
+            //Lose
         }
     }
 

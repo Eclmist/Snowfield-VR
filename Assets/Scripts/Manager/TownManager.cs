@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TownManager : MonoBehaviour {
+public class TownManager : MonoBehaviour
+{
 
     public static TownManager Instance;
 
     private Town currentTown;
-	// Use this for initialization
-	void Awake () {
+    // Use this for initialization
+    void Awake()
+    {
         if (!Instance)
         {
             Instance = this;
@@ -20,6 +22,15 @@ public class TownManager : MonoBehaviour {
         }
     }
 
+    void Start()
+    {
+        currentTown = (Town)SerializeManager.Load("TownData");
+        if (currentTown == null)
+        {
+            currentTown = new Town(1);
+        }
+    }
+
     public Town CurrentTown
     {
         get
@@ -27,7 +38,7 @@ public class TownManager : MonoBehaviour {
             return currentTown;
         }
     }
-	
+
     public void ChangeTown(Town _town)
     {
         currentTown = _town;

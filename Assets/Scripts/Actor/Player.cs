@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Actor {
-
+public class Player : Actor
+{
+    [SerializeField]
     private int gold;
 
     public static Player Instance;
@@ -14,6 +15,11 @@ public class Player : Actor {
         {
             return gold;
         }
+    }
+
+    protected void Start()
+    {
+        AddJob(JobType.BLACKSMITH);
     }
 
     protected void Awake()
@@ -27,23 +33,11 @@ public class Player : Actor {
         }
     }
 
-    public void AddGold(int value)
+    public bool AddGold(int value)
     {
         gold += value;
-        if(gold < 0)
-        {
-            gold = 0;//for display purposes
-            //set lose condition
-        }
+        return gold >= 0;
     }
 
-    protected void Update()
-    {
-        HandleInput();
-    }
-
-    protected void HandleInput()
-    {
-
-    }
+    
 }
