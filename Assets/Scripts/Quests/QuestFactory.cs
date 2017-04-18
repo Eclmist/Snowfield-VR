@@ -5,15 +5,16 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-public class QuestFactory : MonoBehaviour {
+public class QuestFactory
+{
 
     public static void Save(string path)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(List<Quest>));
-        using (FileStream stream = new FileStream(path, FileMode.Append))
+        using (FileStream stream = new FileStream(path, FileMode.Create))
         {
             serializer.Serialize(stream, QuestManager.QuestList);
-            stream.Close();
+            Debug.Log("Saved");
         }
     }
 
@@ -22,6 +23,7 @@ public class QuestFactory : MonoBehaviour {
         XmlSerializer serializer = new XmlSerializer(typeof(List<Quest>));
         using (FileStream stream = new FileStream(path, FileMode.Open))
         {
+            Debug.Log("Loaded");
             return serializer.Deserialize(stream) as List<Quest>;
         }
     }

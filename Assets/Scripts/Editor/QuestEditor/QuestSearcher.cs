@@ -48,7 +48,7 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnEnable()
     {
-        //QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
+        QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
 
         Debug.Log(QuestManager.QuestList.Count + " quest(s) loaded");
 

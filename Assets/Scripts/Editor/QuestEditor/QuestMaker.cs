@@ -69,7 +69,7 @@ public class QuestMaker : EditorWindow
     {
         //QuestManager.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
         ////---------------------------Init Quest-----------------------//
-        //QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
+        QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
 
         questIndex = QuestManager.QuestList.Count;
 
@@ -236,8 +236,6 @@ public class QuestMaker : EditorWindow
 
         QuestManager.QuestList.Add(quest);
 
-        QuestFactory.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
-
         Debug.Log("Quest (" + (QuestManager.QuestList.Count - 1) +"): " + questTitle +" added");
     }
 
@@ -266,6 +264,7 @@ public class QuestMaker : EditorWindow
 
     protected void OnDisable()
     {
+        QuestFactory.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
         Debug.Log(QuestManager.QuestList.Count + " quest(s) saved");
     }
 }

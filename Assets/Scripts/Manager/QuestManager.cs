@@ -4,7 +4,8 @@ using System.Xml.Serialization;
 using System.IO;
 
 [XmlRoot("QuestCollection")]
-public class QuestManager{
+public class QuestManager
+{
 
     [XmlArray("Quests")]
     [XmlArrayItem("Quest")]
