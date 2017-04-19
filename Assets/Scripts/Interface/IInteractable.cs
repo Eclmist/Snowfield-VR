@@ -4,15 +4,15 @@ using UnityEngine;
 
 public interface IInteractable {
 
-    void Interact(Transform referenceCheck,Rigidbody attachedPoint);
+    void Interact(VR_Controller_Custom referenceCheck);
 
-    void StopInteraction(Transform referenceCheck);
+    void StopInteraction(VR_Controller_Custom referenceCheck);
 
-    Transform LinkedTransform
+    VR_Controller_Custom LinkedController
     {
         get;
     }
 
-    float GetVelocity();
+    void UpdatePosition();
     
 }

@@ -14,23 +14,26 @@ public class GenericItem : MonoBehaviour, IInteractable
     protected AudioClip sound;
     [SerializeField]
     protected AudioSource audioSource;
-    [SerializeField]
-    private float maxForceRotation;
-    private HingeJoint joint;
-    private Transform linkedTransform = null;
+    [SerializeField] [Range(1, 6)] private float heptic; //remoove
+
+    private Vector3 colliderBound;
+    private VR_Controller_Custom linkedController = null;
 
     private Rigidbody rigidBody;
 
+    [SerializeField]
+    [Range(100, 1000)]
+    private float lerpValue;
     protected void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    public Transform LinkedTransform
+    public VR_Controller_Custom LinkedController
     {
         get
         {
-            return linkedTransform;
+            return linkedController;
         }
     }
 
@@ -46,89 +49,74 @@ public class GenericItem : MonoBehaviour, IInteractable
         set { this.weight = value; }
     }
 
-    public virtual void Interact(Transform referenceCheck, Rigidbody attachedPoint)
+    protected void Start()
     {
-        linkedTransform = referenceCheck;
+        colliderBound = GetComponent<Collider>().bounds.size;
+       
+    }
+    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    {
+        linkedController = referenceCheck;
         rigidBody.useGravity = false;
-        transform.localPosition = referenceCheck.position;
-        transform.rotation = Quaternion.Euler(referenceCheck.rotation.eulerAngles);
-        joint = gameObject.AddComponent<HingeJoint>();
-        joint.connectedBody = attachedPoint;
+        transform.localPosition = referenceCheck.transform.position;
+        transform.rotation = referenceCheck.transform.rotation;
+        rigidBody.maxAngularVelocity = 100f;
     }
 
-    public virtual void StopInteraction(Transform referenceCheck)
+    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
     {
-        if (linkedTransform == referenceCheck)
+        if (linkedController == referenceCheck)
         {
             rigidBody.useGravity = true;
-            DestroyImmediate(GetComponent<CharacterJoint>());
-            joint = null;
+            linkedController = null;
+            rigidBody.velocity = referenceCheck.Velocity();
+            rigidBody.angularVelocity = referenceCheck.AngularVelocity();
+
         }
     }
 
-    //protected virtual void OnCollisionEnter(Collision col)
-    //{
-    //    if (joint != null)
-    //    {
-    //        ChangeLimit(true);
-    //    }
-    //    float currentVelocity = GetVelocity();//Do whateve u want
-    //}
 
-    public float GetVelocity()
+    public void UpdatePosition()
     {
-        if (joint == null)
-        {
-            return rigidBody.velocity.magnitude;
-        }
-        else
-        {
-            return joint.GetComponent<Rigidbody>().velocity.magnitude;
-        }
+
+        Vector3 PositionDelta = (linkedController.transform.position - transform.position);
+
+        Quaternion RotationDelta = linkedController.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+        float angle;
+        Vector3 axis;
+        RotationDelta.ToAngleAxis(out angle, out axis);
+
+        if (angle > 180)
+            angle -= 360;
+
+        rigidBody.angularVelocity = axis * angle * Time.fixedDeltaTime * 40;
+
+        PositionDelta = PositionDelta.magnitude > .1f ? PositionDelta.normalized * .1f : PositionDelta;
+        rigidBody.velocity = PositionDelta * 10000 * rigidBody.mass * Time.fixedDeltaTime;
     }
 
-    //protected virtual void OnCollisionExit(Collision col)
-    //{
-    //    if (joint != null)
-    //    {
-    //        ChangeLimit(false);
-    //    }
+    protected void OnCollisionEnter(Collision collision)
+    {
 
-    //    Debug.Log("hoit");
-    //}
+        if (linkedController != null)
+        {
+            float value = linkedController.Velocity().magnitude <= heptic ? linkedController.Velocity().magnitude : heptic;
+            linkedController.Vibrate(value/heptic * 10);
 
-    //private void ChangeLimit(bool colliding)
-    //{
-    //    if (colliding)
-    //    {
-    //        setLimitValues(maxForceRotation);
-    //    }
-    //    else
-    //    {
-    //        setLimitValues(0);
-    //    }
+        }
 
-    //}
-    //private IEnumerator LimitCoroutine(float rotationLimit)
-    //{
+    }
 
-    //    do
-    //    {
-    //        rotationLimit = Mathf.Lerp(rotationLimit, 0, Time.deltaTime * 10);
-    //        setLimitValues(rotationLimit);
-    //        if (rotationLimit <= 1)
-    //        {
-    //            setLimitValues(0);
-    //            break;
-    //        }000000000000000000000000000000000000000000000000000000000000000000
+    protected void OnCollisionStay(Collision collision)
+    {
+        if (linkedController != null)
+        {
+            float value = Vector3.Distance(transform.rotation.eulerAngles, linkedController.transform.rotation.eulerAngles);
 
+            value = value <= 720 ? value : 720;
 
-    //        yield return new WaitForEndOfFrame();
-    //    }
-    //    while (rotationLimit > 1);
-    //}
-
-
-
+            linkedController.Vibrate(value / 720 * 5);
+        }
+    }
 
 }

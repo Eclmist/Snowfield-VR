@@ -18,8 +18,9 @@ public class BlacksmithItem : GenericItem {
     [Range(1, 10)]
     protected float conductivity; // Acts as a multiplier for the heating rate
 
-    public void Start()
+    protected void Start()
     {
+        base.Start();
         meshRenderer = GetComponent<MeshRenderer>();
         currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
     }
