@@ -27,8 +27,8 @@ public class DialogManager : MonoBehaviour {
     private string currentLine; // The line that is currently being processed
     private IEnumerator typeWriter; // Coroutine that achieves the typewriter effect
     private int lineItor = 0; // To iterate through lines in a session
-    private List<TaoBaoDialogEditor.Session> sessionList;
-    private TaoBaoDialogEditor.Session currentSession;
+    private List<Session> sessionList;
+    private Session currentSession;
     private AudioSource audioSource;
 
     private bool isShowing;     // Status of dialog box
@@ -92,9 +92,9 @@ public class DialogManager : MonoBehaviour {
     {
         bool isFound = false;
 
-        foreach (TaoBaoDialogEditor.Session s in sessionList)
+        foreach (Session s in sessionList)
         {
-            if (s.title == title)
+            if (s.Title == title)
             {
                 currentSession = s;
                 isFound = true;
@@ -143,7 +143,7 @@ public class DialogManager : MonoBehaviour {
         {
             if (!isTyping)
             {
-                if(lineItor >= currentSession.lines.Count)
+                if(lineItor >= currentSession.Lines.Count)
                 {
                     ToggleDialogBox();
                     lineItor = 0;
@@ -158,8 +158,8 @@ public class DialogManager : MonoBehaviour {
     
     private void ProceedMessage()
     {
-        currentLine = currentSession.lines[lineItor].message;
-        audioSource.PlayOneShot(currentSession.lines[lineItor].clip);
+        currentLine = currentSession.Lines[lineItor].Message;
+        audioSource.PlayOneShot(currentSession.Lines[lineItor].Clip);
 
         // Store the coroutine to stop later
         typeWriter = WriteTextLikeATypeWriter();

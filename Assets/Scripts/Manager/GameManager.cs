@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     #region RequestRegion
 
-    [SerializeField] [Range(1, 100)] private float requestConstant;
+    [SerializeField] [Range(1, 100)] private int requestConstant;
     private float nextRequest = 0;
 
     #endregion
