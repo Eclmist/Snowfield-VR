@@ -14,7 +14,7 @@ public class QuestFactory
         using (FileStream stream = new FileStream(path, FileMode.Create))
         {
             serializer.Serialize(stream, QuestManager.QuestList);
-            Debug.Log("Saved");
+            Debug.Log("Saved Quest(s)");
         }
     }
 
@@ -23,7 +23,7 @@ public class QuestFactory
         XmlSerializer serializer = new XmlSerializer(typeof(List<Quest>));
         using (FileStream stream = new FileStream(path, FileMode.Open))
         {
-            Debug.Log("Loaded");
+            Debug.Log("Loaded Quest(s)");
             return serializer.Deserialize(stream) as List<Quest>;
         }
     }
