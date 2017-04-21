@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(SphereCollider))]
 public class Furnace : MonoBehaviour {
 
     public AudioClip clip;
@@ -13,30 +14,26 @@ public class Furnace : MonoBehaviour {
     {
         audioSource = GetComponent<AudioSource>();
         sphereCollider = GetComponent<SphereCollider>();
+        sphereCollider.isTrigger = true;
     }
 
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.GetComponent<BlacksmithItem>() != null)
+        BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+        if (bsItem != null)
         {
-            BlacksmithItem bsItem = GetBlacksmithComponent(other.gameObject);
             bsItem.SetHeatingEnvironment((sphereCollider.radius - (Vector3.Distance(other.transform.position,transform.TransformPoint(sphereCollider.center)))) * 1);
-            
         }
     }
 
 
     private void OnTriggerExit(Collider other)
     {
-        BlacksmithItem bsItem = GetBlacksmithComponent(other.gameObject);
+        BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+        if(bsItem != null)
         bsItem.HeatSourceDetected = false;
            
-    }
-
-    private BlacksmithItem GetBlacksmithComponent(GameObject g)
-    {
-        return g.GetComponent<BlacksmithItem>();
     }
 
 

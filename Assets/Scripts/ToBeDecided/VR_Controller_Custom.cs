@@ -38,13 +38,13 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void UpdateInteractedObject()
     {
-        if(interacted != null)
-        interacted.UpdatePosition();
+        if (interacted != null)
+            interacted.UpdatePosition();
     }
     private void ControllerInput()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
-        if (interacted == null && interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
+        if (interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
         {
             interacted = interactableObject.GetComponent<IInteractable>();
             interacted.Interact(this);
@@ -66,27 +66,31 @@ public class VR_Controller_Custom : MonoBehaviour
         else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && interacted != null)
         {
             interacted.StopInteraction(this);
-            interacted = null;
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+        if (interacted == null && interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
         {
-            Debug.Log("EnteredTriggerable");
             interactableObject = collider.gameObject;
         }
-        else
-        {
-            Debug.Log("Entered");
+
+    }
+
+    private void OnTriggerStay(Collider collider)
+    {
+        if(interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer)))){
+
+            Vibrate(2.5f);
+
         }
     }
 
     private void OnTriggerExit(Collider collider)
     {
 
-        if (interactableObject != null && collider.gameObject == interactableObject)
+        if (collider.gameObject == interactableObject)
         {
             interactableObject = null;
         }
@@ -105,12 +109,16 @@ public class VR_Controller_Custom : MonoBehaviour
 
     public void Vibrate(float val)//pass in 1 - 10
     {
-        if(val > 0 && val <= 10)
+        if (val > 0 && val <= 10)
         {
-            ushort passVal = (ushort) (val / 10 * 3999);
-            if(passVal > 0)
-            device.TriggerHapticPulse(passVal);
-            Debug.Log("value: " + passVal);
+            ushort passVal = (ushort)(val / 10 * 3999);
+            if (passVal > 0)
+                device.TriggerHapticPulse(passVal);
         }
+    }
+
+    public void SetInteraction(IInteractable _interacted)
+    {
+        interacted = _interacted;
     }
 }
