@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class GenericItem : MonoBehaviour, IInteractable
+public abstract class GenericItem : MonoBehaviour, IInteractable
 {
 
+    protected Rigidbody rigidBody;
+    protected Collider itemCollider;
+    #region GenericItem
     [SerializeField]
     protected string m_name;
     [SerializeField]
@@ -14,21 +17,11 @@ public class GenericItem : MonoBehaviour, IInteractable
     protected AudioClip sound;
     [SerializeField]
     protected AudioSource audioSource;
-    [SerializeField] [Range(1, 6)] private float heptic; //remoove
+    #endregion
 
-    private Vector3 colliderBound;
-    private VR_Controller_Custom linkedController = null;
-
-    private Rigidbody rigidBody;
-
-    [SerializeField]
-    [Range(100, 1000)]
-    private float lerpValue;
-    protected void Awake()
-    {
-        rigidBody = GetComponent<Rigidbody>();
-    }
-
+    #region IInteractable
+    [SerializeField] [Range(0.01f, 6)] private float heptic; //remoove
+    protected VR_Controller_Custom linkedController = null;
     public VR_Controller_Custom LinkedController
     {
         get
@@ -36,6 +29,17 @@ public class GenericItem : MonoBehaviour, IInteractable
             return linkedController;
         }
     }
+
+
+    #endregion
+
+    protected virtual void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody>();
+        itemCollider = GetComponent<Collider>();
+    }
+
+
 
     public string Name
     {
@@ -49,18 +53,16 @@ public class GenericItem : MonoBehaviour, IInteractable
         set { this.weight = value; }
     }
 
-    protected void Start()
-    {
-        colliderBound = GetComponent<Collider>().bounds.size;
-       
-    }
+    
+    
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
+        if (linkedController != null && linkedController != referenceCheck)
+            linkedController.SetInteraction(null);
+
         linkedController = referenceCheck;
         rigidBody.useGravity = false;
-        transform.localPosition = referenceCheck.transform.position;
-        transform.rotation = referenceCheck.transform.rotation;
-        rigidBody.maxAngularVelocity = 100f;
+        
     }
 
     public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
@@ -69,45 +71,26 @@ public class GenericItem : MonoBehaviour, IInteractable
         {
             rigidBody.useGravity = true;
             linkedController = null;
-            rigidBody.velocity = referenceCheck.Velocity();
-            rigidBody.angularVelocity = referenceCheck.AngularVelocity();
-
+            referenceCheck.SetInteraction(null);
         }
     }
 
 
-    public void UpdatePosition()
-    {
+    public abstract void UpdatePosition();
 
-        Vector3 PositionDelta = (linkedController.transform.position - transform.position);
-
-        Quaternion RotationDelta = linkedController.transform.rotation * Quaternion.Inverse(this.transform.rotation);
-        float angle;
-        Vector3 axis;
-        RotationDelta.ToAngleAxis(out angle, out axis);
-
-        if (angle > 180)
-            angle -= 360;
-
-        rigidBody.angularVelocity = axis * angle * Time.fixedDeltaTime * 40;
-
-        PositionDelta = PositionDelta.magnitude > .1f ? PositionDelta.normalized * .1f : PositionDelta;
-        rigidBody.velocity = PositionDelta * 10000 * rigidBody.mass * Time.fixedDeltaTime;
-    }
-
-    protected void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
 
         if (linkedController != null)
         {
             float value = linkedController.Velocity().magnitude <= heptic ? linkedController.Velocity().magnitude : heptic;
-            linkedController.Vibrate(value/heptic * 10);
+            linkedController.Vibrate(value / heptic * 10);
 
         }
 
     }
 
-    protected void OnCollisionStay(Collision collision)
+    protected virtual void OnCollisionStay(Collision collision)
     {
         if (linkedController != null)
         {
