@@ -114,7 +114,7 @@ public class OrderManager : MonoBehaviour
         Player currentPlayer = Player.Instance;
         Job randJob = currentPlayer.JobListReference[Random.Range(0,currentPlayer.JobListReference.Count - 1)];
 
-        Order newOrder = new Order("Basic Sword"
+        Order newOrder = new Order(materialList[Random.Range(0, materialList.Count - 1)].name + " sword"
             ,templateList[Random.Range(0,templateList.Count -1 )].sprite
             ,randJob.Level * baseDurationMultiplier
             , randJob.Level * baseGoldMultiplier);
