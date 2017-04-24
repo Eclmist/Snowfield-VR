@@ -3,14 +3,21 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 
 public class SerializeManager
 {
-
     private static BinaryFormatter binaryFormatter = new BinaryFormatter();
-
+   
     public static void Save(string fileName, object obj)
     {
+        fileName = "SerializedFiles/" + fileName;
+        SurrogateSelector surrogateSelector = new SurrogateSelector();
+        surrogateSelector.AddSurrogate(typeof(Sprite), new StreamingContext(StreamingContextStates.All),  new SpriteSurrogate());
+        surrogateSelector.AddSurrogate(typeof(Mesh), new StreamingContext(StreamingContextStates.All), new MeshSurrogate());
+        surrogateSelector.AddSurrogate(typeof(AudioClip), new StreamingContext(StreamingContextStates.All), new AudioClipSurrogate());
+        binaryFormatter.SurrogateSelector = surrogateSelector;
+
         MemoryStream memoryStream = new MemoryStream();
         binaryFormatter.Serialize(memoryStream, obj);
         string[] temp = new string[1];
@@ -27,8 +34,44 @@ public class SerializeManager
 
     }
 
+    public static void SaveBundle(object o)
+    {
+        //List<object> myList;
+        System.Collections.IList someList;
+
+        // First check
+        if (IsList(o))
+        {
+            //myList = (List<object>)o;
+            someList = (System.Collections.IList)o;
+            foreach(object someObj in someList)
+            {
+                if (!IsList(someObj))
+                    Save(someObj.GetHashCode().ToString(), someObj);
+                else
+                    SaveBundle(someObj);
+            }
+        }
+
+    }
+
+       
+
+    public static bool IsList(object o)
+    {
+        if (o == null) return false;
+        
+        return o is System.Collections.IList &&
+               o.GetType().IsGenericType &&
+               o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>));
+    }
+
+
+
     public static object Load(string fileName)
     {
+        fileName = "SerializedFiles/" + fileName;
+
         string[] data = new string[1];
         MemoryStream memoryStream = null;
         try
@@ -45,5 +88,7 @@ public class SerializeManager
         return null;
 
     }
+
+
 
 }

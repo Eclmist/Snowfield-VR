@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     #region RequestRegion
 
-    [SerializeField] [Range(1, 100)] private float requestConstant;
+    [SerializeField] [Range(1, 100)] private int requestConstant;
     private float nextRequest = 0;
 
     #endregion
@@ -39,10 +39,18 @@ public class GameManager : MonoBehaviour {
 
     private void RequestBoardUpdate()
     {
-        if(gameClock.SecondSinceStart > nextRequest)//update
+        if (gameClock.SecondSinceStart > nextRequest)//update
         {
-            nextRequest = (nextRequest + requestConstant / TownManager.Instance.CurrentTown.Population) % 1;
+            nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
             OrderManager.Instance.NewRequest();
+        }
+    }
+
+    public void AddPlayerGold(int value)
+    {
+        if (!Player.Instance.AddGold(value))
+        {
+            //Lose
         }
     }
 
