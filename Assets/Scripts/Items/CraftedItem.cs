@@ -15,14 +15,16 @@ public class CraftedItem : GenericItem
 
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
-        if(removable)
-        toggled = !toggled;
-        
-        if (toggled)
+        if (referenceCheck != linkedController)
         {
-            
             base.Interact(referenceCheck);
+            rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
+            toggled = true;
+        }
+        else
+        {
+            toggled = false;
         }
         //rigidBody.maxAngularVelocity = 100f;
     }
@@ -33,6 +35,7 @@ public class CraftedItem : GenericItem
         {
             itemCollider.isTrigger = false;
             base.StopInteraction(referenceCheck);
+            rigidBody.useGravity = true;
             rigidBody.velocity = referenceCheck.Velocity();
             rigidBody.angularVelocity = referenceCheck.AngularVelocity();
         }
@@ -44,7 +47,6 @@ public class CraftedItem : GenericItem
     {
         transform.position = linkedController.transform.position;
         transform.rotation = linkedController.transform.rotation;
-
     }
 
   
@@ -53,7 +55,7 @@ public class CraftedItem : GenericItem
         if (linkedController != null && collision.gameObject != linkedController.gameObject)
         {
             removable = false;
-            linkedController.Vibrate(5);
+            linkedController.Vibrate(1);
         }
     }
 
