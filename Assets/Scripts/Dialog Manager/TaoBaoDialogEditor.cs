@@ -80,13 +80,18 @@ public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
             {
                 if (l.Clip != null)
                 {
-                    l.ClipPath = SerializeConverter.ConvertToPath(l.Clip);
+                    l.ClipPath = GetPath(l.Clip);
                     Debug.Log(l.ClipPath);
                 }
 
 
             }
         }
+    }
+
+    public string GetPath(UnityEngine.Object o)
+    {
+        return "Dialog expressions/" + o.name;
     }
 
     public void Save()
@@ -106,7 +111,7 @@ public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
 
                 if (Sessions[i].Lines[j].Clip != null)
                 {
-                    Sessions[i].Lines[j].ClipPath = SerializeConverter.ConvertToPath(Sessions[i].Lines[j].Clip);
+                    Sessions[i].Lines[j].ClipPath = GetPath(Sessions[i].Lines[j].Clip);
                 }
 
                 SerializeManager.Save("s"+i+"l"+j+"cp", Sessions[i].Lines[j].ClipPath);

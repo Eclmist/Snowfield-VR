@@ -6,15 +6,15 @@ using System.Runtime.Serialization;
 public class SerializeConverter{
 
 
-	public static string ConvertToPath(Object o)
-    {
-        string path = UnityEditor.AssetDatabase.GetAssetPath(o);
-        path = path.Replace("Assets/Resources/","");
-        path = path.Replace(".mp3", "");
+	//public static string ConvertToPath(Object o)
+ //   {
+ //       string path = AssetDatabase.GetAssetPath(o);
+ //       path = path.Replace("Assets/Resources/","");
+ //       path = path.Replace(".mp3", "");
 
-        return path;
+ //       return path;
 
-    }
+ //   }
 
     public static List<Object> GetSerializableObject(params Object[] stuffToPackage)
     {

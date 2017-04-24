@@ -5,9 +5,9 @@ using UnityEngine;
 public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
-    private float population;
+    private int population;
     
-    public float Population//used to decide how many requests/day etc
+    public int Population//used to decide how many requests/day etc
     {
         get
         {
@@ -15,7 +15,7 @@ public class Town : MonoBehaviour
         }
     }
 
-    public Town(float _difficulty)
+    public Town(int _difficulty)
     {
         population = _difficulty;
     }

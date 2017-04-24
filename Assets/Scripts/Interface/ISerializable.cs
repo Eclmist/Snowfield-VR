@@ -6,7 +6,8 @@ public interface ISerializable {
 
     void Save();
     void Load();
-   
+    string GetPath(Object o);
+    
 	
 
 

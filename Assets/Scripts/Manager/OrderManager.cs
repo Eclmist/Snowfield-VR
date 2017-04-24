@@ -17,7 +17,7 @@ public class OrderManager : MonoBehaviour
         public int spriteIndex;
         public Mesh mesh;
         public int baseGold;
-
+        public int levelUnlocked;
     }
 
     [System.Serializable]
@@ -28,6 +28,8 @@ public class OrderManager : MonoBehaviour
     }
 
     public static OrderManager Instance;
+    public int baseGoldMultiplier;
+    public int baseDurationMultiplier;
     public bool save;
 
     [SerializeField]
@@ -71,10 +73,6 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-    private void Hack()
-    {
-        
-    }
 
 
     private void LoadTemplates()
@@ -112,9 +110,16 @@ public class OrderManager : MonoBehaviour
 
     private void GenerateOrder()
     {
-        Order newOrder = new Order("Basic Sword",templateList[0].sprite,10,2000);
+        // TO DO
+        Player currentPlayer = Player.Instance;
+        Job randJob = currentPlayer.JobListReference[Random.Range(0,currentPlayer.JobListReference.Count - 1)];
 
-        OrderBoard.Instance.SpawnOnBoard(newOrder);
+        Order newOrder = new Order("Basic Sword"
+            ,templateList[Random.Range(0,templateList.Count -1 )].sprite
+            ,randJob.Level * baseDurationMultiplier
+            , randJob.Level * baseGoldMultiplier);
+
+        OrderBoard.Instance.SpawnOnBoard(newOrder); 
     }
 
     public void CompletedOrder(bool success,int reward)
@@ -124,11 +129,7 @@ public class OrderManager : MonoBehaviour
             GameManager.Instance.AddPlayerGold(reward);
         }
     }
-    //private OrderTemplate GetRandomTemplate()
-    //{
-    //    int total = templateList.Count;
-        
-    //}
+
 
 
 }

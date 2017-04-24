@@ -31,6 +31,14 @@ public class Job {
         }
     }
 
+    public int Level
+    {
+        get
+        {
+            return this.level;
+        }
+    }
+
     public Job(JobType _currentJob)
     {
         currentJobType = _currentJob;
