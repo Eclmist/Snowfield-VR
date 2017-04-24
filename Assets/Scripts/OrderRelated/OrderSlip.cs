@@ -39,8 +39,7 @@ public class OrderSlip : MonoBehaviour {
     private IEnumerator OrderCoroutine()
     {
         while (true)
-        {
-            Debug.Log(duration);
+        {   
             durationText.text = duration.ToString();
             yield return new WaitForSeconds(1);
             duration--;

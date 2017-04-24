@@ -21,6 +21,7 @@ public class BlacksmithItem : GenericItem {
     public void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.material = initialMaterial;
         currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
     }
 

@@ -3,25 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteInEditMode]
 public class OrderManager : MonoBehaviour
 {
+
     [System.Serializable]
-    public struct OrderTemplate
+    public class OrderTemplate
     {
+        //[HideInInspector][System.NonSerialized]
         public Sprite sprite;
+        [HideInInspector]
+        public string spritePath;
+        public int spriteIndex;
         public Mesh mesh;
         public int baseGold;
-
+        public int levelUnlocked;
     }
 
     [System.Serializable]
-    public struct PhysicalMaterial
+    public class PhysicalMaterial
     {
         public string name;
         public int costMultiplier;
     }
 
     public static OrderManager Instance;
+    public int baseGoldMultiplier;
+    public int baseDurationMultiplier;
+    public bool save;
 
     [SerializeField]
     private List<OrderTemplate> templateList;
@@ -31,6 +40,10 @@ public class OrderManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+       
+        LoadTemplates();
+
+
         if (!Instance)
         {
             Instance = this;
@@ -40,10 +53,38 @@ public class OrderManager : MonoBehaviour
             Debug.Log("There should only be one instance of request board running");
             Destroy(this);
         }
-       
+
+        SerializeManager.Load("templateList");
+        SerializeManager.Load("materialList");
+
+        if (templateList.Count < 1)
+            Debug.Log("Template list is empty");
 
     }
+ 
+    void Update()
+    {
+        if(save)
+        {
+            SerializeManager.Save("templateList", templateList);
+            SerializeManager.Save("materialList", materialList);
+          
+            
+        }
+    }
 
+
+
+    private void LoadTemplates()
+    {
+        foreach(OrderTemplate ot in templateList)
+        {
+            ot.sprite = Resources.Load("Templates/" + ot.spriteIndex.ToString()) as Sprite;
+        }
+    }
+    
+
+   
 
     public void NewRequest()
     {
@@ -69,9 +110,16 @@ public class OrderManager : MonoBehaviour
 
     private void GenerateOrder()
     {
-        Order newOrder = new Order("Basic Sword",templateList[0].sprite,10,2000);
+        // TO DO
+        Player currentPlayer = Player.Instance;
+        Job randJob = currentPlayer.JobListReference[Random.Range(0,currentPlayer.JobListReference.Count - 1)];
 
-        OrderBoard.Instance.SpawnOnBoard(newOrder);
+        Order newOrder = new Order(materialList[Random.Range(0, materialList.Count - 1)].name + " sword"
+            ,templateList[Random.Range(0,templateList.Count -1 )].sprite
+            ,randJob.Level * baseDurationMultiplier
+            , randJob.Level * baseGoldMultiplier);
+
+        OrderBoard.Instance.SpawnOnBoard(newOrder); 
     }
 
     public void CompletedOrder(bool success,int reward)
@@ -81,11 +129,7 @@ public class OrderManager : MonoBehaviour
             GameManager.Instance.AddPlayerGold(reward);
         }
     }
-    //private OrderTemplate GetRandomTemplate()
-    //{
-    //    int total = templateList.Count;
-        
-    //}
+
 
 
 }

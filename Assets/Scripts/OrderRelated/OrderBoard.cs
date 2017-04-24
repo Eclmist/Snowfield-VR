@@ -15,7 +15,7 @@ public class OrderBoard : MonoBehaviour {
     private List<OrderSlip> orderList = new List<OrderSlip>();
     //Do we want to keep a list of the orders? Feels more clean that way
 
-    [SerializeField] private int maxNumberOfOrders;
+    [SerializeField] [Range(1,12)] private int maxNumberOfOrders;
 
     public int CurrentNumberOfOrders
     {
