@@ -29,7 +29,7 @@ public class VR_Controller_Custom : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         ControllerInput();
         UpdateInteractedObject();
@@ -48,7 +48,6 @@ public class VR_Controller_Custom : MonoBehaviour
         {
             interacted = interactableObject.GetComponent<IInteractable>();
             interacted.Interact(this);
-
 
             switch (handle)
             {
@@ -71,7 +70,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (interacted == null && interactableObject == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
         {
             interactableObject = collider.gameObject;
         }
@@ -80,7 +79,12 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
-        if(interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer)))){
+        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+        {
+            interactableObject = collider.gameObject;
+        }
+
+        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer)))){
 
             Vibrate(2.5f);
 

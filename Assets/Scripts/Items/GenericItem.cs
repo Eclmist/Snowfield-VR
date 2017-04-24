@@ -61,15 +61,12 @@ public abstract class GenericItem : MonoBehaviour, IInteractable
             linkedController.SetInteraction(null);
 
         linkedController = referenceCheck;
-        rigidBody.useGravity = false;
-        
     }
 
     public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController == referenceCheck)
         {
-            rigidBody.useGravity = true;
             linkedController = null;
             referenceCheck.SetInteraction(null);
         }

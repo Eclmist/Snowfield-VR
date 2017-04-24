@@ -103,16 +103,18 @@ public class BlacksmithItem : GenericItem {
 
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
+        rigidBody.useGravity = false;
         base.Interact(referenceCheck);
         transform.localPosition = referenceCheck.transform.position;
         transform.rotation = referenceCheck.transform.rotation;
-        rigidBody.maxAngularVelocity = 100f;
+        rigidBody.maxAngularVelocity = 10f;
     }
 
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController == referenceCheck)
         {
+            rigidBody.useGravity = true;
             base.StopInteraction(referenceCheck);
             rigidBody.velocity = referenceCheck.Velocity();
             rigidBody.angularVelocity = referenceCheck.AngularVelocity();
@@ -133,8 +135,7 @@ public class BlacksmithItem : GenericItem {
 
         rigidBody.angularVelocity = axis * angle * Time.fixedDeltaTime * 40;
 
-        PositionDelta = PositionDelta.magnitude > .1f ? PositionDelta.normalized * .1f : PositionDelta;
-        rigidBody.velocity = PositionDelta * 5000 * rigidBody.mass * Time.fixedDeltaTime;
+        rigidBody.velocity = PositionDelta * 4000 * rigidBody.mass * Time.fixedDeltaTime;
 
     }
 
