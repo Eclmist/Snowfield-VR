@@ -7,25 +7,6 @@ using UnityEngine.UI;
 public class OrderManager : MonoBehaviour
 {
 
-    [System.Serializable]
-    public class OrderTemplate
-    {
-        //[HideInInspector][System.NonSerialized]
-        public Sprite sprite;
-        [HideInInspector]
-        public string spritePath;
-        public int spriteIndex;
-        public Mesh mesh;
-        public int baseGold;
-        public int levelUnlocked;
-    }
-
-    [System.Serializable]
-    public class PhysicalMaterial
-    {
-        public string name;
-        public int costMultiplier;
-    }
 
     public static OrderManager Instance;
     public int baseGoldMultiplier;
