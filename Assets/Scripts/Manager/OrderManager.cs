@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class OrderManager : MonoBehaviour
 {
 
-
     public static OrderManager Instance;
+
     public int baseGoldMultiplier;
     public int baseDurationMultiplier;
     public bool save;
@@ -18,22 +18,34 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     private List<PhysicalMaterial> materialList;
 
+    public List<OrderTemplate> TemplateList
+    {
+        get { return this.templateList; }
+        set { this.templateList = value; }
+    }
+
+    public List<PhysicalMaterial> MaterialList
+    {
+        get { return this.materialList; }
+        set { this.materialList = value; }
+    }
+
     // Use this for initialization
     void Awake()
     {
        
         LoadTemplates();
+        Instance = this;
 
-
-        if (!Instance)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.Log("There should only be one instance of request board running");
-            Destroy(this);
-        }
+        //if (!Instance)
+        //{
+        //    Instance = this;
+        //}
+        //else
+        //{
+        //    Debug.Log("There should only be one instance of request board running");
+        //    Destroy(this);
+        //}
 
         SerializeManager.Load("templateList");
         SerializeManager.Load("materialList");
@@ -60,7 +72,7 @@ public class OrderManager : MonoBehaviour
     {
         foreach(OrderTemplate ot in templateList)
         {
-            ot.sprite = Resources.Load("Templates/" + ot.spriteIndex.ToString()) as Sprite;
+            ot.Sprite = Resources.Load("Templates/" + ot.SpriteIndex.ToString()) as Sprite;
         }
     }
     
@@ -95,8 +107,8 @@ public class OrderManager : MonoBehaviour
         Player currentPlayer = Player.Instance;
         Job randJob = currentPlayer.JobListReference[Random.Range(0,currentPlayer.JobListReference.Count - 1)];
 
-        Order newOrder = new Order(materialList[Random.Range(0, materialList.Count - 1)].name + " sword"
-            ,templateList[Random.Range(0,templateList.Count -1 )].sprite
+        Order newOrder = new Order(materialList[Random.Range(0, materialList.Count - 1)].Name + " sword"
+            ,templateList[Random.Range(0,templateList.Count -1 )].Sprite
             ,randJob.Level * baseDurationMultiplier
             , randJob.Level * baseGoldMultiplier);
 

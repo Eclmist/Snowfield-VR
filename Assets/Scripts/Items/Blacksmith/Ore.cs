@@ -7,6 +7,7 @@ public class Ore : GenericItem{
 
     [SerializeField]
     private PhysicalMaterial physicalMaterial;
+    
 
     public override void UpdatePosition()
     {
