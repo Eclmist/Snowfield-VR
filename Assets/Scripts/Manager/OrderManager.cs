@@ -18,6 +18,9 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     private List<PhysicalMaterial> materialList;
 
+    private List<OrderTemplate> availableTemplatesForCurrentLevel;
+
+
     public List<OrderTemplate> TemplateList
     {
         get { return this.templateList; }
@@ -35,6 +38,9 @@ public class OrderManager : MonoBehaviour
     {
        
         LoadTemplates();
+
+
+
         Instance = this;
 
         //if (!Instance)
@@ -47,13 +53,13 @@ public class OrderManager : MonoBehaviour
         //    Destroy(this);
         //}
 
-        SerializeManager.Load("templateList");
-        SerializeManager.Load("materialList");
+        PopulateLists();
 
         if (templateList.Count < 1)
             Debug.Log("Template list is empty");
 
     }
+
  
     void Update()
     {
@@ -66,6 +72,30 @@ public class OrderManager : MonoBehaviour
         }
     }
 
+    public void UpdateAvailableTemplates()
+    {
+        foreach(OrderTemplate ot in templateList)
+        {
+            Job currentJob = Player.Instance.GetJob(ot.JobType);//change
+            if (currentJob != null &&  ot.LevelUnlocked <= currentJob.Level)
+            {
+                availableTemplatesForCurrentLevel.Add(ot);
+            }
+        }
+    }
+
+
+
+
+
+    private void PopulateLists()
+    {
+        SerializeManager.Load("templateList");
+        UpdateAvailableTemplates();
+        SerializeManager.Load("materialList");
+
+    }
+
 
 
     private void LoadTemplates()
@@ -74,6 +104,7 @@ public class OrderManager : MonoBehaviour
         {
             ot.Sprite = Resources.Load("Templates/" + ot.SpriteIndex.ToString()) as Sprite;
         }
+
     }
     
 
