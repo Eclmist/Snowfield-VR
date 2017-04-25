@@ -16,6 +16,8 @@ public class OrderTemplate {
     private int baseGold;
     [SerializeField]
     private int levelUnlocked;
+    [SerializeField]
+    private JobType jobType;
 
     public Sprite Sprite
     {
@@ -53,6 +55,12 @@ public class OrderTemplate {
         set { this.levelUnlocked = value; }
     }
 
+
+    public JobType JobType
+    {
+        get { return this.jobType; }
+        set { this.jobType = value; }
+    }
 
 
 
