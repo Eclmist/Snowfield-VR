@@ -33,6 +33,18 @@ public class Actor : MonoBehaviour, IDamagable
         }
     }
 
+    public Job GetJob(JobType type)
+    {
+        foreach (Job job in jobList)
+        {
+            if(job.Type == type)
+            {
+                return job;
+            }
+        }
+        return null;
+    }
+
     protected IInteractable leftHand, rightHand;
 
     public int Health
