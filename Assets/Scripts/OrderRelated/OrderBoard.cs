@@ -22,6 +22,11 @@ public class OrderBoard : MonoBehaviour {
         get { return orderList.Count; }
     }
 
+    public bool IsMaxedOut
+    {
+        get { return orderList.Count >= maxNumberOfOrders; }
+    }
+
     void Awake()
     {
         Instance = this;
@@ -56,6 +61,7 @@ public class OrderBoard : MonoBehaviour {
         if(orderList.Count < maxNumberOfOrders)
         {
             OrderSlip g = Instantiate(order, panel.transform).GetComponent<OrderSlip>();
+            orderList.Add(g);
             g.StartOrder(o, CloseOrder);
         }
     }
