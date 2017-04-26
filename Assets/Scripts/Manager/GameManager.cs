@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
         if (gameClock.SecondSinceStart > nextRequest)//update
         {
             nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
+            if(!OrderBoard.Instance.IsMaxedOut)
             OrderManager.Instance.NewRequest();
         }
     }

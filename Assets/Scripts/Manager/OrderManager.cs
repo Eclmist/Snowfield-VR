@@ -18,6 +18,7 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     private List<PhysicalMaterial> materialList;
 
+
     private List<OrderTemplate> availableTemplatesForCurrentLevel;
 
 
@@ -36,28 +37,33 @@ public class OrderManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-       
-        LoadTemplates();
 
+        //LoadTemplates();
 
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.Log("There should only be one instance of request board running");
+            Destroy(this);
+        }
 
-        Instance = this;
-
-        //if (!Instance)
-        //{
-        //    Instance = this;
-        //}
-        //else
-        //{
-        //    Debug.Log("There should only be one instance of request board running");
-        //    Destroy(this);
-        //}
-
-        PopulateLists();
+        availableTemplatesForCurrentLevel = new List<OrderTemplate>();
+        //PopulateLists();
+        
 
         if (templateList.Count < 1)
             Debug.Log("Template list is empty");
 
+    }
+
+    void Start()
+    {
+
+        UpdateAvailableTemplates();
+        Debug.Log(availableTemplatesForCurrentLevel.Count);
     }
 
  
@@ -70,20 +76,23 @@ public class OrderManager : MonoBehaviour
           
             
         }
+
+      
     }
 
     public void UpdateAvailableTemplates()
     {
-        foreach(OrderTemplate ot in templateList)
+       foreach(Job job in Player.Instance.JobListReference)
         {
-            Job currentJob = Player.Instance.GetJob(ot.JobType);//change
-            if (currentJob != null &&  ot.LevelUnlocked <= currentJob.Level)
+            foreach(OrderTemplate ot in templateList)
             {
-                availableTemplatesForCurrentLevel.Add(ot);
+                if (ot.JobType == job.Type && ot.LevelUnlocked <= job.Level)
+                    availableTemplatesForCurrentLevel.Add(ot);
             }
         }
+            
+              
     }
-
 
 
 
@@ -125,25 +134,44 @@ public class OrderManager : MonoBehaviour
             totalExperienceValue += job.Experience;
             if (totalExperienceValue >= randomValue)
             {
-                GenerateOrder();
+                Order o = GenerateOrder(job);
+                if (o != null)
+                    OrderBoard.Instance.SpawnOnBoard(o);
             }
         }
 
     }
 
 
-    private void GenerateOrder()
+    private Order GenerateOrder(Job job)
     {
         // TO DO
         Player currentPlayer = Player.Instance;
-        Job randJob = currentPlayer.JobListReference[Random.Range(0,currentPlayer.JobListReference.Count - 1)];
+        Order newOrder = null;
+        List<OrderTemplate> currentTemplateList = GetTemplatesForJobType(job.Type);
+        // Get a random template
+        OrderTemplate currentTemplate = currentTemplateList[Random.Range(0, currentTemplateList.Count)];
 
-        Order newOrder = new Order(materialList[Random.Range(0, materialList.Count - 1)].Name + " sword"
-            ,templateList[Random.Range(0,templateList.Count -1 )].Sprite
-            ,randJob.Level * baseDurationMultiplier
-            , randJob.Level * baseGoldMultiplier);
+        // Generate order based on job type
+        switch(job.Type)
+        {
+            case JobType.ALCHEMY:
+                break;
+            case JobType.BLACKSMITH:
 
-        OrderBoard.Instance.SpawnOnBoard(newOrder); 
+                PhysicalMaterial currentMaterial = materialList[Random.Range(0, materialList.Count)];
+
+                newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString()
+            , currentTemplate.Sprite
+            , job.Level * baseDurationMultiplier * currentTemplate.Duration
+            , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier *baseGoldMultiplier);
+
+                break;
+        }
+
+
+        return newOrder;
+
     }
 
     public void CompletedOrder(bool success,int reward)
@@ -152,6 +180,22 @@ public class OrderManager : MonoBehaviour
         {
             GameManager.Instance.AddPlayerGold(reward);
         }
+    }
+
+    // Filter templateList by JobTpye
+    private List<OrderTemplate> GetTemplatesForJobType(JobType jobType)
+    {
+        List<OrderTemplate> requestedList = new List<OrderTemplate>();
+
+        foreach(OrderTemplate ot in availableTemplatesForCurrentLevel)
+        {
+            if (ot.JobType == jobType)
+                requestedList.Add(ot);
+        }
+
+        return requestedList;
+
+
     }
 
 

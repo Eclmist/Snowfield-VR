@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SUFFIX
+{
+    sword,
+    potion
+}
+
 [System.Serializable]
 public class OrderTemplate {
 
@@ -15,9 +21,13 @@ public class OrderTemplate {
     [SerializeField]
     private int baseGold;
     [SerializeField]
+    private int duration;
+    [SerializeField]
     private int levelUnlocked;
     [SerializeField]
     private JobType jobType;
+    [SerializeField]
+    private SUFFIX productSuffix;
 
     public Sprite Sprite
     {
@@ -49,6 +59,12 @@ public class OrderTemplate {
         set { this.baseGold = value; }
     }
 
+    public int Duration
+    {
+        get { return this.duration; }
+        set { this.duration = value; }
+    }
+
     public int LevelUnlocked
     {
         get { return this.levelUnlocked; }
@@ -61,6 +77,13 @@ public class OrderTemplate {
         get { return this.jobType; }
         set { this.jobType = value; }
     }
+
+    public SUFFIX ProductSuffix
+    {
+        get { return this.productSuffix; }
+        set { this.productSuffix = value; }
+    }
+    
 
 
 
