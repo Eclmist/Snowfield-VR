@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CraftedItem : GenericItem
+public class CraftedItem : InteractableItem
 {
 
     protected bool removable = true,toggled = false;

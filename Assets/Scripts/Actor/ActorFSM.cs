@@ -14,8 +14,10 @@ public class ActorFSM : Actor {
         INTRUSION,
         COMBAT
     }
-
+    
+    protected FSMState baseState;
     protected FSMState currentState;
+
     protected Rigidbody rigidBody;
     protected Animator animator;
     // Use this for initialization
