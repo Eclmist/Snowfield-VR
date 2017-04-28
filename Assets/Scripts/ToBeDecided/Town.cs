@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Town : MonoBehaviour
+public class Town
 {//Can be used to decide the type of adventurers/structures etc
 
     private int population;

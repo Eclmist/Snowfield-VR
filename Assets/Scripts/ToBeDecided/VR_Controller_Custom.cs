@@ -16,7 +16,6 @@ public class VR_Controller_Custom : MonoBehaviour
     private Controller_Handle handle;
     [SerializeField]
     private LayerMask interactableLayer;
-    private Rigidbody rigidBody;
     private SteamVR_TrackedObject trackedObject;
     private GameObject interactableObject;
     private IInteractable interacted;
@@ -25,22 +24,14 @@ public class VR_Controller_Custom : MonoBehaviour
     void Awake()
     {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
-        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         ControllerInput();
-        UpdateInteractedObject();
     }
 
-
-    private void UpdateInteractedObject()
-    {
-        if (interacted != null)
-            interacted.UpdatePosition();
-    }
     private void ControllerInput()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
@@ -73,8 +64,8 @@ public class VR_Controller_Custom : MonoBehaviour
         if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
         {
             interactableObject = collider.gameObject;
+            Vibrate(5f);
         }
-
     }
 
     private void OnTriggerStay(Collider collider)
@@ -84,17 +75,11 @@ public class VR_Controller_Custom : MonoBehaviour
             interactableObject = collider.gameObject;
         }
 
-        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer)))){
-
-            Vibrate(2.5f);
-
-        }
     }
 
     private void OnTriggerExit(Collider collider)
     {
-
-        if (collider.gameObject == interactableObject)
+        if (interacted == null && collider.gameObject == interactableObject)
         {
             interactableObject = null;
         }

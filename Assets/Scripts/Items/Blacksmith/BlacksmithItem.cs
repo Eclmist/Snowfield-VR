@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlacksmithItem : GenericItem {
+public class BlacksmithItem : InteractableItem {
 
     public Material initialMaterial;
     public Material forgingMaterial; // Material to lerp to when heated
@@ -27,9 +27,10 @@ public class BlacksmithItem : GenericItem {
         currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
     }
 
-    public void Update()
+    protected override void Update()
     {
 
+        base.Update();
         if (Input.GetKeyDown(KeyCode.E))
             quenchRate = 10;
 
@@ -105,8 +106,6 @@ public class BlacksmithItem : GenericItem {
     {
         rigidBody.useGravity = false;
         base.Interact(referenceCheck);
-        transform.localPosition = referenceCheck.transform.position;
-        transform.rotation = referenceCheck.transform.rotation;
         rigidBody.maxAngularVelocity = 10f;
     }
 
@@ -133,10 +132,33 @@ public class BlacksmithItem : GenericItem {
         if (angle > 180)
             angle -= 360;
 
-        rigidBody.angularVelocity = axis * angle * Time.fixedDeltaTime * 40;
+        rigidBody.angularVelocity = axis * angle * 0.4f;
 
-        rigidBody.velocity = PositionDelta * 4000 * rigidBody.mass * Time.fixedDeltaTime;
+        rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
+    }
 
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+
+        if (linkedController != null)
+        {
+            float value = linkedController.Velocity().magnitude <= 1 ? linkedController.Velocity().magnitude : 1;
+            linkedController.Vibrate(value / 10);
+
+        }
+
+    }
+
+    protected virtual void OnCollisionStay(Collision collision)
+    {
+        if (linkedController != null)
+        {
+            float value = Vector3.Distance(transform.rotation.eulerAngles, linkedController.transform.rotation.eulerAngles);
+
+            value = value <= 720 ? value : 720;
+
+            linkedController.Vibrate(value / 720 * 5);
+        }
     }
 
 
