@@ -15,10 +15,9 @@ public class BlacksmithItem : GenericItem {
     private float distFromHeat;
     private float quenchRate = 1;
 
-
     [SerializeField]
-    [Range(1, 100)]
-    protected float conductivity; // Acts as a multiplier for the heating rate
+    private PhysicalMaterial physicalMaterial;
+
 
     protected virtual void Start()
     {
@@ -42,10 +41,6 @@ public class BlacksmithItem : GenericItem {
 
     //--------------- Properties -----------------//
 
-    public float Conductivity
-    {
-        get { return this.conductivity; }
-    }
 
     public float CurrentTemperature
     {
@@ -64,6 +59,11 @@ public class BlacksmithItem : GenericItem {
         get { return this.quenchRate; }
         set { this.quenchRate = value; }
     }
+    
+    public PhysicalMaterial PhysicalMaterial
+    {
+        get { return this.physicalMaterial; }
+    }
 
     //--------------- Properties (END) -----------------//
 
@@ -80,14 +80,14 @@ public class BlacksmithItem : GenericItem {
     {
         if(heatSourceDetected && Mathf.Sign(distFromHeat) == 1 && (currentTemperature < 1))
         {
-            currentTemperature += baseRate * conductivity * distFromHeat;
+            currentTemperature += baseRate * physicalMaterial.Conductivity * distFromHeat;
             if (currentTemperature > 1)
                 currentTemperature = 1;
 
         }
         else if(!heatSourceDetected && currentTemperature > 0)
         {
-            currentTemperature -= (baseRate * conductivity * quenchRate);
+            currentTemperature -= (baseRate * physicalMaterial.Conductivity * quenchRate);
             if (currentTemperature < 0)
                 currentTemperature = 0;
         }
