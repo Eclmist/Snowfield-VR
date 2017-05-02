@@ -27,9 +27,9 @@ public class DialogManager : MonoBehaviour {
     private string currentLine; // The line that is currently being processed
     private IEnumerator typeWriter; // Coroutine that achieves the typewriter effect
     private int lineItor = 0; // To iterate through lines in a session
-    private List<Session> sessionList;
     private Session currentSession;
     private AudioSource audioSource;
+    List<Session> sessionList;
 
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
@@ -44,7 +44,6 @@ public class DialogManager : MonoBehaviour {
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        sessionList = TaoBaoDialogEditor.Instance.Sessions;
 
         isTyping = false;
         isShowing = false;
@@ -52,7 +51,7 @@ public class DialogManager : MonoBehaviour {
         Instance = this;
         dialogBox = GameObject.FindWithTag("DialogBox");
         currentText = dialogBox.GetComponentInChildren<Text>();
-        
+        sessionList = TaoBaoDialogEditor.Instance.Sessions;
 
     }
 

@@ -15,9 +15,14 @@ public class BlacksmithManager : MonoBehaviour {
     private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
 
 
-    public List<GameObject> Ingots
+    public List<Ingot> Ingots
     {
-        get { return this.availableIngots; }
+        get
+        {
+            List<Ingot> list = new List<Ingot>();
+
+            return list;
+        }
     }
 
     public List<GameObject> Ore

@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [ExecuteInEditMode]
-public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
+public class TaoBaoDialogEditor : MonoBehaviour
 {
 
     public static TaoBaoDialogEditor Instance;
@@ -27,9 +27,15 @@ public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
     {
         Instance = this;
         sessions.Clear();
-        //sessions = SerializeManager.Load("Dialogs") as List<Session>;
-        Load();
-        Debug.Log(sessions.Count);
+        sessions = new List<Session>();
+
+        sessions = (List<Session>)SerializeManager.Load("Dialogs");
+        if (sessions != null)
+            Debug.Log(sessions.Count);
+        else
+            Debug.Log("nullll");
+
+
 
     }
 
@@ -37,11 +43,8 @@ public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
     {
 
         if (save)
-        {
-            Save();
-            //SerializeManager.Save("Dialogs", sessions);
-            Debug.Log("Latest \"" + sessions[sessions.Count - 1].Title + "\" saved");
-        }
+            SerializeManager.Save("Dialogs", sessions);
+
 
     }
 
@@ -81,7 +84,6 @@ public class TaoBaoDialogEditor : MonoBehaviour, ISerializable
                 if (l.Clip != null)
                 {
                     l.ClipPath = GetPath(l.Clip);
-                    Debug.Log(l.ClipPath);
                 }
 
 
