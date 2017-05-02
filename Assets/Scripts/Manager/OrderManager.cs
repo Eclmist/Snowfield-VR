@@ -15,9 +15,6 @@ public class OrderManager : MonoBehaviour
 
     [SerializeField]
     private List<OrderTemplate> templateList;
-    [SerializeField]
-    private List<PhysicalMaterial> materialList;
-
 
     private List<OrderTemplate> availableTemplatesForCurrentLevel;
 
@@ -28,11 +25,6 @@ public class OrderManager : MonoBehaviour
         set { this.templateList = value; }
     }
 
-    public List<PhysicalMaterial> MaterialList
-    {
-        get { return this.materialList; }
-        set { this.materialList = value; }
-    }
 
     // Use this for initialization
     void Awake()
@@ -72,9 +64,6 @@ public class OrderManager : MonoBehaviour
         if(save)
         {
             SerializeManager.Save("templateList", templateList);
-            SerializeManager.Save("materialList", materialList);
-          
-            
         }
 
       
