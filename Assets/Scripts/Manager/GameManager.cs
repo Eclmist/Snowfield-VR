@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     #region ClockRegion
     [SerializeField] [Range(1, 10000)] private int secondsPerDay;
 
-    private Clock gameClock;
+    private GameClock gameClock;
     #endregion
 
     #region RequestRegion
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
         if (!Instance)
         {
             Instance = this;
-            gameClock = new Clock(secondsPerDay);
+            gameClock = new GameClock(secondsPerDay);
         }
         else
         {
