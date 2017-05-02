@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 
 public class QuestFactory
 {
-
     public static void Save(string path)
     {
         XmlSerializer serializer = new XmlSerializer(typeof(List<Quest>));
@@ -68,5 +67,4 @@ public class QuestFactory
             return null;
         }
     }
-
 }

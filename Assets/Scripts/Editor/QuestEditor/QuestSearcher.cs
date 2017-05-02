@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Linq;
 
 public class QuestSearcher : EditorWindow {
 
@@ -41,22 +42,19 @@ public class QuestSearcher : EditorWindow {
 
     JobType jobItemIndex;
 
-    //-----jamesRewards-----//
-    TextAsset jamesRewards;
-    string[] jamesReward;
-    int jamesRewardIndex = 0;
-
-    //-----QuestRequiredItems-----//
-    TextAsset questItems;
-    string[] questItem;
-    int questItemIndex = 0;
+    //-----stanleyReward-----//
+    GameObject[] stanleyRewardGO;
+    string[] stanleyReward;
+    int stanleyRewardIndex = 0;
 
     //-----ItemType-----//
-    string[] alchemyItems = new string[2] { "Potions", "Dusts" };
-    string[] blacksmithItems = new string[2] { "Ores", "Ingots" };
+    string[] itemTypes;
     int itemTypeIndex;
 
-    [MenuItem("Window/Quest/Quest Searcher")]
+    string[] childTypes;
+    int childTypesIndex;
+
+    [MenuItem("Editors/Quest/Quest Searcher")]
     protected static void Init()
     {
         questSearcher = (QuestSearcher)EditorWindow.GetWindow(typeof(QuestSearcher));
@@ -66,25 +64,23 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnEnable()
     {
-        QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
+        DirectoryInfo directoryInfo = new DirectoryInfo(Application.dataPath + "/Resources/Items");
+        FileInfo[] fileinfo = directoryInfo.GetFiles();
+
+        itemTypes = new string[fileinfo.Length];
+
+        for (int i = 0; i < fileinfo.Length; i++)
+        {
+            itemTypes[i] = Path.GetFileNameWithoutExtension(fileinfo[i].FullName);
+        }
+
+        QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "XML/quests.xml"));
 
         Debug.Log(QuestManager.QuestList.Count + " quest(s) loaded");
 
         //----------Load Image----------//
         deleteButtonImage = Resources.Load("Editor/Image/trash") as Texture2D;
         editButtonImage = Resources.Load("Editor/Image/edit.jpg") as Texture2D;
-
-        //---------------------------Init QuestRequiredItems-----------------------//
-        questItems = Resources.Load("Quests/QuestRequiredItems") as TextAsset;
-
-        if (questItems == null)
-        {
-            Debug.LogError("QuestRequiredItems.txt is missing!");
-        }
-        else
-        {
-            questItem = questItems.text.Split('\n');
-        }
     }
 
     protected void OnGUI()
@@ -137,11 +133,8 @@ public class QuestSearcher : EditorWindow {
                 EditorGUILayout.LabelField("Quest Type: ", EditorStyles.boldLabel);
                 EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].questType.ToString());
 
-                EditorGUILayout.LabelField("James' Rewards: ", EditorStyles.boldLabel);
-                EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].jamesReward);
+                EditorGUILayout.LabelField("Quest Reward: ", QuestManager.QuestList[questIndex].stanleyReward.ToString());
 
-                EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-                EditorGUILayout.SelectableLabel(QuestManager.QuestList[questIndex].requiredItem);
 
                 for (int i = 0; i < QuestManager.QuestList[questIndex].playerDialog.Length; i++)
                 {
@@ -165,42 +158,30 @@ public class QuestSearcher : EditorWindow {
                 QuestManager.QuestList[questIndex].questJob = (JobType)EditorGUILayout.EnumPopup("Jobs", QuestManager.QuestList[questIndex].questJob);
                 QuestManager.QuestList[questIndex].requiredExperience = EditorGUILayout.IntField("Required Experience: ", QuestManager.QuestList[questIndex].requiredExperience);
 
-                jobItemIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobItemIndex);
+                itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, itemTypes);
 
-                if (jobItemIndex == JobType.BLACKSMITH) //If job = Blacksmith
+                DirectoryInfo childDirectoryInfo = new DirectoryInfo(Application.dataPath + "/Resources/Items/" + itemTypes[itemTypeIndex]);
+                FileInfo[] childFileInfo = childDirectoryInfo.GetFiles();
+
+                childTypes = new string[childFileInfo.Length];
+
+                for (int i = 0; i < childFileInfo.Length; i++)
                 {
-                    itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, blacksmithItems);
-
-                    jamesRewards = Resources.Load("Quests/Items/" + blacksmithItems[itemTypeIndex]) as TextAsset;
-
-                    if (jamesRewards == null)
-                    {
-                        Debug.LogError(blacksmithItems[itemTypeIndex] + ".txt is missing!");
-                    }
-                    else
-                    {
-                        jamesReward = jamesRewards.text.Split('\n');
-                    }
-                }
-                else //If job = Alchemy
-                {
-                    itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, alchemyItems);
-
-                    jamesRewards = Resources.Load("Quests/Items/" + alchemyItems[itemTypeIndex]) as TextAsset;
-
-                    if (jamesRewards == null)
-                    {
-                        Debug.LogError(alchemyItems[itemTypeIndex] + ".txt is missing!");
-                    }
-                    else
-                    {
-                        jamesReward = jamesRewards.text.Split('\n');
-                    }
+                    childTypes[i] = Path.GetFileNameWithoutExtension(childFileInfo[i].FullName);
                 }
 
-                jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
+                childTypesIndex = EditorGUILayout.Popup("Item Category: ", childTypesIndex, childTypes);
 
-                questItemIndex = EditorGUILayout.Popup("Quest Required Items", questItemIndex, questItem);
+                stanleyRewardGO = Resources.LoadAll("Items/" + itemTypes[itemTypeIndex] + "/" + childTypes[childTypesIndex], typeof(GameObject)).Cast<GameObject>().ToArray();
+
+                stanleyReward = new string[stanleyRewardGO.Length];
+
+                for (int i = 0; i < stanleyRewardGO.Length; i++)
+                {
+                    stanleyReward[i] = stanleyRewardGO[i].name;
+                }
+
+                stanleyRewardIndex = EditorGUILayout.Popup("Quest Rewards", stanleyRewardIndex, stanleyReward);
 
                 for (int i = 0; i < QuestManager.QuestList[questIndex].playerDialog.Length; i++)
                 {
@@ -230,10 +211,8 @@ public class QuestSearcher : EditorWindow {
                 EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].questType.ToString());
 
                 EditorGUILayout.LabelField("Quest Rewards: ", EditorStyles.boldLabel);
-                EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].jamesReward);
 
-                EditorGUILayout.LabelField("Quest Required Items: ", EditorStyles.boldLabel);
-                EditorGUILayout.SelectableLabel(QuestManager.QuestList[nameIndex].requiredItem);
+                EditorGUILayout.LabelField("Quest Reward: ", QuestManager.QuestList[questIndex].stanleyReward.ToString());
 
                 for (int i = 0; i < QuestManager.QuestList[nameIndex].playerDialog.Length; i++)
                 {
@@ -257,42 +236,30 @@ public class QuestSearcher : EditorWindow {
                 QuestManager.QuestList[nameIndex].questJob = (JobType)EditorGUILayout.EnumPopup("Jobs", QuestManager.QuestList[nameIndex].questJob);
                 QuestManager.QuestList[nameIndex].requiredExperience = EditorGUILayout.IntField("Required Experience: ", QuestManager.QuestList[nameIndex].requiredExperience);
 
-                jobItemIndex = (JobType)EditorGUILayout.EnumPopup("Jobs", jobItemIndex);
+                itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, itemTypes);
 
-                if (jobItemIndex == JobType.BLACKSMITH) //If job = Blacksmith
+                DirectoryInfo childDirectoryInfo = new DirectoryInfo(Application.dataPath + "/Resources/Items/" + itemTypes[itemTypeIndex]);
+                FileInfo[] childFileInfo = childDirectoryInfo.GetFiles();
+
+                childTypes = new string[childFileInfo.Length];
+
+                for (int i = 0; i < childFileInfo.Length; i++)
                 {
-                    itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, blacksmithItems);
-
-                    jamesRewards = Resources.Load("Quests/Items/" + blacksmithItems[itemTypeIndex]) as TextAsset;
-
-                    if (jamesRewards == null)
-                    {
-                        Debug.LogError(blacksmithItems[itemTypeIndex] + ".txt is missing!");
-                    }
-                    else
-                    {
-                        jamesReward = jamesRewards.text.Split('\n');
-                    }
-                }
-                else //If job = Alchemy
-                {
-                    itemTypeIndex = EditorGUILayout.Popup("Item Types: ", itemTypeIndex, alchemyItems);
-
-                    jamesRewards = Resources.Load("Quests/Items/" + alchemyItems[itemTypeIndex]) as TextAsset;
-
-                    if (jamesRewards == null)
-                    {
-                        Debug.LogError(alchemyItems[itemTypeIndex] + ".txt is missing!");
-                    }
-                    else
-                    {
-                        jamesReward = jamesRewards.text.Split('\n');
-                    }
+                    childTypes[i] = Path.GetFileNameWithoutExtension(childFileInfo[i].FullName);
                 }
 
-                jamesRewardIndex = EditorGUILayout.Popup("Quest Rewards", jamesRewardIndex, jamesReward);
+                childTypesIndex = EditorGUILayout.Popup("Item Category: ", childTypesIndex, childTypes);
 
-                questItemIndex = EditorGUILayout.Popup("Quest Required Items", questItemIndex, questItem);
+                stanleyRewardGO = Resources.LoadAll("Items/" + itemTypes[itemTypeIndex] + "/" + childTypes[childTypesIndex], typeof(GameObject)).Cast<GameObject>().ToArray();
+
+                stanleyReward = new string[stanleyRewardGO.Length];
+
+                for (int i = 0; i < stanleyRewardGO.Length; i++)
+                {
+                    stanleyReward[i] = stanleyRewardGO[i].name;
+                }
+
+                stanleyRewardIndex = EditorGUILayout.Popup("Quest Rewards", stanleyRewardIndex, stanleyReward);
 
                 for (int i = 0; i < QuestManager.QuestList[nameIndex].playerDialog.Length; i++)
                 {
@@ -364,6 +331,6 @@ public class QuestSearcher : EditorWindow {
 
     protected void OnDisable()
     {
-        QuestFactory.Save(Path.Combine(Application.dataPath, "Scripts/Quests/quests.xml"));
+        QuestFactory.Save(Path.Combine(Application.dataPath, "XML/quests.xml"));
     }
 }
