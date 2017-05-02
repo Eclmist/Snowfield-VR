@@ -159,7 +159,7 @@ public class OrderManager : MonoBehaviour
                 break;
             case JobType.BLACKSMITH:
 
-                PhysicalMaterial currentMaterial = materialList[Random.Range(0, materialList.Count)];
+                PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
 
                 newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString()
             , currentTemplate.Sprite

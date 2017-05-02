@@ -3,23 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ore : GenericItem {
+public class BlacksmithItem : GenericItem{
 
     [SerializeField]
-    private TYPE type;
+    protected PhysicalMaterial physicalMaterial;
+    
 
     public override void UpdatePosition()
     {
         throw new NotImplementedException();
     }
-
-    public TYPE Type
-    {
-        get { return this.type; }
-    }
-
-
-	
-
-
 }

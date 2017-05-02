@@ -6,31 +6,127 @@ public class BlacksmithManager : MonoBehaviour {
 
     public static BlacksmithManager Instance;
 
-    private List<Ingot> availableIngots;
+    [SerializeField]
+    private string rootFolderName;
+    [SerializeField]
+    private List<GameObject> availableIngots;   // Store ingot prefabs
+    [SerializeField]
+    private List<GameObject> availableOres;     // Store ore prefabs
+    private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
 
 
-	void Awake()
+    public List<GameObject> Ingots
     {
-        Instance = this;
-        availableIngots = new List<Ingot>();
-
-        StoreReferences();
+        get { return this.availableIngots; }
     }
 
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    private void StoreReferences()
+    public List<GameObject> Ore
     {
-        Object[] temp = Resources.LoadAll("Ingots");
+        get { return this.availableOres; }
+    }
 
-        foreach (Object o in temp)
+    public List<PhysicalMaterial> MaterialList
+    {
+        get { return this.materialList; }
+    }
+
+
+
+    void Awake()
+    {
+        Instance = this;
+        availableIngots = new List<GameObject>();
+        availableOres = new List<GameObject>();
+        materialList = new List<PhysicalMaterial>();
+
+        StorePrefabReferences("Ingots",availableIngots);
+        StorePrefabReferences("Ores", availableOres);
+        CheckPhysicalMaterials(availableIngots);
+
+    }
+
+    public void SpawnIngot(TYPE type)
+    {
+        foreach (GameObject i in availableIngots)
         {
-            availableIngots.Add(o as Ingot);
+            if (type == i.GetComponent<Ingot>().PhysicalMaterial.Type)
+                Instantiate(i);
         }
+    }
+
+    public void SpawnIngot(TYPE type, Transform transform)
+    {
+        foreach (GameObject i in availableIngots)
+        {
+            if (type == i.GetComponent<Ingot>().PhysicalMaterial.Type)
+                Instantiate(i, transform);
+        }
+    }
+
+
+
+
+    // Populates a list with prefabs from the requested folder
+    private void StorePrefabReferences(string subFolder, List<GameObject> prefabList)
+    {
+
+
+       Object[] loadedStuff = Resources.LoadAll(rootFolderName + "/" + subFolder,typeof(GameObject));
+        
+        if(loadedStuff != null)
+        {
+            foreach (Object o in loadedStuff)
+            {
+                prefabList.Add(o as GameObject);
+            }
+        }
+        else
+        {
+            Debug.Log("Prefabs cant be found. Check if prefabs are in resources folder.");
+        }
+
+    }
+
+    // Physcial Materials will be derived from ingots
+    private void CheckPhysicalMaterials(List<GameObject> someList)
+    {
+        if(someList != null)
+        {
+            foreach (GameObject item in someList)
+            {
+                Ingot ingotref =  item.GetComponent<Ingot>();
+                StorePhysicalMaterial(ingotref);
+            }
+        }
+        else
+        {
+            Debug.Log("ingot list is empty");
+        }
+        
+    }
+
+
+
+
+    private void StorePhysicalMaterial(Ingot item)
+    {
+        bool alreadyExist = false;
+
+        if (materialList.Count < 1)
+            materialList.Add(item.PhysicalMaterial);
+
+        foreach(PhysicalMaterial pm in materialList)
+        {
+            if(item.PhysicalMaterial.Type == pm.Type)
+            {
+                alreadyExist = true;
+                break;
+            }
+           
+        }
+
+        if (!alreadyExist)
+            materialList.Add(item.PhysicalMaterial);
     }
 
    

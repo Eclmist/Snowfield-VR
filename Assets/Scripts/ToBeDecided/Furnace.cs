@@ -20,7 +20,7 @@ public class Furnace : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+        Ingot bsItem = other.GetComponent<Ingot>();
         if (bsItem != null)
         {
             bsItem.SetHeatingEnvironment((sphereCollider.radius - (Vector3.Distance(other.transform.position,transform.TransformPoint(sphereCollider.center)))) * 1);
@@ -30,7 +30,7 @@ public class Furnace : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+        Ingot bsItem = other.GetComponent<Ingot>();
         if(bsItem != null)
         bsItem.HeatSourceDetected = false;
            

@@ -23,9 +23,9 @@ public class Cooler : MonoBehaviour {
 	private void OnTriggerEnter(Collider other)
 	{
 
-		if (other.gameObject.GetComponent<BlacksmithItem>() != null)
+		if (other.gameObject.GetComponent<Ingot>() != null)
 		{
-			BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+			Ingot bsItem = other.GetComponent<Ingot>();
             bsItem.QuenchRate = 10f;
             audioSource.volume = bsItem.CurrentTemperature / 1f;
 			audioSource.PlayOneShot(coolSound);
@@ -35,9 +35,9 @@ public class Cooler : MonoBehaviour {
     private void OnTriggerExit(Collider other)
     {
 
-        if (other.gameObject.GetComponent<BlacksmithItem>() != null)
+        if (other.gameObject.GetComponent<Ingot>() != null)
         {
-            BlacksmithItem bsItem = other.GetComponent<BlacksmithItem>();
+            Ingot bsItem = other.GetComponent<Ingot>();
             bsItem.QuenchRate = 1f;
             
         }
