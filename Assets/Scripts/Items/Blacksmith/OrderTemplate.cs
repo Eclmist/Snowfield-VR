@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum SUFFIX
 {
     sword,
@@ -13,7 +14,7 @@ public class OrderTemplate {
 
     [SerializeField]
     private Sprite sprite;
-    [HideInInspector]public string spritePath;
+    [HideInInspector]private string spritePath;
     [SerializeField]
     private int spriteIndex;
     [SerializeField]
