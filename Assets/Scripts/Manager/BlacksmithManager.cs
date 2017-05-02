@@ -12,6 +12,7 @@ public class BlacksmithManager : MonoBehaviour {
     private List<GameObject> availableIngots;   // Store ingot prefabs
     [SerializeField]
     private List<GameObject> availableOres;     // Store ore prefabs
+    [SerializeField]
     private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
 
 
@@ -21,13 +22,24 @@ public class BlacksmithManager : MonoBehaviour {
         {
             List<Ingot> list = new List<Ingot>();
 
+            foreach (GameObject g in availableIngots)
+                list.Add(g.GetComponent<Ingot>());
+
             return list;
         }
     }
 
-    public List<GameObject> Ore
+    public List<Ore> Ores
     {
-        get { return this.availableOres; }
+        get
+        {
+            List<Ore> list = new List<Ore>();
+
+            foreach (GameObject g in availableOres)
+                list.Add(g.GetComponent<Ore>());
+
+            return list;
+        }
     }
 
     public List<PhysicalMaterial> MaterialList

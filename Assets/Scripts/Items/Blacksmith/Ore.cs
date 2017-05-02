@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Ore : GenericItem {
 
+    
     [SerializeField]
     private TYPE type;
 
