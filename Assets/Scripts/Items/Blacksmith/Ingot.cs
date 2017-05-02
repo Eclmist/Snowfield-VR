@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Ingot : BlacksmithItem {
 
+    [SerializeField]
+    private int oreComposition;
+
     public Material initialMaterial;
     public Material forgingMaterial; // Material to lerp to when heated
     protected MeshRenderer meshRenderer; // To modify the material
@@ -44,6 +47,10 @@ public class Ingot : BlacksmithItem {
 
     //--------------- Properties -----------------//
 
+    public int OreComposition
+    {
+        get { return this.oreComposition; }
+    }
 
     public float CurrentTemperature
     {
