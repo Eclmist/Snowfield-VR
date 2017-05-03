@@ -53,6 +53,16 @@ public abstract class GenericItem : MonoBehaviour, IInteractable
         set { this.weight = value; }
     }
 
+    public AudioClip Sound
+    {
+        get { return this.sound; }
+        set { this.sound = value; }
+    }
+
+    public AudioSource AudioSource
+    {
+        get { return this.audioSource; }
+    }
     
     
     public virtual void Interact(VR_Controller_Custom referenceCheck)
