@@ -5,15 +5,20 @@ using UnityEngine;
 public class BlacksmithManager : MonoBehaviour {
 
     public static BlacksmithManager Instance;
-
+    
     [SerializeField]
     private string rootFolderName;
+    [SerializeField]
+    private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
+
+    [Header("Stored prefabs/references")]
     [SerializeField]
     private List<GameObject> availableIngots;   // Store ingot prefabs
     [SerializeField]
     private List<GameObject> availableOres;     // Store ore prefabs
-    [SerializeField]
-    private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
+    
+
+    
 
 
     public List<Ingot> Ingots
