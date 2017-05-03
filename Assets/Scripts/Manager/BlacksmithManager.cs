@@ -7,7 +7,7 @@ public class BlacksmithManager : MonoBehaviour {
     public static BlacksmithManager Instance;
     
     [SerializeField]
-    private string rootFolderName;
+    private string rootFolderName; 
     [SerializeField]
     private List<PhysicalMaterial> materialList;    // Stores all materials based on ingots
 
@@ -17,9 +17,6 @@ public class BlacksmithManager : MonoBehaviour {
     [SerializeField]
     private List<GameObject> availableOres;     // Store ore prefabs
     
-
-    
-
 
     public List<Ingot> Ingots
     {
@@ -67,15 +64,7 @@ public class BlacksmithManager : MonoBehaviour {
 
     }
 
-    public void SpawnIngot(TYPE type)
-    {
-        foreach (GameObject i in availableIngots)
-        {
-            if (type == i.GetComponent<Ingot>().PhysicalMaterial.Type)
-                Instantiate(i);
-        }
-    }
-
+    // Spawns the requested ingot in the game
     public void SpawnIngot(TYPE type, Transform transform)
     {
         foreach (GameObject i in availableIngots)
@@ -85,13 +74,24 @@ public class BlacksmithManager : MonoBehaviour {
         }
     }
 
+    // Spawns the requested ore in the game
+    public void SpawnOre(TYPE type, Transform transform)
+    {
+        foreach (GameObject i in availableOres)
+        {
+            if (type == i.GetComponent<Ore>().Type)
+                Instantiate(i, transform);
+        }
+    }
+
+    
+
 
 
 
     // Populates a list with prefabs from the requested folder
     private void StorePrefabReferences(string subFolder, List<GameObject> prefabList)
     {
-
 
        Object[] loadedStuff = Resources.LoadAll(rootFolderName + "/" + subFolder,typeof(GameObject));
         
@@ -109,7 +109,7 @@ public class BlacksmithManager : MonoBehaviour {
 
     }
 
-    // Physcial Materials will be derived from ingots
+    // Populates the material list
     private void CheckPhysicalMaterials(List<GameObject> someList)
     {
         if(someList != null)
@@ -129,7 +129,7 @@ public class BlacksmithManager : MonoBehaviour {
 
 
 
-
+    //Adds a UNIQUE material type to the material list
     private void StorePhysicalMaterial(Ingot item)
     {
         bool alreadyExist = false;
