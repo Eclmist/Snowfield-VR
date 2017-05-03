@@ -34,38 +34,7 @@ public class SerializeManager
 
     }
 
-    public static void SaveBundle(object o)
-    {
-        //List<object> myList;
-        System.Collections.IList someList;
-
-        // First check
-        if (IsList(o))
-        {
-            //myList = (List<object>)o;
-            someList = (System.Collections.IList)o;
-            foreach(object someObj in someList)
-            {
-                if (!IsList(someObj))
-                    Save(someObj.GetHashCode().ToString(), someObj);
-                else
-                    SaveBundle(someObj);
-            }
-        }
-
-    }
-
        
-
-    public static bool IsList(object o)
-    {
-        if (o == null) return false;
-        
-        return o is System.Collections.IList &&
-               o.GetType().IsGenericType &&
-               o.GetType().GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>));
-    }
-
 
 
     public static object Load(string fileName)
@@ -89,6 +58,11 @@ public class SerializeManager
 
     }
 
+
+    public static void LoadUnserializableFile(System.Type type)
+    {
+        
+    }
 
 
 }

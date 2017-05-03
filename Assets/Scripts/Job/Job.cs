@@ -39,6 +39,8 @@ public class Job {
         }
     }
 
+
+
     public Job(JobType _currentJob)
     {
         currentJobType = _currentJob;
