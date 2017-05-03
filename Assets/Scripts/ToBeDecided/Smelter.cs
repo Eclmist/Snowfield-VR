@@ -5,12 +5,13 @@ using UnityEngine;
 public class Smelter : MonoBehaviour {
 
     [SerializeField][Range(2f,10f)]private float smeltDuration;
-    [SerializeField]private Transform funnel;
-    [SerializeField]private float funnelRadius;
-    [SerializeField]private AudioClip smeltSound;
-    [SerializeField]private AudioClip doneCasting;
+    [SerializeField]private Transform funnel;   // The position where all the ores are thrown into
+    [SerializeField]private float funnelRadius; // Defines how the boundaries of the funnel
+    [SerializeField]private AudioClip smeltSound;   // Played when smelting 
+    [SerializeField]private AudioClip doneCasting; // Played when ingot is ready for collection
     private AudioSource source;
-    private List<Ore> ores;
+
+    private List<Ore> ores; // Stores the ores that are throw into the funnel
  
 
     // Use this for initialization
@@ -20,16 +21,7 @@ public class Smelter : MonoBehaviour {
         source = GetComponent<AudioSource>();
     }
 	
-	// Update is called once per frame
-	void Update () {
-        
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            Smelt();
-        }
-
-    }
-
+    // Populates the ore list
     private void GetOresInFunnel()
     {
         foreach (Collider c in Physics.OverlapSphere(funnel.position, funnelRadius))
@@ -42,7 +34,7 @@ public class Smelter : MonoBehaviour {
     }
 
 
-    // Button press
+    // Call this when the "smelt" button is pressed 
     private void Smelt()
     {
         bool canSmelt = false;
@@ -60,7 +52,6 @@ public class Smelter : MonoBehaviour {
                     StartCoroutine(SmeltProcess(ingot.PhysicalMaterial.Type));
                     break;
                 }
-
             }
         }
        
@@ -71,13 +62,16 @@ public class Smelter : MonoBehaviour {
 
     }
 
+    // Spawns the resulting ingot after the smelting duration
     private IEnumerator SmeltProcess(TYPE type)
     {
         yield return new WaitForSeconds(smeltDuration);
         source.PlayOneShot(doneCasting);
-        BlacksmithManager.Instance.SpawnIngot(type);
+        BlacksmithManager.Instance.SpawnIngot(type,transform);
     }
 
+
+    // Check if there are enough ores for a particular type of ingot to form
     private bool isCompositionMet(Ingot ingot)
     {
         int currentComp = 0;
@@ -93,7 +87,7 @@ public class Smelter : MonoBehaviour {
 
     }
 
-
+    // Counts the number of ores given a certain type
     private int CountOresOfType(TYPE type)
     {
         int count = 0;
