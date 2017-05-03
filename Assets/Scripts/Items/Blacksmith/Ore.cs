@@ -14,13 +14,22 @@ public class Ore : GenericItem {
         throw new NotImplementedException();
     }
 
-    public TYPE Type
-    {
-        get { return this.type; }
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+}
+
+    public TYPE Type
+    {
+        get { return this.type; }
     }
 
 
 	
 
-
-}

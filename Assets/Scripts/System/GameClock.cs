@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock {
+public class GameClock {
 
     private float startTimeInSecond;
 
@@ -35,7 +35,7 @@ public class Clock {
     }
 
 
-	public Clock(float secondsPerDay)
+	public GameClock(float secondsPerDay)
     {
         totalSecondsPerDay = secondsPerDay;
         startTimeInSecond = Time.time;
