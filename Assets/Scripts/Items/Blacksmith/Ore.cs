@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ore : GenericItem {
+public class Ore : InteractableItem
+{
 
-    
+
     [SerializeField]
     private TYPE type;
 
@@ -14,13 +15,13 @@ public class Ore : GenericItem {
         throw new NotImplementedException();
     }
 
+
+
     public TYPE Type
     {
-        get { return this.type; }
+        get { return this.type; }
     }
 
-
-	
-
-
 }
+
+
