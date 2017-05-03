@@ -15,8 +15,9 @@ public enum TYPE
 [System.Serializable]
 public class PhysicalMaterial {
 
-    [SerializeField]private int costMultiplier;
     [SerializeField]private string m_name;
+    [SerializeField]private int costMultiplier;
+    
 
     [SerializeField]
     [Range(1, 100)]
