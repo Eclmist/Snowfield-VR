@@ -4,44 +4,78 @@ using UnityEngine;
 
 public class Smelter : MonoBehaviour {
 
+    [SerializeField][Range(2f,10f)]private float smeltDuration;
+    [SerializeField]private Transform funnel;
+    [SerializeField]private float funnelRadius;
+    [SerializeField]private AudioClip smeltSound;
+    [SerializeField]private AudioClip doneCasting;
+    private AudioSource source;
     private List<Ore> ores;
+ 
 
-	// Use this for initialization
-	void Start () {
-
+    // Use this for initialization
+    void Start()
+    {
         ores = new List<Ore>();
-	}
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
         
-
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            Smelt();
+        }
 
     }
 
-    void OnTriggerEnter(Collider other)
+    private void GetOresInFunnel()
     {
-        Ore ore = other.gameObject.GetComponent<Ore>();
+        foreach (Collider c in Physics.OverlapSphere(funnel.position, funnelRadius))
+        {
+            Ore ore = c.gameObject.GetComponent<Ore>();
 
-        if (ore != null)
-            ores.Add(ore);
-
-
-
+            if (ore != null)
+                ores.Add(ore);
+        }
     }
 
 
+    // Button press
     private void Smelt()
     {
+        bool canSmelt = false;
+   
+        GetOresInFunnel();      
 
-        foreach(Ingot ingot in BlacksmithManager.Instance.Ingots)
+        if(ores.Count > 0)
         {
-            if(isCompositionMet(ingot))
+            foreach (Ingot ingot in BlacksmithManager.Instance.Ingots)
             {
-                BlacksmithManager.Instance.SpawnIngot(ingot.PhysicalMaterial.Type);
+                if (isCompositionMet(ingot))
+                {
+                    canSmelt = true;
+                    source.PlayOneShot(smeltSound);
+                    StartCoroutine(SmeltProcess(ingot.PhysicalMaterial.Type));
+                    break;
+                }
+
             }
         }
+       
+
+        if (!canSmelt)
+            Debug.Log("cant smelt into any ingot");
+
+
+    }
+
+    private IEnumerator SmeltProcess(TYPE type)
+    {
+        yield return new WaitForSeconds(smeltDuration);
+        source.PlayOneShot(doneCasting);
+        BlacksmithManager.Instance.SpawnIngot(type);
     }
 
     private bool isCompositionMet(Ingot ingot)
