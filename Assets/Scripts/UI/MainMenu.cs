@@ -15,7 +15,45 @@ public enum MainMenuState
 }
 
 
-public class MainMenu : UI_Manager {
+public class MainMenu : UI_Manager,IInteractable {
+
+    private VR_Controller_Custom linkedController = null;
+
+    public VR_Controller_Custom LinkedController
+    {
+        get
+        {
+            return linkedController;
+        }
+        set
+        {
+            linkedController = value;
+        }
+    }
+
+    public void Interact(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController != null && linkedController != referenceCheck)
+            linkedController.SetInteraction(null);
+
+        
+        curState = MainMenuState.CREDITS;
+    }
+
+    public void UpdatePosition()
+    {
+        //do w/e
+    }
+
+    public void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController == referenceCheck)
+        {
+            linkedController = null;
+            referenceCheck.SetInteraction(null);
+        }
+    }
+
     private MainMenuState curState = MainMenuState.IDLE, lastState = MainMenuState.NEW_GAME;
     private bool inside = false;
 
@@ -26,8 +64,9 @@ public class MainMenu : UI_Manager {
 	
 	// Update is called once per frame
 	void Update () {
-        if (inside)
-        {
+        if (linkedController != null)
+            UpdatePosition();
+        
             if (Input.GetMouseButtonDown(0))
             {
                 curState = MainMenuState.CREDITS;
@@ -55,11 +94,7 @@ public class MainMenu : UI_Manager {
                 curState = MainMenuState.IDLE;
                 lastState = MainMenuState.CREDITS;
             }
-        }
-        else
-        {
-
-        }
+        
     }
 
     private void TextChange(Text txt, string newTxt)
@@ -67,23 +102,23 @@ public class MainMenu : UI_Manager {
         txt.text = newTxt;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "GameController")
-        {
-            inside = true;
-        }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.tag == "GameController")
+    //    {
+    //        inside = true;
+    //    }
 
-        Debug.Log(inside);
-    }
+    //    Debug.Log(inside);
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "GameController")
-        {
-            inside = false;
-        }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.tag == "GameController")
+    //    {
+    //        inside = false;
+    //    }
 
-        Debug.Log(inside);
-    }
+    //    Debug.Log(inside);
+    //}
 }
