@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
-public class ActorFSM : Actor {
+public abstract class ActorFSM : MonoBehaviour {
 
     public enum FSMState //changed to fsm state
     {
@@ -14,10 +14,10 @@ public class ActorFSM : Actor {
         INTRUSION,
         COMBAT
     }
-    
-    protected FSMState baseState;
-    protected FSMState currentState;
 
+    protected Vector3[] path;
+    protected bool requestedPath;
+    protected FSMState currentState;
     protected Rigidbody rigidBody;
     protected Animator animator;
     // Use this for initialization
@@ -42,6 +42,11 @@ public class ActorFSM : Actor {
 
     protected virtual void Update()
     {
+        UpdateFSMState();
+    }
+
+    protected virtual void UpdateFSMState()
+    {
         switch (currentState)
         {
             case FSMState.IDLE:
@@ -53,37 +58,24 @@ public class ActorFSM : Actor {
             case FSMState.INTERACTION:
                 UpdateInteractionState();
                 break;
-            case FSMState.INTRUSION:
-                UpdateIntrusionState();
-                break;
             case FSMState.COMBAT:
                 UpdateCombatState();
                 break;
         }
     }
 
-    protected virtual void UpdateIdleState()
-    {
+    protected abstract void UpdateIdleState();
 
+    protected abstract void UpdatePetrolState();
+
+    protected abstract void UpdateInteractionState();
+
+    protected abstract void UpdateCombatState();
+
+    protected void ChangePath(Vector3[] _path)
+    {
+        path = _path;
+        requestedPath = false;
     }
 
-    protected virtual void UpdatePetrolState()
-    {
-
-    }
-
-    protected virtual void UpdateInteractionState()
-    {
-
-    }
-
-    protected virtual void UpdateIntrusionState()
-    {
-
-    }
-
-    protected virtual void UpdateCombatState()
-    {
-
-    }
 }

@@ -27,10 +27,8 @@ public class BlacksmithItem : InteractableItem {
         currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
     }
 
-    protected override void Update()
+    protected virtual void Update()
     {
-
-        base.Update();
         if (Input.GetKeyDown(KeyCode.E))
             quenchRate = 10;
 
@@ -102,40 +100,58 @@ public class BlacksmithItem : InteractableItem {
        meshRenderer.material.Lerp(initialMaterial, forgingMaterial, currentTemperature);
     }
 
-    public override void Interact(VR_Controller_Custom referenceCheck)
+    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        rigidBody.useGravity = true;
+        base.StopInteraction(referenceCheck);
+        rigidBody.velocity = referenceCheck.Velocity();
+        rigidBody.angularVelocity = referenceCheck.AngularVelocity();
+    }
+
+    public override void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         rigidBody.useGravity = false;
-        base.Interact(referenceCheck);
+        base.StartInteraction(referenceCheck);
         rigidBody.maxAngularVelocity = 10f;
     }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+    public override void Interact(VR_Controller_Custom referenceCheck)
     {
-        if (linkedController == referenceCheck)
+        base.Interact(referenceCheck);
+        if (linkedController != null)
         {
-            rigidBody.useGravity = true;
-            base.StopInteraction(referenceCheck);
-            rigidBody.velocity = referenceCheck.Velocity();
-            rigidBody.angularVelocity = referenceCheck.AngularVelocity();
+            Vector3 PositionDelta = (linkedController.transform.position - transform.position);
+
+            Quaternion RotationDelta = linkedController.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+            float angle;
+            Vector3 axis;
+            RotationDelta.ToAngleAxis(out angle, out axis);
+
+            if (angle > 180)
+                angle -= 360;
+
+            rigidBody.angularVelocity = axis * angle * 0.4f;
+
+            rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
         }
     }
 
-    public override void UpdatePosition()
-    {
-        Vector3 PositionDelta = (linkedController.transform.position - transform.position);
+    //public override void UpdatePosition()
+    //{
+    //    Vector3 PositionDelta = (linkedController.transform.position - transform.position);
 
-        Quaternion RotationDelta = linkedController.transform.rotation * Quaternion.Inverse(this.transform.rotation);
-        float angle;
-        Vector3 axis;
-        RotationDelta.ToAngleAxis(out angle, out axis);
+    //    Quaternion RotationDelta = linkedController.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+    //    float angle;
+    //    Vector3 axis;
+    //    RotationDelta.ToAngleAxis(out angle, out axis);
 
-        if (angle > 180)
-            angle -= 360;
+    //    if (angle > 180)
+    //        angle -= 360;
 
-        rigidBody.angularVelocity = axis * angle * 0.4f;
+    //    rigidBody.angularVelocity = axis * angle * 0.4f;
 
-        rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
-    }
+    //    rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
+    //}
 
     protected virtual void OnCollisionEnter(Collision collision)
     {

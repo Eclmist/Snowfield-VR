@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,5 +40,8 @@ public class Player : Actor
         return gold >= 0;
     }
 
-    
+    public override void Notify()
+    {
+        throw new NotImplementedException();
+    }
 }

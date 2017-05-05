@@ -8,7 +8,7 @@ public enum EquipSlot
     RIGHTHAND,
 }
 
-public class Actor : MonoBehaviour, IDamagable
+public abstract class Actor : MonoBehaviour, IDamagable
 {
 
     protected int health;
@@ -85,4 +85,6 @@ public class Actor : MonoBehaviour, IDamagable
         }
         
     }
+
+    public abstract void Notify();
 }

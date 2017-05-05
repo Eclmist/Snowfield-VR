@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum JobType
 {
     BLACKSMITH,
-    ALCHEMY
+    ALCHEMY,
+    ADVENTURER
 }
 
 
-public class Job {
+public class Job
+{
 
     protected JobType currentJobType;
     protected int level;
@@ -43,14 +46,14 @@ public class Job {
     {
         currentJobType = _currentJob;
         level = 1;
-        maxExperience = (int)Mathf.Pow(2/GameConstants.Instance.ExpConstant,2);
+        maxExperience = (int)Mathf.Pow(2 / GameConstants.Instance.ExpConstant, 2);
         currentExperience = 0;
     }
 
     public void GainExperience(int experienceValue)
     {
         currentExperience += experienceValue;
-        if(currentExperience >= maxExperience)
+        if (currentExperience >= maxExperience)
         {
             level++;
             maxExperience = (int)Mathf.Pow(level / GameConstants.Instance.ExpConstant, 2);

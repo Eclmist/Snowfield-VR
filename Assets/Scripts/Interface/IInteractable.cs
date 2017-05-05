@@ -8,11 +8,11 @@ public interface IInteractable {
 
     void StopInteraction(VR_Controller_Custom referenceCheck);
 
+    void StartInteraction(VR_Controller_Custom referenceCheck);
+
     VR_Controller_Custom LinkedController
     {
         get;
     }
-
-    void UpdatePosition();
     
 }

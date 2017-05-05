@@ -14,11 +14,8 @@ public class VR_Controller_Custom : MonoBehaviour
 
     [SerializeField]
     private Controller_Handle handle;
-    [SerializeField]
-    private LayerMask interactableLayer;
     private SteamVR_TrackedObject trackedObject;
-    private GameObject interactableObject;
-    private IInteractable interacted;
+    private IInteractable interactableObject;
     private SteamVR_Controller.Device device;
 
     void Awake()
@@ -32,56 +29,39 @@ public class VR_Controller_Custom : MonoBehaviour
         ControllerInput();
     }
 
+    public SteamVR_Controller.Device Device
+    {
+        get
+        {
+            return device;
+        }
+    }
+
     private void ControllerInput()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
-        if (interactableObject != null && (device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger)))
+        
+        if (interactableObject != null)
         {
-            interacted = interactableObject.GetComponent<IInteractable>();
-            interacted.Interact(this);
-
-            switch (handle)
-            {
-                case Controller_Handle.LEFT:
-                    Player.Instance.ChangeWield(EquipSlot.LEFTHAND, interacted);
-                    break;
-                case Controller_Handle.RIGHT:
-                    Player.Instance.ChangeWield(EquipSlot.RIGHTHAND, interacted);
-                    break;
-            }
-
-
-
-        }
-        else if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && interacted != null)
-        {
-            interacted.StopInteraction(this);
+            interactableObject.Interact(this);
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+        if (interactableObject == null || interactableObject.LinkedController == null)
         {
-            interactableObject = collider.gameObject;
+            interactableObject = collider.GetComponent<IInteractable>();
+            if(interactableObject != null)
             Vibrate(5f);
         }
     }
 
     private void OnTriggerStay(Collider collider)
     {
-        if (interacted == null && (interactableLayer == (interactableLayer | (1 << collider.gameObject.layer))))
+        if (interactableObject == null || interactableObject.LinkedController == null)
         {
-            interactableObject = collider.gameObject;
-        }
-
-    }
-
-    private void OnTriggerExit(Collider collider)
-    {
-        if (interacted == null && collider.gameObject == interactableObject)
-        {
-            interactableObject = null;
+            interactableObject = collider.GetComponent<IInteractable>();
         }
 
     }
@@ -108,6 +88,6 @@ public class VR_Controller_Custom : MonoBehaviour
 
     public void SetInteraction(IInteractable _interacted)
     {
-        interacted = _interacted;
+        interactableObject = _interacted;
     }
 }

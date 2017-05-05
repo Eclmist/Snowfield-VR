@@ -44,13 +44,31 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         set { this.m_name = value; }
     }
 
-    protected virtual void Update()
-    {
-        if (linkedController != null)
-            UpdatePosition();
-    }
-    
+    //protected virtual void Update()
+    //{
+    //    if (linkedController != null)
+    //        UpdatePosition();
+    //}
+
     public virtual void Interact(VR_Controller_Custom referenceCheck)
+    {
+        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StartInteraction(referenceCheck);
+        }
+        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && linkedController == referenceCheck)
+        {
+            StopInteraction(referenceCheck);
+        }
+    }
+
+    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        linkedController = null;
+        referenceCheck.SetInteraction(null);
+    }
+
+    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
@@ -58,18 +76,10 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         linkedController = referenceCheck;
     }
 
-    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController == referenceCheck)
-        {
-            linkedController = null;
-            referenceCheck.SetInteraction(null);
-        }
-    }
 
 
-    public abstract void UpdatePosition();
+    //public abstract void UpdatePosition();
 
-    
+
 
 }
