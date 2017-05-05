@@ -49,9 +49,10 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (interactableObject == null || interactableObject.LinkedController == null)
+        IInteractable interacted = collider.GetComponent<IInteractable>();
+        if (interacted != null && (interactableObject == null || interactableObject.LinkedController == null))
         {
-            interactableObject = collider.GetComponent<IInteractable>();
+            interactableObject = interacted;
             if(interactableObject != null)
             Vibrate(5f);
         }
@@ -59,11 +60,20 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
-        if (interactableObject == null || interactableObject.LinkedController == null)
+        IInteractable interacted = collider.GetComponent<IInteractable>();
+        if (interacted != null && (interactableObject == null || interactableObject.LinkedController == null))
         {
-            interactableObject = collider.GetComponent<IInteractable>();
+            interactableObject = interacted;
         }
 
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(interactableObject != null && interactableObject.LinkedController != this)
+        {
+            interactableObject = null;
+        }
     }
 
     public Vector3 Velocity()

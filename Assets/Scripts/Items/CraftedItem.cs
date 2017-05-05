@@ -42,7 +42,15 @@ public class CraftedItem : InteractableItem
     }
 
 
-
+    public override void Interact(VR_Controller_Custom referenceCheck)
+    {
+        base.Interact(referenceCheck);
+        if(linkedController != null)
+        {
+            transform.position = linkedController.transform.position;
+            transform.rotation = linkedController.transform.rotation;
+        }
+    }
     //public override void UpdatePosition()
     //{
     //    transform.position = linkedController.transform.position;
