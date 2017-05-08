@@ -21,7 +21,8 @@ public abstract class ActorFSM : MonoBehaviour {
     protected Actor target;
     protected Animator animator;
     protected float timer = 0;
-    
+
+    [SerializeField] protected Transform head;
 
 
     public virtual void ChangeState(FSMState state)

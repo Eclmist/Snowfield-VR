@@ -53,6 +53,7 @@ public class AdventurerFSM : ActorFSM
             case FSMState.INTERACTION:
                 break;
             case FSMState.COMBAT:
+                timer = 5;
                 break;
 
         }
@@ -80,8 +81,21 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateCombatState()
     {
-        if (Vector3.Distance(target.transform.position, transform.position) > detectionDistance)
+        if (timer > 0)
+        {
+            if (Vector3.Distance(target.transform.position, transform.position) > detectionDistance &&
+                (Physics.Raycast(head.transform.position + head.right, target.transform.position) ||
+                Physics.Raycast(head.transform.position - head.right, target.transform.position)))
+            {
+                timer = 5f;
+            }
+            else
+                timer -= Time.deltaTime;
+        }
+        else
             ChangeState(FSMState.IDLE);
+
+
     }
 
     protected override void UpdateInteractionState()

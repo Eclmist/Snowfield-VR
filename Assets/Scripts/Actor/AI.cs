@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+[RequireComponent(typeof(Rigidbody))]
 public abstract class AI : Actor {
 
     private ActorFSM currentFSM;
