@@ -15,8 +15,9 @@ public enum MainMenuState
 }
 
 
-public class MainMenu : UI_Manager,IInteractable {
-
+public class MainMenu : UI_Manager,IInteractable
+{
+    private MainMenuState curState = MainMenuState.IDLE, lastState = MainMenuState.NEW_GAME;
     private VR_Controller_Custom linkedController = null;
 
     public VR_Controller_Custom LinkedController
@@ -54,8 +55,6 @@ public class MainMenu : UI_Manager,IInteractable {
         }
     }
 
-    private MainMenuState curState = MainMenuState.IDLE, lastState = MainMenuState.NEW_GAME;
-    private bool inside = false;
 
 	// Use this for initialization
 	void Start () {
@@ -66,35 +65,56 @@ public class MainMenu : UI_Manager,IInteractable {
 	void Update () {
         if (linkedController != null)
             UpdatePosition();
-        
-            if (Input.GetMouseButtonDown(0))
-            {
-                curState = MainMenuState.CREDITS;
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                curState = MainMenuState.NEW_GAME;
-            }
+        //test
+        if (Input.GetMouseButtonDown(0))
+        {
+            curState = MainMenuState.CREDITS;
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            curState = MainMenuState.NEW_GAME;
+        }
+        //Main menu state machine
+        if (curState == MainMenuState.IDLE)
+        {
 
-            if (curState == MainMenuState.IDLE)
-            {
+        }
+        else if (curState == MainMenuState.NEW_GAME)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "New Game");
+            lastState = curState;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.CREDITS)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Credits");
+            lastState = curState;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.CONTINUE)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Continue");
+            lastState = curState;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.QUIT)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Quit");
+            lastState = curState;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.SETTINGS)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Settings");
+            lastState = curState;
+            curState = MainMenuState.IDLE;
+        }
 
-            }
-            else if (curState == MainMenuState.NEW_GAME)
-            {
-                Text txt = GetComponentInChildren<Text>();
-                TextChange(txt, "New Game");
-                curState = MainMenuState.IDLE;
-                lastState = MainMenuState.NEW_GAME;
-            }
-            else if (curState == MainMenuState.CREDITS)
-            {
-                Text txt = GetComponentInChildren<Text>();
-                TextChange(txt, "Credits");
-                curState = MainMenuState.IDLE;
-                lastState = MainMenuState.CREDITS;
-            }
-        
     }
 
     private void TextChange(Text txt, string newTxt)
@@ -102,23 +122,4 @@ public class MainMenu : UI_Manager,IInteractable {
         txt.text = newTxt;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.tag == "GameController")
-    //    {
-    //        inside = true;
-    //    }
-
-    //    Debug.Log(inside);
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.tag == "GameController")
-    //    {
-    //        inside = false;
-    //    }
-
-    //    Debug.Log(inside);
-    //}
 }
