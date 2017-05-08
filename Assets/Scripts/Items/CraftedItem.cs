@@ -45,7 +45,7 @@ public class CraftedItem : InteractableItem
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if(linkedController != null)
+        if(referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
             transform.position = linkedController.transform.position;
             transform.rotation = linkedController.transform.rotation;
