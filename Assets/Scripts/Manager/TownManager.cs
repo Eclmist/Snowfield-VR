@@ -28,9 +28,25 @@ public class TownManager : MonoBehaviour
         if (currentTown == null)
         {
             currentTown = new Town(1);
+            GameObject[] shopsObject = GameObject.FindGameObjectsWithTag("Shop");
+            List<Shop> shops = new List<Shop>();
+            foreach(GameObject gameObject in shopsObject)
+            {
+                shops.Add(gameObject.transform.GetComponent<Shop>());
+            }
+            currentTown.Shops.AddRange(shops);
         }
     }
 
+    public Shop GetRandomShop()
+    {
+        int shopIndex = Random.Range(0, currentTown.Shops.Count);
+        shopIndex = shopIndex == currentTown.Shops.Count ? shopIndex - 1 : shopIndex;
+        if (shopIndex >= 0)
+            return currentTown.Shops[shopIndex];
+        else
+            return null;
+    }
     public Town CurrentTown
     {
         get

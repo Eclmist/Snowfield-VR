@@ -58,13 +58,17 @@ public class DisplacableObject : InteractableItem {
 
     // Update is called once per frame
 
-    public override void UpdatePosition()
+    public override void Interact(VR_Controller_Custom referenceCheck)
     {
-        linkedController.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
+        base.Interact(referenceCheck);
+        if (linkedController != null)
+        {
+            linkedController.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
-        Vector3 PositionDelta = (linkedController.transform.position - transform.position);
+            Vector3 PositionDelta = (linkedController.transform.position - transform.position);
 
-        rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
+            rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
+        }
 
         //Vector3 localVelocity = transform.InverseTransformDirection(rigidBody.velocity);
 

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class AlchemyItem : InteractableItem {
 
-    public override void UpdatePosition()
-    {
-        throw new NotImplementedException();
-    }
+    //public override void UpdatePosition()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
 }

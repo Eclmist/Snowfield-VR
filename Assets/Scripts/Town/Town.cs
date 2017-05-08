@@ -6,7 +6,9 @@ public class Town
 {//Can be used to decide the type of adventurers/structures etc
 
     private int population;
-    
+
+    private List<Shop> allShops = new List<Shop>();
+
     public int Population//used to decide how many requests/day etc
     {
         get
@@ -20,4 +22,11 @@ public class Town
         population = _difficulty;
     }
     
+    public List<Shop> Shops
+    {
+        get
+        {
+            return allShops;
+        }
+    }
 }
