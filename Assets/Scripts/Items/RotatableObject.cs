@@ -38,7 +38,7 @@ public class RotatableObject : InteractableItem
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if (linkedController != null)
+        if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
             linkedController.Vibrate(rigidBody.velocity.magnitude);
             Vector3 PositionDelta = (linkedController.transform.position - transform.position);

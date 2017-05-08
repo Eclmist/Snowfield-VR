@@ -61,7 +61,7 @@ public class DisplacableObject : InteractableItem {
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if (linkedController != null)
+        if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
             linkedController.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
