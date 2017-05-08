@@ -7,8 +7,9 @@ using UnityEngine;
 public class RotatableObject : InteractableItem
 {
     private HingeJoint joint;
-    [SerializeField]
-    private float minRotationalValue,maxRotationValue;
+    [SerializeField] private float minRotationalValue,maxRotationValue;
+    [SerializeField] private Transform pivot;
+    
     // Use this for initialization
     void Start()
     {
@@ -18,9 +19,11 @@ public class RotatableObject : InteractableItem
         limit.max = maxRotationValue;
         limit.min = minRotationalValue;
         joint.limits = limit;
-        Transform pivotPoint = transform.FindChild("Pivot");
-        if (pivotPoint != null)
-            joint.anchor = pivotPoint.localPosition;
+        if (pivot != null)
+        {
+            joint.anchor = pivot.localPosition;
+            joint.axis = Vector3.Cross(pivot.forward, pivot.up);
+        }
         else
             Debug.Log("Please attach a pivot point called Pivot and child it to the rotatable object");
         
