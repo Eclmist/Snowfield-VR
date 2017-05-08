@@ -29,6 +29,7 @@ public class AStarManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
         pathFindingThread = new Thread(PathProcess);
         pathFindingThread.Start();
     }
@@ -53,7 +54,7 @@ public class AStarManager : MonoBehaviour
         }
     }
 
-    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<Vector3[]> _callback)
+    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callback)
     {
         lock (requestQueue)
         {
@@ -68,15 +69,15 @@ public class AStarManager : MonoBehaviour
         PathRequest currentPathRequest;
         lock (requestQueue)
         {
-
             currentPathRequest = requestQueue.GetFirst();
+            
         }
-       
+        
         CalculatePath(currentPathRequest);
        
     }
 
-    private void FinishedProcessingPath(PathRequest _request, Vector3[] wayPoint)
+    private void FinishedProcessingPath(PathRequest _request, List<Vector3> wayPoint)
     {
         _request.callBack(wayPoint);
         processingPath = false;
@@ -86,7 +87,7 @@ public class AStarManager : MonoBehaviour
 
     private void CalculatePath(PathRequest _request)
     {
-        Vector3[] wayPoint = null;
+        List<Vector3> wayPoint = new List<Vector3>();
         Node startNode = GridManager.instance.NodeFromWorldPoint(_request.startPoint);
         Node endNode = GridManager.instance.NodeFromWorldPoint(_request.endPoint);
 
@@ -101,15 +102,16 @@ public class AStarManager : MonoBehaviour
                 Node currentNode = openNodes.GetFirst();
 
                 closeNodes.Add(currentNode);
-
+                
                 if (currentNode == endNode)
                 {
                     wayPoint = RetraceNodes(startNode, currentNode);
                     break;
                 }
-
+                
                 for (int i = 0; i < currentNode.Neighbours.Length; i++)
                 {
+                    
                     Node currentNeighbour = currentNode.Neighbours[i];
                     if (currentNeighbour == null
                         || currentNeighbour.IsObstacle
@@ -119,11 +121,10 @@ public class AStarManager : MonoBehaviour
                         continue;
                     }
                     
-                    float newMovementCost = currentNode.SCost + Vector3.Distance(currentNode.Position, currentNeighbour.Position);
                     
+                    float newMovementCost = currentNode.SCost + Vector3.Distance(currentNode.Position, currentNeighbour.Position);
                     if (newMovementCost < currentNeighbour.SCost || !openNodes.Contains(currentNeighbour))
                     {
-
                         currentNeighbour.SCost = newMovementCost;
                         currentNeighbour.ECost = Vector3.Distance(currentNeighbour.Position, endNode.Position);
                         currentNeighbour.Parent = currentNode;
@@ -137,7 +138,7 @@ public class AStarManager : MonoBehaviour
                         else
                             openNodes.UpdateItem(currentNeighbour);
                     }
-
+                    
                     GridManager.instance.OpenNodes = openNodes;
                 }
             }
@@ -146,7 +147,7 @@ public class AStarManager : MonoBehaviour
         FinishedProcessingPath(_request,wayPoint);
     }
 
-    private Vector3[] RetraceNodes(Node _startNode, Node _endNode)
+    private List<Vector3> RetraceNodes(Node _startNode, Node _endNode)
     {
         List<Node> path = new List<Node>();
         List<Vector3> wayPoint = new List<Vector3>();
@@ -155,7 +156,6 @@ public class AStarManager : MonoBehaviour
         while (currentNode != _startNode)
         {
             path.Add(currentNode);
-
             currentNode = currentNode.Parent;
         }
         //Just for visualizing to be removed
@@ -173,7 +173,7 @@ public class AStarManager : MonoBehaviour
             direction = newDirection;
         }
         wayPoint.Reverse();
-        return wayPoint.ToArray();
+        return wayPoint;
 
     }
 
@@ -189,11 +189,11 @@ public struct PathRequest : IBundle<PathRequest>
 {
     public readonly Vector3 startPoint;
     public readonly Vector3 endPoint;
-    public readonly Action<Vector3[]> callBack;
+    public readonly Action<List<Vector3>> callBack;
     //public readonly float stepHeight;
     private int bundleIndex;
 
-    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<Vector3[]> _callBack/* float _steppableHeight*/)
+    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callBack/* float _steppableHeight*/)
     {
         startPoint = _startPoint;
         endPoint = _endPoint;

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+
 public abstract class ActorFSM : MonoBehaviour {
 
     public enum FSMState //changed to fsm state
@@ -15,11 +15,37 @@ public abstract class ActorFSM : MonoBehaviour {
         COMBAT
     }
 
-    protected Vector3[] path;
+    protected List<Vector3> path;
     protected bool requestedPath;
     protected FSMState currentState;
-    protected Rigidbody rigidBody;
+    protected Actor target;
     protected Animator animator;
+    protected float timer = 0;
+    
+
+
+    public virtual void ChangeState(FSMState state)
+    {
+        currentState = state;
+        timer = 0;
+        animator.speed = 1;
+    }
+
+    protected virtual void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+    public Actor Target
+    {
+        get
+        {
+            return target;
+        }
+        set
+        {
+            target = value;
+        }
+    }
     // Use this for initialization
 
     public FSMState State
@@ -34,12 +60,6 @@ public abstract class ActorFSM : MonoBehaviour {
         }
     }
     
-    protected virtual void Awake()
-    {
-        rigidBody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-    }
-
     protected virtual void Update()
     {
         UpdateFSMState();
@@ -72,7 +92,7 @@ public abstract class ActorFSM : MonoBehaviour {
 
     protected abstract void UpdateCombatState();
 
-    protected void ChangePath(Vector3[] _path)
+    protected void ChangePath(List<Vector3> _path)
     {
         path = _path;
         requestedPath = false;

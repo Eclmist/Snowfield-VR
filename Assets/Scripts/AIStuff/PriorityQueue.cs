@@ -101,7 +101,8 @@ public class Heap<T> where T : IBundle<T>
 
     public bool Contains(T _item)
     {
-        return Count != 0 && Equals(internalList[_item.BundleIndex],_item); // Check if the item exist in the list, if it doesn't, bundexindex will remain as 0 and internal[0] should not be equal to _item
+        return Count > 0 && _item.BundleIndex < Count && Equals(internalList[_item.BundleIndex], _item); // Check if the item exist in the list, if it doesn't, bundexindex will remain as 0 and internal[0] should not be equal to _item
+        //return internalList.Contains(_item);
     }
 
     public void UpdateItem(T _item)

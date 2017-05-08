@@ -15,6 +15,7 @@ public class AdventurerAI : AI {
         AddJob(JobType.ADVENTURER);
     }
 
+    
     public List<Quest> Quests
     {
         get
@@ -23,5 +24,6 @@ public class AdventurerAI : AI {
         }
     }
 
+ 
 
 }

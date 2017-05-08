@@ -42,7 +42,10 @@ public class TownManager : MonoBehaviour
     {
         int shopIndex = Random.Range(0, currentTown.Shops.Count);
         shopIndex = shopIndex == currentTown.Shops.Count ? shopIndex - 1 : shopIndex;
-        return currentTown.Shops[shopIndex];
+        if (shopIndex >= 0)
+            return currentTown.Shops[shopIndex];
+        else
+            return null;
     }
     public Town CurrentTown
     {

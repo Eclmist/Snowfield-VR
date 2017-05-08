@@ -13,6 +13,8 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     protected int health;
 
+    protected int maxHealth;
+
     protected List<Job> jobList = new List<Job>();
 
     public void AddJob(JobType newJobType)
@@ -44,6 +46,13 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     }
 
+    public int MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+    }
     public List<Job> JobListReference
     {
         get
@@ -51,9 +60,10 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return jobList;
         }
     }
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage,Actor attacker)
     {
         health -= (damage >= health) ? 0 : health - damage;
+        health = health > maxHealth ? maxHealth : health;
     }
 
 

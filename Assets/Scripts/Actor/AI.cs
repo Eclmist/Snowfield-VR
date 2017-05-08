@@ -16,6 +16,16 @@ public abstract class AI : Actor {
 
     public override void Notify()
     {
-        currentFSM.State = ActorFSM.FSMState.INTERACTION;
+        currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
+    }
+
+    public override void TakeDamage(int damage,Actor attacker)
+    {
+        base.TakeDamage(damage,attacker);
+        if(Mathf.Sign(damage) == -1)
+        {
+            currentFSM.ChangeState(ActorFSM.FSMState.COMBAT);
+            currentFSM.Target = attacker;
+        }
     }
 }
