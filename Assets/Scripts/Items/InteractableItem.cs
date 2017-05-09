@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(Rigidbody))]
 public abstract class InteractableItem : MonoBehaviour, IInteractable
 {
-
+    
     protected Rigidbody rigidBody;
     protected Collider itemCollider;
     #region GenericItem

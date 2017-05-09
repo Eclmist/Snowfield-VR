@@ -3,6 +3,12 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 
+public enum QuestType
+{
+    DailyQuest,
+    StoryQuest
+}
+
 /* ReadME (Example of obtaining the stanleyReward GameObject reference)
 using UnityEngine;
 using System.IO;
@@ -36,11 +42,7 @@ public class Test : MonoBehaviour {
 [Serializable]
 public class Quest
 {
-    public enum QuestType
-    {
-        DailyQuest,
-        StoryQuest
-    }
+   
 
     [XmlAttribute("index")]
     public int index;

@@ -7,7 +7,7 @@ public class DialogManager : MonoBehaviour {
     
     
     public static DialogManager Instance; // Static instance of dialog manager
-
+    
     [Range(0,3)]
     [SerializeField]
     private float minDelay;
@@ -105,6 +105,14 @@ public class DialogManager : MonoBehaviour {
         lineItor = 0;
 
     }
+
+
+    public void SetCurrentSession(Session s)
+    {
+        currentSession = s;
+        lineItor = 0;
+    }
+   
 
 
 

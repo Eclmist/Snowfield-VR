@@ -9,13 +9,14 @@ public class SerializeManager
 {
     private static BinaryFormatter binaryFormatter = new BinaryFormatter();
    
-    public static void Save(string fileName, object obj)
+    public static void Save(string fileName,string subFolder, object obj)
     {
         fileName = "SerializedFiles/" + fileName;
         SurrogateSelector surrogateSelector = new SurrogateSelector();
         surrogateSelector.AddSurrogate(typeof(Sprite), new StreamingContext(StreamingContextStates.All),  new SpriteSurrogate());
         surrogateSelector.AddSurrogate(typeof(Mesh), new StreamingContext(StreamingContextStates.All), new MeshSurrogate());
         surrogateSelector.AddSurrogate(typeof(AudioClip), new StreamingContext(StreamingContextStates.All), new AudioClipSurrogate());
+        surrogateSelector.AddSurrogate(typeof(GameObject), new StreamingContext(StreamingContextStates.All), new GameobjectPathSurrogate(subFolder));
         binaryFormatter.SurrogateSelector = surrogateSelector;
 
         MemoryStream memoryStream = new MemoryStream();
@@ -59,10 +60,6 @@ public class SerializeManager
     }
 
 
-    public static void LoadUnserializableFile(System.Type type)
-    {
-        
-    }
 
 
 }

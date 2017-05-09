@@ -8,8 +8,15 @@ public class Message : MonoBehaviour {
     [SerializeField]
     private string sessionTitle;
     private bool isCleared = false;
+    private bool incomingRequest;
     
-	// Use this for initialization
+    
+	public bool IncomingRequest
+    {
+        get { return this.incomingRequest; }
+        set { this.incomingRequest = value; }
+    }
+
 
 
     void Start()
@@ -29,10 +36,13 @@ public class Message : MonoBehaviour {
 
 	}
 
+
+
     void OnTriggerEnter(Collider other)
     {
-        if(!isCleared)
+        if(!isCleared && incomingRequest)
         {
+           
             DialogManager.Instance.DisplayDialogBox(sessionTitle);
             isCleared = true;
         }
