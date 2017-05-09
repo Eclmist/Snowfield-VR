@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
-public class ActorFSM : Actor {
+
+public abstract class ActorFSM : MonoBehaviour {
 
     public enum FSMState //changed to fsm state
     {
@@ -14,12 +14,39 @@ public class ActorFSM : Actor {
         INTRUSION,
         COMBAT
     }
-    
-    protected FSMState baseState;
-    protected FSMState currentState;
 
-    protected Rigidbody rigidBody;
+    protected List<Vector3> path;
+    protected bool requestedPath;
+    protected FSMState currentState;
+    protected Actor target;
     protected Animator animator;
+    protected float timer = 0;
+
+    [SerializeField] protected Transform head;
+
+
+    public virtual void ChangeState(FSMState state)
+    {
+        currentState = state;
+        timer = 0;
+        animator.speed = 1;
+    }
+
+    protected virtual void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+    public Actor Target
+    {
+        get
+        {
+            return target;
+        }
+        set
+        {
+            target = value;
+        }
+    }
     // Use this for initialization
 
     public FSMState State
@@ -34,13 +61,12 @@ public class ActorFSM : Actor {
         }
     }
     
-    protected virtual void Awake()
+    protected virtual void Update()
     {
-        rigidBody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        UpdateFSMState();
     }
 
-    protected virtual void Update()
+    protected virtual void UpdateFSMState()
     {
         switch (currentState)
         {
@@ -53,37 +79,24 @@ public class ActorFSM : Actor {
             case FSMState.INTERACTION:
                 UpdateInteractionState();
                 break;
-            case FSMState.INTRUSION:
-                UpdateIntrusionState();
-                break;
             case FSMState.COMBAT:
                 UpdateCombatState();
                 break;
         }
     }
 
-    protected virtual void UpdateIdleState()
-    {
+    protected abstract void UpdateIdleState();
 
+    protected abstract void UpdatePetrolState();
+
+    protected abstract void UpdateInteractionState();
+
+    protected abstract void UpdateCombatState();
+
+    protected void ChangePath(List<Vector3> _path)
+    {
+        path = _path;
+        requestedPath = false;
     }
 
-    protected virtual void UpdatePetrolState()
-    {
-
-    }
-
-    protected virtual void UpdateInteractionState()
-    {
-
-    }
-
-    protected virtual void UpdateIntrusionState()
-    {
-
-    }
-
-    protected virtual void UpdateCombatState()
-    {
-
-    }
 }

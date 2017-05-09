@@ -13,11 +13,11 @@ public class CraftedItem : InteractableItem
 
 
 
-    public override void Interact(VR_Controller_Custom referenceCheck)
+    public override void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (referenceCheck != linkedController)
         {
-            base.Interact(referenceCheck);
+            base.StartInteraction(referenceCheck);
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
@@ -31,7 +31,7 @@ public class CraftedItem : InteractableItem
 
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
-        if (linkedController == referenceCheck && removable && !toggled)
+        if (removable && !toggled)
         {
             itemCollider.isTrigger = false;
             base.StopInteraction(referenceCheck);
@@ -42,14 +42,22 @@ public class CraftedItem : InteractableItem
     }
 
 
-
-    public override void UpdatePosition()
+    public override void Interact(VR_Controller_Custom referenceCheck)
     {
-        transform.position = linkedController.transform.position;
-        transform.rotation = linkedController.transform.rotation;
+        base.Interact(referenceCheck);
+        if(referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            transform.position = linkedController.transform.position;
+            transform.rotation = linkedController.transform.rotation;
+        }
     }
+    //public override void UpdatePosition()
+    //{
+    //    transform.position = linkedController.transform.position;
+    //    transform.rotation = linkedController.transform.rotation;
+    //}
 
-  
+
     protected virtual void OnTriggerStay(Collider collision)
     {
         if (linkedController != null && collision.gameObject != linkedController.gameObject)
