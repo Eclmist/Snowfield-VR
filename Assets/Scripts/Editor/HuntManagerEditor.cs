@@ -52,7 +52,7 @@ public class HuntManagerEditor : Editor {
         {
             if (GUILayout.Button("\nSave\n"))
             {
-                SerializeManager.Save("storylines", instance.SubFolder, instance.Storylines);
+                SerializeManager.Save("storylines", instance.Storylines);
                 Debug.Log("saved!");
             }
 
