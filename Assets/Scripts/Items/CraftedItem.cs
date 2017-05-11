@@ -57,7 +57,6 @@ public class CraftedItem : InteractableItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
-
     protected virtual void OnTriggerStay(Collider collision)
     {
         if (linkedController != null && collision.gameObject != linkedController.gameObject)

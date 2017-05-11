@@ -70,7 +70,7 @@ namespace Valve.VR.InteractionSystem
 					{
 						onTouchpadRelease.Invoke();
 					}
-				}
+                }
 			}
 
 		}

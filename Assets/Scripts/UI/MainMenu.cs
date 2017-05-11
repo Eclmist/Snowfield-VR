@@ -15,10 +15,26 @@ public enum MainMenuState
 }
 
 
-public class MainMenu : UI_Manager,IInteractable
+public class MainMenu : MonoBehaviour, IInteractable
 {
-    private MainMenuState curState = MainMenuState.IDLE, lastState = MainMenuState.NEW_GAME;
-    private VR_Controller_Custom linkedController = null;
+    public static MainMenu Instance;
+    protected MainMenuState curState = MainMenuState.IDLE, 
+        lastState = MainMenuState.NEW_GAME, 
+        lastLastState = MainMenuState.IDLE, 
+        nextState = MainMenuState.SETTINGS;
+    protected VR_Controller_Custom linkedController = null;
+    void Awake()
+    {
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.Log("Overlord.");
+            Destroy(this);
+        }
+    }
 
     public VR_Controller_Custom LinkedController
     {
@@ -36,13 +52,42 @@ public class MainMenu : UI_Manager,IInteractable
     {
         if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
+            Debug.Log("Triggered");
+            Collider coll = GetComponent<Collider>();
             StartInteraction(referenceCheck);
-            curState = MainMenuState.CREDITS;
+            if (coll.gameObject.name == "MainMenu")
+            {
+                Debug.Log("MainMenu");
+            }
+            else if(coll.gameObject.name == "Arrow")
+            {
+                Debug.Log("Left");
+                if (lastLastState != MainMenuState.IDLE)
+                {
+                    curState = lastLastState;
+                }
+                else
+                {
+
+                }
+            }
+            if(coll.gameObject.name == "Arrow (1)")
+            {
+                Debug.Log("Right");
+                if (nextState != MainMenuState.IDLE)
+                {
+                    curState = nextState;Debug.Log("Damn");
+                }
+                else
+                {
+
+                }
+            }
         }
-        else if(referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        else if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
-            StartInteraction(referenceCheck);
-            curState = MainMenuState.SETTINGS;        }
+            StopInteraction(referenceCheck);
+        }
         
     }
 
@@ -65,6 +110,7 @@ public class MainMenu : UI_Manager,IInteractable
 
     protected virtual void OnTriggerExit(Collider col)
     {
+        Debug.Log("I am fucking exiting.");
         VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
         if (controller != null)
             StopInteraction(controller);
@@ -79,32 +125,11 @@ public class MainMenu : UI_Manager,IInteractable
 	void Update () {
         
         //test
-        if (Input.GetMouseButtonDown(0))
-        {
-            curState = MainMenuState.CREDITS;
-        }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            curState = MainMenuState.NEW_GAME;
-        }
+        
         //Main menu state machine
         if (curState == MainMenuState.IDLE)
         {
 
-        }
-        else if (curState == MainMenuState.NEW_GAME)
-        {
-            Text txt = GetComponentInChildren<Text>();
-            TextChange(txt, "New Game");
-            lastState = curState;
-            curState = MainMenuState.IDLE;
-        }
-        else if (curState == MainMenuState.CREDITS)
-        {
-            Text txt = GetComponentInChildren<Text>();
-            TextChange(txt, "Credits");
-            lastState = curState;
-            curState = MainMenuState.IDLE;
         }
         else if (curState == MainMenuState.CONTINUE)
         {
@@ -113,18 +138,40 @@ public class MainMenu : UI_Manager,IInteractable
             lastState = curState;
             curState = MainMenuState.IDLE;
         }
-        else if (curState == MainMenuState.QUIT)
+        else if (curState == MainMenuState.NEW_GAME)
         {
             Text txt = GetComponentInChildren<Text>();
-            TextChange(txt, "Quit");
+            TextChange(txt, "New Game");
+            lastLastState = MainMenuState.IDLE;
             lastState = curState;
+            nextState = MainMenuState.SETTINGS;
             curState = MainMenuState.IDLE;
         }
         else if (curState == MainMenuState.SETTINGS)
         {
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "Settings");
+            lastLastState = MainMenuState.NEW_GAME;
             lastState = curState;
+            nextState = MainMenuState.CREDITS;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.CREDITS)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Credits");
+            lastLastState = MainMenuState.SETTINGS;
+            lastState = curState;
+            nextState = MainMenuState.QUIT;
+            curState = MainMenuState.IDLE;
+        }
+        else if (curState == MainMenuState.QUIT)
+        {
+            Text txt = GetComponentInChildren<Text>();
+            TextChange(txt, "Quit");
+            lastLastState = MainMenuState.CREDITS;
+            lastState = curState;
+            nextState = MainMenuState.IDLE;
             curState = MainMenuState.IDLE;
         }
 
@@ -135,4 +182,23 @@ public class MainMenu : UI_Manager,IInteractable
         txt.text = newTxt;
     }
 
+    public void SetState(MainMenuState state)
+    {
+        curState = state;
+    }
+
+    public MainMenuState GetLLState()
+    {
+        return lastLastState;
+    }
+
+    public MainMenuState GetLastState()
+    {
+        return lastState;
+    }
+
+    public MainMenuState GetNextState()
+    {
+        return nextState;
+    }
 }

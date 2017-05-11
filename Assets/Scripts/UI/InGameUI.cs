@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public enum InGameState
+{
+    INGAME,
+    PAUSE
+}
+
 public class InGameUI : UI_Manager, IInteractable
 {
     private VR_Controller_Custom linkedController = null;
@@ -25,10 +32,6 @@ public class InGameUI : UI_Manager, IInteractable
         {
             StartInteraction(referenceCheck);
         }
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && linkedController == referenceCheck)
-        {
-            StopInteraction(referenceCheck);
-        }
     }
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
@@ -47,6 +50,14 @@ public class InGameUI : UI_Manager, IInteractable
             referenceCheck.SetInteraction(null);
         }
     }
+
+    protected virtual void OnTriggerExit(Collider col)
+    {
+        VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
+        if (controller != null)
+            StopInteraction(controller);
+    }
+
     // Use this for initialization
     void Start () {
 		
