@@ -8,10 +8,12 @@ public enum EquipSlot
     RIGHTHAND,
 }
 
-public class Actor : MonoBehaviour, IDamagable
+public abstract class Actor : MonoBehaviour, IDamagable
 {
 
     protected int health;
+
+    protected int maxHealth;
 
     protected List<Job> jobList = new List<Job>();
 
@@ -56,6 +58,13 @@ public class Actor : MonoBehaviour, IDamagable
 
     }
 
+    public int MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+    }
     public List<Job> JobListReference
     {
         get
@@ -63,9 +72,10 @@ public class Actor : MonoBehaviour, IDamagable
             return jobList;
         }
     }
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage,Actor attacker)
     {
         health -= (damage >= health) ? 0 : health - damage;
+        health = health > maxHealth ? maxHealth : health;
     }
 
 
@@ -97,4 +107,6 @@ public class Actor : MonoBehaviour, IDamagable
         }
         
     }
+
+    public abstract void Notify();
 }
