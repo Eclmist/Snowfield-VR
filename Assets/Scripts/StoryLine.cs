@@ -9,6 +9,8 @@ public class StoryLine {
     private JobType jobType;
     [SerializeField]
     private List<StoryHunt> storyLine;
+    [SerializeField]
+    private bool isUnlocked;
 
     public StoryLine(JobType jobType)
     {
@@ -26,6 +28,12 @@ public class StoryLine {
     {
         get { return this.storyLine; }
         set { this.storyLine = value; }
+    }
+
+    public bool IsUnlocked
+    {
+        get { return this.isUnlocked; }
+        set { this.isUnlocked = value; }
     }
         
     public int Count
@@ -51,10 +59,14 @@ public class StoryLine {
     }
    
    
-
     public bool Contains(StoryHunt _item)
     {
         return (storyLine.Contains(_item));
+    }
+
+    public StoryHunt GetNextHunt(StoryHunt hunt)
+    {
+        return storyLine[hunt.ProgressionIndex + 1];
     }
 
     public void Clear()
