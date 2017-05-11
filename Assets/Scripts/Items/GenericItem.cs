@@ -6,6 +6,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
 public abstract class InteractableItem : MonoBehaviour, IInteractable
 {
 
@@ -14,9 +15,6 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
     #region GenericItem
     [SerializeField]
     protected string m_name;
-    [SerializeField]
-    protected AudioClip sound;
-    [SerializeField]
     protected AudioSource audioSource;
     #endregion
 
@@ -37,6 +35,7 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
     {
         rigidBody = GetComponent<Rigidbody>();
         itemCollider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
 
