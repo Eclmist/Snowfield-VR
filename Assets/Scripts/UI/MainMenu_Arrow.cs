@@ -1,18 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
+public class MainMenu_Arrow : MonoBehaviour, IInteractable {
 
-public enum InGameState
-{
-    INGAME,
-    PAUSE
-}
-
-public class InGameUI : UI_Manager, IInteractable
-{
-    private VR_Controller_Custom linkedController = null;
+    protected VR_Controller_Custom linkedController = null;
 
     public VR_Controller_Custom LinkedController
     {
@@ -28,11 +20,45 @@ public class InGameUI : UI_Manager, IInteractable
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
+
         if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
+            Debug.Log("Triggered");
+            Collider coll = GetComponent<Collider>();
             StartInteraction(referenceCheck);
+            
+            if(coll.gameObject.name == "Arrow")
+            {
+                Debug.Log("Left");
+                if (MainMenu.Instance.GetLLState() != MainMenuState.IDLE)
+                {
+                    MainMenu.Instance.SetState(MainMenu.Instance.GetLLState());
+                }
+                else
+                {
+
+                }
+            }
+            else if(coll.gameObject.name == "Arrow (1)")
+            {
+                Debug.Log("Right");
+                if (MainMenu.Instance.GetNextState() != MainMenuState.IDLE)
+                {
+                    MainMenu.Instance.SetState(MainMenu.Instance.GetNextState()); Debug.Log("Damn");
+                }
+                else
+                {
+
+                }
+            }
         }
-    }
+        else if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StopInteraction(referenceCheck);
+        }
+
+
+     }
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
@@ -50,9 +76,9 @@ public class InGameUI : UI_Manager, IInteractable
             referenceCheck.SetInteraction(null);
         }
     }
-
     protected virtual void OnTriggerExit(Collider col)
     {
+        Debug.Log("I am fucking exiting.");
         VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
         if (controller != null)
             StopInteraction(controller);
@@ -64,8 +90,7 @@ public class InGameUI : UI_Manager, IInteractable
 	}
 	
 	// Update is called once per frame
-	void Update ()
-    {
-        
-    }
+	void  Update () {
+		
+	}
 }

@@ -20,14 +20,17 @@ public class UI_Manager : MonoBehaviour {
             Destroy(this);
         }
     }
+
     
     public void Settings()
     {
-
+        Debug.Log("Fuck");
     }
 
     public void Credits()
     {
 
     }
+
+
 }
