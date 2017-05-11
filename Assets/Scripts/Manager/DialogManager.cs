@@ -64,6 +64,12 @@ public class DialogManager : MonoBehaviour {
         HandleDialogBox();            
     }
 
+    public bool IsOccupied
+    {
+        get { return this.isOccupied; }
+    }
+
+    
     public void DisplayDialogBox(string title)
     {
         if(!isOccupied)
@@ -71,9 +77,23 @@ public class DialogManager : MonoBehaviour {
             isOccupied = true;
             LoadSessionByTitle(title);
             ShowDialogBox();
+            Message.Instance.IncomingRequest = false;
         }
         
     }
+
+    public void DisplayDialogBox()
+    {
+        if (!isOccupied && currentSession != null)
+        {
+            isOccupied = true;
+            ShowDialogBox();
+            Message.Instance.IncomingRequest = false;
+        }
+
+    }
+
+
 
     private void ShowDialogBox()
     {
@@ -115,8 +135,6 @@ public class DialogManager : MonoBehaviour {
    
 
 
-
-
     public void ToggleDialogBox()
     {
         isShowing = !isShowing;
@@ -154,6 +172,7 @@ public class DialogManager : MonoBehaviour {
                 {
                     ToggleDialogBox();
                     lineItor = 0;
+                    
                 }
                 else
                 {
