@@ -128,7 +128,6 @@ public class BlacksmithManager : MonoBehaviour {
     }
 
 
-
     //Adds a UNIQUE material type to the material list
     private void StorePhysicalMaterial(Ingot item)
     {
@@ -144,7 +143,6 @@ public class BlacksmithManager : MonoBehaviour {
                 alreadyExist = true;
                 break;
             }
-           
         }
 
         if (!alreadyExist)
