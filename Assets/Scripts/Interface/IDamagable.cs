@@ -8,5 +8,5 @@ public interface IDamagable {
         get;
     }
 
-    void TakeDamage(int damage);
+    void TakeDamage(int damage,Actor attacker);
 }
