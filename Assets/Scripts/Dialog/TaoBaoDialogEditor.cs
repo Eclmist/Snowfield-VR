@@ -58,7 +58,7 @@ public class TaoBaoDialogEditor : MonoBehaviour
     {
 
         if (save)
-            SerializeManager.Save("Dialogs",subFolder, sessions);
+            SerializeManager.Save("Dialogs", sessions);
 
 
     }

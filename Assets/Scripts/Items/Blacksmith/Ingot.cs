@@ -52,7 +52,7 @@ public class Ingot : BlacksmithItem {
         get { return this.oreComposition; }
     }
 
-    }
+    
 
     public float CurrentTemperature
     {

@@ -5,19 +5,26 @@ using UnityEngine;
 [System.Serializable]
 public class Message : MonoBehaviour {
 
-    [SerializeField]
-    private string sessionTitle;
+    public static Message Instance;
+
+  
     private bool isCleared = false;
     private bool incomingRequest;
-    
-    
-	public bool IncomingRequest
+
+
+    public bool IncomingRequest
     {
         get { return this.incomingRequest; }
         set { this.incomingRequest = value; }
     }
 
 
+
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -27,23 +34,16 @@ public class Message : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        // For debugging purposes
-		if(Input.GetKeyDown(KeyCode.X))
-        {
-            DialogManager.Instance.DisplayDialogBox(sessionTitle);
-            isCleared = true;
-        }
-
 	}
 
 
 
     void OnTriggerEnter(Collider other)
     {
-        if(!isCleared && incomingRequest)
+        if(!isCleared && incomingRequest && other.gameObject.tag == "Player")
         {
-           
-            DialogManager.Instance.DisplayDialogBox(sessionTitle);
+            incomingRequest = false;  
+            DialogManager.Instance.DisplayDialogBox();
             isCleared = true;
         }
     }

@@ -7,6 +7,7 @@ public class StoryHunt : Hunt
 {
     [SerializeField]private int progressionIndex;
     [SerializeField]private int requiredLevel;
+    private JobType storyLine;
 
     public StoryHunt(JobType jobType):base(jobType)
     {
@@ -33,8 +34,10 @@ public class StoryHunt : Hunt
         set { this.requiredLevel = value; }
     }
 
+    public JobType StoryLine
+    {
+        get { return this.storyLine; }
+        set { this.storyLine = value; }
+    }
     
-
-
-
 }
