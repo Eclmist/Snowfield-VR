@@ -12,6 +12,8 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
 
     protected Rigidbody rigidBody;
     protected Collider itemCollider;
+
+    protected float hitStrength;
     #region GenericItem
     [SerializeField]
     protected string m_name;
@@ -78,7 +80,14 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         linkedController = referenceCheck;
     }
 
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+        hitStrength = rigidBody.velocity.magnitude;
 
+        audioSource.volume = hitStrength/10;
+
+        audioSource.Play();
+    }
 
     //public abstract void UpdatePosition();
 
