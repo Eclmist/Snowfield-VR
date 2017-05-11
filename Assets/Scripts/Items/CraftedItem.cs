@@ -56,7 +56,10 @@ public class CraftedItem : InteractableItem
     //    transform.position = linkedController.transform.position;
     //    transform.rotation = linkedController.transform.rotation;
     //}
-
+    protected virtual void OnTriggerEnter(Collider collision)
+    {
+        audioSource.Play();
+    }
 
     protected virtual void OnTriggerStay(Collider collision)
     {
