@@ -32,18 +32,26 @@ public class MainMenu : UI_Manager,IInteractable
         }
     }
 
-    public void Interact(VR_Controller_Custom referenceCheck)
+    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    {
+        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StartInteraction(referenceCheck);
+            curState = MainMenuState.CREDITS;
+        }
+        else if(referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        {
+            StartInteraction(referenceCheck);
+            curState = MainMenuState.SETTINGS;        }
+        
+    }
+
+    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
 
-        
-        curState = MainMenuState.CREDITS;
-    }
-
-    public void UpdatePosition()
-    {
-        //do w/e
+        linkedController = referenceCheck;
     }
 
     public void StopInteraction(VR_Controller_Custom referenceCheck)
@@ -55,6 +63,12 @@ public class MainMenu : UI_Manager,IInteractable
         }
     }
 
+    protected virtual void OnTriggerExit(Collider col)
+    {
+        VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
+        if (controller != null)
+            StopInteraction(controller);
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -63,8 +77,7 @@ public class MainMenu : UI_Manager,IInteractable
 	
 	// Update is called once per frame
 	void Update () {
-        if (linkedController != null)
-            UpdatePosition();
+        
         //test
         if (Input.GetMouseButtonDown(0))
         {

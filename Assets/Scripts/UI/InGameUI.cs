@@ -19,18 +19,24 @@ public class InGameUI : UI_Manager, IInteractable
         }
     }
 
-    public void Interact(VR_Controller_Custom referenceCheck)
+    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    {
+        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StartInteraction(referenceCheck);
+        }
+        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && linkedController == referenceCheck)
+        {
+            StopInteraction(referenceCheck);
+        }
+    }
+
+    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
 
-
-        
-    }
-
-    public void UpdatePosition()
-    {
-        //do w/e
+        linkedController = referenceCheck;
     }
 
     public void StopInteraction(VR_Controller_Custom referenceCheck)
@@ -49,7 +55,6 @@ public class InGameUI : UI_Manager, IInteractable
 	// Update is called once per frame
 	void Update ()
     {
-        if (linkedController != null)
-            UpdatePosition();
+        
     }
 }
