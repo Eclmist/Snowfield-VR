@@ -121,11 +121,13 @@ public abstract class ActorFSM : MonoBehaviour
         if (target != null)
         {
             GenericItem currentItem = currentAI.returnWield(slot);
-
+            
             if (currentItem != null)
             {
+                Debug.Log("Thrown1");
                 if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentAI.returnWield(slot).Range * 2)
                 {
+                    Debug.Log("Thrown2");
                     currentAI.Attack(currentItem, target);
                 }
             }

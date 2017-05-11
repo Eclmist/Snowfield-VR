@@ -21,8 +21,13 @@ public class VR_Controller_Custom : MonoBehaviour
     void Awake()
     {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
+        
     }
 
+    private void Start()
+    {
+        device = SteamVR_Controller.Input((int)trackedObject.index);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -39,7 +44,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void ControllerInput()
     {
-        device = SteamVR_Controller.Input((int)trackedObject.index);
+        
         
         if (interactableObject != null)
         {

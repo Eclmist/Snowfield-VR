@@ -72,15 +72,14 @@ public class AdventurerFSM : ActorFSM
         {
             Vector3 _direction = (target.transform.position - head.position).normalized;
             float distance = Vector3.Distance(target.transform.position, transform.position);
-            RaycastHit hit1;
-            Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
-
+            //RaycastHit hit1;
+            //Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
 
             //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance &&
-                (hit1.transform == target.transform))
+            if (distance < detectionDistance)
             {
+                Debug.Log("hit");
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
                 {
                     _direction = (target.transform.position - transform.position).normalized;

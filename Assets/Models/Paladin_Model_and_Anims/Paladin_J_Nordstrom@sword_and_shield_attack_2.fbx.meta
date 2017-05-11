@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 91ee7d43fd6effd47bc7773be0fc0e68
-timeCreated: 1494473996
+guid: 22999f9ef5e98584e94e57cce9f518a6
+timeCreated: 1494507463
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -137,7 +137,7 @@ ModelImporter:
     400126: Spine
     400128: Spine1
     400130: Spine2
-    7400000: sword_and_shield_walk
+    7400000: sword_and_shield_attack_2
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -163,10 +163,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: sword_and_shield_walk
+      name: sword_and_shield_attack_2
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 33
+      lastFrame: 52
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -179,13 +179,20 @@ ModelImporter:
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.49590164
+        functionName: CheckHit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

@@ -120,6 +120,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         {
             if (target != null)
             {
+                Debug.Log(Damage);
                 thrower.Attack(this, target);
                 target = null;
             }
@@ -131,7 +132,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
 
 
-    void OnCollisionEnter(Collision col)
+    protected virtual void OnCollisionEnter(Collision col)
     {
         if (isFlying)
         {

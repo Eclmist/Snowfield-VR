@@ -12,6 +12,7 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
+        ChangeWield(EquipSlot.RIGHTHAND, transform.GetComponentInChildren<GenericItem>());
         if (jobList.Count != 0)
             jobList.Clear();
     }
@@ -24,7 +25,7 @@ public abstract class AI : Actor
     public override void TakeDamage(int damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (Mathf.Sign(damage) == -1)
+        if (Mathf.Sign(damage) == 1)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.COMBAT);
             currentFSM.Target = attacker;
