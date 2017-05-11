@@ -87,7 +87,7 @@ public class OrderManager : MonoBehaviour
     void Start()
     {
         UpdateAvailableTemplates();
-        Debug.Log(availableTemplatesForCurrentLevel.Count);
+        //Debug.Log(availableTemplatesForCurrentLevel.Count);
     }
 
     private void PopulateLists()

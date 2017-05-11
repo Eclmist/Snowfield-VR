@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ingot : BlacksmithItem {
 
-    [SerializeField]
+    [SerializeField][Range(1,10)]
     private int oreComposition;
 
     public Material initialMaterial;

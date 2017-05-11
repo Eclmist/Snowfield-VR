@@ -33,6 +33,12 @@ public class Smelter : MonoBehaviour {
         }
     }
 
+    protected void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+            Smelt();
+    }
+
 
     // Call this when the "smelt" button is pressed 
     private void Smelt()
