@@ -13,7 +13,9 @@ public class HuntManager : MonoBehaviour {
 
     [SerializeField]private string defaultDailyQuestTitle = "Daily Quest";
     [SerializeField]private List<StoryLine> storylines = new List<StoryLine>();
-    [SerializeField]private List<DailyHunt> dailyHuntList;
+    [SerializeField]private Queue<AdventurerAI> aiQueue;
+    private Queue<Hunt> questDialogQueue;
+    private bool isProcessing;
 
     public List<StoryLine> Storylines
     {
@@ -35,39 +37,56 @@ public class HuntManager : MonoBehaviour {
 
     void Start()
     {
-
+        aiQueue = new Queue<AdventurerAI>();
+        questDialogQueue = new Queue<Hunt>();
     }
 
     void Update()
     {
-        
+        if(aiQueue.Count >= 1)
+        {
+            ProcessQuests(aiQueue.Peek());
+        }
+
+        ProcessDialogQueue();
+
     }
+
+
 
     public void Clear()
     {
         storylines[0].Clear();
     }
 
-    //public StoryHunt RequestForStoryHunt(AdventurerAI actor,JobType type)
-    //{
+    public StoryLine GetStoryLine(JobType jt)
+    {
+        StoryLine temp = null;
 
-    //    if(actor.CurrentStoryQuest != null)
-    //    {
-    //        return storyHuntList[actor.currentStoryQuest.ProgressionIndex + 1];
-    //    }
-    //    else
-    //    {
-    //        return storyHuntList[0];
-    //    }
-    //}
+        foreach(StoryLine sl in storylines)
+        {
+            if(jt == sl.JobType)
+            {
+                temp = sl;
+                break;
+            }
+        }
+
+        return temp;
+    }
+
 
     public bool GotLobang(List<StoryHunt> list)
     {
+
         bool temp = false;
 
         foreach(StoryHunt hunt in list)
         {
-            if(hunt == null || hunt.IsCompleted)
+            StoryLine line = GetStoryLine(hunt.StoryLine);
+
+            if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
+             && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
             {
                 temp = true;
                 break;
@@ -78,47 +97,127 @@ public class HuntManager : MonoBehaviour {
         return temp;
     }
 
-    public StoryHunt GetNextQuest(StoryHunt hunt, StoryLine line)
+    public void UpdateQuests(AdventurerAI ai)
     {
-        if (hunt == null)
-            return line[0];
-          else if (hunt.ProgressionIndex + 1 <line.Count
-               && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
-               return line[hunt.ProgressionIndex + 1];
-
-
-        return null;
+        aiQueue.Enqueue(ai);
+        ai.isConversing = true;
     }
 
-    public void UpdateQuests(Actor actor)
+
+    public void CompleteQuest(Hunt hunt)
     {
+        hunt.IsCompleted = true;
+    }
+
+
+    private void GetNextQuest(StoryHunt hunt)
+    {
+        StoryLine line = GetStoryLine(hunt.StoryLine);
+
+        if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
+             && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
+        {
+            hunt = line[hunt.ProgressionIndex + 1];
+            StartQuestDialog(hunt);
+        }
+
+           
+    }
+
+    private void ProcessDialogQueue()
+    {
+
+        if(!DialogManager.Instance.IsOccupied)
+        {
+            DialogManager.Instance.SetCurrentSession(questDialogQueue.Peek().Dialog);
+            DialogManager.Instance.DisplayDialogBox();
+            questDialogQueue.Dequeue();
+        }
+
         
     }
 
-    public DailyHunt GetDailyHunt()
-    {
-        return dailyHuntList[(int)Random.Range(0, dailyHuntList.Count - 1)];
-    }
-
-    // Gives the next quest in the story
-    public void CompleteHunt(Hunt hunt)
+    private void ProcessQuests(AdventurerAI ai)
     {
 
-        //Hunt hunt = actor.currentQuest;
+        if(ai.Quests.Count < NumberOfUnlockedStoryLines())
+            GiveStartingQuests(ai.Quests);
 
-        //if (hunt.GetType() == typeof(StoryHunt))
-        //{
-        //    StoryHunt sh = (StoryHunt)hunt;
-        //    int playerProgressionIndex = sh.ProgressionIndex;
-        //    // Give the next story quest
-        //    actor.currentQuest = storyHuntList[playerProgressionIndex + 1];
-        //}
-        //else if (hunt.GetType() == typeof(DailyHunt))
-        //{
+        foreach(StoryHunt hunt in ai.Quests)
+        {
+            if(hunt.IsCompleted)
+            {
+                GetNextQuest(hunt);
+            }
 
-        //}
+        }
+
+
+        ai.IsConversing = false;
+        aiQueue.Dequeue();
 
     }
+
+    // Gives the starting quest of each storyline if it does not exist
+    private void GiveStartingQuests(List<StoryHunt> list)
+    {
+
+        if (list.Count < 1)
+        {
+            foreach(StoryLine sl in storylines)
+            {
+                list.Add(sl[0]);
+            }
+        }
+        else
+        {
+            foreach (StoryLine sl in storylines)
+            {
+                bool exist = false;
+
+                foreach (StoryHunt hunt in list)
+                {
+                    if (sl[0].StoryLine == hunt.StoryLine)
+                    {
+                        exist = true;
+                    }
+
+                    if (!exist)
+                        list.Add(sl[0]);
+                }
+            }
+        }
+        
+    }
+
+    
+
+    // Check how many unlocked storylines
+    private int NumberOfUnlockedStoryLines()
+    {
+        int i = 0;
+
+        foreach(StoryLine sl in storylines)
+        {
+            if (sl.IsUnlocked)
+                i++;
+        }
+
+        return i;
+    }
+  
+
+    // Set the dialog for the quest so that dialog manager knows what to display
+    // Push quest dialog into a queue
+    private void StartQuestDialog(Hunt hunt)
+    {
+        questDialogQueue.Enqueue(hunt);
+    }
+
+
+
+        
+    
 
 
 
