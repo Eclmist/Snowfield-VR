@@ -10,7 +10,7 @@ public enum EquipSlot
 
 public abstract class Actor : MonoBehaviour, IDamagable
 {
-
+    [SerializeField]
     protected int health;
 
     protected int maxHealth;
@@ -23,11 +23,15 @@ public abstract class Actor : MonoBehaviour, IDamagable
         jobList.Add(newJob);
     }
 
-    public void GainExperience(JobType jobType,int value)
+    protected virtual void Awake()
     {
-        foreach(Job currentJob in jobList)
+        maxHealth = health;
+    }
+    public void GainExperience(JobType jobType, int value)
+    {
+        foreach (Job currentJob in jobList)
         {
-            if(currentJob.Type == jobType)
+            if (currentJob.Type == jobType)
             {
                 currentJob.GainExperience(value);
                 break;
@@ -39,7 +43,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
     {
         foreach (Job job in jobList)
         {
-            if(job.Type == type)
+            if (job.Type == type)
             {
                 return job;
             }
@@ -47,7 +51,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
         return null;
     }
 
-    protected IInteractable leftHand, rightHand;
+    protected GenericItem leftHand, rightHand;
 
     public int Health
     {
@@ -56,6 +60,11 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return health;
         }
 
+    }
+
+    public virtual void Attack(IDamage item, IDamagable target)
+    {
+        target.TakeDamage(item.Damage, this);
     }
 
     public int MaxHealth
@@ -72,14 +81,14 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return jobList;
         }
     }
-    public virtual void TakeDamage(int damage,Actor attacker)
+    public virtual void TakeDamage(int damage, Actor attacker)
     {
-        health -= (damage >= health) ? 0 : health - damage;
+        health -= (damage >= health) ? health : damage;
         health = health > maxHealth ? maxHealth : health;
     }
 
 
-    public virtual void ChangeWield(EquipSlot slot, IInteractable item)
+    public virtual void ChangeWield(EquipSlot slot, GenericItem item)
     {
         switch (slot)
         {
@@ -93,7 +102,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
         }
     }
 
-    public IInteractable returnWield(EquipSlot slot)
+    public GenericItem returnWield(EquipSlot slot)
     {
         switch (slot)
         {
@@ -105,7 +114,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
             default:
                 return null;
         }
-        
+
     }
 
     public abstract void Notify();

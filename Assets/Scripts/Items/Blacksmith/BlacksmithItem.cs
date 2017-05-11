@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlacksmithItem : InteractableItem {
+public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
 
