@@ -5,21 +5,13 @@ using UnityEngine;
 
 public class Ore : InteractableItem
 {
-
-
     [SerializeField]
     private TYPE type;
 
-    public override void UpdatePosition()
-    {
-        throw new NotImplementedException();
-    }
-
-
-
     public TYPE Type
     {
-        get { return this.type; }
+        get { return this.type; }
+
     }
 
 }

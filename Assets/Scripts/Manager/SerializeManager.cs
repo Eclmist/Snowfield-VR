@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 
+
 public class SerializeManager
 {
     private static BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -36,7 +37,6 @@ public class SerializeManager
 
        
 
-
     public static object Load(string fileName)
     {
         fileName = "SerializedFiles/" + fileName;
@@ -60,8 +60,11 @@ public class SerializeManager
 
 
     public static void LoadUnserializableFile(System.Type type)
+
     {
+
         
+
     }
 
 

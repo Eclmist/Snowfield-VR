@@ -5,7 +5,8 @@ using UnityEngine;
 public enum JobType
 {
     BLACKSMITH,
-    ALCHEMY
+    ALCHEMY,
+    ADVENTURER
 }
 
 
@@ -39,8 +40,6 @@ public class Job {
         }
     }
 
-
-
     public Job(JobType _currentJob)
     {
         currentJobType = _currentJob;
@@ -60,7 +59,3 @@ public class Job {
     }
 }
 
-
-//level = constant * squareroot(experience)
-//level/constant = squareroot(experience)
-//square(level/constant) = experience
