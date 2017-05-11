@@ -6,7 +6,6 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(AudioSource))]
 public abstract class InteractableItem : MonoBehaviour, IInteractable
 {
 
@@ -17,7 +16,6 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
     #region GenericItem
     [SerializeField]
     protected string m_name;
-    protected AudioSource audioSource;
     #endregion
 
     #region IInteractable
@@ -37,7 +35,6 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
     {
         rigidBody = GetComponent<Rigidbody>();
         itemCollider = GetComponent<Collider>();
-        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -80,14 +77,14 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         linkedController = referenceCheck;
     }
 
-    protected virtual void OnCollisionEnter(Collision collision)
-    {
-        hitStrength = rigidBody.velocity.magnitude;
+    //protected virtual void OnCollisionEnter(Collision collision)
+    //{
+    //    hitStrength = rigidBody.velocity.magnitude;
 
-        audioSource.volume = hitStrength/10;
+    //    audioSource.volume = hitStrength/10;
 
-        audioSource.Play();
-    }
+    //    audioSource.Play();
+    //}
 
     //public abstract void UpdatePosition();
 
