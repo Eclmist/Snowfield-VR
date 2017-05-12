@@ -3,24 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
-public class OrderManager : MonoBehaviour
-{
-
-    public static OrderManager Instance;
-
-    public int baseGoldMultiplier;
-    public int baseDurationMultiplier;
-    public bool save;
-
-    [SerializeField]
-    private List<OrderTemplate> templateList;
-    private List<OrderTemplate> availableTemplatesForCurrentLevel;
+[ExecuteInEditMode]
 
-    public List<OrderTemplate> TemplateList
-    {
-        get { return this.templateList; }
-        set { this.templateList = value; }
+public class OrderManager : MonoBehaviour
+
+{
+
+
+
+    public static OrderManager Instance;
+
+
+
+    public int baseGoldMultiplier;
+
+    public int baseDurationMultiplier;
+
+    public bool save;
+
+
+
+    [SerializeField]
+
+    private List<OrderTemplate> templateList;
+    private List<OrderTemplate> availableTemplatesForCurrentLevel;
+
+
+    public List<OrderTemplate> TemplateList
+
+    {
+
+        get { return this.templateList; }
+
+        set { this.templateList = value; }
+
     }
 
 
@@ -52,8 +68,10 @@ public class OrderManager : MonoBehaviour
     void Awake()
     {
         //LoadTemplates();
-        if (!Instance)
-        {
+        if (!Instance)
+
+        {
+
             Instance = this;
 
             availableTemplatesForCurrentLevel = new List<OrderTemplate>();
@@ -69,14 +87,17 @@ public class OrderManager : MonoBehaviour
     void Start()
     {
         UpdateAvailableTemplates();
-        Debug.Log(availableTemplatesForCurrentLevel.Count);
+        //Debug.Log(availableTemplatesForCurrentLevel.Count);
     }
 
     private void PopulateLists()
     {
-        SerializeManager.Load("templateList");
-        UpdateAvailableTemplates();
-        SerializeManager.Load("materialList");
+        SerializeManager.Load("templateList");
+
+        UpdateAvailableTemplates();
+
+        SerializeManager.Load("materialList");
+
     }
 
     public void NewRequest()
@@ -222,8 +243,12 @@ public class OrderManager : MonoBehaviour
 
         return requestedList;
 
-    }
-
-
-}
-
+    }
+
+
+
+
+
+}
+
+
