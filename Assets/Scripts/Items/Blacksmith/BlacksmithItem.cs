@@ -66,7 +66,6 @@ public class BlacksmithItem : GenericItem {
         {
             float value = linkedController.Velocity().magnitude <= 1 ? linkedController.Velocity().magnitude : 1;
             linkedController.Vibrate(value / 10);
-
         }
 
     }

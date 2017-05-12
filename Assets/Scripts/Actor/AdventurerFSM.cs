@@ -72,14 +72,18 @@ public class AdventurerFSM : ActorFSM
         {
             Vector3 _direction = (target.transform.position - head.position).normalized;
             float distance = Vector3.Distance(target.transform.position, transform.position);
+            Vector3 dir = target.transform.position - transform.position;
+            dir.y = 0;
+            dir.Normalize();
+            float angle = Vector3.Angle(transform.forward, dir);
             //RaycastHit hit1;
             //Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
 
             //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance)
+            if (distance < detectionDistance) /*&& hit1.transform == target.transform*/
             {
-                Debug.Log("hit");
+
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
                 {
                     _direction = (target.transform.position - transform.position).normalized;
@@ -87,7 +91,8 @@ public class AdventurerFSM : ActorFSM
                     Quaternion _lookRotation = Quaternion.LookRotation(_direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
                 }
-                if (distance < detectionDistance / 4)//HardCoded
+
+                if (distance < currentAI.returnWield(EquipSlot.RIGHTHAND).Range * 1.2 && Mathf.Abs(angle) < 30)//HardCoded
                     animator.SetBool("Attack", true);
                 else
                 {

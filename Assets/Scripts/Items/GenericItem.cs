@@ -6,6 +6,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
 public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 {
 
@@ -16,9 +17,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     protected int damage;
     [SerializeField]
     protected string m_name;
-    [SerializeField]
-    protected AudioClip sound;
-    [SerializeField]
     protected AudioSource audioSource;
     [SerializeField]
     protected float range;
@@ -37,6 +35,10 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
     #endregion
 
+    #region
+    [SerializeField] protected float maxForceVolume;
+    #endregion
+
     public float Range
     {
         get
@@ -48,6 +50,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     {
         rigidBody = GetComponent<Rigidbody>();
         itemCollider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public int Damage
@@ -110,19 +113,22 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         linkedController = referenceCheck;
     }
 
+    [SerializeField]
     private bool isFlying;
+
     private IDamagable target;
 
     public virtual IEnumerator Throw(Actor thrower)
     {
         isFlying = true;
-        while (rigidBody.velocity.magnitude > 0)
+        while (rigidBody.velocity.magnitude > 0.1)
         {
             if (target != null)
             {
-                Debug.Log(Damage);
+                
                 thrower.Attack(this, target);
                 target = null;
+                break;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -137,6 +143,17 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         if (isFlying)
         {
             target = col.transform.GetComponent<IDamagable>();
+        }
+        if (linkedController != null)
+            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+    }
+
+    protected void PlaySound(float volume)
+    {
+        if (audioSource != null)
+        {
+            audioSource.volume = volume;
+            audioSource.Play();
         }
     }
     //public abstract void UpdatePosition();
