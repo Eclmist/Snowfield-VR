@@ -44,11 +44,11 @@ public class HuntManager : MonoBehaviour {
     void Update()
     {
         if(aiQueue.Count >= 1)
-        {
             ProcessQuests(aiQueue.Peek());
-        }
+      
 
-        ProcessDialogQueue();
+        if(questDialogQueue.Count >= 1)
+            ProcessDialogQueue();
 
     }
 
@@ -100,7 +100,7 @@ public class HuntManager : MonoBehaviour {
     public void UpdateQuests(AdventurerAI ai)
     {
         aiQueue.Enqueue(ai);
-        ai.isConversing = true;
+        ai.IsConversing = true;
     }
 
 
