@@ -6,6 +6,7 @@ using System;
 public abstract class AI : Actor {
 
     private ActorFSM currentFSM;
+    protected bool isConversing;
 
     protected virtual void Awake()
     {
@@ -13,6 +14,13 @@ public abstract class AI : Actor {
         if (jobList.Count != 0)
             jobList.Clear();
     }
+
+    public bool IsConversing
+    {
+        get { return this.isConversing; }
+        set { this.isConversing = true; }
+    }
+
 
     public override void Notify()
     {
