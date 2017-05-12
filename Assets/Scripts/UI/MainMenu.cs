@@ -15,14 +15,13 @@ public enum MainMenuState
 }
 
 
-public class MainMenu : MonoBehaviour, IInteractable
+public class MainMenu : MonoBehaviour
 {
     public static MainMenu Instance;
     protected MainMenuState curState = MainMenuState.IDLE, 
         lastState = MainMenuState.NEW_GAME, 
         lastLastState = MainMenuState.IDLE, 
         nextState = MainMenuState.SETTINGS;
-    protected VR_Controller_Custom linkedController = null;
     void Awake()
     {
         if (!Instance)
@@ -36,86 +35,7 @@ public class MainMenu : MonoBehaviour, IInteractable
         }
     }
 
-    public VR_Controller_Custom LinkedController
-    {
-        get
-        {
-            return linkedController;
-        }
-        set
-        {
-            linkedController = value;
-        }
-    }
-
-    public virtual void Interact(VR_Controller_Custom referenceCheck)
-    {
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
-        {
-            Debug.Log("Triggered");
-            Collider coll = GetComponent<Collider>();
-            StartInteraction(referenceCheck);
-            if (coll.gameObject.name == "MainMenu")
-            {
-                Debug.Log("MainMenu");
-            }
-            else if(coll.gameObject.name == "Arrow")
-            {
-                Debug.Log("Left");
-                if (lastLastState != MainMenuState.IDLE)
-                {
-                    curState = lastLastState;
-                }
-                else
-                {
-
-                }
-            }
-            if(coll.gameObject.name == "Arrow (1)")
-            {
-                Debug.Log("Right");
-                if (nextState != MainMenuState.IDLE)
-                {
-                    curState = nextState;Debug.Log("Damn");
-                }
-                else
-                {
-
-                }
-            }
-        }
-        else if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-        {
-            StopInteraction(referenceCheck);
-        }
-        
-    }
-
-    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController != null && linkedController != referenceCheck)
-            linkedController.SetInteraction(null);
-
-        linkedController = referenceCheck;
-    }
-
-    public void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController == referenceCheck)
-        {
-            linkedController = null;
-            referenceCheck.SetInteraction(null);
-        }
-    }
-
-    protected virtual void OnTriggerExit(Collider col)
-    {
-        Debug.Log("I am fucking exiting.");
-        VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
-        if (controller != null)
-            StopInteraction(controller);
-    }
-
+   
 	// Use this for initialization
 	void Start () {
 		
@@ -201,4 +121,5 @@ public class MainMenu : MonoBehaviour, IInteractable
     {
         return nextState;
     }
+   
 }

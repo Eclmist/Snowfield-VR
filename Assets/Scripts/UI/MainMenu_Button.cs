@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenu_Arrow : MonoBehaviour, IInteractable {
+public class MainMenu_Button : MonoBehaviour, IInteractable {
 
     protected VR_Controller_Custom linkedController = null;
 
@@ -26,8 +26,40 @@ public class MainMenu_Arrow : MonoBehaviour, IInteractable {
             Debug.Log("Triggered");
             Collider coll = GetComponent<Collider>();
             StartInteraction(referenceCheck);
-            
-            if(coll.gameObject.name == "Arrow")
+            if (coll.gameObject.name == "MenuTitle")
+            {
+                Debug.Log("MainMenu");
+                if (MainMenu.Instance.GetLastState() != MainMenuState.IDLE)
+                {
+                    Debug.Log("SceneChange");
+                    switch (MainMenu.Instance.GetLastState())
+                    {
+                        case MainMenuState.CONTINUE:
+                            Debug.Log("Continue");
+                            break;
+                        case MainMenuState.NEW_GAME:
+                            Debug.Log("NewGame");
+                            break;
+                        case MainMenuState.SETTINGS:
+                            Debug.Log("Settings");
+                            break;
+                        case MainMenuState.CREDITS:
+                            Debug.Log("Credits");
+                            break;
+                        case MainMenuState.QUIT:
+                            Debug.Log("Quit");
+                            break;
+                        default:
+                            Debug.Log("Nothing");
+                            break;
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            else if(coll.gameObject.name == "Left")
             {
                 Debug.Log("Left");
                 if (MainMenu.Instance.GetLLState() != MainMenuState.IDLE)
@@ -39,7 +71,7 @@ public class MainMenu_Arrow : MonoBehaviour, IInteractable {
 
                 }
             }
-            else if(coll.gameObject.name == "Arrow (1)")
+            else if(coll.gameObject.name == "Right")
             {
                 Debug.Log("Right");
                 if (MainMenu.Instance.GetNextState() != MainMenuState.IDLE)
