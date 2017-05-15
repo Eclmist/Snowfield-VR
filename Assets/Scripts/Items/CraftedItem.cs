@@ -57,6 +57,21 @@ public class CraftedItem : GenericItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, range);
+    }
+    protected virtual void OnTriggerEnter(Collider collision)
+    {
+        if(linkedController != null)
+        {
+            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+            IDamagable target = collision.GetComponent<IDamagable>();
+            if (target != null)
+                Player.Instance.Attack(this, target);
+
+        }
+    }
     protected virtual void OnTriggerStay(Collider collision)
     {
         if (linkedController != null && collision.gameObject != linkedController.gameObject)

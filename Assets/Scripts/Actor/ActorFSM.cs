@@ -13,9 +13,10 @@ public abstract class ActorFSM : MonoBehaviour
         PETROL,
         INTERACTION,
         INTRUSION,
-        COMBAT
+        COMBAT,
+        DEATH
     }
-    private AI currentAI;
+    protected AI currentAI;
     protected List<Vector3> path;
     protected bool requestedPath;
     [SerializeField]
@@ -34,6 +35,14 @@ public abstract class ActorFSM : MonoBehaviour
         currentState = state;
         timer = 0;
         animator.speed = 1;
+        switch (state)
+        {
+            case FSMState.DEATH:
+                animator.SetBool("Death", true);
+                break;
+            default:
+                break;
+        }
     }
 
     protected virtual void Awake()
@@ -115,8 +124,11 @@ public abstract class ActorFSM : MonoBehaviour
             slot = EquipSlot.EquipmentSlotType.RIGHTHAND;
         }
 
-        Vector3 dir = (target.transform.position - transform.position).normalized;
+        Vector3 dir = target.transform.position - transform.position;
+        dir.y = 0;
+        dir.Normalize();
         float angle = Vector3.Angle(transform.forward, dir);
+        Debug.Log(angle);
         if (target != null)
         {
             Weapon currentWeapon = (Weapon)currentAI.returnEquipment(slot);
