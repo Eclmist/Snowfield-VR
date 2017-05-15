@@ -57,10 +57,6 @@ public class CraftedItem : GenericItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position, range);
-    }
     protected virtual void OnTriggerEnter(Collider collision)
     {
         if(linkedController != null)
