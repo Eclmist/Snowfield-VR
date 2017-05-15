@@ -9,6 +9,9 @@ public class AdventurerAI : AI {
 
     private List<Relation> actorRelations = new List<Relation>();
 
+    [SerializeField]
+    private List<Equipment> inventory = new List<Equipment>();
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,6 +29,21 @@ public class AdventurerAI : AI {
                     break;
             }
         }
+
+        foreach(Equipment equip in inventory)
+        {
+            switch (equip.Slot)
+            {
+                case EquipSlot.EquipmentSlotType.LEFTHAND:
+                    leftHand.Item = Instantiate(equip, leftHand.transform);
+                    break;
+                case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                    rightHand.Item = Instantiate(equip, rightHand.transform);
+                    break;
+            }
+        }
+
+        
     }
 
     

@@ -10,6 +10,7 @@ public class EquipSlot : MonoBehaviour {
         RIGHTHAND,
     }
 
+    [SerializeField]
     private EquipmentSlotType slotType;
 
     public EquipmentSlotType CurrentType
@@ -37,12 +38,5 @@ public class EquipSlot : MonoBehaviour {
         {
             slotItem = value;
         }
-    }
-
-    private void Awake()
-    {
-        Weapon weapon = GetComponentInChildren<Weapon>();
-        if (weapon != null)
-            slotItem = weapon;
     }
 }

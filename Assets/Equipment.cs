@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Equipment : CraftedItem {
 
+    [SerializeField]
     private EquipSlot.EquipmentSlotType slot;
 
     public EquipSlot.EquipmentSlotType Slot
@@ -14,4 +15,8 @@ public class Equipment : CraftedItem {
         }
     }
 
+    public void Equip()
+    {
+        rigidBody.isKinematic = true;
+    }
 }

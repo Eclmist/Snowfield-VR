@@ -74,13 +74,5 @@ public class CraftedItem : GenericItem
         }
     }
     #endregion
-    [SerializeField] private EquipSlot.EquipmentSlotType slotToBeEquipped;
-
-    public EquipSlot.EquipmentSlotType Slot
-    {
-        get
-        {
-            return slotToBeEquipped;
-        }
-    }
+    
 }
