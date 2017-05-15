@@ -20,12 +20,13 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     protected AudioClip sound;
     [SerializeField]
     protected AudioSource audioSource;
-    [SerializeField]
-    protected float range;
+    
     #endregion
 
     #region IInteractable
     protected VR_Controller_Custom linkedController = null;
+    private bool isFlying;
+    private IDamagable target;
     public VR_Controller_Custom LinkedController
     {
         get
@@ -33,48 +34,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
             return linkedController;
         }
     }
-
-
-    #endregion
-
-    public float Range
-    {
-        get
-        {
-            return range;
-        }
-    }
-    protected virtual void Awake()
-    {
-        rigidBody = GetComponent<Rigidbody>();
-        itemCollider = GetComponent<Collider>();
-    }
-
-    public int Damage
-    {
-        get
-        {
-            if (LinkedController != null)
-                return linkedController.Velocity().magnitude < 5 ? (int)(linkedController.Velocity().magnitude * damage) : damage * 5;
-            else if (isFlying)
-                return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
-            else
-                return damage;
-        }
-
-    }
-
-    public string Name
-    {
-        get { return this.m_name; }
-        set { this.m_name = value; }
-    }
-
-    //protected virtual void Update()
-    //{
-    //    if (linkedController != null)
-    //        UpdatePosition();
-    //}
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
@@ -110,9 +69,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         linkedController = referenceCheck;
     }
 
-    private bool isFlying;
-    private IDamagable target;
-
     public virtual IEnumerator Throw(Actor thrower)
     {
         isFlying = true;
@@ -129,6 +85,41 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         target = null;
         isFlying = false;
     }
+    #endregion
+
+    protected virtual void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody>();
+        itemCollider = GetComponent<Collider>();
+    }
+
+    public int Damage
+    {
+        get
+        {
+            if (LinkedController != null)
+                return linkedController.Velocity().magnitude < 5 ? (int)(linkedController.Velocity().magnitude * damage) : damage * 5;
+            else if (isFlying)
+                return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
+            else
+                return damage;
+        }
+
+    }
+
+    public string Name
+    {
+        get { return this.m_name; }
+        set { this.m_name = value; }
+    }
+
+    //protected virtual void Update()
+    //{
+    //    if (linkedController != null)
+    //        UpdatePosition();
+    //}
+
+    
 
 
 

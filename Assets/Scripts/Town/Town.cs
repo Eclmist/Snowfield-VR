@@ -34,6 +34,11 @@ public class Town : MonoBehaviour
         listOfAI = new List<AI>();
     }
 
+    private void Start()
+    {
+        allShops.AddRange(GetComponentsInChildren<Shop>());
+    }
+
     public int Population//used to decide how many requests/day etc
     {
         get

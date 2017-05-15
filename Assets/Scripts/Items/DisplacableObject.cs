@@ -9,11 +9,16 @@ public class DisplacableObject : MonoBehaviour, IInteractable
 {
 
     [SerializeField]
+    [Tooltip("The axis which the object is locked in")]
     private bool[] axisLock = new bool[3];
     [SerializeField]
+    [Tooltip("The maxdistance the object can travel in its unlocked axis")]
     private float maxDistance;
     private ConfigurableJoint joint;
     private VR_Controller_Custom linkedController;
+    [SerializeField]
+    [Tooltip("The rigidbody this object is bound to")]
+    private Rigidbody boundRigidBody;
     private Rigidbody rigidBody;
 
     public VR_Controller_Custom LinkedController
@@ -37,9 +42,9 @@ public class DisplacableObject : MonoBehaviour, IInteractable
     void Start()
     {
 
-        Rigidbody parentRigidBody = GetComponentInParent<Rigidbody>();
-        if (parentRigidBody != rigidBody)
-            joint.connectedBody = parentRigidBody;
+        if (boundRigidBody != null)
+            joint.connectedBody = boundRigidBody;
+
         SoftJointLimit limit = joint.linearLimit;
         limit.limit = maxDistance / 2;
         joint.linearLimit = limit;

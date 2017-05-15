@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EquipSlot
-{
-    LEFTHAND,
-    RIGHTHAND,
-}
-
 public abstract class Actor : MonoBehaviour, IDamagable
 {
     [SerializeField]
@@ -51,7 +45,8 @@ public abstract class Actor : MonoBehaviour, IDamagable
         return null;
     }
 
-    protected GenericItem leftHand, rightHand;
+    [SerializeField]
+    protected EquipSlot leftHand, rightHand;
 
     public int Health
     {
@@ -87,30 +82,29 @@ public abstract class Actor : MonoBehaviour, IDamagable
         health = health > maxHealth ? maxHealth : health;
     }
 
-
-    public virtual void ChangeWield(EquipSlot slot, GenericItem item)
+    public virtual void ChangeWield(Equipment item)
     {
-        switch (slot)
+        switch (item.Slot)
         {
-            case EquipSlot.LEFTHAND:
-                leftHand = item;
+            case EquipSlot.EquipmentSlotType.LEFTHAND:
+                leftHand.Item = item;
                 break;
 
-            case EquipSlot.RIGHTHAND:
-                rightHand = item;
+            case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                rightHand.Item = item;
                 break;
         }
     }
 
-    public GenericItem returnWield(EquipSlot slot)
+    public Equipment returnEquipment(EquipSlot.EquipmentSlotType slot)
     {
         switch (slot)
         {
-            case EquipSlot.LEFTHAND:
-                return leftHand;
+            case EquipSlot.EquipmentSlotType.LEFTHAND:
+                return leftHand.Item;
 
-            case EquipSlot.RIGHTHAND:
-                return rightHand;
+            case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                return rightHand.Item;
             default:
                 return null;
         }

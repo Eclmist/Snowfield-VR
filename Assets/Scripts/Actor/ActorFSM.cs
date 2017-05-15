@@ -107,28 +107,25 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void CheckHit(int index)
     {
-        Debug.Log("Thrown");
-        EquipSlot slot = EquipSlot.LEFTHAND;
+        EquipSlot.EquipmentSlotType slot = 0;
         if (index == 0)
-            slot = EquipSlot.LEFTHAND;
+            slot = EquipSlot.EquipmentSlotType.LEFTHAND;
         else if (index == 1)
         {
-            slot = EquipSlot.RIGHTHAND;
+            slot = EquipSlot.EquipmentSlotType.RIGHTHAND;
         }
 
         Vector3 dir = (target.transform.position - transform.position).normalized;
         float angle = Vector3.Angle(transform.forward, dir);
         if (target != null)
         {
-            GenericItem currentItem = currentAI.returnWield(slot);
-            
-            if (currentItem != null)
+            Weapon currentWeapon = (Weapon)currentAI.returnEquipment(slot);
+
+            if (currentWeapon != null)
             {
-                Debug.Log("Thrown1");
-                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentAI.returnWield(slot).Range * 2)
+                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range * 2)
                 {
-                    Debug.Log("Thrown2");
-                    currentAI.Attack(currentItem, target);
+                    currentAI.Attack(currentWeapon, target);
                 }
             }
         }

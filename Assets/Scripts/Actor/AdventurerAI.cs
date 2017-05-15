@@ -13,6 +13,19 @@ public class AdventurerAI : AI {
     {
         base.Awake();
         AddJob(JobType.ADVENTURER);
+        EquipSlot[] equipmentSlots = GetComponentsInChildren<EquipSlot>();
+        foreach(EquipSlot slot in equipmentSlots)
+        {
+            switch (slot.CurrentType)
+            {
+                case EquipSlot.EquipmentSlotType.LEFTHAND:
+                    leftHand = slot;
+                    break;
+                case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                    rightHand = slot;
+                    break;
+            }
+        }
     }
 
     

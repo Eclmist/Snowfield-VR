@@ -10,7 +10,7 @@ public class TownManager : MonoBehaviour
     [SerializeField]
     private Town currentTown;
 
-    [SerializeField]
+    [SerializeField][Tooltip("The time in seconds between each ai spawns")]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
     private float timer;
     // Use this for initialization
@@ -30,18 +30,7 @@ public class TownManager : MonoBehaviour
     void Start()
     {
         //currentTown = (Town)SerializeManager.Load("TownData");
-        if (currentTown != null)
-        {
-
-            //currentTown = new Town(1);
-            GameObject[] shopsObject = GameObject.FindGameObjectsWithTag("Shop");
-            List<Shop> shops = new List<Shop>();
-            foreach (GameObject gameObject in shopsObject)
-            {
-                shops.Add(gameObject.transform.GetComponent<Shop>());
-            }
-            currentTown.Shops.AddRange(shops);
-        }
+        
     }
 
     void Update()

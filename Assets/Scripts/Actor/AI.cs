@@ -12,7 +12,6 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
-        ChangeWield(EquipSlot.RIGHTHAND, transform.GetComponentInChildren<GenericItem>());
         if (jobList.Count != 0)
             jobList.Clear();
     }

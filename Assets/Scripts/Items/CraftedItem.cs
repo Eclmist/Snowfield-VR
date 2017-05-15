@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CraftedItem : GenericItem
 {
-
+    #region PlayerInteraction
     protected bool removable = true, toggled = false;
     protected virtual void UseItem()
     {
-        Debug.Log("You are using " + this.name);
+        Debug.Log("You are using " + this.name);    
     }
 
 
@@ -45,7 +45,7 @@ public class CraftedItem : GenericItem
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if (linkedController != null)
+        if (toggled)
         {
             transform.position = linkedController.transform.position;
             transform.rotation = linkedController.transform.rotation;
@@ -73,9 +73,14 @@ public class CraftedItem : GenericItem
             removable = true;
         }
     }
+    #endregion
+    [SerializeField] private EquipSlot.EquipmentSlotType slotToBeEquipped;
 
-    //public void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawSphere(transform.position, range);
-    //}
+    public EquipSlot.EquipmentSlotType Slot
+    {
+        get
+        {
+            return slotToBeEquipped;
+        }
+    }
 }

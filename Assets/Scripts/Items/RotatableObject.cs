@@ -10,11 +10,15 @@ public class RotatableObject : MonoBehaviour, IInteractable
     private HingeJoint joint;
     private VR_Controller_Custom linkedController;
     private Rigidbody rigidBody;
+    [Range(0,180)][Tooltip("Max rotation in degrees")][SerializeField]
+    private float maxRotationValue = 90;
+    [Range(-180, 0)]
+    [Tooltip("Min rotation in degrees")]
     [SerializeField]
-    private float minRotationalValue, maxRotationValue;
+    private float minRotationalValue = -90;
     [SerializeField]
     private Transform pivot;
-    [SerializeField]
+    [Range(0,150)][Tooltip("Multiplier of the force that is added to the object on movement")][SerializeField]
     private float force;
     // Use this for initialization
     void Awake()
@@ -31,14 +35,14 @@ public class RotatableObject : MonoBehaviour, IInteractable
         limit.min = minRotationalValue;
         joint.useSpring = true;
         joint.limits = limit;
-        if (pivot != null)
-        {
-            joint.anchor = pivot.localPosition;
-            Vector3 rotationeuler = Vector3.Cross(pivot.forward, pivot.up);
-            joint.axis = rotationeuler;
-        }
-        else
-            Debug.Log("Please attach a pivot point called Pivot and child it to the rotatable object");
+        if (pivot == null)
+            pivot = transform;
+
+        joint.anchor = transform.InverseTransformPoint(pivot.transform.position);
+        Vector3 rotationeuler = Vector3.Cross(pivot.forward, pivot.up);
+        joint.axis = rotationeuler;
+        
+        
     }
 
     public VR_Controller_Custom LinkedController
