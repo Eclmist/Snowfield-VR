@@ -6,7 +6,7 @@ public class Settings_Button : MonoBehaviour, IInteractable {
 
     Vector3 posMid;
     protected VR_Controller_Custom linkedController = null;
-    public int percentage = 0;
+    private int percentage = 0;
 
     void Awake()
     {
