@@ -6,66 +6,79 @@ using UnityEngine.UI;
 
 public enum InGameState
 {
+    IDLE,
     INGAME,
     PAUSE
 }
 
-public class InGameUI : UI_Manager, IInteractable
+public class InGameUI : MonoBehaviour
 {
-    private VR_Controller_Custom linkedController = null;
-
-    public VR_Controller_Custom LinkedController
+    public static InGameUI Instance;
+    private InGameState curState = InGameState.INGAME, lastState = InGameState.IDLE;
+    public Transform[] go;
+    void Awake()
     {
-        get
+        if (!Instance)
         {
-            return linkedController;
+            Instance = this;
         }
-        set
+        else
         {
-            linkedController = value;
+            Debug.Log("Overlord InGame.");
+            Destroy(this);
         }
-    }
-
-    public virtual void Interact(VR_Controller_Custom referenceCheck)
-    {
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
-        {
-            StartInteraction(referenceCheck);
-        }
-    }
-
-    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController != null && linkedController != referenceCheck)
-            linkedController.SetInteraction(null);
-
-        linkedController = referenceCheck;
-    }
-
-    public void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController == referenceCheck)
-        {
-            linkedController = null;
-            referenceCheck.SetInteraction(null);
-        }
-    }
-
-    protected virtual void OnTriggerExit(Collider col)
-    {
-        VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
-        if (controller != null)
-            StopInteraction(controller);
+        
     }
 
     // Use this for initialization
     void Start () {
-		
+        go = GetComponentsInChildren<Transform>(true);
+        
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        
+        switch (curState)
+        {
+            case InGameState.INGAME:
+                CheckObject("InGame", "MainMenu");
+                lastState = curState;
+                curState = InGameState.IDLE;
+                break;
+            case InGameState.PAUSE:
+                CheckObject("MainMenu", "InGame");
+                lastState = curState;
+                curState = InGameState.IDLE;
+                break;
+            default:
+                break;
+        }
+
+
+    }
+
+    public InGameState GetLastState()
+    {
+        return lastState;
+    }
+
+    private void CheckObject(string name1, string name2)
+    {
+        if (go != null)
+        {
+            foreach (Transform t in go)
+            {
+                Debug.Log(t.name);
+                if (t.name == name1)
+                {
+                    t.gameObject.SetActive(true);
+                }
+                if (t.name == name2)
+                {
+                    t.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }
