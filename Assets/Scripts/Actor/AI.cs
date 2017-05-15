@@ -35,13 +35,7 @@ public abstract class AI : Actor
         }
     }
 
-    public override void ChangeWield(EquipSlot slot, GenericItem item)
-    {
-        base.ChangeWield(slot, item);
-        Collider col = item.GetComponent<Collider>();
-        if (col != null)
-            col.enabled = false;
-    }
+   
 
 
 }

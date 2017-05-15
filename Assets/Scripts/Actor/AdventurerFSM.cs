@@ -92,7 +92,8 @@ public class AdventurerFSM : ActorFSM
                     transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
                 }
 
-                if (distance < currentAI.returnWield(EquipSlot.RIGHTHAND).Range * 1.2 && Mathf.Abs(angle) < 30)//HardCoded
+
+                if (distance < detectionDistance/4 && Mathf.Abs(angle) < 30)//HardCoded
                     animator.SetBool("Attack", true);
                 else
                 {
