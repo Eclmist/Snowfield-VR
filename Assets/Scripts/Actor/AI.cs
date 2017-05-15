@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-[RequireComponent(typeof(Rigidbody))]
-public abstract class AI : Actor {
+
+public abstract class AI : Actor
+{
 
     private ActorFSM currentFSM;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         currentFSM = GetComponent<ActorFSM>();
         if (jobList.Count != 0)
             jobList.Clear();
@@ -19,13 +21,15 @@ public abstract class AI : Actor {
         currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
     }
 
-    public override void TakeDamage(int damage,Actor attacker)
+    public override void TakeDamage(int damage, Actor attacker)
     {
-        base.TakeDamage(damage,attacker);
-        if(Mathf.Sign(damage) == -1)
+        base.TakeDamage(damage, attacker);
+        if (Mathf.Sign(damage) == 1)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.COMBAT);
             currentFSM.Target = attacker;
         }
     }
+
+
 }

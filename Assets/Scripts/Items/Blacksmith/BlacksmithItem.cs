@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlacksmithItem : InteractableItem {
+public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
 
@@ -24,7 +24,7 @@ public class BlacksmithItem : InteractableItem {
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
+        if (LinkedController != null)
         {
             Vector3 PositionDelta = (linkedController.transform.position - transform.position);
 
@@ -59,9 +59,9 @@ public class BlacksmithItem : InteractableItem {
     //    rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
     //}
 
-    protected virtual void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
-
+        base.OnCollisionEnter(collision);
         if (linkedController != null)
         {
             float value = linkedController.Velocity().magnitude <= 1 ? linkedController.Velocity().magnitude : 1;

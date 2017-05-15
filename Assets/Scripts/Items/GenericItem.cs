@@ -6,20 +6,27 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class InteractableItem : MonoBehaviour, IInteractable
+public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 {
 
     protected Rigidbody rigidBody;
     protected Collider itemCollider;
-
-    protected float hitStrength;
     #region GenericItem
     [SerializeField]
+    protected int damage;
+    [SerializeField]
     protected string m_name;
+    [SerializeField]
+    protected AudioClip sound;
+    [SerializeField]
+    protected AudioSource audioSource;
+    
     #endregion
 
     #region IInteractable
     protected VR_Controller_Custom linkedController = null;
+    private bool isFlying;
+    private IDamagable target;
     public VR_Controller_Custom LinkedController
     {
         get
@@ -28,7 +35,56 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         }
     }
 
+    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    {
+        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StartInteraction(referenceCheck);
+        }
+        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StopInteraction(referenceCheck);
+        }
+    }
 
+    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController == referenceCheck)
+        {
+            linkedController = null;
+            referenceCheck.SetInteraction(null);
+
+            rigidBody.velocity = referenceCheck.Device.velocity;
+            rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
+
+            StartCoroutine(Throw(Player.Instance));
+        }
+    }
+
+    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController != null && linkedController != referenceCheck)
+            linkedController.SetInteraction(null);
+
+        linkedController = referenceCheck;
+    }
+
+    public virtual IEnumerator Throw(Actor thrower)
+    {
+        isFlying = true;
+        while (rigidBody.velocity.magnitude > 0)
+        {
+            if (target != null)
+            {
+                Debug.Log(Damage);
+                thrower.Attack(this, target);
+                target = null;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        target = null;
+        isFlying = false;
+    }
     #endregion
 
     protected virtual void Awake()
@@ -37,7 +93,19 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         itemCollider = GetComponent<Collider>();
     }
 
+    public int Damage
+    {
+        get
+        {
+            if (LinkedController != null)
+                return linkedController.Velocity().magnitude < 5 ? (int)(linkedController.Velocity().magnitude * damage) : damage * 5;
+            else if (isFlying)
+                return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
+            else
+                return damage;
+        }
 
+    }
 
     public string Name
     {
@@ -51,43 +119,16 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
     //        UpdatePosition();
     //}
 
-    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    
+
+
+
+    protected virtual void OnCollisionEnter(Collision col)
     {
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        if (isFlying)
         {
-            StartInteraction(referenceCheck);
-        }
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && linkedController == referenceCheck)
-        {
-            StopInteraction(referenceCheck);
+            target = col.transform.GetComponent<IDamagable>();
         }
     }
-
-    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        linkedController = null;
-        referenceCheck.SetInteraction(null);
-    }
-
-    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController != null && linkedController != referenceCheck)
-            linkedController.SetInteraction(null);
-
-        linkedController = referenceCheck;
-    }
-
-    //protected virtual void OnCollisionEnter(Collision collision)
-    //{
-    //    hitStrength = rigidBody.velocity.magnitude;
-
-    //    audioSource.volume = hitStrength/10;
-
-    //    audioSource.Play();
-    //}
-
     //public abstract void UpdatePosition();
-
-
-
 }

@@ -42,9 +42,9 @@ public class Heap<T> where T : IBundle<T>
         internalList[0] = internalList[Count - 1];
         internalList[0].BundleIndex = 0;
         internalList.RemoveAt(Count - 1);
-        if(Count != 0)
+        if (Count != 0)
             SortDown(internalList[0]);
-        
+
 
         return firstItem;
     }
@@ -74,7 +74,7 @@ public class Heap<T> where T : IBundle<T>
                 {
                     swapIndex = rightChildIndex;
                 }
-                
+
                 if (_item.CompareTo(internalList[swapIndex]) < 0)
                     Swap(_item, internalList[swapIndex]);
                 else
@@ -91,7 +91,7 @@ public class Heap<T> where T : IBundle<T>
     }
     private void Swap(T _item1, T _item2)
     {
-        
+
         internalList[_item1.BundleIndex] = _item2;
         internalList[_item2.BundleIndex] = _item1;
         int tempIndex = _item1.BundleIndex;

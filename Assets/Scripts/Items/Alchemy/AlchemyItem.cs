@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlchemyItem : InteractableItem {
+public class AlchemyItem : GenericItem {
 
     //public override void UpdatePosition()
     //{

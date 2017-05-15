@@ -4,13 +4,11 @@ using UnityEngine;
 
 public interface IInteractable {
 
-    void Interact(VR_Controller_Custom referenceCheck);//make whatever u want to interact implement iinteractable, put a trigger area on the same object as the script then copy and 
-    //paste the interactable item interact/stopinteraction/startinteraction/linkedcontroller functions and 
-    //finally just put your input over for example referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger){}
+    void Interact(VR_Controller_Custom referenceCheck);//The controller checks the interacted object every frame
 
-    void StopInteraction(VR_Controller_Custom referenceCheck);
+    void StopInteraction(VR_Controller_Custom referenceCheck);//Method to call to define the end of interaction
 
-    void StartInteraction(VR_Controller_Custom referenceCheck);
+    void StartInteraction(VR_Controller_Custom referenceCheck);//Method to call to define the start of interaction
 
     VR_Controller_Custom LinkedController
     {
