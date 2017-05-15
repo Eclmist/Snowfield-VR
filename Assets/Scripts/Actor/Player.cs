@@ -23,8 +23,9 @@ public class Player : Actor
         AddJob(JobType.BLACKSMITH);
     }
 
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (!Instance)
             Instance = this;
         else

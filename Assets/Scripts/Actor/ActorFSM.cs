@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-
-public abstract class ActorFSM : MonoBehaviour {
+[RequireComponent(typeof(Rigidbody))]
+public abstract class ActorFSM : MonoBehaviour
+{
 
     public enum FSMState //changed to fsm state
     {
@@ -12,29 +13,43 @@ public abstract class ActorFSM : MonoBehaviour {
         PETROL,
         INTERACTION,
         INTRUSION,
-        COMBAT
+        COMBAT,
+        DEATH
     }
-
+    protected AI currentAI;
     protected List<Vector3> path;
     protected bool requestedPath;
+    [SerializeField]
     protected FSMState currentState;
     protected Actor target;
     protected Animator animator;
     protected float timer = 0;
-
-    [SerializeField] protected Transform head;
-
+    protected Rigidbody rigidBody;
+    [SerializeField]
+    protected Transform head;
+    [SerializeField]
+    protected float detectionDistance;
 
     public virtual void ChangeState(FSMState state)
     {
         currentState = state;
         timer = 0;
         animator.speed = 1;
+        switch (state)
+        {
+            case FSMState.DEATH:
+                animator.SetBool("Death", true);
+                break;
+            default:
+                break;
+        }
     }
 
     protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
+        currentAI = GetComponent<AI>();
     }
     public Actor Target
     {
@@ -60,7 +75,7 @@ public abstract class ActorFSM : MonoBehaviour {
             currentState = value;
         }
     }
-    
+
     protected virtual void Update()
     {
         UpdateFSMState();
@@ -97,6 +112,38 @@ public abstract class ActorFSM : MonoBehaviour {
     {
         path = _path;
         requestedPath = false;
+    }
+
+    public virtual void CheckHit(int index)
+    {
+        Debug.Log("Thrown");
+        EquipSlot slot = EquipSlot.LEFTHAND;
+        if (index == 0)
+            slot = EquipSlot.LEFTHAND;
+        else if (index == 1)
+        {
+            slot = EquipSlot.RIGHTHAND;
+        }
+
+        Vector3 dir = target.transform.position - transform.position;
+        dir.y = 0;
+        dir.Normalize();
+        float angle = Vector3.Angle(transform.forward, dir);
+        Debug.Log(angle);
+        if (target != null)
+        {
+            GenericItem currentItem = currentAI.returnWield(slot);
+            
+            if (currentItem != null)
+            {
+                Debug.Log("Thrown1");
+                if (Mathf.Abs(angle) < 60  && Vector3.Distance(transform.position, target.transform.position) < currentAI.returnWield(slot).Range * 1.2)
+                {
+                    Debug.Log("Thrown2");
+                    currentAI.Attack(currentItem, target);
+                }
+            }
+        }
     }
 
 }

@@ -8,19 +8,6 @@ using UnityEngine;
 
 public class AdventurerFSM : ActorFSM
 {
-    private AdventurerAI currentAI;
-
-    [SerializeField]
-    private float detectionDistance;
-
-
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-        currentAI = GetComponent<AdventurerAI>();
-    }
 
     protected virtual void UpdateIntrusionState()
     {
@@ -83,14 +70,42 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer > 0)
         {
-            if (Vector3.Distance(target.transform.position, transform.position) > detectionDistance &&
-                (Physics.Raycast(head.transform.position + head.right, target.transform.position) ||
-                Physics.Raycast(head.transform.position - head.right, target.transform.position)))
+            Vector3 _direction = (target.transform.position - head.position).normalized;
+            float distance = Vector3.Distance(target.transform.position, transform.position);
+            Vector3 dir = target.transform.position - transform.position;
+            dir.y = 0;
+            dir.Normalize();
+            float angle = Vector3.Angle(transform.forward, dir);
+            //RaycastHit hit1;
+            //Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
+
+            //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
+            //Debug.DrawRay(head.transform.position - head.right, _direction);
+            if (distance < detectionDistance) /*&& hit1.transform == target.transform*/
             {
-                timer = 5f;
+
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
+                {
+                    _direction = (target.transform.position - transform.position).normalized;
+                    _direction.y = 0;
+                    Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
+                }
+
+                if (distance < currentAI.returnWield(EquipSlot.RIGHTHAND).Range * 1.2 && Mathf.Abs(angle) < 30)//HardCoded
+                    animator.SetBool("Attack", true);
+                else
+                {
+                    animator.SetBool("Attack", false);
+                    animator.SetFloat("Speed", 2);//HardCoded
+                }
+                timer = 5f;//HardCoded
             }
             else
+            {
                 timer -= Time.deltaTime;
+                animator.SetFloat("Speed", 0);
+            }
         }
         else
             ChangeState(FSMState.IDLE);

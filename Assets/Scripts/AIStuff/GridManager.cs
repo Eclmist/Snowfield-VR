@@ -15,10 +15,10 @@ public class GridManager : MonoBehaviour
 
     private Vector3 offset;
     [SerializeField]
-    private LayerMask obstacles,terrainType;
+    private LayerMask obstacles, terrainType;
 
     private int noOfNodesX, noOfNodesY;
-    
+
 
     private Node[,] worldNodes;
 
@@ -26,18 +26,19 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        CreateGrid();
-        
+
+
         offset = transform.position;
+        CreateGrid();
     }
 
     void Start()
     {
         CalculateDefaultASTARNeighbours();
-       
+
     }
 
-    
+
 
     private void CalculateDefaultASTARNeighbours()
     {
@@ -80,13 +81,15 @@ public class GridManager : MonoBehaviour
                 bool isObstacle;
                 Vector3 worldPoint = offset + new Vector3(nodeSize * i + nodeSize / 2, 0, nodeSize * j + nodeSize / 2);// The Y zero value can eventually be changed to something that refers to height too
                 RaycastHit hit;
-                
-                bool collided = Physics.Raycast(worldPoint + Vector3.up * 1000, Vector3.down, out hit, Mathf.Infinity,terrainType);
-                if (collided) {
+
+                bool collided = Physics.Raycast(worldPoint + Vector3.up * 1000, Vector3.down, out hit, Mathf.Infinity, terrainType);
+                if (collided)
+                {
                     worldPoint.y = hit.point.y;
                     isObstacle = Physics.CheckSphere(worldPoint, nodeSize, obstacles);
                 }
-                else {
+                else
+                {
                     worldPoint.y = 0;
                     isObstacle = true;
                 }
@@ -103,47 +106,48 @@ public class GridManager : MonoBehaviour
     public List<Node> path;
     #endregion
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(offset + new Vector3(mapSize.x / 2, 0, mapSize.y / 2), new Vector3(mapSize.x, .1f, mapSize.y));//Gizmos to draw the size of an object with assumption that
+    //void OnDrawGizmos()
+    //{
+    //    offset = transform.position;
+    //    Gizmos.DrawWireCube(offset + new Vector3(mapSize.x / 2, 0, mapSize.y / 2), new Vector3(mapSize.x, .1f, mapSize.y));//Gizmos to draw the size of an object with assumption that
 
 
-        if (worldNodes != null)
-        {
-            foreach (Node X in worldNodes)
-            {
-                if (X.IsObstacle)
-                    Gizmos.color = Color.red;
-                else
-                {
-                    Gizmos.color = new Color(0, 0, 0.1f * X.Neighbours.Length);
-                }
+    //    if (worldNodes != null)
+    //    {
+    //        foreach (Node X in worldNodes)
+    //        {
+    //            if (X.IsObstacle)
+    //                Gizmos.color = Color.red;
+    //            else
+    //            {
+    //                Gizmos.color = new Color(0, 0, 0.1f * X.Neighbours.Length);
+    //            }
 
-                Gizmos.DrawCube(offset + X.Position, new Vector3(nodeSize, .1f, nodeSize));
-            }
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawCube(offset + new Vector3(nodeSize / 2, 11, nodeSize / 2), new Vector3(nodeSize, .1f, nodeSize));//Gizmos to draw the size of an object with assumption that
-        }
-        if (OpenNodes != null)
-        {
-            for(int i = 0;i < OpenNodes.Count; i++) { 
-                Gizmos.color = Color.yellow;
+    //            Gizmos.DrawCube(X.Position, new Vector3(nodeSize, .1f, nodeSize));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawCube(offset + new Vector3(nodeSize / 2, 11, nodeSize / 2), new Vector3(nodeSize, .1f, nodeSize));//Gizmos to draw the size of an object with assumption that
+    //    }
+    //    if (OpenNodes != null)
+    //    {
+    //        for(int i = 0;i < OpenNodes.Count; i++) { 
+    //            Gizmos.color = Color.yellow;
 
-                Gizmos.DrawCube(OpenNodes[i].Position, new Vector3(nodeSize, nodeSize, nodeSize));//Gizmos to draw the size of an object with assumption that
-            }
-        }
-        if (path != null)
-        {
-            foreach (Node x in path)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawCube(x.Position, new Vector3(nodeSize, nodeSize, nodeSize));//Gizmos to draw the size of an object with assumption that
-            }
-        }
-    }
+    //            Gizmos.DrawCube(OpenNodes[i].Position, new Vector3(nodeSize, nodeSize, nodeSize));//Gizmos to draw the size of an object with assumption that
+    //        }
+    //    }
+    //    if (path != null)
+    //    {
+    //        foreach (Node x in path)
+    //        {
+    //            Gizmos.color = Color.green;
+    //            Gizmos.DrawCube(x.Position, new Vector3(nodeSize, nodeSize, nodeSize));//Gizmos to draw the size of an object with assumption that
+    //        }
+    //    }
+    //}
 
     public Node NodeFromWorldPoint(Vector3 _position)
     {
@@ -157,7 +161,7 @@ public class GridManager : MonoBehaviour
         return worldNodes[x, y];
     }
 
-   
+
 
 
 }

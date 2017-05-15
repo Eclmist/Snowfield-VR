@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ore : InteractableItem
+public class Ore : GenericItem
 {
     [SerializeField]
     private TYPE type;
