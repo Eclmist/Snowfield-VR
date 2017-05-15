@@ -9,6 +9,9 @@ public class RotatableObject : InteractableItem
     private HingeJoint joint;
     [SerializeField] private float minRotationalValue,maxRotationValue;
     [SerializeField] private Transform pivot;
+
+	[Tooltip("Spped of lerp to target rotation")]
+	[Range(0,150)]
     [SerializeField] private float force;
     // Use this for initialization
     void Start()
