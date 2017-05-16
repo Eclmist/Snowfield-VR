@@ -6,11 +6,6 @@ public class HuntManager : MonoBehaviour {
 
     public static HuntManager Instance;
 
-    [SerializeField]
-    private string subFolder;
-
-
-
     [SerializeField]private string defaultDailyQuestTitle = "Daily Quest";
     [SerializeField]private List<StoryLine> storylines = new List<StoryLine>();
     [SerializeField]private Queue<AdventurerAI> aiQueue;
@@ -22,12 +17,6 @@ public class HuntManager : MonoBehaviour {
        get { return this.storylines; }
         set { this.storylines = value; }
     }
-    
-    public string SubFolder
-    {
-        get { return this.subFolder; }
-    }
-
 
 	void Awake()
     {

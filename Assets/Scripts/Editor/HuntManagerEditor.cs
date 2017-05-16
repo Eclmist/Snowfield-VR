@@ -9,7 +9,6 @@ public class HuntManagerEditor : Editor {
 
     HuntManager instance;
 
-
     private string[] storyLines;
     private string[] quests;
     private int selectedGridIndex;
@@ -43,6 +42,26 @@ public class HuntManagerEditor : Editor {
 
     }
 
+    private string ConvertToPath(AudioClip clip)
+    {
+        return  "Dialog expressions/" + clip.name;
+    }
+
+    private void GetAudioFilesFromPath()
+    {
+        foreach(StoryLine sl in instance.Storylines)
+        {
+            foreach(StoryHunt hunt in sl.Storyline)
+            {
+                foreach(Line l in hunt.Dialog.Lines)
+                {
+                    if (l.ClipPath != null)
+                        l.Clip = Resources.Load(l.ClipPath) as AudioClip;
+                }
+            }
+        }
+    }
+
 
     public override void OnInspectorGUI()
     {
@@ -59,6 +78,7 @@ public class HuntManagerEditor : Editor {
             if (GUILayout.Button("\nLoad Quest\n"))
             {
                 instance.Storylines = (List<StoryLine>)SerializeManager.Load("storylines");
+                GetAudioFilesFromPath();
                 Debug.Log("loaded!");
             }
         }
@@ -109,6 +129,8 @@ public class HuntManagerEditor : Editor {
                             EditorStyles.textField.wordWrap = true;
                             l.Message = EditorGUILayout.TextArea(l.Message);
                             l.Clip = (AudioClip)EditorGUILayout.ObjectField("Audio", l.Clip, typeof(AudioClip), true);
+                            if(l.Clip != null)
+                            l.ClipPath = ConvertToPath(l.Clip);
                         }
                         GUILayout.EndVertical();
 
