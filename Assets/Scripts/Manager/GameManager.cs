@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
 
     public static GameManager Instance;
 
     #region ClockRegion
-    [SerializeField]
-    [Range(1, 10000)]
-    private int secondsPerDay;
+    [SerializeField] [Range(1, 10000)] private int secondsPerDay;
 
     private GameClock gameClock;
     #endregion
 
     #region RequestRegion
 
-    [SerializeField]
-    [Range(1, 100)]
-    private int requestConstant;
+    [SerializeField] [Range(1, 100)] private int requestConstant;
     private float nextRequest = 0;
 
     #endregion
@@ -44,15 +39,14 @@ public class GameManager : MonoBehaviour
 
     private void RequestBoardUpdate()
     {
-        if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update
-        {
-            nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
-            if (!OrderBoard.Instance.IsMaxedOut)
-                OrderManager.Instance.NewRequest();
-        }
-    }
-
-    public void AddPlayerGold(int value)
+		if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
+		{
+			nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
+			if (!OrderBoard.Instance.IsMaxedOut)
+				OrderManager.Instance.NewRequest();
+		}
+	}
+	public void AddPlayerGold(int value)
     {
         if (!Player.Instance.AddGold(value))
         {
