@@ -14,8 +14,6 @@ public class SerializeManager
     {
         fileName = "SerializedFiles/" + fileName;
         SurrogateSelector surrogateSelector = new SurrogateSelector();
-        surrogateSelector.AddSurrogate(typeof(Sprite), new StreamingContext(StreamingContextStates.All),  new SpriteSurrogate());
-        surrogateSelector.AddSurrogate(typeof(Mesh), new StreamingContext(StreamingContextStates.All), new MeshSurrogate());
         surrogateSelector.AddSurrogate(typeof(AudioClip), new StreamingContext(StreamingContextStates.All), new AudioClipSurrogate());
         binaryFormatter.SurrogateSelector = surrogateSelector;
 

@@ -3,7 +3,8 @@
 		_Color ("Color", Color) = (1,1,1,1)
 		//_RampTex("Ramp", 2D) = "white" {}
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
-		_RampTex("Ramp", 2D) = "white" {}	}
+		_RampTex("Ramp", 2D) = "white" {}
+	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		LOD 200

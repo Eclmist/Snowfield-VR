@@ -8,7 +8,8 @@ public class AudioClipSurrogate : ISerializationSurrogate
 {
     public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
     {
-        AudioClip someObj = (AudioClip)obj;
+		//TODO: Implement store the thing what ever it take in as a string which is the path ten when you set object data then you something
+        //AudioClip someObj = (AudioClip)obj;
     }
 
     public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
