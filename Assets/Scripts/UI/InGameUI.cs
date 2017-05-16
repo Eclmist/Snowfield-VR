@@ -14,8 +14,8 @@ public enum InGameState
 public class InGameUI : MonoBehaviour
 {
     public static InGameUI Instance;
-    private InGameState curState = InGameState.INGAME, lastState = InGameState.IDLE;
-    public Transform[] go;
+    public InGameState curState = InGameState.INGAME, lastState = InGameState.IDLE;
+    private Transform[] go;
     void Awake()
     {
         if (!Instance)
@@ -69,7 +69,6 @@ public class InGameUI : MonoBehaviour
         {
             foreach (Transform t in go)
             {
-                Debug.Log(t.name);
                 if (t.name == name1)
                 {
                     t.gameObject.SetActive(true);
