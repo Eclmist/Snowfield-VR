@@ -6,9 +6,10 @@ using UnityEngine;
 public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
-    [SerializeField]
-    private int population;
+    [SerializeField][Range(5,30)][Tooltip("Max number of AI in town")]
+    private int population = 5;
 
+    [SerializeField]
     private List<Shop> allShops = new List<Shop>();
 
     private List<AI> listOfAI = new List<AI>();

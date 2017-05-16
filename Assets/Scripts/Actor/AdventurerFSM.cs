@@ -56,7 +56,7 @@ public class AdventurerFSM : ActorFSM
             }
             else if (!requestedPath)
             {
-                AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location, ChangePath);
+                AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location.position, ChangePath);
                 requestedPath = true;
             }
         }
@@ -76,12 +76,12 @@ public class AdventurerFSM : ActorFSM
             dir.y = 0;
             dir.Normalize();
             float angle = Vector3.Angle(transform.forward, dir);
-            //RaycastHit hit1;
-            //Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
+            RaycastHit hit1;
+            Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
 
             //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance) /*&& hit1.transform == target.transform*/
+            if (distance < detectionDistance && hit1.transform == target.transform)
             {
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))

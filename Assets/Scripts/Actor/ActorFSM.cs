@@ -50,6 +50,8 @@ public abstract class ActorFSM : MonoBehaviour
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         currentAI = GetComponent<AI>();
+        if (head == null)
+            head = transform;
     }
     public Actor Target
     {

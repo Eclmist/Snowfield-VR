@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Actor : MonoBehaviour, IDamagable
 {
     [SerializeField]
-    protected int health;
+    protected int health = 100;
 
     [SerializeField]
     protected EquipSlot leftHand, rightHand;

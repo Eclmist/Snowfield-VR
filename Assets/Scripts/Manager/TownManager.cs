@@ -10,7 +10,7 @@ public class TownManager : MonoBehaviour
     [SerializeField]
     private Town currentTown;
 
-    [SerializeField][Tooltip("The time in seconds between each ai spawns")]
+    [SerializeField][Tooltip("The time in seconds between each ai spawns")][Range(1,100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
     private float timer;
     // Use this for initialization
@@ -46,7 +46,10 @@ public class TownManager : MonoBehaviour
             if (timer > aiSpawnTimer)
             {
                 timer = 0;
+                
                 Transform randomSpawn = CurrentTown.getRandomSpawnPoint();
+                AI randomAI = CurrentTown.getRandomAIType();
+                if(randomSpawn && randomAI)
                 currentTown.AIs.Add(Instantiate(CurrentTown.getRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
         }
