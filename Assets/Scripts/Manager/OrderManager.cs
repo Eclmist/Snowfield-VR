@@ -3,247 +3,191 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
-
+// [ExecuteInEditMode]
 public class OrderManager : MonoBehaviour
-
 {
+	public static OrderManager Instance;
 
+	public int baseGoldMultiplier;
 
+	public int baseDurationMultiplier;
 
-    public static OrderManager Instance;
+	public bool save;
 
+	[SerializeField]
 
+	private List<OrderTemplate> templateList;
+	private List<OrderTemplate> availableTemplatesForCurrentLevel;
 
-    public int baseGoldMultiplier;
 
-    public int baseDurationMultiplier;
+	public List<OrderTemplate> TemplateList
 
-    public bool save;
+	{
 
+		get { return this.templateList; }
 
+		set { this.templateList = value; }
 
-    [SerializeField]
+	}
 
-    private List<OrderTemplate> templateList;
-    private List<OrderTemplate> availableTemplatesForCurrentLevel;
 
+	private void LoadTemplates()
+	{
+		foreach (OrderTemplate ot in templateList)
+		{
+			ot.Sprite = Resources.Load("Templates/" + ot.SpriteIndex.ToString()) as Sprite;
+		}
+	}
 
-    public List<OrderTemplate> TemplateList
+	public void UpdateAvailableTemplates()
+	{
+		foreach (Job job in Player.Instance.JobListReference)
+		{
+			foreach (OrderTemplate ot in templateList)
+			{
+				if (ot.JobType == job.Type && ot.LevelUnlocked <= job.Level)
+					availableTemplatesForCurrentLevel.Add(ot);
+			}
+		}
 
-    {
+	}
 
-        get { return this.templateList; }
 
-        set { this.templateList = value; }
 
-    }
+	// Use this for initialization
 
+	void Awake()
+	{
+		//LoadTemplates();
+		if (!Instance)
+		{
+			Instance = this;
 
-    private void LoadTemplates()
-    {
-        foreach (OrderTemplate ot in templateList)
-        {
-            ot.Sprite = Resources.Load("Templates/" + ot.SpriteIndex.ToString()) as Sprite;
-        }
-    }
+			availableTemplatesForCurrentLevel = new List<OrderTemplate>();
 
-    public void UpdateAvailableTemplates()
-    {
-        foreach (Job job in Player.Instance.JobListReference)
-        {
-            foreach (OrderTemplate ot in templateList)
-            {
-                if (ot.JobType == job.Type && ot.LevelUnlocked <= job.Level)
-                    availableTemplatesForCurrentLevel.Add(ot);
-            }
-        }
+			//PopulateLists();
 
-    }
 
+			if (templateList.Count < 1)
+				Debug.Log("Template list is empty");
+		}
+	}
+	void Start()
+	{
+		UpdateAvailableTemplates();
+		//Debug.Log(availableTemplatesForCurrentLevel.Count);
+	}
 
+	private void PopulateLists()
+	{
+		SerializeManager.Load("templateList");
 
-    // Use this for initialization
+		UpdateAvailableTemplates();
 
-    void Awake()
-    {
-        //LoadTemplates();
-        if (!Instance)
+		SerializeManager.Load("materialList");
 
-        {
+	}
 
-            Instance = this;
+	public void NewRequest()
+	{
+		int totalExperienceValue = 0;
 
-            availableTemplatesForCurrentLevel = new List<OrderTemplate>();
+		foreach (Job job in Player.Instance.JobListReference)
+		{
+			totalExperienceValue += job.Experience;
+		}
 
-            //PopulateLists();
+		int randomValue = Random.Range(0, totalExperienceValue);
 
+		totalExperienceValue = 0;
 
-            if (templateList.Count < 1)
-                Debug.Log("Template list is empty");
+		foreach (Job job in Player.Instance.JobListReference)
 
-        }
-    }
-    void Start()
-    {
-        UpdateAvailableTemplates();
-        //Debug.Log(availableTemplatesForCurrentLevel.Count);
-    }
+		{
 
-    private void PopulateLists()
-    {
-        SerializeManager.Load("templateList");
+			totalExperienceValue += job.Experience;
 
-        UpdateAvailableTemplates();
+			if (totalExperienceValue >= randomValue)
 
-        SerializeManager.Load("materialList");
+			{
 
-    }
+				Order o = GenerateOrder(job);
 
-    public void NewRequest()
+				if (o != null)
 
-    {
+					OrderBoard.Instance.SpawnOnBoard(o);
 
-        int totalExperienceValue = 0;
+			}
 
-        foreach (Job job in Player.Instance.JobListReference)
+		}
 
-        {
+	}
 
-            totalExperienceValue += job.Experience;
+	private Order GenerateOrder(Job job)
+	{
+		Order newOrder = null;
 
-        }
+		List<OrderTemplate> currentTemplateList = GetTemplatesForJobType(job.Type);
 
+		// Get a random template
+		OrderTemplate currentTemplate = currentTemplateList[Random.Range(0, currentTemplateList.Count)];
 
 
-        int randomValue = Random.Range(0, totalExperienceValue);
 
-        totalExperienceValue = 0;
+		// Generate order based on job type
 
-        foreach (Job job in Player.Instance.JobListReference)
+		switch (job.Type)
+		{
+			case JobType.ALCHEMY:
+				break;
+			case JobType.BLACKSMITH:
+				PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
 
-        {
+				newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString(),
+					currentTemplate.Sprite, job.Level * baseDurationMultiplier * currentTemplate.Duration,
+					job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier);
+				break;
 
-            totalExperienceValue += job.Experience;
+		}
+		return newOrder;
+	}
 
-            if (totalExperienceValue >= randomValue)
 
-            {
 
-                Order o = GenerateOrder(job);
+	public void CompletedOrder(bool success, int reward)
 
-                if (o != null)
+	{
 
-                    OrderBoard.Instance.SpawnOnBoard(o);
+		if (success)
+		{
+			GameManager.Instance.AddPlayerGold(reward);
+		}
 
-            }
+	}
 
-        }
 
 
+	// Filter templateList by JobTpye
 
-    }
+	private List<OrderTemplate> GetTemplatesForJobType(JobType jobType)
 
+	{
 
+		List<OrderTemplate> requestedList = new List<OrderTemplate>();
 
 
 
-    private Order GenerateOrder(Job job)
+		foreach (OrderTemplate ot in availableTemplatesForCurrentLevel)
 
-    {
+		{
 
-        // TO DO
+			if (ot.JobType == jobType)
+				requestedList.Add(ot);
+		}
 
-        Player currentPlayer = Player.Instance;
+		return requestedList;
 
-        Order newOrder = null;
-
-        List<OrderTemplate> currentTemplateList = GetTemplatesForJobType(job.Type);
-
-        // Get a random template
-
-        OrderTemplate currentTemplate = currentTemplateList[Random.Range(0, currentTemplateList.Count)];
-
-
-
-        // Generate order based on job type
-
-        switch (job.Type)
-
-        {
-
-            case JobType.ALCHEMY:
-
-                break;
-
-            case JobType.BLACKSMITH:
-
-
-
-                PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
-
-
-
-                newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString()
-
-            , currentTemplate.Sprite
-
-            , job.Level * baseDurationMultiplier * currentTemplate.Duration
-
-            , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier);
-
-
-
-                break;
-
-        }
-
-
-
-
-
-        return newOrder;
-
-
-
-    }
-
-
-
-    public void CompletedOrder(bool success, int reward)
-
-    {
-
-        if (success)
-        {
-            GameManager.Instance.AddPlayerGold(reward);
-        }
-
-    }
-
-
-
-    // Filter templateList by JobTpye
-
-    private List<OrderTemplate> GetTemplatesForJobType(JobType jobType)
-
-    {
-
-        List<OrderTemplate> requestedList = new List<OrderTemplate>();
-
-
-
-        foreach (OrderTemplate ot in availableTemplatesForCurrentLevel)
-
-        {
-
-            if (ot.JobType == jobType)
-                requestedList.Add(ot);
-        }
-
-        return requestedList;
-
-    }
+	}
 
 
 

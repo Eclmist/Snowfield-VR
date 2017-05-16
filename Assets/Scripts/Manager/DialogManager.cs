@@ -89,14 +89,11 @@ public class DialogManager : MonoBehaviour {
 
     private void LoadSessionByTitle(string title)
     {
-        bool isFound = false;
-
         foreach (Session s in sessionList)
         {
             if (s.Title == title)
             {
                 currentSession = s;
-                isFound = true;
                 break;
             }
 
