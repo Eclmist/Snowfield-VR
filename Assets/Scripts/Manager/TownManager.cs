@@ -7,7 +7,12 @@ public class TownManager : MonoBehaviour
 
     public static TownManager Instance;
 
+    [SerializeField]
     private Town currentTown;
+
+    [SerializeField][Tooltip("The time in seconds between each ai spawns")]
+    private float aiSpawnTimer;//can be made to react with gamemanager in the future
+    private float timer;
     // Use this for initialization
     void Awake()
     {
@@ -24,20 +29,28 @@ public class TownManager : MonoBehaviour
 
     void Start()
     {
-        currentTown = (Town)SerializeManager.Load("TownData");
-        if (currentTown == null)
-        {
-            currentTown = new Town(1);
-            GameObject[] shopsObject = GameObject.FindGameObjectsWithTag("Shop");
-            List<Shop> shops = new List<Shop>();
-            foreach(GameObject gameObject in shopsObject)
-            {
-                shops.Add(gameObject.transform.GetComponent<Shop>());
-            }
-            currentTown.Shops.AddRange(shops);
-        }
+        //currentTown = (Town)SerializeManager.Load("TownData");
+        
     }
 
+    void Update()
+    {
+        UpdateTown();
+    }
+
+    private void UpdateTown()
+    {
+        if (CurrentTown != null && currentTown.AIs.Count != CurrentTown.Population)
+        {
+            timer += Time.deltaTime;
+            if (timer > aiSpawnTimer)
+            {
+                timer = 0;
+                Transform randomSpawn = CurrentTown.getRandomSpawnPoint();
+                currentTown.AIs.Add(Instantiate(CurrentTown.getRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+            }
+        }
+    }
     public Shop GetRandomShop()
     {
         int shopIndex = Random.Range(0, currentTown.Shops.Count);
@@ -54,6 +67,7 @@ public class TownManager : MonoBehaviour
             return currentTown;
         }
     }
+
 
     public void ChangeTown(Town _town)
     {

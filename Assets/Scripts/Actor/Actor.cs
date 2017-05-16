@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EquipSlot
-{
-    LEFTHAND,
-    RIGHTHAND,
-}
-
 public abstract class Actor : MonoBehaviour, IDamagable
 {
-
+    [SerializeField]
     protected int health;
+
+    [SerializeField]
+    protected EquipSlot leftHand, rightHand;
 
     protected int maxHealth;
 
@@ -23,11 +20,15 @@ public abstract class Actor : MonoBehaviour, IDamagable
         jobList.Add(newJob);
     }
 
-    public void GainExperience(JobType jobType,int value)
+    protected virtual void Awake()
     {
-        foreach(Job currentJob in jobList)
+        maxHealth = health;
+    }
+    public void GainExperience(JobType jobType, int value)
+    {
+        foreach (Job currentJob in jobList)
         {
-            if(currentJob.Type == jobType)
+            if (currentJob.Type == jobType)
             {
                 currentJob.GainExperience(value);
                 break;
@@ -39,15 +40,13 @@ public abstract class Actor : MonoBehaviour, IDamagable
     {
         foreach (Job job in jobList)
         {
-            if(job.Type == type)
+            if (job.Type == type)
             {
                 return job;
             }
         }
         return null;
     }
-
-    protected IInteractable leftHand, rightHand;
 
     public int Health
     {
@@ -56,6 +55,11 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return health;
         }
 
+    }
+
+    public virtual void Attack(IDamage item, IDamagable target)
+    {
+        target.TakeDamage(item.Damage, this);
     }
 
     public int MaxHealth
@@ -72,40 +76,39 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return jobList;
         }
     }
-    public virtual void TakeDamage(int damage,Actor attacker)
+    public virtual void TakeDamage(int damage, Actor attacker)
     {
-        health -= (damage >= health) ? 0 : health - damage;
+        health -= (damage >= health) ? health : damage;
         health = health > maxHealth ? maxHealth : health;
     }
 
-
-    public virtual void ChangeWield(EquipSlot slot, IInteractable item)
+    public virtual void ChangeWield(Equipment item)
     {
-        switch (slot)
+        switch (item.Slot)
         {
-            case EquipSlot.LEFTHAND:
-                leftHand = item;
+            case EquipSlot.EquipmentSlotType.LEFTHAND:
+                leftHand.Item = item;
                 break;
 
-            case EquipSlot.RIGHTHAND:
-                rightHand = item;
+            case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                rightHand.Item = item;
                 break;
         }
     }
 
-    public IInteractable returnWield(EquipSlot slot)
+    public Equipment returnEquipment(EquipSlot.EquipmentSlotType slot)
     {
         switch (slot)
         {
-            case EquipSlot.LEFTHAND:
-                return leftHand;
+            case EquipSlot.EquipmentSlotType.LEFTHAND:
+                return leftHand.Item;
 
-            case EquipSlot.RIGHTHAND:
-                return rightHand;
+            case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                return rightHand.Item;
             default:
                 return null;
         }
-        
+
     }
 
     public abstract void Notify();
