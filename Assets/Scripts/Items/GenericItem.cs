@@ -1,40 +1,96 @@
 ﻿using System.Collections;
 
+
+
 using System.Collections.Generic;
+
+
 
 using UnityEngine;
 
 
+
+
+
 [RequireComponent(typeof(Rigidbody))]
-public abstract class InteractableItem : MonoBehaviour, IInteractable
+
+[RequireComponent(typeof(AudioSource))]
+
+public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
+
 {
 
+
+
     protected Rigidbody rigidBody;
+
     protected Collider itemCollider;
 
-    protected float hitStrength;
     #region GenericItem
+
     [SerializeField]
+
+    protected int damage;
+
+    [SerializeField]
+
     protected string m_name;
+
+    protected AudioSource audioSource;
+
+
     #endregion
 
+
+
     #region IInteractable
+
     protected VR_Controller_Custom linkedController = null;
+
+    private bool isFlying;
+
+    private IDamagable target;
+
     public VR_Controller_Custom LinkedController
     {
         get
         {
             return linkedController;
+
         }
     }
+    #endregion
 
+
+
+    #region
+
+    [SerializeField] protected float maxForceVolume;
 
     #endregion
+
 
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         itemCollider = GetComponent<Collider>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+
+
+    public int Damage
+    {
+        get
+        {
+            if (LinkedController != null)
+                return linkedController.Velocity().magnitude < 5 ? (int)(linkedController.Velocity().magnitude * damage) : damage * 5;
+            else if (isFlying)
+                return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
+            else
+                return damage;
+
+        }
     }
 
 
@@ -45,11 +101,19 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         set { this.m_name = value; }
     }
 
+
+
     //protected virtual void Update()
+
     //{
+
     //    if (linkedController != null)
+
     //        UpdatePosition();
+
     //}
+
+
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
@@ -57,37 +121,84 @@ public abstract class InteractableItem : MonoBehaviour, IInteractable
         {
             StartInteraction(referenceCheck);
         }
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger) && linkedController == referenceCheck)
+        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
             StopInteraction(referenceCheck);
         }
     }
 
+
+
     public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
     {
-        linkedController = null;
-        referenceCheck.SetInteraction(null);
+        if (linkedController == referenceCheck)
+        {
+            linkedController = null;
+            referenceCheck.SetInteraction(null);
+            rigidBody.velocity = referenceCheck.Device.velocity;
+            rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
+            StartCoroutine(Throw(Player.Instance));
+        }
+
     }
+
+
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
-
         linkedController = referenceCheck;
+
     }
 
-    //protected virtual void OnCollisionEnter(Collision collision)
-    //{
-    //    hitStrength = rigidBody.velocity.magnitude;
+    public virtual IEnumerator Throw(Actor thrower)
+    {
+        isFlying = true;
 
-    //    audioSource.volume = hitStrength/10;
+        while (rigidBody.velocity.magnitude > 0.1)
+        {
+            if (target != null)
+            {
+                thrower.Attack(this, target);
+                target = null;
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        target = null;
+        isFlying = false;
+    }
 
-    //    audioSource.Play();
-    //}
+    protected virtual void OnCollisionEnter(Collision col)
+    {
+        if (isFlying)
+        {
+            target = col.transform.GetComponent<IDamagable>();
+        }
+        if (linkedController != null)
+            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+    }
+
+
+
+    protected void PlaySound(float volume)
+
+    {
+
+        if (audioSource != null)
+
+        {
+
+            audioSource.volume = volume;
+
+            audioSource.Play();
+
+        }
+
+    }
 
     //public abstract void UpdatePosition();
 
-
-
 }
+

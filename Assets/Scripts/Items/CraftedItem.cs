@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CraftedItem : InteractableItem
+public class CraftedItem : GenericItem
 {
-
-    protected bool removable = true,toggled = false;
+    #region PlayerInteraction
+    protected bool removable = true, toggled = false;
     protected virtual void UseItem()
     {
-        Debug.Log("You are using " + this.name);
+        Debug.Log("You are using " + this.name);    
     }
 
 
@@ -45,7 +45,7 @@ public class CraftedItem : InteractableItem
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
-        if(referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
+        if (toggled)
         {
             transform.position = linkedController.transform.position;
             transform.rotation = linkedController.transform.rotation;
@@ -57,6 +57,17 @@ public class CraftedItem : InteractableItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
+    protected virtual void OnTriggerEnter(Collider collision)
+    {
+        if(linkedController != null)
+        {
+            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+            IDamagable target = collision.GetComponent<IDamagable>();
+            if (target != null)
+                Player.Instance.Attack(this, target);
+
+        }
+    }
     protected virtual void OnTriggerStay(Collider collision)
     {
         if (linkedController != null && collision.gameObject != linkedController.gameObject)
@@ -73,4 +84,6 @@ public class CraftedItem : InteractableItem
             removable = true;
         }
     }
+    #endregion
+    
 }

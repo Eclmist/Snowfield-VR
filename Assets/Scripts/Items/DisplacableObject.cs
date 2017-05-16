@@ -4,22 +4,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ConfigurableJoint))]
-public class DisplacableObject : InteractableItem {
+[RequireComponent(typeof(Rigidbody))]
+public class DisplacableObject : MonoBehaviour, IInteractable
+{
 
     [SerializeField]
+    [Tooltip("The axis which the object is locked in")]
     private bool[] axisLock = new bool[3];
     [SerializeField]
+    [Tooltip("The maxdistance the object can travel in its unlocked axis")]
     private float maxDistance;
     private ConfigurableJoint joint;
-   
-	// Use this for initialization
-	void Start () {
+    private VR_Controller_Custom linkedController;
+    [SerializeField]
+    [Tooltip("The rigidbody this object is bound to")]
+    private Rigidbody boundRigidBody;
+    private Rigidbody rigidBody;
+
+    public VR_Controller_Custom LinkedController
+    {
+        get
+        {
+            return linkedController;
+        }
+        set
+        {
+            linkedController = value;
+        }
+    }
+
+    void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody>();
         joint = GetComponent<ConfigurableJoint>();
-        Rigidbody parentRigidBody = GetComponentInParent<Rigidbody>();
-        if (parentRigidBody != rigidBody)
-            joint.connectedBody = parentRigidBody;
+    }
+    // Use this for initialization
+    void Start()
+    {
+
+        if (boundRigidBody != null)
+            joint.connectedBody = boundRigidBody;
+
         SoftJointLimit limit = joint.linearLimit;
-        limit.limit = maxDistance/2;
+        limit.limit = maxDistance / 2;
         joint.linearLimit = limit;
         joint.xMotion = axisLock[0] ? ConfigurableJointMotion.Locked : ConfigurableJointMotion.Limited;
         joint.yMotion = axisLock[1] ? ConfigurableJointMotion.Locked : ConfigurableJointMotion.Limited;
@@ -29,39 +56,19 @@ public class DisplacableObject : InteractableItem {
         joint.angularZMotion = ConfigurableJointMotion.Locked;
     }
 
-    //protected override void Update()
-    //{
-    //    base.Update();
-    //    if(linkedController == null)
-    //    {
 
-    //        Vector3 localVelocity = transform.InverseTransformDirection(rigidBody.velocity);
 
-    //        Vector3 nextPosition = localVelocity * Time.deltaTime + transform.position;
-
-    //        Vector3 positionalOffset = transform.InverseTransformDirection(nextPosition - startPosition);
-
-    //        rigidBody.velocity = transform.TransformDirection(localVelocity);
-
-    //        Vector3 maxDisplacementDirection = maxDisplacement.normalized;
-
-    //        if (Mathf.Abs(positionalOffset.x) > maxDisplacement.x)
-    //            localVelocity.x = localVelocity.x/ -2 * maxDisplacement.x;
-    //        if (Mathf.Abs(positionalOffset.y) > maxDisplacement.y)
-    //            localVelocity.y = localVelocity.y / -2 * maxDisplacement.y;
-    //        if (Mathf.Abs(positionalOffset.z) > maxDisplacement.z)
-    //            localVelocity.z = localVelocity.z / -2 * maxDisplacement.z;
-
-    //        rigidBody.velocity = transform.TransformDirection(localVelocity);
-    //    }
-    //}
-
-    // Update is called once per frame
-
-    public override void Interact(VR_Controller_Custom referenceCheck)
+    public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
-        base.Interact(referenceCheck);
-        if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
+        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StartInteraction(referenceCheck);
+        }
+        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StopInteraction(referenceCheck);
+        }
+        else if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
             linkedController.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
@@ -69,22 +76,25 @@ public class DisplacableObject : InteractableItem {
 
             rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
         }
+    }
 
-        //Vector3 localVelocity = transform.InverseTransformDirection(rigidBody.velocity);
+    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController == referenceCheck)
+        {
+            linkedController = null;
+            referenceCheck.SetInteraction(null);
 
-        //Vector3 nextPosition = localVelocity * Time.deltaTime + transform.position;
+            rigidBody.velocity = referenceCheck.Device.velocity;
+            rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
+        }
+    }
 
-        //Vector3 positionalOffset = transform.InverseTransformDirection(nextPosition - startPosition);
+    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
+    {
+        if (linkedController != null && linkedController != referenceCheck)
+            linkedController.SetInteraction(null);
 
-        //if (Mathf.Abs(positionalOffset.x) > maxDisplacement.x)
-        //    localVelocity.x = 0;
-        //if (Mathf.Abs(positionalOffset.y) > maxDisplacement.y)
-        //    localVelocity.y = 0;
-        //if (Mathf.Abs(positionalOffset.z) > maxDisplacement.z)
-        //    localVelocity.z = 0;
-
-        //rigidBody.velocity = transform.TransformDirection(localVelocity);
-
-        
+        linkedController = referenceCheck;
     }
 }
