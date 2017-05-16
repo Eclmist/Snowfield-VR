@@ -16,8 +16,12 @@ public class AdventurerAI : AI {
     {
         base.Awake();
         AddJob(JobType.ADVENTURER);
+    }
+
+    protected void GetSlotsAndEquipment()
+    {
         EquipSlot[] equipmentSlots = GetComponentsInChildren<EquipSlot>();
-        foreach(EquipSlot slot in equipmentSlots)
+        foreach (EquipSlot slot in equipmentSlots)
         {
             switch (slot.CurrentType)
             {
@@ -30,7 +34,7 @@ public class AdventurerAI : AI {
             }
         }
 
-        foreach(Equipment equip in inventory)
+        foreach (Equipment equip in inventory)
         {
             switch (equip.Slot)
             {
@@ -42,11 +46,8 @@ public class AdventurerAI : AI {
                     break;
             }
         }
-
-        
     }
 
-    
     public List<Quest> Quests
     {
         get

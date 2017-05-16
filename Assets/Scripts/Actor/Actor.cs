@@ -7,6 +7,9 @@ public abstract class Actor : MonoBehaviour, IDamagable
     [SerializeField]
     protected int health;
 
+    [SerializeField]
+    protected EquipSlot leftHand, rightHand;
+
     protected int maxHealth;
 
     protected List<Job> jobList = new List<Job>();
@@ -44,9 +47,6 @@ public abstract class Actor : MonoBehaviour, IDamagable
         }
         return null;
     }
-
-    [SerializeField]
-    protected EquipSlot leftHand, rightHand;
 
     public int Health
     {
