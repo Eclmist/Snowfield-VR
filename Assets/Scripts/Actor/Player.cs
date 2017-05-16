@@ -8,6 +8,8 @@ public class Player : Actor
     [SerializeField]
     private int gold;
 
+	[SerializeField] private Transform vivePosition;
+
     public static Player Instance;
 
     public int Gold
@@ -45,4 +47,9 @@ public class Player : Actor
     {
         throw new NotImplementedException();
     }
+
+	public new Transform transform()
+	{
+		return vivePosition;
+	}
 }
