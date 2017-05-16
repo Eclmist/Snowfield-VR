@@ -40,6 +40,7 @@ public class AdventurerFSM : ActorFSM
             case FSMState.INTERACTION:
                 break;
             case FSMState.COMBAT:
+                animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                 timer = 5;
                 break;
 
@@ -57,6 +58,7 @@ public class AdventurerFSM : ActorFSM
             else if (!requestedPath)
             {
                 AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location.position, ChangePath);
+
                 requestedPath = true;
             }
         }
@@ -124,20 +126,25 @@ public class AdventurerFSM : ActorFSM
         if (path.Count == 0)
         {
             ChangeState(FSMState.IDLE);
+            rigidBody.angularVelocity = Vector3.zero;
+            rigidBody.velocity = Vector3.zero;
         }
         else
         {
-            Vector3 targetPoint = new Vector3(path[0].x, transform.position.y, path[0].z);
+            
+            Vector3 targetPoint = path[0];
             Vector3 _direction = (targetPoint - transform.position).normalized;
-
+            _direction.y = 0;
             //create the rotation we need to be in to look at the target
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
 
             //rotate us over time according to speed until we are in the required rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
+            rigidBody.velocity = _direction * 5;
             if (Vector3.Distance(transform.position, targetPoint) < 1f)
                 path.RemoveAt(0);
+            
 
         }
     }

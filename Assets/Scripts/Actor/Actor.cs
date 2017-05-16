@@ -111,5 +111,6 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     }
 
+   
     public abstract void Notify();
 }

@@ -16,6 +16,7 @@ public class AdventurerAI : AI {
     {
         base.Awake();
         AddJob(JobType.ADVENTURER);
+        GetSlotsAndEquipment();
     }
 
     protected void GetSlotsAndEquipment()
@@ -36,18 +37,32 @@ public class AdventurerAI : AI {
 
         foreach (Equipment equip in inventory)
         {
-            switch (equip.Slot)
-            {
-                case EquipSlot.EquipmentSlotType.LEFTHAND:
-                    leftHand.Item = Instantiate(equip, leftHand.transform);
-                    break;
-                case EquipSlot.EquipmentSlotType.RIGHTHAND:
-                    rightHand.Item = Instantiate(equip, rightHand.transform);
-                    break;
-            }
+
+            ChangeWield(Instantiate(equip));
         }
     }
 
+
+    public override void ChangeWield(Equipment item)
+    {
+        Debug.Log(item);
+        switch (item.Slot)
+        {
+            case EquipSlot.EquipmentSlotType.LEFTHAND:
+                if (leftHand.Item != null)
+                    leftHand.Item.Unequip();
+                leftHand.Item = item;
+                leftHand.Item.Equip(leftHand.transform);
+                break;
+
+            case EquipSlot.EquipmentSlotType.RIGHTHAND:
+                if (rightHand.Item != null)
+                    rightHand.Item.Unequip();
+                rightHand.Item = item;
+                rightHand.Item.Equip(rightHand.transform);
+                break;
+        }
+    }
     public List<Quest> Quests
     {
         get
