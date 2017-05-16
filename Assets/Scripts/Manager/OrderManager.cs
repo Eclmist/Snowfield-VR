@@ -169,20 +169,12 @@ public class OrderManager : MonoBehaviour
         // Generate order based on job type
 
         switch (job.Type)
-
         {
-
             case JobType.ALCHEMY:
-
                 break;
-
             case JobType.BLACKSMITH:
 
-
-
                 PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
-
-
 
                 newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString()
 
@@ -192,20 +184,10 @@ public class OrderManager : MonoBehaviour
 
             , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier);
 
-
-
                 break;
-
         }
 
-
-
-
-
         return newOrder;
-
-
-
     }
 
 
