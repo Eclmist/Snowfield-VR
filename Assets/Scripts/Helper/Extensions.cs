@@ -41,11 +41,7 @@ public static class Extensions
 		for (int i = 0; i < triangle.Length; i += 3)
 		{
 			Vector3 v1 = vertex[triangle[i]];
-			Vector3 v2 = vertex[triangle[i + 1]];
-			Vector3 v3 = vertex[triangle[i + 2]];
-
 			Vector3 n = (normal[triangle[i]] + normal[triangle[i + 1]] + normal[triangle[i + 2]]).normalized;
-
 			float distance = Mathf.Abs(Vector3.Dot(n, v1) - Vector3.Dot(n, point));
 
 			if (distance < shortestDistance)

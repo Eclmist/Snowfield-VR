@@ -15,9 +15,11 @@ public class GridManager : MonoBehaviour
 
     private Vector3 offset;
     [SerializeField]
-    private LayerMask obstacles, terrainType;
+    private LayerMask obstacles;
+	[SerializeField]
+	private LayerMask terrainType;
 
-    private int noOfNodesX, noOfNodesY;
+	private int noOfNodesX, noOfNodesY;
 
 
     private Node[,] worldNodes;
