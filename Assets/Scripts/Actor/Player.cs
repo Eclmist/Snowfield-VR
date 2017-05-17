@@ -48,8 +48,15 @@ public class Player : Actor
         throw new NotImplementedException();
     }
 
-	public new Transform transform()
+	public override Transform transform
 	{
-		return vivePosition;
+		get
+        {
+            return vivePosition;
+        }
+        set
+        {
+            vivePosition = value;
+        }
 	}
 }

@@ -44,6 +44,7 @@ public class CraftedItem : GenericItem
 
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
+        if (removable)
         base.Interact(referenceCheck);
         if (toggled)
         {
@@ -65,7 +66,6 @@ public class CraftedItem : GenericItem
             IDamagable target = collision.GetComponent<IDamagable>();
             if (target != null)
                 Player.Instance.Attack(this, target);
-
         }
     }
     protected virtual void OnTriggerStay(Collider collision)

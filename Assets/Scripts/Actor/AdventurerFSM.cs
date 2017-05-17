@@ -68,22 +68,22 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
+
+
     protected override void UpdateCombatState()
     {
         if (timer > 0)
         {
-            Vector3 _direction = (target.transform.position - head.position).normalized;
+            Vector3 _direction = (target.transform.position - transform.position).normalized;
             float distance = Vector3.Distance(target.transform.position, transform.position);
             Vector3 dir = target.transform.position - transform.position;
             dir.y = 0;
             dir.Normalize();
             float angle = Vector3.Angle(transform.forward, dir);
-            RaycastHit hit1;
-            Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
 
-            //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
+
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance && hit1.transform == target.transform)
+            if (distance < detectionDistance)
             {
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
@@ -92,8 +92,19 @@ public class AdventurerFSM : ActorFSM
                     _direction.y = 0;
                     Quaternion _lookRotation = Quaternion.LookRotation(_direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
+                    rigidBody.velocity = _direction * currentAI.MovementSpeed;
+                } else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                {
+                    IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
+                    Debug.Log(animUseSlot);
+                    if (item != null && item.Blocked)
+                        animator.SetBool("KnockBack", true);
+                }else if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
+                {
+                    IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
+                    if (!(item != null && item.Blocked))
+                        animator.SetBool("KnockBack", false);
                 }
-
 
                 if (distance < currentAI.GetLongestRange() && Mathf.Abs(angle) < 30)//HardCoded
                     animator.SetBool("Attack", true);
