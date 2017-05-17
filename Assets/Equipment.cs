@@ -16,9 +16,11 @@ public class Equipment : CraftedItem, IBlock {
 
         if (referenceCheck != linkedController)
         {
-            base.StartInteraction(referenceCheck);
+            
             Equip(Player.Instance.transform);
         }
+
+        base.StartInteraction(referenceCheck);
 
     }
 

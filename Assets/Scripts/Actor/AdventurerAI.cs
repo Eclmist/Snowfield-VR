@@ -45,7 +45,6 @@ public class AdventurerAI : AI {
 
     public override void ChangeWield(Equipment item)
     {
-        Debug.Log(item);
         switch (item.Slot)
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:

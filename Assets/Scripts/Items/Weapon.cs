@@ -28,7 +28,7 @@ public class Weapon : Equipment ,IBlockable {
         base.OnTriggerStay(collision);
         if (!blocked)
         {
-            IBlock item = collision.GetComponent<IBlock>();
+            IBlock item = collision.GetComponentInParent<IBlock>();
             if (item != null && item.CanBlock)
             {
                 blocked = true;
@@ -36,12 +36,13 @@ public class Weapon : Equipment ,IBlockable {
         }
     }
 
+
     protected override void OnTriggerExit(Collider collision)
     {
         base.OnTriggerExit(collision);
         if (blocked)
         {
-            IBlock item = collision.GetComponent<IBlock>();
+            IBlock item = collision.GetComponentInParent<IBlock>();
             if (item != null && item.CanBlock)
             {
                 blocked = false;
