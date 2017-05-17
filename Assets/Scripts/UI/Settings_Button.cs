@@ -75,9 +75,9 @@ public class Settings_Button : MonoBehaviour, IInteractable {
 	// Update is called once per frame
 	void Update ()
     {
-        posMid.x = Mathf.Clamp(transform.localPosition.x, -0.13f, 0.28f);
+        posMid.x = Mathf.Clamp(transform.localPosition.x, -0.09f, 0.263f);
         transform.localPosition = new Vector3(posMid.x, transform.localPosition.y, transform.localPosition.z);
-        percentage = (int)(((transform.localPosition.x - (-0.13f)) / 0.41f )* 100);
+        percentage = (int)(((transform.localPosition.x - (-0.09f)) / 0.353f )* 100);
 
         if (percentage < 0)
             percentage = 0;

@@ -18,10 +18,13 @@ public enum MainMenuState
 public class MainMenu : MonoBehaviour
 {
     public static MainMenu Instance;
-    protected MainMenuState curState = MainMenuState.IDLE, 
-        lastState = MainMenuState.NEW_GAME, 
+    protected MainMenuState curState = MainMenuState.NEW_GAME, 
+        lastState = MainMenuState.IDLE, 
         lastLastState = MainMenuState.IDLE, 
         nextState = MainMenuState.SETTINGS;
+
+    private GameObject settings = null;
+
     void Awake()
     {
         if (!Instance)
@@ -37,8 +40,9 @@ public class MainMenu : MonoBehaviour
 
    
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+    {
+        settings = MainMenuItemManager.Instance.GetSpecificChild("BGM");
 	}
 	
 	// Update is called once per frame
@@ -53,6 +57,7 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.CONTINUE)
         {
+            settings.gameObject.SetActive(false);
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "Continue");
             lastState = curState;
@@ -60,6 +65,7 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.NEW_GAME)
         {
+            settings.gameObject.SetActive(false);
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "New Game");
             lastLastState = MainMenuState.IDLE;
@@ -69,6 +75,8 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.SETTINGS)
         {
+            settings.gameObject.SetActive(true);
+            MainMenuItemManager.Instance.GetChild();
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "Settings");
             lastLastState = MainMenuState.NEW_GAME;
@@ -78,15 +86,18 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.CREDITS)
         {
+            settings.gameObject.SetActive(false);
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "Credits");
             lastLastState = MainMenuState.SETTINGS;
             lastState = curState;
             nextState = MainMenuState.QUIT;
             curState = MainMenuState.IDLE;
+            
         }
         else if (curState == MainMenuState.QUIT)
         {
+            settings.gameObject.SetActive(false);
             Text txt = GetComponentInChildren<Text>();
             TextChange(txt, "Quit");
             lastLastState = MainMenuState.CREDITS;
@@ -101,6 +112,8 @@ public class MainMenu : MonoBehaviour
     {
         txt.text = newTxt;
     }
+
+    
 
     public void SetState(MainMenuState state)
     {
