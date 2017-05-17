@@ -8,6 +8,20 @@ public abstract class AI : Actor
 
     private ActorFSM currentFSM;
 
+    [SerializeField] protected float movementSpeed = 3;
+
+    public float MovementSpeed
+    {
+        get
+        {
+            return movementSpeed;
+        }
+        set
+        {
+            movementSpeed = value;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

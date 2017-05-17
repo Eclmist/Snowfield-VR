@@ -137,7 +137,7 @@ public abstract class ActorFSM : MonoBehaviour
 
             if (currentWeapon != null)
             {
-                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range * 2)
+                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range)
                 {
                     currentAI.Attack(currentWeapon, target);
                 }

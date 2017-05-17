@@ -7,7 +7,6 @@ public abstract class Actor : MonoBehaviour, IDamagable
     [SerializeField]
     protected int health = 100;
 
-    [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
     protected int maxHealth;
@@ -111,6 +110,15 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     }
 
+    public float GetLongestRange()
+    {
+        float LongestRange = 0;
+        if (leftHand != null && leftHand.Item != null)
+            LongestRange = leftHand.Item.Range;
+        if (rightHand != null && rightHand.Item != null && rightHand.Item.Range > LongestRange)
+            LongestRange = rightHand.Item.Range;
+        return LongestRange;
+    }
    
     public abstract void Notify();
 }

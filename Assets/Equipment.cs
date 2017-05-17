@@ -6,7 +6,8 @@ public class Equipment : CraftedItem {
 
     [SerializeField]
     private EquipSlot.EquipmentSlotType slot;
-
+    [SerializeField]
+    protected float range;
     public EquipSlot.EquipmentSlotType Slot
     {
         get
@@ -30,4 +31,19 @@ public class Equipment : CraftedItem {
         itemCollider.enabled = true;
         transform.parent = null;
     }
+
+  
+
+    public float Range
+    {
+        get
+        {
+            return range;
+        }
+        set
+        {
+            range = value;
+        }
+    }
+
 }

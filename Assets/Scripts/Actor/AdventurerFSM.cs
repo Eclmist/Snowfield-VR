@@ -95,7 +95,7 @@ public class AdventurerFSM : ActorFSM
                 }
 
 
-                if (distance < detectionDistance/4 && Mathf.Abs(angle) < 30)//HardCoded
+                if (distance < currentAI.GetLongestRange() && Mathf.Abs(angle) < 30)//HardCoded
                     animator.SetBool("Attack", true);
                 else
                 {
@@ -141,7 +141,7 @@ public class AdventurerFSM : ActorFSM
             //rotate us over time according to speed until we are in the required rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
-            rigidBody.velocity = _direction * 5;
+            rigidBody.velocity = _direction * currentAI.MovementSpeed;
             if (Vector3.Distance(transform.position, targetPoint) < 1f)
                 path.RemoveAt(0);
             
