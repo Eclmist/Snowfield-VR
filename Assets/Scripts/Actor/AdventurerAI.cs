@@ -62,7 +62,7 @@ public class AdventurerAI : AI {
                 break;
         }
     }
-    public List<Quest> Quests
+    public List<StoryHunt> Quests
     {
         get
         {
