@@ -8,9 +8,11 @@ public struct HUDColorSettings
 {
 	public Color friendly;
 	public Color hostile;
-
+	[ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f)]
 	public Color fullHealth;
+	[ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f)]
 	public Color lowHealth;
+
 }
 
 public class AI_HUD : MonoBehaviour {
