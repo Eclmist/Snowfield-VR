@@ -6,34 +6,42 @@ using System;
 
 public class OrderBoard : MonoBehaviour {
 
+    class Slot
+    {
+        public Vector3 slotPosition;
+        public bool isTaken;
+        public OrderSlip refOrder;
+
+        public Slot(Vector3 slotPosition)
+        {
+            this.slotPosition = slotPosition;
+            isTaken = false;
+        }
+
+    }
+
     
     public static OrderBoard Instance;
     public GameObject test;
-    [SerializeField]private float offset;
+    [SerializeField]private float offsetZ; 
 
-    [SerializeField]private Vector2 displayableSize;
     [SerializeField] private OrderSlip order;
 
-    private GameObject canvas;
-    private GameObject panel;
     private List<OrderSlip> orderList = new List<OrderSlip>();
-    private Vector3[] slots;
+    private Slot[] slots;
     private BoxCollider boxCollider;
-    [SerializeField]
-    private Vector2 padding;
-    [SerializeField]
-    private Vector2 spacing;
-    [SerializeField] private Vector2 cellSize;
+    
 
+    [Header("Specify number of elements in column/row")]
     [SerializeField]
-    private int colElements;
+    private int colElements;    // Number of elements in column
     [SerializeField]
-    private int rowElements;
+    private int rowElements;    // Number of elements in row
+    [SerializeField]
+    private Vector2 padding;    
 
-    [SerializeField] [Range(1,12)] private int maxNumberOfOrders;
-    [SerializeField]
-    [Range(1, 12)]
-    private int rows;
+    private int maxNumberOfOrders;
+    
 
     public int CurrentNumberOfOrders
     {
@@ -55,40 +63,25 @@ public class OrderBoard : MonoBehaviour {
 	void Start ()
     {
         maxNumberOfOrders = rowElements * colElements;
-        slots = new Vector3[maxNumberOfOrders];
+        slots = new Slot[maxNumberOfOrders];
         boxCollider = GetComponent<BoxCollider>();
-        canvas = transform.Find("Canvas").gameObject;
-        panel = canvas.transform.Find("RequestPanel").gameObject;
+ 
 
-        if (panel == null)
-            Debug.Log("RequestPanel missing!");
 
         GenerateSlots();
 
-        
-        for (int i =0; i<maxNumberOfOrders;i++)
-        {
-            //Instantiate(test, new Vector3( ,transform.forward * offset + transform.position
-            //    + new Vector3(-boxCollider.bounds.extents.x, boxCollider.bounds.extents.y,0)
-            //    , test.transform.rotation);
-            Instantiate(test, slots[i] + transform.forward * offset
-               , test.transform.rotation);
-        }
-
-        //Instantiate(test, transform.position + transform.forward * offset, test.transform.rotation);
-
-        //GameObject g  = Instantiate(test, gameObject.transform);
-        //g.transform.localPosition += offset;
-
+        // Test spawn
+        //for (int i =0; i<maxNumberOfOrders;i++)
+        //{
+        //    Instantiate(test, slots[i].slotPosition + transform.forward * offsetZ
+        //       , test.transform.rotation);
+        //}
 
 
 
     }
 
-    //private Vector3 GetEmptySlot(int index)
-    //{
-       
-    //}
+
 
 
     private void GenerateSlots()
@@ -130,21 +123,53 @@ public class OrderBoard : MonoBehaviour {
 
             Debug.Log("Paper " + i + " : " + v);
 
-            slots[i] = spawnSlot + v ;
+            slots[i] = new Slot(spawnSlot + v);
+        }
+
+
+    }
+
+    private Slot GetAvailableSlot()
+    {
+        foreach(Slot s in slots)
+        {
+            if(!s.isTaken)
+                return s;
+        }
+
+        return null;
+    }
+
+    public void RemoveFromBoard(OrderSlip order)
+    {
+        foreach(Slot s in slots)
+        {
+            if(s.refOrder == order)
+            {
+                Destroy(s.refOrder.gameObject);
+                s.isTaken = false;
+                break;
+            }
         }
 
 
     }
 
 
-    // Spawns an order slip on the order board
+    //Spawns an order slip on the order board
     public void SpawnOnBoard(Order o)
     {
-        if(orderList.Count < maxNumberOfOrders)
+        if (orderList.Count < maxNumberOfOrders)
         {
-            OrderSlip g = Instantiate(order, panel.transform).GetComponent<OrderSlip>();
+
+            Slot acquiredSlot = GetAvailableSlot();
+            OrderSlip g = Instantiate(order,acquiredSlot.slotPosition + transform.forward * offsetZ, order.transform.rotation).GetComponent<OrderSlip>();
+            acquiredSlot.isTaken = true;
+            acquiredSlot.refOrder = g;
             orderList.Add(g);
             g.StartOrder(o, CloseOrder);
+           
+
         }
     }
 
