@@ -21,7 +21,7 @@ public class QuestMaker : EditorWindow
 
     string questTitle;
 
-    Quest.QuestType questEnum;
+    QuestType questEnum;
 
     //-----QuestTexts-----//
     string[] playerText = new string[10];
@@ -144,7 +144,7 @@ public class QuestMaker : EditorWindow
         string[] tempDialog = new string[10];
 
         //----------Write To List----------//
-        questEnum = Quest.QuestType.StoryQuest;
+        questEnum = QuestType.StoryQuest;
 
         Array.Copy(playerText, tempDialog, textCount);
 

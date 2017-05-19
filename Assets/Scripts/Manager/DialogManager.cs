@@ -7,7 +7,7 @@ public class DialogManager : MonoBehaviour {
     
     
     public static DialogManager Instance; // Static instance of dialog manager
-
+    
     [Range(0,3)]
     [SerializeField]
     private float minDelay;
@@ -64,6 +64,12 @@ public class DialogManager : MonoBehaviour {
         HandleDialogBox();            
     }
 
+    public bool IsOccupied
+    {
+        get { return this.isOccupied; }
+    }
+
+    
     public void DisplayDialogBox(string title)
     {
         if(!isOccupied)
@@ -71,9 +77,23 @@ public class DialogManager : MonoBehaviour {
             isOccupied = true;
             LoadSessionByTitle(title);
             ShowDialogBox();
+            Message.Instance.IncomingRequest = false;
         }
         
     }
+
+    public void DisplayDialogBox()
+    {
+        if (!isOccupied && currentSession != null)
+        {
+            isOccupied = true;
+            ShowDialogBox();
+            Message.Instance.IncomingRequest = false;
+        }
+
+    }
+
+
 
     private void ShowDialogBox()
     {
@@ -104,6 +124,12 @@ public class DialogManager : MonoBehaviour {
     }
 
 
+    public void SetCurrentSession(Session s)
+    {
+        currentSession = s;
+        lineItor = 0;
+    }
+   
 
 
     public void ToggleDialogBox()
@@ -143,6 +169,7 @@ public class DialogManager : MonoBehaviour {
                 {
                     ToggleDialogBox();
                     lineItor = 0;
+                    
                 }
                 else
                 {
