@@ -33,11 +33,9 @@ public class CraftedItem : GenericItem
     {
         if (removable && !toggled)
         {
-            itemCollider.isTrigger = false;
             base.StopInteraction(referenceCheck);
+            itemCollider.isTrigger = false;
             rigidBody.useGravity = true;
-            rigidBody.velocity = referenceCheck.Velocity();
-            rigidBody.angularVelocity = referenceCheck.AngularVelocity();
         }
     }
 
@@ -46,7 +44,7 @@ public class CraftedItem : GenericItem
     {
         if (removable)
         base.Interact(referenceCheck);
-        if (toggled)
+        if (linkedController != null)
         {
             transform.position = linkedController.transform.position;
             transform.rotation = linkedController.transform.rotation;

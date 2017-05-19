@@ -40,6 +40,7 @@ public class AdventurerFSM : ActorFSM
             case FSMState.INTERACTION:
                 break;
             case FSMState.COMBAT:
+                animator.SetBool("KnockBack", true);
                 animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                 timer = 5;
                 break;

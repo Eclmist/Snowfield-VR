@@ -82,6 +82,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void UpdateFSMState()
     {
         rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
         switch (currentState)
         {
             case FSMState.IDLE:
