@@ -5,9 +5,8 @@ using UnityEngine;
 public abstract class Actor : MonoBehaviour, IDamagable
 {
     [SerializeField]
-    protected int health;
+    protected int health = 100;
 
-    [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
     protected int maxHealth;
@@ -96,20 +95,50 @@ public abstract class Actor : MonoBehaviour, IDamagable
         }
     }
 
+
     public Equipment returnEquipment(EquipSlot.EquipmentSlotType slot)
     {
         switch (slot)
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
-                return leftHand.Item;
+                if (leftHand != null)
+                    return leftHand.Item;
+                else return null;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
-                return rightHand.Item;
+                if (rightHand != null)
+                    return rightHand.Item;
+                else
+                    return null;
             default:
                 return null;
         }
 
     }
 
+    public float GetLongestRange()
+    {
+        float LongestRange = 0;
+        if (leftHand != null && leftHand.Item != null)
+            LongestRange = leftHand.Item.Range;
+        if (rightHand != null && rightHand.Item != null && rightHand.Item.Range > LongestRange)
+            LongestRange = rightHand.Item.Range;
+        return LongestRange;
+    }
+   
     public abstract void Notify();
+
+    public new virtual Transform transform
+    {
+        get
+        {
+            Debug.Log("hit");
+            return transform;
+        }
+        set
+        {
+            transform = value;
+        }
+    }
+
 }

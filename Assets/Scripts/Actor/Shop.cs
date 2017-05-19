@@ -5,9 +5,10 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
 
-    private Vector3 location;
+    [SerializeField][Tooltip("Spot where AIs go to")]
+    private Transform location;
 
-    public Vector3 Location
+    public Transform Location
     {
         get
         {
@@ -32,25 +33,12 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        Transform locationObject = transform.FindChild("Location");
-        if (locationObject)
+        
+        if (!location)
         {
-            location = locationObject.position;
-        }
-        else
-        {
-            Debug.Log("Location for " + gameObject.name + ": store has not been set!");
+            Debug.Log("Location for " + gameObject.name + ": store has not been set! Hence default value will be assigned");
+            location = transform;
         }
     }
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

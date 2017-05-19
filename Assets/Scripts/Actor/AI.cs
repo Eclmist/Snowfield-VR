@@ -7,6 +7,21 @@ public abstract class AI : Actor
 {
 
     private ActorFSM currentFSM;
+    protected bool isConversing;
+
+    [SerializeField] protected float movementSpeed = 3;
+
+    public float MovementSpeed
+    {
+        get
+        {
+            return movementSpeed;
+        }
+        set
+        {
+            movementSpeed = value;
+        }
+    }
 
     protected override void Awake()
     {
@@ -15,6 +30,13 @@ public abstract class AI : Actor
         if (jobList.Count != 0)
             jobList.Clear();
     }
+
+    public bool IsConversing
+    {
+        get { return this.isConversing; }
+        set { this.isConversing = true; }
+    }
+
 
     public override void Notify()
     {

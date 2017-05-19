@@ -13,6 +13,8 @@ public class OrderSlip : MonoBehaviour {
     private Action<bool,OrderSlip> callback;
     private Text durationText;
 
+    GameObject slip;
+
     public int Reward
     {
         get
@@ -28,12 +30,18 @@ public class OrderSlip : MonoBehaviour {
         duration = o.Duration;
         callback = _callback;
 
-        GameObject paper = transform.Find("Paper").gameObject;
-        paper.transform.Find("OrderName").GetComponent<Text>().text = o_name;
-        paper.transform.Find("OrderCost").GetComponent<Text>().text = reward.ToString();
-        durationText = paper.transform.Find("OrderDuration").GetComponent<Text>();
-        paper.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
+        slip = transform.FindChild("Slip").gameObject;
+        slip.transform.FindChild("OrderName").GetComponent<Text>().text = o_name;
+        slip.transform.FindChild("OrderCost").GetComponent<Text>().text = reward.ToString();
+        durationText = slip.transform.FindChild("OrderDuration").GetComponent<Text>();
+        slip.transform.FindChild("OrderImage").GetComponent<Image>().sprite = o.Sprite;
+        slip.gameObject.SetActive(false);
         StartCoroutine(OrderCoroutine());
+    }
+
+    public void ShowOrderInformation()
+    {
+        slip.gameObject.SetActive(true);
     }
 
     private IEnumerator OrderCoroutine()
@@ -62,7 +70,7 @@ public class OrderSlip : MonoBehaviour {
     {
         StopAllCoroutines();
         callback(success, this);
-        Destroy(gameObject);//Do we want to keep a list of the orders? Feels more clean that way
+        OrderBoard.Instance.RemoveFromBoard(this);
     }
 
 

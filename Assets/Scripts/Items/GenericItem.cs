@@ -73,7 +73,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     protected virtual void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
-        itemCollider = GetComponent<Collider>();
+        itemCollider = GetComponentInChildren<Collider>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -123,6 +123,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         }
         else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
+            Debug.Log("hit");
             StopInteraction(referenceCheck);
         }
     }

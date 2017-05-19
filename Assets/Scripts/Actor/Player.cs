@@ -8,6 +8,8 @@ public class Player : Actor
     [SerializeField]
     private int gold;
 
+	[SerializeField] private Transform vivePosition;
+
     public static Player Instance;
 
     public int Gold
@@ -18,16 +20,16 @@ public class Player : Actor
         }
     }
 
-    protected void Start()
-    {
-        AddJob(JobType.BLACKSMITH);
-    }
+   
 
     protected override void Awake()
     {
         base.Awake();
         if (!Instance)
+        {
             Instance = this;
+            AddJob(JobType.BLACKSMITH);
+        }
         else
         {
             Debug.Log("There should only be one instanc of Player.cs in the scene!");
@@ -43,6 +45,19 @@ public class Player : Actor
 
     public override void Notify()
     {
-        throw new NotImplementedException();
+        Message.Instance.IncomingRequest = true;
+
     }
+
+	public override Transform transform
+	{
+		get
+        {
+            return vivePosition;
+        }
+        set
+        {
+            vivePosition = value;
+        }
+	}
 }

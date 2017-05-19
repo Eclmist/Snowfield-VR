@@ -40,6 +40,8 @@ public class AdventurerFSM : ActorFSM
             case FSMState.INTERACTION:
                 break;
             case FSMState.COMBAT:
+                animator.SetBool("KnockBack", true);
+                animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                 timer = 5;
                 break;
 
@@ -56,7 +58,8 @@ public class AdventurerFSM : ActorFSM
             }
             else if (!requestedPath)
             {
-                AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location, ChangePath);
+                AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location.position, ChangePath);
+
                 requestedPath = true;
             }
         }
@@ -66,22 +69,22 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
+
+
     protected override void UpdateCombatState()
     {
         if (timer > 0)
         {
-            Vector3 _direction = (target.transform.position - head.position).normalized;
+            Vector3 _direction = (target.transform.position - transform.position).normalized;
             float distance = Vector3.Distance(target.transform.position, transform.position);
             Vector3 dir = target.transform.position - transform.position;
             dir.y = 0;
             dir.Normalize();
             float angle = Vector3.Angle(transform.forward, dir);
-            //RaycastHit hit1;
-            //Physics.Raycast(head.transform.position, _direction, out hit1, detectionDistance);
 
-            //Physics.Raycast(head.transform.position - head.right, _direction, out hit2);
+
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance) /*&& hit1.transform == target.transform*/
+            if (distance < detectionDistance)
             {
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
@@ -90,10 +93,21 @@ public class AdventurerFSM : ActorFSM
                     _direction.y = 0;
                     Quaternion _lookRotation = Quaternion.LookRotation(_direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
+                    rigidBody.velocity = _direction * currentAI.MovementSpeed;
+                } else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                {
+                    IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
+                    Debug.Log(animUseSlot);
+                    if (item != null && item.Blocked)
+                        animator.SetBool("KnockBack", true);
+                }else if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
+                {
+                    IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
+                    if (!(item != null && item.Blocked))
+                        animator.SetBool("KnockBack", false);
                 }
 
-
-                if (distance < detectionDistance/4 && Mathf.Abs(angle) < 30)//HardCoded
+                if (distance < currentAI.GetLongestRange() && Mathf.Abs(angle) < 30)//HardCoded
                     animator.SetBool("Attack", true);
                 else
                 {
@@ -124,20 +138,25 @@ public class AdventurerFSM : ActorFSM
         if (path.Count == 0)
         {
             ChangeState(FSMState.IDLE);
+            rigidBody.angularVelocity = Vector3.zero;
+            rigidBody.velocity = Vector3.zero;
         }
         else
         {
-            Vector3 targetPoint = new Vector3(path[0].x, transform.position.y, path[0].z);
+            
+            Vector3 targetPoint = path[0];
             Vector3 _direction = (targetPoint - transform.position).normalized;
-
+            _direction.y = 0;
             //create the rotation we need to be in to look at the target
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
 
             //rotate us over time according to speed until we are in the required rotation
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
+            rigidBody.velocity = _direction * currentAI.MovementSpeed;
             if (Vector3.Distance(transform.position, targetPoint) < 1f)
                 path.RemoveAt(0);
+            
 
         }
     }

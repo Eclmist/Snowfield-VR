@@ -52,60 +52,62 @@ public class Ingot : BlacksmithItem {
         get { return this.oreComposition; }
     }
 
-    public float CurrentTemperature
-    {
-        get { return this.currentTemperature; }
-        set { this.currentTemperature = value; }
-    }
-
-    public bool HeatSourceDetected
-    {
-        get { return this.HeatSourceDetected; }
-        set { this.heatSourceDetected = value; }
-    }
-
-    public float QuenchRate
-    {
-        get { return this.quenchRate; }
-        set { this.quenchRate = value; }
-    }
-    
-
-    //--------------- Properties (END) -----------------//
-
-
-
-    public void SetHeatingEnvironment(float distFromHeat)
-    {
-        heatSourceDetected = true;
-        this.distFromHeat = distFromHeat;
-    }
-
-    // Called every frame and constantly heats up the item if a heat source is detected
-    private void ControlledHeatingProcess()
-    {
-        if(heatSourceDetected && Mathf.Sign(distFromHeat) == 1 && (currentTemperature < 1))
-        {
-            currentTemperature += baseRate * physicalMaterial.Conductivity * distFromHeat;
-            if (currentTemperature > 1)
-                currentTemperature = 1;
-
-        }
-        else if(!heatSourceDetected && currentTemperature > 0)
-        {
-            currentTemperature -= (baseRate * physicalMaterial.Conductivity * quenchRate);
-            if (currentTemperature < 0)
-                currentTemperature = 0;
-        }
-       
-
-    }
-
-    // Changes color (Material) when heated
-    private void RespondToHeat()
-    {
-       meshRenderer.material.Lerp(initialMaterial, forgingMaterial, currentTemperature);
-    }
-
-
-}
+    
+
+    public float CurrentTemperature
+    {
+        get { return this.currentTemperature; }
+        set { this.currentTemperature = value; }
+    }
+
+    public bool HeatSourceDetected
+    {
+        get { return this.HeatSourceDetected; }
+        set { this.heatSourceDetected = value; }
+    }
+
+    public float QuenchRate
+    {
+        get { return this.quenchRate; }
+        set { this.quenchRate = value; }
+    }
+    
+
+    //--------------- Properties (END) -----------------//
+
+
+
+    public void SetHeatingEnvironment(float distFromHeat)
+    {
+        heatSourceDetected = true;
+        this.distFromHeat = distFromHeat;
+    }
+
+    // Called every frame and constantly heats up the item if a heat source is detected
+    private void ControlledHeatingProcess()
+    {
+        if(heatSourceDetected && Mathf.Sign(distFromHeat) == 1 && (currentTemperature < 1))
+        {
+            currentTemperature += baseRate * physicalMaterial.Conductivity * distFromHeat;
+            if (currentTemperature > 1)
+                currentTemperature = 1;
+
+        }
+        else if(!heatSourceDetected && currentTemperature > 0)
+        {
+            currentTemperature -= (baseRate * physicalMaterial.Conductivity * quenchRate);
+            if (currentTemperature < 0)
+                currentTemperature = 0;
+        }
+       
+
+    }
+
+    // Changes color (Material) when heated
+    private void RespondToHeat()
+    {
+       meshRenderer.material.Lerp(initialMaterial, forgingMaterial, currentTemperature);
+    }
+
+
+}

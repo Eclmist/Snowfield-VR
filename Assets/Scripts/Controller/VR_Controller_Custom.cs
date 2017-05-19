@@ -44,8 +44,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void ControllerInput()
     {
-        
-        
+        Debug.Log(interactableObject);
         if (interactableObject != null)
         {
             interactableObject.Interact(this);
@@ -54,7 +53,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        IInteractable interacted = collider.GetComponent<IInteractable>();
+        IInteractable interacted = collider.GetComponentInParent<IInteractable>();
         if (interacted != null && (interactableObject == null || interactableObject.LinkedController == null))
         {
             interactableObject = interacted;
@@ -65,7 +64,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
-        IInteractable interacted = collider.GetComponent<IInteractable>();
+        IInteractable interacted = collider.GetComponentInParent<IInteractable>();
         if (interacted != null && (interactableObject == null || interactableObject.LinkedController == null))
         {
             interactableObject = interacted;

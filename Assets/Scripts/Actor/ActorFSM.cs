@@ -26,8 +26,6 @@ public abstract class ActorFSM : MonoBehaviour
     protected float timer = 0;
     protected Rigidbody rigidBody;
     [SerializeField]
-    protected Transform head;
-    [SerializeField]
     protected float detectionDistance;
 
     public virtual void ChangeState(FSMState state)
@@ -83,6 +81,8 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateFSMState()
     {
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
         switch (currentState)
         {
             case FSMState.IDLE:
@@ -108,38 +108,45 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected abstract void UpdateCombatState();
 
+
+    protected EquipSlot.EquipmentSlotType animUseSlot;
     protected void ChangePath(List<Vector3> _path)
     {
         path = _path;
         requestedPath = false;
     }
 
-    public virtual void CheckHit(int index)
+    public virtual void CheckHit()
     {
-        EquipSlot.EquipmentSlotType slot = 0;
-        if (index == 0)
-            slot = EquipSlot.EquipmentSlotType.LEFTHAND;
-        else if (index == 1)
-        {
-            slot = EquipSlot.EquipmentSlotType.RIGHTHAND;
-        }
-
         Vector3 dir = target.transform.position - transform.position;
         dir.y = 0;
         dir.Normalize();
         float angle = Vector3.Angle(transform.forward, dir);
-        Debug.Log(angle);
         if (target != null)
         {
-            Weapon currentWeapon = (Weapon)currentAI.returnEquipment(slot);
+            Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
 
             if (currentWeapon != null)
             {
-                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range * 2)
+                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range)
                 {
                     currentAI.Attack(currentWeapon, target);
                 }
             }
+        }
+    }
+
+    public virtual void SetAnimUseSlot(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                animUseSlot = EquipSlot.EquipmentSlotType.LEFTHAND;
+                break;
+            case 1:
+                animUseSlot = EquipSlot.EquipmentSlotType.RIGHTHAND;
+                break;
+
         }
     }
 

@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : Equipment {
+public class Weapon : Equipment ,IBlockable {
 
-    [SerializeField]
-    protected float range;
+    private bool blocked;
 
-    public float Range
+    public bool Blocked
     {
         get
         {
-            return range;
+            return blocked;
         }
         set
         {
-            range = value;
+            blocked = value;
         }
     }
 
@@ -24,7 +23,32 @@ public class Weapon : Equipment {
         base.UseItem();
     }
 
+    protected override void OnTriggerStay(Collider collision)
+    {
+        base.OnTriggerStay(collision);
+        if (!blocked)
+        {
+            IBlock item = collision.GetComponentInParent<IBlock>();
+            if (item != null && item.CanBlock)
+            {
+                blocked = true;
+            }
+        }
+    }
 
+
+    protected override void OnTriggerExit(Collider collision)
+    {
+        base.OnTriggerExit(collision);
+        if (blocked)
+        {
+            IBlock item = collision.GetComponentInParent<IBlock>();
+            if (item != null && item.CanBlock)
+            {
+                blocked = false;
+            }
+        }
+    }
 
 
 }
