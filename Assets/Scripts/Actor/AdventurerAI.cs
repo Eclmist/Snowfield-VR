@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI {
 
-    private List<Quest> onGoingQuests = new List<Quest>();
+    private List<StoryHunt> onGoingQuests = new List<StoryHunt>();
 
     private List<Relation> actorRelations = new List<Relation>();
 
@@ -62,7 +62,7 @@ public class AdventurerAI : AI {
                 break;
         }
     }
-    public List<Quest> Quests
+    public List<StoryHunt> Quests
     {
         get
         {

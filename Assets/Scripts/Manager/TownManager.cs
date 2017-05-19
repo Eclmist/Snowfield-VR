@@ -9,7 +9,6 @@ public class TownManager : MonoBehaviour
 
     [SerializeField]
     private Town currentTown;
-
     [SerializeField][Tooltip("The time in seconds between each ai spawns")][Range(1,100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
     private float timer;

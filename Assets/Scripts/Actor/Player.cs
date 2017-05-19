@@ -45,7 +45,8 @@ public class Player : Actor
 
     public override void Notify()
     {
-        throw new NotImplementedException();
+        Message.Instance.IncomingRequest = true;
+
     }
 
 	public override Transform transform
