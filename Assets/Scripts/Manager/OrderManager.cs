@@ -133,14 +133,11 @@ public class OrderManager : MonoBehaviour
                 Order o = GenerateOrder(job);
 
                 if (o != null)
-
                     OrderBoard.Instance.SpawnOnBoard(o);
 
             }
 
         }
-
-
 
     }
 
