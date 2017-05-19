@@ -32,7 +32,7 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        Transform locationObject = transform.FindChild("Location");
+        Transform locationObject = transform.Find("Location");
         if (locationObject)
         {
             location = locationObject.position;

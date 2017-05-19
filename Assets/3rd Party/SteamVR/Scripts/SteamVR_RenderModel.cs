@@ -81,7 +81,7 @@ public class SteamVR_RenderModel : MonoBehaviour
 					_instance = OpenVR.RenderModels;
 					if (_instance == null)
 					{
-						Debug.LogError("Failed to load IVRRenderModels interface version " + OpenVR.IVRRenderModels_Version);
+						//Debug.LogError("Failed to load IVRRenderModels interface version " + OpenVR.IVRRenderModels_Version);
 						failedLoadInterface = true;
                     }
 				}
@@ -718,7 +718,7 @@ public class SteamVR_RenderModel : MonoBehaviour
 			child.localPosition = componentTransform.pos;
 			child.localRotation = componentTransform.rot;
 
-			var attach = child.FindChild(k_localTransformName);
+			var attach = child.Find(k_localTransformName);
 			if (attach != null)
 			{
 				var attachTransform = new SteamVR_Utils.RigidTransform(componentState.mTrackingToComponentLocal);
