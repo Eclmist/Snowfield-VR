@@ -66,6 +66,7 @@ public class OrderSlip : MonoBehaviour {
         }
     }
 
+
     private void OrderEnd(bool success)
     {
         StopAllCoroutines();

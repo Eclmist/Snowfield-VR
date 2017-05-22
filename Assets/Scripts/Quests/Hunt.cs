@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class Hunt {
+public abstract class Hunt  : ICanTalk{
 
     [SerializeField]private string name;
     [SerializeField]private JobType jobType;
@@ -65,4 +66,16 @@ public abstract class Hunt {
         set { this.isCompleted = value; }
     }
 
+    public Session Session
+    {
+        get
+        {
+            return this.dialog;
+        }
+
+        set
+        {
+            this.dialog = value;
+        }
+    }
 }

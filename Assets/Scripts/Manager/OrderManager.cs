@@ -2,8 +2,6 @@
 
 using UnityEngine;
 
-[ExecuteInEditMode]
-
 public class OrderManager : MonoBehaviour
 
 {
@@ -13,10 +11,7 @@ public class OrderManager : MonoBehaviour
 
     public int baseDurationMultiplier;
 
-    public bool save;
-
     [SerializeField]
-
     private List<OrderTemplate> templateList;
 
     private List<OrderTemplate> availableTemplatesForCurrentLevel;
