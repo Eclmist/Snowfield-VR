@@ -37,19 +37,26 @@ public class Player : Actor
         }
     }
 
+    
     public bool AddGold(int value)
     {
         gold += value;
         return gold >= 0;
     }
 
-    public override void Notify()
+    public override void Interact(Actor actor)
     {
-        Message.Instance.IncomingRequest = true;
+        //Message.Instance.IncomingRequest = true;
 
+        if (actor is AdventurerAI)
+        {
+            //if(!HuntManager.Instance.GetNextQuest(story))
+            // (adventurerAI)actor.DoneConversing();
+  
+        }
     }
 
-	public override Transform transform
+    public override Transform transform
 	{
 		get
         {

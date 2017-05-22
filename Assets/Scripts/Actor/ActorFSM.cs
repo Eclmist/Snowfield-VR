@@ -18,7 +18,7 @@ public abstract class ActorFSM : MonoBehaviour
     }
     protected AI currentAI;
     protected List<Vector3> path;
-    protected bool requestedPath;
+    protected bool requestedPath,pathFound;
     [SerializeField]
     protected FSMState currentState;
     protected Actor target;
@@ -30,6 +30,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void ChangeState(FSMState state)
     {
+        pathFound = false;
         currentState = state;
         timer = 0;
         animator.speed = 1;
@@ -77,8 +78,21 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void Update()
     {
         UpdateFSMState();
+        UpdateAnimatorState();
     }
 
+    protected void UpdateAnimatorState()
+    {
+        
+        if (currentState != FSMState.COMBAT)
+        {
+            animator.SetBool("Attack", false);
+        }
+        if (currentState != FSMState.INTERACTION)
+        {
+            animator.SetBool("Interaction", false);
+        }
+    }
     protected virtual void UpdateFSMState()
     {
         rigidBody.velocity = Vector3.zero;
@@ -112,6 +126,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected EquipSlot.EquipmentSlotType animUseSlot;
     protected void ChangePath(List<Vector3> _path)
     {
+        pathFound = true;
         path = _path;
         requestedPath = false;
     }

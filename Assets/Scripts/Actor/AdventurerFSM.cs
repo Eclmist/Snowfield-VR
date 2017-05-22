@@ -1,17 +1,11 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(AdventurerAI))]
-
 public class AdventurerFSM : ActorFSM
 {
 
     protected virtual void UpdateIntrusionState()
     {
-
     }
 
     protected override void UpdateFSMState()
@@ -28,19 +22,28 @@ public class AdventurerFSM : ActorFSM
     public override void ChangeState(FSMState state)
     {
         base.ChangeState(state);
+
+        if (state != FSMState.COMBAT)
+            (currentAI as AdventurerAI).UnEquipWeapons();
+
         switch (state)
         {
             case FSMState.IDLE:
                 timer = UnityEngine.Random.Range(1.0f, 5.0f);
-                animator.SetFloat("Speed", 0);
+
                 break;
+
             case FSMState.PETROL:
                 animator.SetFloat("Speed", 2);
                 break;
+
             case FSMState.INTERACTION:
+                animator.SetBool("Interaction", true);
                 break;
+
             case FSMState.COMBAT:
-                animator.SetBool("KnockBack", true);
+                (currentAI as AdventurerAI).EquipRandomWeapons();
+                animator.SetBool("KnockBack", true);//Wrong place
                 animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                 timer = 5;
                 break;
@@ -52,15 +55,22 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer <= 0)
         {
-            if (path != null && path.Count > 0)
+
+            if (pathFound)
             {
                 ChangeState(FSMState.PETROL);
+
             }
             else if (!requestedPath)
             {
-                AStarManager.Instance.RequestPath(transform.position, TownManager.Instance.GetRandomShop().Location.position, ChangePath);
+                Shop TargetShop = TownManager.Instance.GetRandomShop();
+                if (TargetShop != null && TargetShop.Owner != null)
+                {
 
-                requestedPath = true;
+                    target = TargetShop.Owner;
+                    AStarManager.Instance.RequestPath(transform.position, TargetShop.Location.position, ChangePath);
+                    requestedPath = true;
+                }
             }
         }
         else
@@ -69,38 +79,38 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
-
-
     protected override void UpdateCombatState()
     {
-        if (timer > 0)
+        if (timer > 0 && target != null)
         {
-            Vector3 _direction = (target.transform.position - transform.position).normalized;
-            float distance = Vector3.Distance(target.transform.position, transform.position);
             Vector3 dir = target.transform.position - transform.position;
+            float distance = Vector3.Distance(target.transform.position, transform.position);
             dir.y = 0;
             dir.Normalize();
-            float angle = Vector3.Angle(transform.forward, dir);
 
+
+            float angle = Vector3.Angle(transform.forward, dir);
 
             //Debug.DrawRay(head.transform.position - head.right, _direction);
             if (distance < detectionDistance)
             {
-
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
                 {
-                    _direction = (target.transform.position - transform.position).normalized;
-                    _direction.y = 0;
-                    Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+                    Quaternion _lookRotation = Quaternion.LookRotation(dir);
+                    _lookRotation.z = _lookRotation.x = 0;
+                    float y = transform.rotation.y;
                     transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
-                    rigidBody.velocity = _direction * currentAI.MovementSpeed;
-                } else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                    Debug.Log(y - transform.rotation.y);
+                    rigidBody.velocity = dir * currentAI.MovementSpeed;
+                }
+
+                else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                 {
                     IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
-                    Debug.Log(animUseSlot);
                     if (item != null && item.Blocked)
                         animator.SetBool("KnockBack", true);
-                }else if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
+                }
+                else if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
                 {
                     IBlockable item = (Weapon)currentAI.returnEquipment(animUseSlot);
                     if (!(item != null && item.Blocked))
@@ -124,26 +134,35 @@ public class AdventurerFSM : ActorFSM
         }
         else
             ChangeState(FSMState.IDLE);
-
-
     }
+
 
     protected override void UpdateInteractionState()
     {
+        if (target != null)
+        {
+            Vector3 _direction = (target.transform.position - transform.position).normalized;
+            Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+            _lookRotation.z = _lookRotation.x = 0;
+            transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
+            if (Vector3.Distance(transform.position, target.transform.position) < 3 && !currentAI.IsConversing)
+            {
+                currentAI.IsConversing = true;
+                target.Interact(currentAI);
+            }
+        }
     }
 
     protected override void UpdatePetrolState()
     {
         if (path.Count == 0)
         {
-            ChangeState(FSMState.IDLE);
-            rigidBody.angularVelocity = Vector3.zero;
-            rigidBody.velocity = Vector3.zero;
+            ChangeState(FSMState.INTERACTION);
+
         }
         else
         {
-            
             Vector3 targetPoint = path[0];
             Vector3 _direction = (targetPoint - transform.position).normalized;
             _direction.y = 0;
@@ -154,10 +173,8 @@ public class AdventurerFSM : ActorFSM
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
             rigidBody.velocity = _direction * currentAI.MovementSpeed;
-            if (Vector3.Distance(transform.position, targetPoint) < 1f)
+            if (Vector3.Distance(transform.position, targetPoint) < .25f)
                 path.RemoveAt(0);
-            
-
         }
     }
 }

@@ -27,7 +27,7 @@ public class Shop : MonoBehaviour
     {
         get
         {
-            return Owner;
+            return shopOwner;
         }
     }
 

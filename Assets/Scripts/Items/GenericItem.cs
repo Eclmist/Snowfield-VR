@@ -1,27 +1,12 @@
 ﻿using System.Collections;
 
-
-
-using System.Collections.Generic;
-
-
-
 using UnityEngine;
 
-
-
-
-
 [RequireComponent(typeof(Rigidbody))]
-
 [RequireComponent(typeof(AudioSource))]
-
 public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
 {
-
-
-
     protected Rigidbody rigidBody;
 
     protected Collider itemCollider;
@@ -29,19 +14,14 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     #region GenericItem
 
     [SerializeField]
-
     protected int damage;
 
     [SerializeField]
-
     protected string m_name;
 
     protected AudioSource audioSource;
 
-
-    #endregion
-
-
+    #endregion GenericItem
 
     #region IInteractable
 
@@ -56,19 +36,17 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         get
         {
             return linkedController;
-
         }
     }
-    #endregion
 
-
+    #endregion IInteractable
 
     #region
 
-    [SerializeField] protected float maxForceVolume;
+    [SerializeField]
+    protected float maxForceVolume;
 
     #endregion
-
 
     protected virtual void Awake()
     {
@@ -76,8 +54,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         itemCollider = GetComponentInChildren<Collider>();
         audioSource = GetComponent<AudioSource>();
     }
-
-
 
     public int Damage
     {
@@ -89,11 +65,8 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
                 return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
             else
                 return damage;
-
         }
     }
-
-
 
     public string Name
     {
@@ -101,19 +74,14 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         set { this.m_name = value; }
     }
 
-
-
     //protected virtual void Update()
 
     //{
-
     //    if (linkedController != null)
 
     //        UpdatePosition();
 
     //}
-
-
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
@@ -128,8 +96,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         }
     }
 
-
-
     public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController == referenceCheck)
@@ -140,17 +106,13 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
             rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
             StartCoroutine(Throw(Player.Instance));
         }
-
     }
-
-
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
         linkedController = referenceCheck;
-
     }
 
     public virtual IEnumerator Throw(Actor thrower)
@@ -181,25 +143,17 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
             PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
     }
 
-
-
     protected void PlaySound(float volume)
 
     {
-
         if (audioSource != null)
 
         {
-
             audioSource.volume = volume;
 
             audioSource.Play();
-
         }
-
     }
 
     //public abstract void UpdatePosition();
-
 }
-

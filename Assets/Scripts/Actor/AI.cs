@@ -6,8 +6,9 @@ using System;
 public abstract class AI : Actor
 {
 
-    private ActorFSM currentFSM;
+    protected ActorFSM currentFSM;
     protected bool isConversing;
+    
 
     [SerializeField] protected float movementSpeed = 3;
 
@@ -22,6 +23,8 @@ public abstract class AI : Actor
             movementSpeed = value;
         }
     }
+
+    
 
     protected override void Awake()
     {
@@ -38,7 +41,7 @@ public abstract class AI : Actor
     }
 
 
-    public override void Notify()
+    public override void Interact(Actor actor)
     {
         currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
     }
@@ -57,7 +60,7 @@ public abstract class AI : Actor
         }
     }
 
-   
 
+    public abstract void DoneConversing();
 
 }
