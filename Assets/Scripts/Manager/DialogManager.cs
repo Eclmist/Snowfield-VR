@@ -5,6 +5,19 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour {
     
+    public struct DialogRequest
+    {
+        public ICanTalk smth;
+        public AI ai;
+
+        public DialogRequest(ICanTalk canTalk, AI aiRequester)
+        {
+            smth = canTalk;
+            ai = aiRequester;
+        }
+
+    }
+
     
     public static DialogManager Instance; // Static instance of dialog manager
     
@@ -30,10 +43,11 @@ public class DialogManager : MonoBehaviour {
     private Session currentSession;
     private AudioSource audioSource;
     List<Session> sessionList;
+    private Queue<DialogRequest> dialogRequestQueue;
 
     private bool isShowing;     // Status of dialog box
     private bool isTyping;      // Check if  a co routine is currently running
-    private bool isOccupied;
+    private bool isOccupied;    
     
 
     void Awake()
@@ -61,7 +75,23 @@ public class DialogManager : MonoBehaviour {
     {
         // Constantly check the status of the dialog box
         dialogBox.SetActive(isShowing);
-        HandleDialogBox();            
+        HandleDialogBox();
+
+        if(dialogRequestQueue.Count > 0)
+        {
+            DisplayDialogBox(dialogRequestQueue.Peek().smth);
+        }
+        
+    }
+
+    public Queue<DialogRequest> DialogRequestQueue
+    {
+        get { return this.dialogRequestQueue; }
+    }
+
+    public void AddToQueue(DialogRequest dr)
+    {
+        dialogRequestQueue.Enqueue(dr);
     }
 
     public bool IsOccupied
@@ -80,6 +110,17 @@ public class DialogManager : MonoBehaviour {
             Message.Instance.IncomingRequest = false;
         }
         
+    }
+
+    public void DisplayDialogBox(ICanTalk talkableStuff)
+    {
+        if (!isOccupied)
+        {
+            isOccupied = true;
+            currentSession = talkableStuff.Session;
+            ShowDialogBox();
+            Message.Instance.IncomingRequest = false;
+        }
     }
 
     public void DisplayDialogBox()
@@ -209,7 +250,7 @@ public class DialogManager : MonoBehaviour {
         //TO DO
     }
 
-    
+    //----------------------------------------------------------------------------------------------------------//
     
 
 

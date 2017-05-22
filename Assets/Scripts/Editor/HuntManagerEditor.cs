@@ -23,7 +23,6 @@ public class HuntManagerEditor : Editor {
     void OnEnable()
     {
         instance = (HuntManager)target;
-        Resources.Load("");
         relist = new ReorderableList(serializedObject,serializedObject.FindProperty("storyHuntList"), true, true, true, true);
         //relist.drawHeaderCallback += DrawHeader;
         //relist.drawElementCallback += DrawElement;
@@ -56,7 +55,11 @@ public class HuntManagerEditor : Editor {
                 foreach(Line l in hunt.Dialog.Lines)
                 {
                     if (l.ClipPath != null)
+                    {
+                        Debug.Log("Loaded : " + l.ClipPath);
                         l.Clip = Resources.Load(l.ClipPath) as AudioClip;
+                    }
+                        
                 }
             }
         }

@@ -30,11 +30,11 @@ public class OrderSlip : MonoBehaviour {
         duration = o.Duration;
         callback = _callback;
 
-        slip = transform.FindChild("Slip").gameObject;
-        slip.transform.FindChild("OrderName").GetComponent<Text>().text = o_name;
-        slip.transform.FindChild("OrderCost").GetComponent<Text>().text = reward.ToString();
-        durationText = slip.transform.FindChild("OrderDuration").GetComponent<Text>();
-        slip.transform.FindChild("OrderImage").GetComponent<Image>().sprite = o.Sprite;
+        slip = transform.Find("Slip").gameObject;
+        slip.transform.Find("OrderName").GetComponent<Text>().text = o_name;
+        slip.transform.Find("OrderCost").GetComponent<Text>().text = reward.ToString();
+        durationText = slip.transform.Find("OrderDuration").GetComponent<Text>();
+        slip.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
         slip.gameObject.SetActive(false);
         StartCoroutine(OrderCoroutine());
     }
@@ -65,6 +65,7 @@ public class OrderSlip : MonoBehaviour {
             OrderEnd(true);
         }
     }
+
 
     private void OrderEnd(bool success)
     {

@@ -41,6 +41,41 @@ public class HuntManager : MonoBehaviour {
 
     }
 
+    // Call this function when visiting the store
+    public void UpdateQuests(AdventurerAI ai)
+    {
+        aiQueue.Enqueue(ai);
+        ai.IsConversing = true;
+    }
+
+
+    public void CompleteQuest(Hunt hunt)
+    {
+        hunt.IsCompleted = true;
+    }
+
+    // Gives the AI a reason to visit the store
+    public bool GotLobang(List<StoryHunt> list)
+    {
+
+        bool temp = false;
+
+        foreach (StoryHunt hunt in list)
+        {
+            StoryLine line = GetStoryLine(hunt.StoryLine);
+
+            if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
+             && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
+            {
+                temp = true;
+                break;
+            }
+
+        }
+
+        return temp;
+    }
+
 
 
     public void Clear()
@@ -65,39 +100,6 @@ public class HuntManager : MonoBehaviour {
     }
 
 
-    public bool GotLobang(List<StoryHunt> list)
-    {
-
-        bool temp = false;
-
-        foreach(StoryHunt hunt in list)
-        {
-            StoryLine line = GetStoryLine(hunt.StoryLine);
-
-            if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
-             && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
-            {
-                temp = true;
-                break;
-            }
-       
-        }
-
-        return temp;
-    }
-
-    public void UpdateQuests(AdventurerAI ai)
-    {
-        aiQueue.Enqueue(ai);
-        ai.IsConversing = true;
-    }
-
-
-    public void CompleteQuest(Hunt hunt)
-    {
-        hunt.IsCompleted = true;
-    }
-
 
     private void GetNextQuest(StoryHunt hunt)
     {
@@ -121,9 +123,7 @@ public class HuntManager : MonoBehaviour {
             DialogManager.Instance.SetCurrentSession(questDialogQueue.Peek().Dialog);
             DialogManager.Instance.DisplayDialogBox();
             questDialogQueue.Dequeue();
-        }
-
-        
+        }    
     }
 
     private void ProcessQuests(AdventurerAI ai)
@@ -204,9 +204,45 @@ public class HuntManager : MonoBehaviour {
     }
 
 
+    //----------------------------------------------------------------------------------------------------------//
 
-        
-    
+    public bool GetNextQuest(List<StoryHunt> list)
+    {
+
+        List<StoryHunt> tempList = new List<StoryHunt>();
+
+        for(int i = 0; i <list.Count;i++)
+        {
+            StoryHunt hunt =  list[i];
+
+            StoryLine line = GetStoryLine(hunt.StoryLine);
+
+            if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
+                 && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
+            {
+                //tempList.Add(line[hunt.ProgressionIndex + 1]);
+                tempList.Add(hunt);
+
+            }
+        }
+
+
+        if (tempList.Count > 0)
+        {
+            StoryHunt currentHunt = tempList[(int)Random.Range(0, tempList.Count)];
+            currentHunt =  GetStoryLine(currentHunt.StoryLine)[currentHunt.ProgressionIndex + 1];
+            
+  
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+
+    }
 
 
 
