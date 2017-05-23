@@ -50,7 +50,7 @@ public class Player : Actor
 
     public override void Interact(Actor actor)
     {
-        if (Vector3.Distance(interactableArea.position, transform.position) < 1)
+        if (Vector3.Distance(interactableArea.position, transform.position) < 1.25)
         {
 
             if (actor is AdventurerAI)

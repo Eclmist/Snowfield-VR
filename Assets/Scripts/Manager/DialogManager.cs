@@ -55,6 +55,7 @@ public class DialogManager : MonoBehaviour
 
     public static DialogManager Instance; // Static instance of dialog manager  [Range(0, 3)]
 
+    [Range(0, 3)]
     [SerializeField]
     private float minDelay;
 
@@ -189,7 +190,6 @@ public class DialogManager : MonoBehaviour
             currentSession = talkableStuff.Session;
 
             ShowDialogBox();
-
         }
     }
 
@@ -265,16 +265,14 @@ public class DialogManager : MonoBehaviour
         {
             currentText.text = currentLine.Substring(0, i);
 
-            yield return new WaitForSeconds(0.1f - textSpeed);
+            //yield return new WaitForSeconds(0.1f - textSpeed);
         }
 
-        float delay = UnityEngine.Random.Range(-minDelay, maxDelay);
+        float delay = UnityEngine.Random.Range(minDelay, maxDelay);
 
-        yield return new WaitForSeconds(Mathf.Clamp01(delay));
+        yield return new WaitForSeconds(delay);
 
         isTyping = false;
-
-        
     }
 
     // Handles how messages are being displayed in the dialog box (eg. order of messages etc)
@@ -333,11 +331,8 @@ public class DialogManager : MonoBehaviour
 
         {
             double a = UnityEngine.Random.value;
-            Debug.Log(a);
             if (a < skipPercentChance)
-
             {
-                Debug.Log("fsdfsiuhdf");
                 StopCoroutine(typeWriter);
 
                 audioSource.Stop();

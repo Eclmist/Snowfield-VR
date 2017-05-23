@@ -112,7 +112,6 @@ public class AdventurerAI : AI {
 
     public void StartQuest(StoryQuest hunt)
     {
-        Destroy(this.gameObject);
     }
 
     public void EndQuest(StoryQuest hunt)
