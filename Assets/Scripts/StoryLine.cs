@@ -8,15 +8,28 @@ public class StoryLine {
     [SerializeField]
     private JobType jobType;
     [SerializeField]
-    private List<StoryHunt> storyLine;
-    [SerializeField]
-    private bool isUnlocked;
+    private List<StoryQuest> quests;
+   
+    //protected int progressionIndex;
+
+    //public int ProgressionIndex
+    //{
+    //    get
+    //    {
+    //        return progressionIndex;
+    //    }
+    //    set
+    //    {
+    //        progressionIndex = value;
+    //    }
+    //}
 
     public StoryLine(JobType jobType)
     {
         this.jobType = jobType;
-        storyLine = new List<StoryHunt>();
-        storyLine.Add(new StoryHunt(jobType));
+        quests = new List<StoryQuest>();
+        quests.Add(new StoryQuest(jobType));
+        //progressionIndex = 0;
     }
 
     public JobType JobType
@@ -24,54 +37,49 @@ public class StoryLine {
         get { return this.jobType; }
     }
 
-    public List<StoryHunt> Storyline
+    public List<StoryQuest> Quests
     {
-        get { return this.storyLine; }
-        set { this.storyLine = value; }
+        get { return this.quests; }
+        set { this.quests = value; }
     }
 
-    public bool IsUnlocked
-    {
-        get { return this.isUnlocked; }
-        set { this.isUnlocked = value; }
-    }
-        
+ 
     public int Count
     {
-        get { return storyLine.Count; }
+        get { return quests.Count; }
     }
 
-    public void Add(StoryHunt _item)
+    public void Add(StoryQuest _item)
     {
-        storyLine.Add(_item);
+        quests.Add(_item);
     }
 
-    public StoryHunt this[int index]   // Indexer declaration  
+    public StoryQuest this[int index]   // Indexer declaration  
     {
         get
         {
-            return storyLine[index];
+            return quests[index];
         }
         set
         {
-            storyLine[index] = value;
+            quests[index] = value;
         }
     }
    
    
-    public bool Contains(StoryHunt _item)
+    public bool Contains(StoryQuest _item)
     {
-        return (storyLine.Contains(_item));
+        return (quests.Contains(_item));
     }
 
-    public StoryHunt GetNextHunt(StoryHunt hunt)
-    {
-        return storyLine[hunt.ProgressionIndex + 1];
-    }
+    //public StoryHunt GetNextHunt(StoryHunt hunt)
+    //{
+    //    return quests[hunt.ProgressionIndex + 1];
+    //}
 
     public void Clear()
     {
-        storyLine.Clear();
+        quests.Clear();
     }
 
 

@@ -8,7 +8,11 @@ public class Player : Actor
     [SerializeField]
     private int gold;
 
-	[SerializeField] private Transform vivePosition;
+    [SerializeField]
+    private Transform vivePosition;
+
+    [SerializeField]
+    private Transform interactableArea;
 
     public static Player Instance;
 
@@ -20,7 +24,7 @@ public class Player : Actor
         }
     }
 
-   
+
 
     protected override void Awake()
     {
@@ -37,21 +41,51 @@ public class Player : Actor
         }
     }
 
+
     public bool AddGold(int value)
     {
         gold += value;
         return gold >= 0;
     }
 
-    public override void Notify()
+    public override void Interact(Actor actor)
     {
-        Message.Instance.IncomingRequest = true;
+        if (Vector3.Distance(interactableArea.position, transform.position) < 1.25)
+        {
 
+            if (actor is AdventurerAI)
+            {
+                (actor as AdventurerAI).IsConversing = true;
+                foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
+                {
+                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
+                    if (quest != null)
+                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).EndQuest, quest);
+                }
+
+                foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
+                {
+                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
+                    if (quest != null)
+                    {
+                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+                    }
+                }
+                //if(!HuntManager.Instance.GetNextQuest(story))
+                // (adventurerAI)actor.DoneConversing();
+                //Do further checks for buy selling etc
+            }
+        }
     }
 
-	public override Transform transform
-	{
-		get
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawSphere(interactableArea.position, 1);
+    //}
+
+    public override Transform transform
+    {
+        get
         {
             return vivePosition;
         }
@@ -59,5 +93,5 @@ public class Player : Actor
         {
             vivePosition = value;
         }
-	}
+    }
 }

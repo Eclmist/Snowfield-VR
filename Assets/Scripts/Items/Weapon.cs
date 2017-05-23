@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Weapon : Equipment ,IBlockable {
-
+public class Weapon : Equipment, IBlockable
+{
     private bool blocked;
 
     public bool Blocked
@@ -36,7 +34,6 @@ public class Weapon : Equipment ,IBlockable {
         }
     }
 
-
     protected override void OnTriggerExit(Collider collision)
     {
         base.OnTriggerExit(collision);
@@ -49,6 +46,4 @@ public class Weapon : Equipment ,IBlockable {
             }
         }
     }
-
-
 }

@@ -71,61 +71,13 @@ public class OrderBoard : MonoBehaviour
         GenerateSlots();
     }
 
-    private void GenerateSlots()
-    {
-        BoxCollider paperCol = order.GetComponent<BoxCollider>();
-        Vector3 paper = new Vector3(paperCol.size.x * order.transform.localScale.x, paperCol.size.z * order.transform.localScale.y, 1);
-
-        Vector3 extent = boxCollider.bounds.extents;
-
-        float tLength = extent.x * 2;
-
-        float tHeight = extent.y * 2;
-
-        float iLength = tLength - 2 * (padding.x);
-
-        float iHeight = tHeight - 2 * (padding.y);
-
-        Vector2 gap = Vector2.zero;
-
-        gap.x = (iLength - (rowElements * paper.x)) / (rowElements - 1);
-
-        gap.y = (iHeight - (colElements * paper.y)) / (colElements - 1);
-
-        Vector3 spawnSlot = transform.position +
-                (transform.right) * (boxCollider.bounds.extents.x - paper.x / 2 - padding.x) +
-                (transform.up) * (boxCollider.bounds.extents.y - paper.y / 2 - padding.y);
-        for (int i = 0; i < maxNumberOfOrders; i++)
-        {
-            int finalRowIndex = i % rowElements;
-            int finalColIndex = i / rowElements;
-            Vector3 v = new Vector3(-((gap.x * finalRowIndex) + (paper.x * finalRowIndex)), -((gap.y * finalColIndex) + (paper.y * finalColIndex)));
-            slots[i] = new Slot(spawnSlot + v);
-        }
-    }
-
-    private Slot GetAvailableSlot()
-
-    {
-        foreach (Slot s in slots)
-
-        {
-            if (!s.isTaken)
-                return s;
-        }
-        return null;
-    }
-
     public void RemoveFromBoard(OrderSlip order)
     {
         foreach (Slot s in slots)
-
         {
             if (s.refOrder == order)
-
             {
                 Destroy(s.refOrder.gameObject);
-
                 s.isTaken = false;
 
                 break;
@@ -146,11 +98,64 @@ public class OrderBoard : MonoBehaviour
         }
     }
 
+    
     public void CloseOrder(bool success, OrderSlip slip)
     {
         orderList.Remove(slip);
         OrderManager.Instance.CompletedOrder(success, slip.Reward);
     }
 
-    // Generates relevant order information on the order slip
+    private void GenerateSlots()
+    {
+        BoxCollider paperCol = order.GetComponent<BoxCollider>();
+        Vector3 paper = new Vector3(paperCol.size.x * order.transform.localScale.x, paperCol.size.z * order.transform.localScale.y, 1);
+
+        //Calculate the total dimensions
+        Vector3 extent = boxCollider.bounds.extents;
+        float tLength = extent.x * 2;
+        float tHeight = extent.y * 2;
+
+        // Calculate dimensions without padding
+        float iLength = tLength - 2 * (padding.x);
+        float iHeight = tHeight - 2 * (padding.y);
+
+        // Calculate gaps/spacing between each order
+        Vector2 gap = Vector2.zero;
+        gap.x = (iLength - (rowElements * paper.x)) / (rowElements - 1);
+        gap.y = (iHeight - (colElements * paper.y)) / (colElements - 1);
+
+        // First spawn point for an order
+        Vector3 spawnSlot = transform.position +
+                (transform.right) * (boxCollider.bounds.extents.x - paper.x / 2 - padding.x) +
+                (transform.up) * (boxCollider.bounds.extents.y - paper.y / 2 - padding.y);
+
+
+        // Shift the spawn point for each subsequent order
+        for (int i = 0; i < maxNumberOfOrders; i++)
+        {
+            int finalRowIndex = i % rowElements;
+            int finalColIndex = i / rowElements;
+            Vector3 v = new Vector3(-((gap.x * finalRowIndex) + (paper.x * finalRowIndex)), -((gap.y * finalColIndex) + (paper.y * finalColIndex)));
+            slots[i] = new Slot(spawnSlot + v);
+        }
+
+    }
+
+
+    // Returns a slot on the board that is not occupied
+    private Slot GetAvailableSlot()
+
+    {
+        foreach (Slot s in slots)
+
+        {
+            if (!s.isTaken)
+                return s;
+        }
+        return null;
+    }
+
+
+
+   
 }

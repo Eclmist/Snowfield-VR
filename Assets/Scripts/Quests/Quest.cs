@@ -1,91 +1,88 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Xml;
-using System.Xml.Serialization;
+﻿using UnityEngine;
 
-public enum QuestType
+[System.Serializable]
+public abstract class Quest : ICanTalk
 {
-    DailyQuest,
-    StoryQuest
-}
+    [SerializeField]
+    private string name;
 
-/* ReadME (Example of obtaining the stanleyReward GameObject reference)
-using UnityEngine;
-using System.IO;
+    [SerializeField]
+    private JobType jobType;
 
-public class Test : MonoBehaviour {
+    [SerializeField]
+    private GameObject reward;
 
-    GameObject item;
+    [SerializeField]
+    private Session dialog;
 
-    void Start () {
-        QuestManager.QuestList = QuestFactory.Load(Path.Combine(Application.dataPath, "XML/quests.xml"));
-        Debug.Log(QuestManager.QuestList.Count);
-	}
+    [SerializeField]
+    private int experience;
 
-	void Update () {
+    private bool isCompleted;
 
-        if (Input.GetKeyDown(KeyCode.A))
+    public Quest(JobType jobType)
+    {
+        name = "New Quest";
+        this.jobType = jobType;
+    }
+
+    public Quest(string name, JobType jobType, GameObject reward, Session dialog, int experience)
+    {
+        this.name = name;
+        this.jobType = jobType;
+        this.reward = reward;
+        this.dialog = dialog;
+        this.experience = experience;
+        this.isCompleted = false;
+    }
+
+    public string Name
+    {
+        get { return this.name; }
+        set { this.name = value; }
+    }
+
+    public JobType JobType
+    {
+        get { return this.jobType; }
+        set { this.jobType = value; }
+    }
+
+    public GameObject Reward
+    {
+        get { return this.reward; }
+        set { this.reward = value; }
+    }
+
+    public Session Dialog
+    {
+        get { return this.dialog; }
+        set { this.dialog = value; }
+    }
+
+    public int Experience
+    {
+        get { return this.experience; }
+        set { this.experience = value; }
+    }
+
+    public bool IsCompleted
+    {
+        get { return this.isCompleted; }
+        set { this.isCompleted = value; }
+    }
+
+    public Session Session
+    {
+        get
         {
-            for(int i = 0; i < QuestManager.QuestList.Count; i++)
-            {
-                if (QuestManager.QuestList[i].index == 2)
-                {
-                    item = Resources.Load("Items/" + QuestManager.QuestList[i].itemType + "/" + QuestManager.QuestList[i].childType + "/" + QuestManager.QuestList[i].stanleyReward) as GameObject;
-                }
-            }
-            Instantiate(item);
+            return this.dialog;
+        }
+
+        set
+        {
+            this.dialog = value;
         }
     }
-}
- */
 
-[Serializable]
-public class Quest
-{
-   
-
-    [XmlAttribute("index")]
-    public int index;
-    public string title;
-    public QuestType questType;
-    public string stanleyReward;
-    public string[] playerDialog;
-    public int requiredExperience;
-    public JobType questJob;
-
-    [NonSerialized]
-    public string itemType;
-    [NonSerialized]
-    public string childType;
-
-    public bool completed;
-
-    public Quest()
-    {
-        index = 99;
-        title = "default";
-        questType = QuestType.StoryQuest;
-        stanleyReward = null;
-        playerDialog = null;
-        requiredExperience = 0;
-        questJob = JobType.ALCHEMY;
-
-        completed = true;
-    }
-
-    public Quest(int index, string title, QuestType questType, string reward, string[] playerDialog, int experience, JobType job, string itemType, string childType)
-    {
-        this.index = index;
-        this.title = title;
-        this.questType = questType;
-        stanleyReward = reward;
-        this.playerDialog = playerDialog;
-        requiredExperience = experience;
-        questJob = job;
-
-        this.itemType = itemType;
-        this.childType = childType;
-
-        completed = false;
-    }
 }
