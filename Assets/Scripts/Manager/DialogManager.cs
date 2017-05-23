@@ -129,6 +129,8 @@ public class DialogManager : MonoBehaviour
 
         HandleDialogBox();
 
+        RandomlyCutMessageAndSkip();
+
         if (dialogRequestQueue.Count > 0)
 
         {
@@ -173,8 +175,6 @@ public class DialogManager : MonoBehaviour
             LoadSessionByTitle(title);
 
             ShowDialogBox();
-
-            Message.Instance.IncomingRequest = false;
         }
     }
 
@@ -190,7 +190,6 @@ public class DialogManager : MonoBehaviour
 
             ShowDialogBox();
 
-            Message.Instance.IncomingRequest = false;
         }
     }
 
@@ -203,8 +202,6 @@ public class DialogManager : MonoBehaviour
             isOccupied = true;
 
             ShowDialogBox();
-
-            Message.Instance.IncomingRequest = false;
         }
     }
 
@@ -276,6 +273,8 @@ public class DialogManager : MonoBehaviour
         yield return new WaitForSeconds(Mathf.Clamp01(delay));
 
         isTyping = false;
+
+        
     }
 
     // Handles how messages are being displayed in the dialog box (eg. order of messages etc)
@@ -333,9 +332,12 @@ public class DialogManager : MonoBehaviour
         if (isTyping)
 
         {
-            if (UnityEngine.Random.value > skipPercentChance)
+            double a = UnityEngine.Random.value;
+            Debug.Log(a);
+            if (a < skipPercentChance)
 
             {
+                Debug.Log("fsdfsiuhdf");
                 StopCoroutine(typeWriter);
 
                 audioSource.Stop();

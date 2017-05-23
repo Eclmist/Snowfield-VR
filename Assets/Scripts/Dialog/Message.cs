@@ -12,11 +12,11 @@ public class Message : MonoBehaviour {
     private bool incomingRequest;
 
 
-    public bool IncomingRequest
-    {
-        get { return this.incomingRequest; }
-        set { this.incomingRequest = value; }
-    }
+    //public bool IncomingRequest
+    //{
+    //    get { return this.incomingRequest; }
+    //    set { this.incomingRequest = value; }
+    //}
 
 
 

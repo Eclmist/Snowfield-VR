@@ -146,9 +146,8 @@ public class AdventurerFSM : ActorFSM
             _lookRotation.z = _lookRotation.x = 0;
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
 
-            if (Vector3.Distance(transform.position, target.transform.position) < 3 && !currentAI.IsConversing)
+            if (!currentAI.IsConversing)
             {
-                currentAI.IsConversing = true;
                 target.Interact(currentAI);
             }
         }

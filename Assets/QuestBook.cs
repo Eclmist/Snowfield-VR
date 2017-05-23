@@ -47,16 +47,6 @@ public class QuestBook
         return null;
     }
 
-    public void StartStoryQuest(StoryQuest hunt)
-    {
-        Debug.Log("hgrhdgfhdgh");
-            //Start Quest routine
-    }
-
-    public void EndStoryQuest(StoryQuest hunt)
-    {
-        //Give xp and item here
-    }
 
     public QuestEntryGroup<StoryQuest> GetStoryGroup(JobType jt)
     {

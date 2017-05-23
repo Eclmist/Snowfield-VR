@@ -112,13 +112,11 @@ public class AdventurerAI : AI {
 
     public void StartQuest(StoryQuest hunt)
     {
-        //Check DialogManager to see if there is still things
-        questBook.StartStoryQuest(hunt);
+        Destroy(this.gameObject);
     }
 
     public void EndQuest(StoryQuest hunt)
     {
-        questBook.EndStoryQuest(hunt);
         //Check DialogManager to see if there is still things
     }
 

@@ -11,6 +11,9 @@ public class Player : Actor
     [SerializeField]
     private Transform vivePosition;
 
+    [SerializeField]
+    private Transform interactableArea;
+
     public static Player Instance;
 
     public int Gold
@@ -47,31 +50,38 @@ public class Player : Actor
 
     public override void Interact(Actor actor)
     {
-        //Message.Instance.IncomingRequest = true;
-        
-        if (actor is AdventurerAI)
+        if (Vector3.Distance(interactableArea.position, transform.position) < 1)
         {
-            foreach(QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
-            {
-                StoryQuest quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
-                if(quest != null)
-                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).QuestBook.EndStoryQuest, quest);
-            }
 
-            foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
+            if (actor is AdventurerAI)
             {
-                StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
-                if (quest != null)
+                (actor as AdventurerAI).IsConversing = true;
+                foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
                 {
-                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
+                    if (quest != null)
+                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).EndQuest, quest);
                 }
-            }
-            //if(!HuntManager.Instance.GetNextQuest(story))
-            // (adventurerAI)actor.DoneConversing();
-            //Do further checks for buy selling etc
 
+                foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
+                {
+                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
+                    if (quest != null)
+                    {
+                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+                    }
+                }
+                //if(!HuntManager.Instance.GetNextQuest(story))
+                // (adventurerAI)actor.DoneConversing();
+                //Do further checks for buy selling etc
+            }
         }
     }
+
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawSphere(interactableArea.position, 1);
+    //}
 
     public override Transform transform
     {
