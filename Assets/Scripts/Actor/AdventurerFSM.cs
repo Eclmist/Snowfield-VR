@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AdventurerAI))]
-
 public class AdventurerFSM : ActorFSM
 {
 
