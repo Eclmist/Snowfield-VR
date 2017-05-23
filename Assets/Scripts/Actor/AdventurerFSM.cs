@@ -4,6 +4,7 @@
 public class AdventurerFSM : ActorFSM
 {
 
+    
     protected virtual void UpdateIntrusionState()
     {
     }
@@ -16,11 +17,19 @@ public class AdventurerFSM : ActorFSM
             case FSMState.INTRUSION:
                 UpdateInteractionState();
                 break;
+            case FSMState.QUESTING:
+                UpdateQuestingState();
+                break;
         }
     }
 
+    protected virtual void UpdateQuestingState()
+    {
+        
+    }
     public override void ChangeState(FSMState state)
     {
+        animator.SetFloat("Speed", 0);
         base.ChangeState(state);
 
         if (state != FSMState.COMBAT)
@@ -43,11 +52,11 @@ public class AdventurerFSM : ActorFSM
 
             case FSMState.COMBAT:
                 (currentAI as AdventurerAI).EquipRandomWeapons();
-                animator.SetBool("KnockBack", true);//Wrong place
+                //animator.SetBool("KnockBack", true);//Wrong place
                 animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                 timer = 5;
                 break;
-
+            
         }
     }
 
@@ -55,21 +64,44 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer <= 0)
         {
-
             if (pathFound)
             {
-                ChangeState(FSMState.PETROL);
+                if (GameManager.Instance.GameClock.TimeOfDay < 1)
+                {
+                    ChangeState(FSMState.PETROL);
+                }else
+                {
+                    ChangeState(FSMState.QUESTING);
+                }
 
             }
             else if (!requestedPath)
             {
-                Shop TargetShop = TownManager.Instance.GetRandomShop();
-                if (TargetShop != null && TargetShop.Owner != null)
+                if (GameManager.Instance.GameClock.TimeOfDay < 1 && (currentAI as AdventurerAI).GotLobang())//And check for anymore shop
                 {
-
-                    target = TargetShop.Owner;
-                    AStarManager.Instance.RequestPath(transform.position, TargetShop.Location.position, ChangePath);
+                    Shop TargetShop = TownManager.Instance.GetRandomShop();
+                    if (TargetShop != null && TargetShop.Owner != null )
+                    {
+                        if(TargetShop.Owner == Player.Instance)
+                        {
+                            Debug.Log((currentAI as AdventurerAI).GotLobang());
+                            if (!(currentAI as AdventurerAI).GotLobang())
+                            {
+                                return;
+                            }
+                        }
+                        target = TargetShop.Owner;
+                        AStarManager.Instance.RequestPath(transform.position, TargetShop.Location, ChangePath);
+                        requestedPath = true;
+                        nextState = FSMState.INTERACTION;
+                    }
+                }
+                else
+                {
+                    Transform endPoint = TownManager.Instance.GetRandomSpawnPoint();
+                    AStarManager.Instance.RequestPath(transform.position, endPoint.position, ChangePath);
                     requestedPath = true;
+                    nextState = FSMState.IDLE;//questing
                 }
             }
         }
@@ -145,9 +177,10 @@ public class AdventurerFSM : ActorFSM
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
             _lookRotation.z = _lookRotation.x = 0;
             transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * 10);
-
+            Debug.Log(currentAI.IsConversing);
             if (!currentAI.IsConversing)
             {
+                
                 target.Interact(currentAI);
             }
         }
@@ -157,7 +190,8 @@ public class AdventurerFSM : ActorFSM
     {
         if (path.Count == 0)
         {
-            ChangeState(FSMState.INTERACTION);
+            
+            ChangeState(nextState);
 
         }
         else

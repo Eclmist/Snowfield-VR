@@ -11,6 +11,7 @@ public abstract class ActorFSM : MonoBehaviour
     {
         IDLE,
         PETROL,
+        QUESTING,
         INTERACTION,
         INTRUSION,
         COMBAT,
@@ -27,6 +28,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected Rigidbody rigidBody;
     [SerializeField]
     protected float detectionDistance;
+    protected FSMState nextState;
 
     public virtual void ChangeState(FSMState state)
     {
@@ -42,6 +44,12 @@ public abstract class ActorFSM : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public virtual void ChangeState(FSMState state,FSMState _nextState)
+    {
+        ChangeState(state);
+        nextState = _nextState;
     }
 
     protected virtual void Awake()

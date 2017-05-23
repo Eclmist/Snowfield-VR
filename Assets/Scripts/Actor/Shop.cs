@@ -8,16 +8,13 @@ public class Shop : MonoBehaviour
     [SerializeField][Tooltip("Spot where AIs go to")]
     private Transform location;
 
-    public Transform Location
+    public Vector3 Location
     {
         get
         {
-            return location;
+            return location.position;
         }
-        set
-        {
-            location = value;
-        }
+       
     }
 
     [SerializeField]

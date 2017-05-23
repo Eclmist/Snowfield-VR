@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public abstract class Quest : ICanTalk
+public abstract class Quest
 {
     [SerializeField]
     private string name;
@@ -18,8 +18,6 @@ public abstract class Quest : ICanTalk
     [SerializeField]
     private int experience;
 
-    private bool isCompleted;
-
     public Quest(JobType jobType)
     {
         name = "New Quest";
@@ -33,7 +31,6 @@ public abstract class Quest : ICanTalk
         this.reward = reward;
         this.dialog = dialog;
         this.experience = experience;
-        this.isCompleted = false;
     }
 
     public string Name
@@ -66,11 +63,6 @@ public abstract class Quest : ICanTalk
         set { this.experience = value; }
     }
 
-    public bool IsCompleted
-    {
-        get { return this.isCompleted; }
-        set { this.isCompleted = value; }
-    }
 
     public Session Session
     {

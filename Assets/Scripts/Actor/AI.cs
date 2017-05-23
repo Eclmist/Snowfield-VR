@@ -37,7 +37,7 @@ public abstract class AI : Actor
     public bool IsConversing
     {
         get { return this.isConversing; }
-        set { this.isConversing = true; }
+        set { this.isConversing = value; }
     }
 
 

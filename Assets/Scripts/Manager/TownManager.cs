@@ -46,13 +46,35 @@ public class TownManager : MonoBehaviour
             {
                 timer = 0;
                 
-                Transform randomSpawn = CurrentTown.getRandomSpawnPoint();
-                AI randomAI = CurrentTown.getRandomAIType();
+                Transform randomSpawn = GetRandomSpawnPoint();
+                AI randomAI = GetRandomAIType();
                 if(randomSpawn && randomAI)
-                currentTown.AIs.Add(Instantiate(CurrentTown.getRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+                currentTown.AIs.Add(Instantiate(GetRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
         }
     }
+    public Transform GetRandomSpawnPoint()
+    {
+        int shopIndex = Random.Range(0, currentTown.SpawnPoint.Count);
+        shopIndex = shopIndex == currentTown.SpawnPoint.Count ? shopIndex - 1 : shopIndex;
+        if (shopIndex >= 0)
+            return currentTown.SpawnPoint[shopIndex];
+        else
+            return null;
+    }
+
+    public AI GetRandomAIType()
+    {
+        int aiCount = Random.Range(0, currentTown.AIs.Count);
+        aiCount = aiCount == currentTown.AIs.Count ? aiCount - 1 : aiCount;
+        if (aiCount >= 0)
+            return currentTown.AIs[aiCount];
+        else
+            return null;
+    }
+
+
+
     public Shop GetRandomShop()
     {
         int shopIndex = Random.Range(0, currentTown.Shops.Count);

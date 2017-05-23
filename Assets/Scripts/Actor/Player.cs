@@ -58,17 +58,20 @@ public class Player : Actor
                 (actor as AdventurerAI).IsConversing = true;
                 foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
                 {
-                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
+                    QuestEntry<StoryQuest> quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
                     if (quest != null)
-                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).EndQuest, quest);
+                    {
+                        (actor as AdventurerAI).QuestBook.RequestNextQuest(group);
+                        DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>((actor as AdventurerAI).EndQuest, quest);
+                    }
                 }
 
                 foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
                 {
-                    StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
+                    QuestEntry<StoryQuest> quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
                     if (quest != null)
                     {
-                        DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+                        DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>((actor as AdventurerAI).StartQuest, quest);
                     }
                 }
                 //if(!HuntManager.Instance.GetNextQuest(story))

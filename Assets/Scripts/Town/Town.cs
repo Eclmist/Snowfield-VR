@@ -19,6 +19,7 @@ public class Town : MonoBehaviour
 
     [SerializeField]
     private List<Transform> spawnPoints = new List<Transform>();
+    
 
     public List<AI> AIs
     {
@@ -28,6 +29,13 @@ public class Town : MonoBehaviour
         }
     }
 
+    public List<Transform> SpawnPoint
+    {
+        get
+        {
+            return spawnPoints;
+        }
+    }
 
     private void Awake()
     {
@@ -61,23 +69,5 @@ public class Town : MonoBehaviour
         }
     }
 
-    public Transform getRandomSpawnPoint()
-    {
-        int shopIndex = Random.Range(0, spawnPoints.Count);
-        shopIndex = shopIndex == spawnPoints.Count ? shopIndex - 1 : shopIndex;
-        if (shopIndex >= 0)
-            return spawnPoints[shopIndex];
-        else
-            return null;
-    }
-
-    public AI getRandomAIType()
-    {
-        int aiCount = Random.Range(0, typeOfAI.Count);
-        aiCount = aiCount == typeOfAI.Count ? aiCount - 1 : aiCount;
-        if (aiCount >= 0)
-            return typeOfAI[aiCount];
-        else
-            return null;
-    }
+    
 }

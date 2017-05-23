@@ -103,20 +103,33 @@ public class AdventurerAI : AI {
         }
     }
    
+    public bool GotLobang()
+    {
+        foreach(QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
+        {
+            if (questBook.GetCompletableQuest(group) != null || questBook.GetStartableQuest(group) != null)
+                return true;
+        }
+        return false;
+    }
 
     public override void DoneConversing()
     {
-        IsConversing = false;
-        currentFSM.ChangeState(ActorFSM.FSMState.PETROL);
+        currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
+        isConversing = false;
+        Debug.Log(isConversing);
     }
 
-    public void StartQuest(StoryQuest hunt)
+    public void StartQuest(QuestEntry<StoryQuest> hunt)
     {
+        StartCoroutine(hunt.StartQuest(10));
+        Debug.Log(hunt.Started);
+        DoneConversing();
     }
 
-    public void EndQuest(StoryQuest hunt)
+    public void EndQuest(QuestEntry<StoryQuest> hunt)
     {
-        //Check DialogManager to see if there is still things
+        Debug.Log("fdfsdfsdfs");
     }
 
 }

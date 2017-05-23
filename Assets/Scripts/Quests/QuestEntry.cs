@@ -2,22 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestEntry
+public class QuestEntry<T> : ICanTalk where T : Quest
 {
 
-    private Quest currentQuest;
-    private bool isCompleted;
+    private T currentQuest;
+    private bool hasStarted,isCompleted;
 
-    public QuestEntry(Quest quest)
+    public QuestEntry(T quest)
     {
+        hasStarted = false;
         isCompleted = false;
         currentQuest = quest;
+    }
+
+    public Session Session
+    {
+        get
+        {
+            return currentQuest.Dialog;
+        }
+    }
+
+    public bool Completed
+    {
+        get
+        {
+            return isCompleted;
+        }
+        set
+        {
+            isCompleted = value;
+        }
+    }
+
+    public bool Started
+    {
+        get
+        {
+            return hasStarted;
+        }
+        set
+        {
+            hasStarted = value;
+        }
+    }
+
+    public T Quest
+    {
+        get
+        {
+            return currentQuest;
+        }
+    }
+
+    public IEnumerator StartQuest(float time)
+    {
+        hasStarted = true;
+        yield return new WaitForSeconds(time);
+        isCompleted = true;
     }
 }
 
 public class QuestEntryGroup<T> where T : Quest
 {
-    private List<T> quests;
+    private List<QuestEntry<T>> quests;
 
     private bool isCompleted;
 
@@ -30,7 +78,7 @@ public class QuestEntryGroup<T> where T : Quest
         get { return this.jobType; }
     }
 
-    public List<T> Quest
+    public List<QuestEntry<T>> Quest
     {
         get
         {
@@ -65,7 +113,7 @@ public class QuestEntryGroup<T> where T : Quest
     public QuestEntryGroup(JobType type)
     {
         isCompleted = false;
-        quests = new List<T>();
+        quests = new List<QuestEntry<T>>();
         progressionIndex = 0;
         jobType = type;
     }
@@ -75,12 +123,12 @@ public class QuestEntryGroup<T> where T : Quest
         get { return quests.Count; }
     }
 
-    public void Add(T _item)
+    public void Add(QuestEntry<T> _item)
     {
         quests.Add(_item);
     }
 
-    public T this[int index]   // Indexer declaration  
+    public QuestEntry<T> this[int index]   // Indexer declaration  
     {
         get
         {
