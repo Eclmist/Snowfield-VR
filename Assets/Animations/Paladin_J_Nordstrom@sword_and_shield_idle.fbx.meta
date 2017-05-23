@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 7ca948893dad355459d937a37b12bfc1
-timeCreated: 1494548625
+guid: 4accf01136b1e2941af785536f337b04
+timeCreated: 1494473996
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -137,7 +137,7 @@ ModelImporter:
     400126: Spine
     400128: Spine1
     400130: Spine2
-    7400000: sword_and_shield_slash
+    7400000: sword_and_shield_idle
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -163,10 +163,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: sword_and_shield_slash
+      name: sword_and_shield_idle
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 45
+      lastFrame: 110
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -178,28 +178,14 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 1
+      keepOriginalOrientation: 0
       keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0
-        functionName: SetAnimUseSlot
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.5337449
-        functionName: CheckHit
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask:
       - path: 
         weight: 1

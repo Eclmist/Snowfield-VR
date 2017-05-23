@@ -1,25 +1,55 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI {
 
-    private List<StoryHunt> onGoingQuests = new List<StoryHunt>();
+    
 
     private List<Relation> actorRelations = new List<Relation>();
 
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-
+    private QuestBook questBook;
     protected override void Awake()
     {
         base.Awake();
         AddJob(JobType.ADVENTURER);
-        GetSlotsAndEquipment();
+        GetSlots();
     }
 
-    protected void GetSlotsAndEquipment()
+    protected virtual void Start()
+    {
+        questBook = new QuestBook();
+    }
+
+    public QuestBook QuestBook
+    {
+        get
+        {
+            return questBook;
+        }
+    }
+    public void EquipRandomWeapons()
+    {
+        foreach (Equipment equip in inventory)
+        {
+            if (equip.Slot == EquipSlot.EquipmentSlotType.LEFTHAND || equip.Slot == EquipSlot.EquipmentSlotType.RIGHTHAND)
+                ChangeWield(Instantiate(equip));
+        }
+    }
+
+    public void UnEquipWeapons()
+    {
+        if (leftHand.Item != null)
+            leftHand.Item.Unequip();
+        if (rightHand.Item != null)
+            rightHand.Item.Unequip();
+    }
+
+    protected void GetSlots()
     {
         EquipSlot[] equipmentSlots = GetComponentsInChildren<EquipSlot>();
         foreach (EquipSlot slot in equipmentSlots)
@@ -34,14 +64,20 @@ public class AdventurerAI : AI {
                     break;
             }
         }
-
-        foreach (Equipment equip in inventory)
-        {
-
-            ChangeWield(Instantiate(equip));
-        }
     }
 
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.C))
+    //    {
+    //        TakeDamage(1, Player.Instance);
+    //    }
+    //}
+    public override void TakeDamage(int damage, Actor attacker)
+    {
+        base.TakeDamage(damage, attacker);
+        
+    }
 
     public override void ChangeWield(Equipment item)
     {
@@ -50,26 +86,40 @@ public class AdventurerAI : AI {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand.Item != null)
                     leftHand.Item.Unequip();
-                leftHand.Item = item;
-                leftHand.Item.Equip(leftHand.transform);
+                
+                    leftHand.Item = item;
+                    leftHand.Item.Equip(leftHand.transform);
+                
                 break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand.Item != null)
                     rightHand.Item.Unequip();
-                rightHand.Item = item;
-                rightHand.Item.Equip(rightHand.transform);
+                
+                    rightHand.Item = item;
+                    rightHand.Item.Equip(rightHand.transform);
+                
                 break;
         }
     }
-    public List<StoryHunt> Quests
+   
+
+    public override void DoneConversing()
     {
-        get
-        {
-            return onGoingQuests;
-        }
+        IsConversing = false;
+        currentFSM.ChangeState(ActorFSM.FSMState.PETROL);
     }
 
- 
+    public void StartQuest(Quest hunt)
+    {
+        //Check DialogManager to see if there is still things
+        questBook.StartQuest(hunt);
+    }
+
+    public void EndQuest(Quest hunt)
+    {
+        questBook.EndQuest(hunt);
+        //Check DialogManager to see if there is still things
+    }
 
 }
