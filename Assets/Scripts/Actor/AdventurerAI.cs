@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI {
 
-    private List<StoryHunt> onGoingQuests = new List<StoryHunt>();
+    
 
     private List<Relation> actorRelations = new List<Relation>();
 
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-
+    private QuestBook questBook;
     protected override void Awake()
     {
         base.Awake();
@@ -20,6 +20,18 @@ public class AdventurerAI : AI {
         GetSlots();
     }
 
+    protected virtual void Start()
+    {
+        questBook = new QuestBook();
+    }
+
+    public QuestBook QuestBook
+    {
+        get
+        {
+            return questBook;
+        }
+    }
     public void EquipRandomWeapons()
     {
         foreach (Equipment equip in inventory)
@@ -90,13 +102,7 @@ public class AdventurerAI : AI {
                 break;
         }
     }
-    public List<StoryHunt> Quests
-    {
-        get
-        {
-            return onGoingQuests;
-        }
-    }
+   
 
     public override void DoneConversing()
     {
@@ -104,6 +110,16 @@ public class AdventurerAI : AI {
         currentFSM.ChangeState(ActorFSM.FSMState.PETROL);
     }
 
+    public void StartQuest(Quest hunt)
+    {
+        //Check DialogManager to see if there is still things
+        questBook.StartQuest(hunt);
+    }
 
+    public void EndQuest(Quest hunt)
+    {
+        questBook.EndQuest(hunt);
+        //Check DialogManager to see if there is still things
+    }
 
 }

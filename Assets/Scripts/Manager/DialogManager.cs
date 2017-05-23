@@ -1,19 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour {
-    
-    public struct DialogRequest
-    {
-        public ICanTalk smth;
-        public AI ai;
 
-        public DialogRequest(ICanTalk canTalk, AI aiRequester)
+    public abstract class DialogRequest
+    {
+        public abstract void DoAction();
+        public virtual ICanTalk Item
         {
-            smth = canTalk;
-            ai = aiRequester;
+            get;
+            set;
+        }
+    }
+    
+    public class DialogRequest<T> : DialogRequest where T : ICanTalk
+    {
+        private T item;
+        private Action<T> callBack;
+
+        public DialogRequest(Action<T> _callBack, T _sth)
+        {
+            item = _sth;
+            callBack = _callBack;
+        }
+
+        public override void DoAction()
+        {
+            callBack(item);
+        }
+
+        public override ICanTalk Item
+        {
+            get
+            {
+                return item;
+            }
         }
 
     }
@@ -66,7 +90,6 @@ public class DialogManager : MonoBehaviour {
         dialogBox = GameObject.FindWithTag("DialogBox");
         currentText = dialogBox.GetComponentInChildren<Text>();
         sessionList = TaoBaoDialogEditor.Instance.Sessions;
-
     }
 
 
@@ -79,11 +102,17 @@ public class DialogManager : MonoBehaviour {
 
         if(dialogRequestQueue.Count > 0)
         {
-            DisplayDialogBox(dialogRequestQueue.Peek().smth);
+            DisplayDialogBox(dialogRequestQueue.Peek().Item);
         }
         
     }
 
+    public void AddDialog<T>(Action<T> action,T item) where T : ICanTalk
+    {
+        DialogRequest c = new DialogRequest<T>(action, item);
+        dialogRequestQueue.Enqueue(c);
+
+    }
     public Queue<DialogRequest> DialogRequestQueue
     {
         get { return this.dialogRequestQueue; }
@@ -192,7 +221,7 @@ public class DialogManager : MonoBehaviour {
             yield return new WaitForSeconds(0.1f - textSpeed);
         }
 
-        float delay = Random.Range(-minDelay, maxDelay);
+        float delay = UnityEngine.Random.Range(-minDelay, maxDelay);
         yield return new WaitForSeconds(Mathf.Clamp01(delay));
         isTyping = false;
     }
@@ -235,7 +264,7 @@ public class DialogManager : MonoBehaviour {
     {
         if(isTyping)
         {
-           if(Random.value > skipPercentChance)
+           if(UnityEngine.Random.value > skipPercentChance)
             {
                 StopCoroutine(typeWriter);
                 audioSource.Stop();
