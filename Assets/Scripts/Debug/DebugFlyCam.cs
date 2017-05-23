@@ -32,7 +32,6 @@ public class DebugFlyCam : MonoBehaviour {
 
 
 		//Keyboard commands
-		float f;
 		var p = GetBaseInput();
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
