@@ -34,7 +34,7 @@ public class QuestEntryGroup<T> where T : Quest
     {
         get
         {
-            return Quest;
+            return quests;
         }
     }
 

@@ -83,5 +83,6 @@ public abstract class Quest : ICanTalk
         {
             this.dialog = value;
         }
-    }
+    }
+
 }

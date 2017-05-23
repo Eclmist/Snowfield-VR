@@ -29,7 +29,7 @@ public class QuestBook
 
     public StoryQuest GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
     {
-
+     
         if (group.Quest[group.ProgressionIndex].IsCompleted)
         {
             RequestNextQuest(group);
@@ -49,7 +49,7 @@ public class QuestBook
 
     public void StartStoryQuest(StoryQuest hunt)
     {
-        
+        Debug.Log("hgrhdgfhdgh");
             //Start Quest routine
     }
 
@@ -77,7 +77,9 @@ public class QuestBook
         storyQuest = QuestManager.Instance.CreateNewStoryLines();
         foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
         {
-            Quest newQuest = QuestManager.Instance.GetQuest(line);
+            StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
+            if (newQuest != null)
+                line.Add(newQuest);
         }
     }
 

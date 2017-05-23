@@ -62,7 +62,9 @@ public class Player : Actor
             {
                 StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
                 if (quest != null)
+                {
                     DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+                }
             }
             //if(!HuntManager.Instance.GetNextQuest(story))
             // (adventurerAI)actor.DoneConversing();
