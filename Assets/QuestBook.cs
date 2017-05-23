@@ -15,6 +15,7 @@ public class QuestBook {
             currentQuest = quest;
         }
     }
+
     private List<StoryLine> storyQuest = new List<StoryLine>();
 
     public List<StoryLine> Quests

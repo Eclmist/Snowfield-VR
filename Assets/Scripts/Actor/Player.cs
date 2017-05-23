@@ -48,7 +48,7 @@ public class Player : Actor
     public override void Interact(Actor actor)
     {
         //Message.Instance.IncomingRequest = true;
-
+        
         if (actor is AdventurerAI)
         {
             StoryQuest newQuest;
