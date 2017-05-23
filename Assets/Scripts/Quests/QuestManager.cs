@@ -11,13 +11,13 @@ public class QuestManager : MonoBehaviour {
     //[SerializeField]private Queue<AdventurerAI> aiQueue;
     //private Queue<Hunt> questDialogQueue;
 
-    public List<StoryLine> CreateNewStoryLines()
+    public List<QuestEntryGroup<StoryQuest>> CreateNewStoryLines()
     {
-        List<StoryLine> newStoryLine = new List<StoryLine>();
-        foreach(StoryLine line in storylines)
+        List<QuestEntryGroup<StoryQuest>> newStoryLine = new List<QuestEntryGroup<StoryQuest>>();
+        foreach (StoryLine line in storylines)
         {
-            StoryLine newLine = new StoryLine(line.JobType);
-            newStoryLine.Add(line);
+            QuestEntryGroup<StoryQuest> newLine = new QuestEntryGroup<StoryQuest>(line.JobType);
+            newStoryLine.Add(newLine);
         }
         return newStoryLine;
     }
@@ -64,23 +64,27 @@ public class QuestManager : MonoBehaviour {
         storylines[0].Clear();
     }
 
-    
+    public StoryQuest GetQuest(QuestEntryGroup<StoryQuest> line)//Get Quest based of Entry group index
+    {
+        foreach (StoryLine myLine in storylines)
+        {
+            if (myLine.JobType == line.JobType)
+            {
+                if (line.ProgressionIndex < myLine.Quests.Count)
+                    return myLine.Quests[line.ProgressionIndex];
+                break;
+            }
+        }
+        return null;
+    }
 
-
-
-    //private void GetNextQuest(StoryHunt hunt)
-    //{
-    //    StoryLine line = GetStoryLine(hunt.StoryType);
-
-    //    if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
-    //         && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
-    //    {
-    //        hunt = line[hunt.ProgressionIndex + 1];
-    //        //StartQuestDialog(hunt);
-    //    }
-
-           
-    //}
+    public bool CanStartQuest(StoryQuest quest)
+    {
+        if (Player.Instance.GetJob(quest.JobType).Level >= quest.RequiredLevel)
+            return true;
+        else
+            return false;
+    }
 
     //private void ProcessDialogQueue()
     //{
@@ -115,38 +119,38 @@ public class QuestManager : MonoBehaviour {
     //}
 
     // Gives the starting quest of each storyline if it does not exist
-    private void GiveStartingQuests(List<StoryQuest> list)
-    {
+    //private void GiveStartingQuests(List<StoryQuest> list)
+    //{
 
-        if (list.Count < 1)
-        {
-            foreach(StoryLine sl in storylines)
-            {
-                list.Add(sl[0]);
-            }
-        }
-        else
-        {
-            foreach (StoryLine sl in storylines)
-            {
-                bool exist = false;
+    //    if (list.Count < 1)
+    //    {
+    //        foreach(StoryLine sl in storylines)
+    //        {
+    //            list.Add(sl[0]);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        foreach (StoryLine sl in storylines)
+    //        {
+    //            bool exist = false;
 
-                foreach (StoryQuest hunt in list)
-                {
-                    if (sl[0].StoryType == hunt.StoryType)
-                    {
-                        exist = true;
-                    }
+    //            foreach (StoryQuest hunt in list)
+    //            {
+    //                if (sl[0].StoryType == hunt.StoryType)
+    //                {
+    //                    exist = true;
+    //                }
 
-                    if (!exist)
-                        list.Add(sl[0]);
-                }
-            }
-        }
-        
-    }
+    //                if (!exist)
+    //                    list.Add(sl[0]);
+    //            }
+    //        }
+    //    }
 
-    
+    //}
+
+
 
     // Check how many unlocked storylines
     //private int NumberOfUnlockedStoryLines()
@@ -161,7 +165,7 @@ public class QuestManager : MonoBehaviour {
 
     //    return i;
     //}
-  
+
 
     // Set the dialog for the quest so that dialog manager knows what to display
     // Push quest dialog into a queue
@@ -198,8 +202,8 @@ public class QuestManager : MonoBehaviour {
     //    {
     //        StoryHunt currentHunt = tempList[(int)Random.Range(0, tempList.Count)];
     //        currentHunt =  GetStoryLine(currentHunt.StoryType)[currentHunt.ProgressionIndex + 1];
-            
-  
+
+
     //        return true;
     //    }
     //    else

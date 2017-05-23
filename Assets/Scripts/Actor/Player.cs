@@ -51,20 +51,19 @@ public class Player : Actor
 
         if (actor is AdventurerAI)
         {
-            StoryQuest newQuest;
-            do
+            foreach(QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
             {
-                newQuest = (actor as AdventurerAI).QuestBook.GetQuest(false);
-                if (newQuest != null)
-                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).QuestBook.EndQuest, newQuest);
-            } while (newQuest != null);
+                StoryQuest quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
+                if(quest != null)
+                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).QuestBook.EndStoryQuest, quest);
+            }
 
-            do
+            foreach (QuestEntryGroup<StoryQuest> group in (actor as AdventurerAI).QuestBook.StoryQuests)
             {
-                newQuest = (actor as AdventurerAI).QuestBook.GetQuest(true);
-                if (newQuest != null)
-                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, newQuest);
-            } while (newQuest != null);
+                StoryQuest quest = (actor as AdventurerAI).QuestBook.GetStartableQuest(group);
+                if (quest != null)
+                    DialogManager.Instance.AddDialog<StoryQuest>((actor as AdventurerAI).StartQuest, quest);
+            }
             //if(!HuntManager.Instance.GetNextQuest(story))
             // (adventurerAI)actor.DoneConversing();
             //Do further checks for buy selling etc

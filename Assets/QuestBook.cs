@@ -2,22 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestBook {
+public class QuestBook
+{
 
-    public struct QuestEntry {
+    private List<QuestEntryGroup<StoryQuest>> storyQuest = new List<QuestEntryGroup<StoryQuest>>();
 
-        Quest currentQuest;
-        bool isCompleted;
-
-        public QuestEntry(Quest quest)
-        {
-            isCompleted = false;
-            currentQuest = quest;
-        }
-    }
-    private List<StoryLine> storyQuest = new List<StoryLine>();
-
-    public List<StoryLine> Quests
+    public List<QuestEntryGroup<StoryQuest>> StoryQuests
     {
         get
         {
@@ -25,47 +15,72 @@ public class QuestBook {
         }
     }
 
-    //private void RequestNextQuest(Quest hunt)
-    //{
-    //    StoryLine temp = GetStoryLine(hunt.JobType);
-    //    if(temp != null)
-    //        StoryQuest newQuest = 
-    //}
-    
-    public StoryQuest GetQuest(bool completed)
+    private void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
     {
+        
+            group.ProgressionIndex++;
+            StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
+            if (newQuest == null)
+                group.Completed = true;
+            else
+                group.Add(newQuest);
+        
+    }
+
+    public StoryQuest GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
+    {
+
+        if (group.Quest[group.ProgressionIndex].IsCompleted)
+        {
+            RequestNextQuest(group);
+            return group.Quest[group.ProgressionIndex];
+        }
+
         return null;
     }
 
-    public void StartQuest(Quest hunt)
+    public StoryQuest GetStartableQuest(QuestEntryGroup<StoryQuest> group)
     {
+        if (QuestManager.Instance.CanStartQuest(group.Quest[group.ProgressionIndex]))
+            return group.Quest[group.ProgressionIndex];
 
+        return null;
     }
 
-    public void EndQuest(Quest hunt)
+    public void StartStoryQuest(StoryQuest hunt)
     {
-
+        
+            //Start Quest routine
     }
 
-    public StoryLine GetStoryLine(JobType jt)
+    public void EndStoryQuest(StoryQuest hunt)
     {
-        StoryLine temp = null;
+        //Give xp and item here
+    }
 
-        foreach (StoryLine sl in storyQuest)
+    public QuestEntryGroup<StoryQuest> GetStoryGroup(JobType jt)
+    {
+
+        foreach (QuestEntryGroup<StoryQuest> sl in storyQuest)
         {
             if (jt == sl.JobType)
             {
-                temp = sl;
-                break;
+                return sl;
             }
         }
 
-        return temp;
+        return null;
     }
 
     public QuestBook()
     {
         storyQuest = QuestManager.Instance.CreateNewStoryLines();
+        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
+        {
+            Quest newQuest = QuestManager.Instance.GetQuest(line);
+        }
     }
+
+
 
 }

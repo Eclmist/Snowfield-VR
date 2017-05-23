@@ -26,7 +26,7 @@ public abstract class Quest  : ICanTalk{
         this.reward = reward;
         this.dialog = dialog;
         this.experience = experience;
-        this.isCompleted = false;
+        isCompleted = false;
     }
 
     public string Name

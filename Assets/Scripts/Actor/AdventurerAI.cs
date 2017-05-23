@@ -110,15 +110,15 @@ public class AdventurerAI : AI {
         currentFSM.ChangeState(ActorFSM.FSMState.PETROL);
     }
 
-    public void StartQuest(Quest hunt)
+    public void StartQuest(StoryQuest hunt)
     {
         //Check DialogManager to see if there is still things
-        questBook.StartQuest(hunt);
+        questBook.StartStoryQuest(hunt);
     }
 
-    public void EndQuest(Quest hunt)
+    public void EndQuest(StoryQuest hunt)
     {
-        questBook.EndQuest(hunt);
+        questBook.EndStoryQuest(hunt);
         //Check DialogManager to see if there is still things
     }
 

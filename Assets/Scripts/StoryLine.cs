@@ -9,28 +9,27 @@ public class StoryLine {
     private JobType jobType;
     [SerializeField]
     private List<StoryQuest> quests;
-    [SerializeField]
-    private bool isCompleted;
+   
+    //protected int progressionIndex;
+
+    //public int ProgressionIndex
+    //{
+    //    get
+    //    {
+    //        return progressionIndex;
+    //    }
+    //    set
+    //    {
+    //        progressionIndex = value;
+    //    }
+    //}
 
     public StoryLine(JobType jobType)
     {
         this.jobType = jobType;
         quests = new List<StoryQuest>();
         quests.Add(new StoryQuest(jobType));
-    }
-
-    
-
-    public  bool Completed
-    {
-        get
-        {
-            return isCompleted;
-        }
-        set
-        {
-            isCompleted = value;
-        }
+        //progressionIndex = 0;
     }
 
     public JobType JobType
