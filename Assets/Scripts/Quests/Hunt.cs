@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class Hunt  : ICanTalk{
+public abstract class Quest  : ICanTalk{
 
     [SerializeField]private string name;
     [SerializeField]private JobType jobType;
@@ -13,13 +13,13 @@ public abstract class Hunt  : ICanTalk{
     [SerializeField]private int experience;
     private bool isCompleted;
 
-    public Hunt(JobType jobType)
+    public Quest(JobType jobType)
     {
         name = "New Quest";
         this.jobType = jobType;
     }
 
-    public Hunt(string name ,JobType jobType,GameObject reward,Session dialog,int experience)
+    public Quest(string name ,JobType jobType,GameObject reward,Session dialog,int experience)
     {
         this.name = name;
         this.jobType = jobType;

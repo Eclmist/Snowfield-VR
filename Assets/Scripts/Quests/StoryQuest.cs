@@ -32,6 +32,5 @@ public class StoryQuest : Quest
         set { this.storyLineType = value; }
     }
 
-    public StoryQuest() { }
     
 }
