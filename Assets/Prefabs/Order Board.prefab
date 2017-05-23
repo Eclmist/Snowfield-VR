@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33316366600930228}
   - component: {fileID: 65190657521066212}
   - component: {fileID: 23997011376067454}
-  - component: {fileID: 114392801441727948}
+  - component: {fileID: 114579771998981396}
   m_Layer: 0
   m_Name: Order Board
   m_TagString: Untagged
@@ -73,14 +73,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1411874518479238}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -1.139, y: 2.068, z: 1.885}
+  m_LocalRotation: {x: -0, y: 0.0000029504295, z: -0, w: -1}
+  m_LocalPosition: {x: -1.188, y: 2.076, z: -1.893}
   m_LocalScale: {x: 2.0345387, y: 0.9261582, z: 0.087013885}
   m_Children:
   - {fileID: 224772825321190480}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 360, z: 0}
 --- !u!23 &23997011376067454
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -151,10 +151,10 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 0.86, y: 1.08}
-  m_Spacing: {x: 0.2, y: 0.2}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_CellSize: {x: 0.92, y: 1.08}
+  m_Spacing: {x: 0.21, y: 0.13}
+  m_Constraint: 1
+  m_ConstraintCount: 6
 --- !u!114 &114306540752261558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 10000
---- !u!114 &114392801441727948
+--- !u!114 &114579771998981396
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -184,11 +184,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1411874518479238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 083516dc4cd784b468a17e7232ed4046, type: 3}
+  m_Script: {fileID: 11500000, guid: 8639eb6921b65aa458a3b5f4a1fc3555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: {fileID: 114676399791951738, guid: bcce5bcb66d308b4e9e443087174b6d4, type: 2}
-  maxNumberOfOrders: 12
+  offsetZ: 0.05
+  order: {fileID: 114260459669939492, guid: 18d80ddfa9c07834d8482ed6e2513b8f, type: 2}
+  colElements: 2
+  rowElements: 6
+  padding: {x: 0.05, y: 0.05}
 --- !u!114 &114831552348314636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,10 +287,10 @@ RectTransform:
   m_Father: {fileID: 224772825321190480}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0, y: 0}
-  m_SizeDelta: {x: -0.36, y: -0.36}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 6.6, y: 2.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224772825321190480
 RectTransform:
