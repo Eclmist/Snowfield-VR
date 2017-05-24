@@ -46,11 +46,26 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage, IDime
 
     [SerializeField]
     protected Sprite icon;
+    [SerializeField]
+    protected int maxStackSize = 1;
+    protected int currentStackSize;
 
     public Sprite Icon
     {
         get{ return this.icon; }
         set{ this.icon = value; }
+    }
+
+    public int MaxStackSize
+    {
+        get { return this.maxStackSize; }
+        set { this.maxStackSize = value; }
+    }
+
+    public int CurrentStackSize
+    {
+        get { return this.currentStackSize; }
+        set { this.currentStackSize = value; }
     }
 
     public GameObject objReference
