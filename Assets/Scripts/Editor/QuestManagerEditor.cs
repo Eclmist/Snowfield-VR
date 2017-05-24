@@ -14,16 +14,16 @@ public class QuestManagerEditor : Editor {
     private int selectedGridIndex;
     private int selectedQuestIndex;
     private int pselectedGridIndex;
-    private int selectedDialogLine;
     private ReorderableList relist;
     private Vector2 questScrollPos;
     private Vector2 messageScrollPos;
+    private Vector2 endMessageScrollPos;
 
 
     void OnEnable()
     {
         instance = (QuestManager)target;
-        relist = new ReorderableList(serializedObject,serializedObject.FindProperty("storyHuntList"), true, true, true, true);
+        //relist = new ReorderableList(serializedObject,serializedObject.FindProperty("storyHuntList"), true, true, true, true);
         //relist.drawHeaderCallback += DrawHeader;
         //relist.drawElementCallback += DrawElement;
 
@@ -54,7 +54,7 @@ public class QuestManagerEditor : Editor {
             {
                 foreach(Line l in hunt.Dialog.Lines)
                 {
-                    if (l.ClipPath != null)
+                    if (l.ClipPath != "")
                     {
                         Debug.Log("Loaded : " + l.ClipPath);
                         l.Clip = Resources.Load(l.ClipPath) as AudioClip;
@@ -72,18 +72,18 @@ public class QuestManagerEditor : Editor {
         DrawDefaultInspector();
         GUILayout.BeginHorizontal("Box");
         {
-            if (GUILayout.Button("\nSave\n"))
-            {
-                SerializeManager.Save("storylines", instance.Storylines);
-                Debug.Log("saved!");
-            }
+            //if (GUILayout.Button("\nSave\n"))
+            //{
+            //    SerializeManager.Save("storylines", instance.Storylines);
+            //    Debug.Log("saved!");
+            //}
 
-            if (GUILayout.Button("\nLoad Quest\n"))
-            {
-                instance.Storylines = (List<StoryLine>)SerializeManager.Load("storylines");
-                GetAudioFilesFromPath();
-                Debug.Log("loaded!");
-            }
+            //if (GUILayout.Button("\nLoad Quest\n"))
+            //{
+            //    instance.Storylines = (List<StoryLine>)SerializeManager.Load("storylines");
+            //    GetAudioFilesFromPath();
+            //    Debug.Log("loaded!");
+            //}
         }
         GUILayout.EndHorizontal();
 
@@ -104,7 +104,10 @@ public class QuestManagerEditor : Editor {
                 GetSelectedQuest().RequiredLevel = EditorGUILayout.IntField("Required Level", GetSelectedQuest().RequiredLevel);
                 GetSelectedQuest().JobType = instance.Storylines[selectedGridIndex].JobType;
 
-                GUILayout.Label("Dialogs", EditorStyles.largeLabel);
+                //============================================ Starting Dialog  ===========================================================//
+
+                GUILayout.Label("Starting dialogs", EditorStyles.boldLabel);
+
                 if (GetSelectedQuest().Dialog == null)
                 {
                     GetSelectedQuest().Dialog = new Session();
@@ -148,13 +151,71 @@ public class QuestManagerEditor : Editor {
                     }
                 }
                 GUILayout.EndScrollView();
+
                 GUILayout.Space(10);
 
                 if (GUILayout.Button("\nAdd new message\n"))
                 {
                     GetSelectedQuest().Dialog.Lines.Add(new Line());
                 }
-  
+
+
+                GUILayout.Space(5);
+
+                //============================================ Ending Dialog  ===========================================================//
+                GUILayout.Label("Ending dialogs", EditorStyles.boldLabel);
+
+                if (GetSelectedQuest().EndDialog == null)
+                {
+                    GetSelectedQuest().EndDialog = new Session();
+                    GetSelectedQuest().EndDialog.Title = "Insert title here";
+
+                }
+                else
+                    GetSelectedQuest().EndDialog.Title = EditorGUILayout.TextField("Session Title", GetSelectedQuest().EndDialog.Title);
+
+
+                if (GetSelectedQuest().EndDialog.Lines == null)
+                {
+                    GetSelectedQuest().EndDialog.Lines = new List<Line>();
+                    GetSelectedQuest().EndDialog.Lines.Add(new Line());
+                }
+
+                endMessageScrollPos = GUILayout.BeginScrollView(endMessageScrollPos, GUILayout.Height(150));
+                {
+                    for (int i = 0; i < GetSelectedQuest().EndDialog.Lines.Count; i++)
+                    {
+                        Line l = GetSelectedQuest().EndDialog.Lines[i];
+
+                        GUILayout.BeginVertical("Box");
+                        {
+                            GUILayout.Label("Message " + i, EditorStyles.boldLabel);
+                            EditorStyles.textField.wordWrap = true;
+                            l.Message = EditorGUILayout.TextArea(l.Message);
+                            l.Clip = (AudioClip)EditorGUILayout.ObjectField("Audio", l.Clip, typeof(AudioClip), true);
+                            if (l.Clip != null)
+                                l.ClipPath = ConvertToPath(l.Clip);
+                        }
+                        GUILayout.EndVertical();
+
+
+                        if (GUILayout.Button("Remove message") && GetSelectedQuest().EndDialog.Lines.Count > 1)
+                        {
+                            GetSelectedQuest().EndDialog.Lines.Remove(l);
+                        }
+
+                        GUILayout.Space(10);
+
+                    }
+                }
+                GUILayout.EndScrollView();
+                GUILayout.Space(10);
+
+                if (GUILayout.Button("\nAdd new message\n"))
+                {
+                    GetSelectedQuest().EndDialog.Lines.Add(new Line());
+                }
+                //==========================================================================================================//
 
             }
         }

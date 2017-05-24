@@ -16,6 +16,9 @@ public abstract class Quest : ICanTalk
     private Session dialog;
 
     [SerializeField]
+    private Session endDialog;
+
+    [SerializeField]
     private int experience;
 
     private bool isCompleted;
@@ -58,6 +61,12 @@ public abstract class Quest : ICanTalk
     {
         get { return this.dialog; }
         set { this.dialog = value; }
+    }
+
+    public Session EndDialog
+    {
+        get { return this.endDialog; }
+        set { this.endDialog = value; }
     }
 
     public int Experience
