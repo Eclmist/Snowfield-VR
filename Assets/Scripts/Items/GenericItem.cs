@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
-public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
+public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage, IDimensionable
 
 {
     protected Rigidbody rigidBody;
@@ -41,6 +42,25 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
     #endregion IInteractable
 
+    #region IDimensionable
+
+    [SerializeField]
+    protected Sprite icon;
+
+    public Sprite Icon
+    {
+        get{ return this.icon; }
+        set{ this.icon = value; }
+    }
+
+    public GameObject objReference
+    {
+        get { return this.gameObject; }
+    }
+
+
+    #endregion IDimensionable
+
     #region
 
     [SerializeField]
@@ -73,6 +93,8 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         get { return this.m_name; }
         set { this.m_name = value; }
     }
+
+   
 
     //protected virtual void Update()
 
