@@ -80,4 +80,16 @@ public class InGameUI : MonoBehaviour
             }
         }
     }
+
+    public void ActivateMM()
+    {
+        if(lastState != InGameState.PAUSE)
+            curState = InGameState.PAUSE;
+    }
+
+    public void DiactivateMM()
+    {
+        if (lastState != InGameState.INGAME)
+            curState = InGameState.INGAME;
+    }
 }

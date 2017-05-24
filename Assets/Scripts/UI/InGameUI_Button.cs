@@ -5,7 +5,9 @@ using UnityEngine;
 public class InGameUI_Button : MonoBehaviour, IInteractable
 {
     private VR_Controller_Custom linkedController = null;
+    private Vector3 pos, posStart;
 
+    private bool menuCoroutineStarted = false;
     public VR_Controller_Custom LinkedController
     {
         get
@@ -20,10 +22,44 @@ public class InGameUI_Button : MonoBehaviour, IInteractable
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        if (gameObject.name == "MainMenuArea")
         {
-            StartInteraction(referenceCheck);
+            if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.ApplicationMenu))
+            {
+                Debug.Log("Interacting");
+
+                if (!menuCoroutineStarted)
+                    StartCoroutine(MenuCoroutine(referenceCheck));
+
+            }
+            if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+            {
+
+            }
+            
         }
+        else if(referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+
+        }
+    }
+
+    IEnumerator MenuCoroutine(VR_Controller_Custom referenceCheck)
+    {
+        posStart = referenceCheck.Device.transform.pos;
+        menuCoroutineStarted = true;
+
+        yield return new WaitForSeconds(1.0f);
+
+        pos = referenceCheck.Device.transform.pos;
+        ///
+        ///
+        ///
+        if((float)(pos.x - posStart.x)/(pos.y - posStart.y) < 0.2f && pos.y - posStart.y >= 0.7)
+        {
+            Debug.Log("Main Menu appear");
+        }
+        menuCoroutineStarted = false;
     }
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
@@ -53,12 +89,19 @@ public class InGameUI_Button : MonoBehaviour, IInteractable
     // Use this for initialization
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(menuCoroutineStarted);
+        Debug.Log((float)(pos.x - posStart.x) );
+    }
+    
 
+    private void ActivateMainMenuArea(VR_Controller_Custom referenceCheck)
+    {
+            InGameUI.Instance.ActivateMM();
     }
 }

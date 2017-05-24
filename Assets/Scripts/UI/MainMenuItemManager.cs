@@ -24,20 +24,23 @@ public class MainMenuItemManager : MonoBehaviour {
         child = new Transform[3];
         int i = 0;
         temp = GetComponentsInChildren<Transform>(true);
+        
         foreach(Transform t in temp)
         {
-            if(t.tag.Equals("MainMenuItem"))
+            if (t.tag.Equals("MainMenuItem"))
             {
                 child[i] = t;
+
                 i++;
             }
         }
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        
+
 	}
 
     public Transform[] GetChild()
