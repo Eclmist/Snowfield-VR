@@ -22,8 +22,7 @@ public class DimensionBag : GenericItem {
 
 	// Use this for initialization
 	void Start ()
-    {
-
+    { 
         dimensionItems = new List<IDimensionable>();
 	}
 	
@@ -34,6 +33,19 @@ public class DimensionBag : GenericItem {
             // Play animation
             Debug.Log("Open dimension bag!");
         }
+
+        if(dimensionItems.Count > 0)
+        {
+            foreach (IDimensionable d in dimensionItems)
+            {
+                if (d.CurrentStackSize == 0)
+                {
+                    dimensionItems.Remove(d);
+                    itor = 0;
+                }
+            }
+        }
+        
             
     }
 
@@ -47,15 +59,34 @@ public class DimensionBag : GenericItem {
     public void AddItemToDimension(IDimensionable item)
     {
         if(item != null)
-            dimensionItems.Add(item);
+        {
+            // Check for existing items to stack
+            foreach(IDimensionable d in dimensionItems)
+            {
+                if(item.Name == d.Name && d.CurrentStackSize < d.MaxStackSize)
+                {
+                    d.CurrentStackSize++;
+                    break;
+                }
+                else
+                {
+                    dimensionItems.Add(item);
+                }
+            }
+
+        }
+            
     }
 
     public GameObject RetrieveItemFromDimension()
     {
-        return dimensionItems[itor].objReference;
+        IDimensionable d = dimensionItems[itor];
+        d.CurrentStackSize--;
+
+        return d.objReference;
     }
 
-    public IDimensionable ShowSelectedItem()
+    public IDimensionable GetSelectedItem()
     {
 
         return dimensionItems[itor];
@@ -88,6 +119,12 @@ public class DimensionBag : GenericItem {
                 else if (touchpad.x < -0.7f && itor > 1)
                     itor--;
 
+            }
+
+
+            if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) && dimensionItems.Count > 0)
+            {
+                RetrieveItemFromDimension();
             }
         }
         
