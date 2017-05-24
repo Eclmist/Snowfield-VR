@@ -5,12 +5,20 @@ using UnityEngine;
 
 public class DimensionBag : GenericItem {
 
+    public static DimensionBag Instance;
+
     private List<IDimensionable> dimensionItems;
     private int itor = 0;
     private bool isInside;
 
     [SerializeField]
     private float distanceToReact;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Instance = this;
+    }
 
 	// Use this for initialization
 	void Start ()
