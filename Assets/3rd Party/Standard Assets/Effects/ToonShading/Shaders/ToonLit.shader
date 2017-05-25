@@ -9,6 +9,13 @@ Shader "Toon/Lit" {
 		Tags { "RenderType" = "Opaque" }
 		LOD 200
 		Cull Off
+
+		Stencil		
+		{
+			Ref 60
+			Comp Always
+			Pass Replace
+		}
 CGPROGRAM
 #pragma surface surf ToonRamp
 sampler2D _Ramp;
