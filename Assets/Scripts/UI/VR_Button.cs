@@ -18,6 +18,7 @@ public struct VR_Button_Events
 	public UnityEvent onTriggerRelease;
 }
 
+[RequireComponent(typeof(Collider))]
 public class VR_Button : VR_Interactable_UI
 {
 	[SerializeField] protected bool useTransitions = true;
