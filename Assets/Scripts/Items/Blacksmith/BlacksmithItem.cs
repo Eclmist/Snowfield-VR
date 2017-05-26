@@ -5,7 +5,9 @@ using UnityEngine;
 public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
-
+    protected bool isColliding = false;
+    [SerializeField] private float directionalMultiplier = 20;
+    protected float maxForce = 40f;
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         rigidBody.useGravity = true;
@@ -20,8 +22,7 @@ public class BlacksmithItem : GenericItem {
         base.StartInteraction(referenceCheck);
     }
 
-    protected bool isColliding = false;
-    protected float maxForce = 40f;
+    
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
@@ -37,7 +38,7 @@ public class BlacksmithItem : GenericItem {
             if (angle > 180)
                 angle -= 360;
 
-            float angularVelocityNumber = .8f;
+            float angularVelocityNumber = .2f;
 
             if (isColliding)
                 angularVelocityNumber /= 2;
@@ -50,7 +51,7 @@ public class BlacksmithItem : GenericItem {
             if (isColliding)
                 currentForce /= 40;
 
-            rigidBody.velocity = PositionDelta.magnitude * 40 > currentForce ? (PositionDelta).normalized * currentForce : PositionDelta * 40;
+            rigidBody.velocity = PositionDelta.magnitude * directionalMultiplier > currentForce ? (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
    
         }
     }
