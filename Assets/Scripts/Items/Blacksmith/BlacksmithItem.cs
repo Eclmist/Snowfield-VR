@@ -5,7 +5,9 @@ using UnityEngine;
 public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
-
+    protected bool isColliding = false;
+    [SerializeField] private float directionalMultiplier = 20;
+    protected float maxForce = 40f;
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         rigidBody.useGravity = true;
@@ -18,9 +20,9 @@ public class BlacksmithItem : GenericItem {
     {
         rigidBody.useGravity = false;
         base.StartInteraction(referenceCheck);
-        rigidBody.maxAngularVelocity = 10f;
     }
 
+    
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
         base.Interact(referenceCheck);
@@ -36,9 +38,21 @@ public class BlacksmithItem : GenericItem {
             if (angle > 180)
                 angle -= 360;
 
-            rigidBody.angularVelocity = axis * angle * 0.4f;
+            float angularVelocityNumber = .2f;
 
-            rigidBody.velocity = PositionDelta * 40 * rigidBody.mass;
+            if (isColliding)
+                angularVelocityNumber /= 2;
+
+
+            rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
+
+            float currentForce = maxForce;
+
+            if (isColliding)
+                currentForce /= 40;
+
+            rigidBody.velocity = PositionDelta.magnitude * directionalMultiplier > currentForce ? (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+   
         }
     }
 
@@ -66,6 +80,7 @@ public class BlacksmithItem : GenericItem {
         {
             float value = linkedController.Velocity().magnitude <= 1 ? linkedController.Velocity().magnitude : 1;
             linkedController.Vibrate(value / 10);
+            isColliding = true;
         }
 
     }
@@ -79,8 +94,16 @@ public class BlacksmithItem : GenericItem {
             value = value <= 720 ? value : 720;
 
             linkedController.Vibrate(value / 720 * 5);
+
+            isColliding = true;
         }
     }
+
+    protected virtual void OnCollisionExit(Collision collision)
+    {
+        isColliding = false;
+    }
+
 
 
 
