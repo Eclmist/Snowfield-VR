@@ -12,6 +12,7 @@ public class DimensionBag : GenericItem {
     private bool isInside;
 
     [SerializeField]
+    [Range(1f,5f)]
     private float distanceToReact;
 
     protected override void Awake()
@@ -24,6 +25,9 @@ public class DimensionBag : GenericItem {
 	void Start ()
     { 
         dimensionItems = new List<IDimensionable>();
+
+            
+
 	}
 	
     void Update()
@@ -31,21 +35,10 @@ public class DimensionBag : GenericItem {
         if (Vector3.Distance(Player.Instance.transform.position,transform.position ) < distanceToReact)
         {
             // Play animation
-            Debug.Log("Open dimension bag!");
-        }
 
-        if(dimensionItems.Count > 0)
-        {
-            foreach (IDimensionable d in dimensionItems)
-            {
-                if (d.CurrentStackSize == 0)
-                {
-                    dimensionItems.Remove(d);
-                    itor = 0;
-                }
-            }
+
+
         }
-        
             
     }
 
@@ -58,6 +51,8 @@ public class DimensionBag : GenericItem {
 
     public void AddItemToDimension(IDimensionable item)
     {
+        bool added = false;
+
         if(item != null)
         {
             // Check for existing items to stack
@@ -66,24 +61,34 @@ public class DimensionBag : GenericItem {
                 if(item.Name == d.Name && d.CurrentStackSize < d.MaxStackSize)
                 {
                     d.CurrentStackSize++;
+                    added = true;
                     break;
                 }
-                else
-                {
-                    dimensionItems.Add(item);
-                }
+            }
+
+
+            if(!added)
+            {
+                dimensionItems.Add(item);
+                item.CurrentStackSize++;
             }
 
         }
             
     }
 
-    public GameObject RetrieveItemFromDimension()
+    public void RetrieveItemFromDimension(Transform t)
     {
         IDimensionable d = dimensionItems[itor];
         d.CurrentStackSize--;
 
-        return d.objReference;
+        Instantiate(d.objReference, t);
+
+        if (d.CurrentStackSize < 1)
+        {
+            dimensionItems.Remove(d);
+        }
+
     }
 
     public IDimensionable GetSelectedItem()
@@ -93,12 +98,12 @@ public class DimensionBag : GenericItem {
 
     }
 
-    protected override void OnCollisionEnter(Collision col)
+    void OnTriggerStay(Collider other)
     {
         isInside = true;
     }
 
-    void OnCollisionExit(Collision col)
+    void OnTriggerExit(Collider other)
     {
         isInside = false;
     }
@@ -106,7 +111,6 @@ public class DimensionBag : GenericItem {
     public override void Interact(VR_Controller_Custom referenceCheck)
     {
 
-        base.Interact(referenceCheck);
 
         if(isInside)
         {
@@ -114,17 +118,26 @@ public class DimensionBag : GenericItem {
             {
                 Vector2 touchpad = (referenceCheck.Device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0));
 
-                if (touchpad.x > 0.7f && itor < dimensionItems.Count)
+                if (referenceCheck.Device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0)[0] > 0.6f
+                && referenceCheck.Device.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad)
+                && itor < dimensionItems.Count-1)
+                {
                     itor++;
-                else if (touchpad.x < -0.7f && itor > 1)
+                }
+
+                if (referenceCheck.Device.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0)[0] < -0.6f
+                && referenceCheck.Device.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad)
+                && itor > 0)
+                {
                     itor--;
+                }
 
             }
 
 
             if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) && dimensionItems.Count > 0)
             {
-                RetrieveItemFromDimension();
+                RetrieveItemFromDimension(LinkedController.transform);
             }
         }
         
