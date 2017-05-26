@@ -3,12 +3,21 @@ Shader "Toon/Lit" {
 		_Color ("Main Color", Color) = (0.5,0.5,0.5,1)
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_Ramp ("Toon Ramp (RGB)", 2D) = "gray" {} 
+
+		_Stencil("Stencil", Int) = 60
 	}
 
 	SubShader {
 		Tags { "RenderType" = "Opaque" }
 		LOD 200
 		Cull Off
+
+		Stencil		
+		{
+			Ref [_Stencil]
+			Comp Always
+			Pass Replace
+		}
 CGPROGRAM
 #pragma surface surf ToonRamp
 sampler2D _Ramp;
