@@ -179,4 +179,19 @@ public class ForgedBlade : MonoBehaviour
 			}
 		}
 	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		foreach (ContactPoint contact in collision.contacts)
+		{
+			Hammer hammer = contact.otherCollider.GetComponent<Hammer>();
+
+			if (hammer != null)
+			{
+				Impact(-collision.relativeVelocity, contact.point);
+			}
+		}
+
+	}
+
 }
