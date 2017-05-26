@@ -76,7 +76,7 @@ public class AI_HUD : MonoBehaviour {
 
 		healthbarMatInstance.SetTextureOffset("_MainTex", Vector2.Lerp(
 			healthbarMatInstance.GetTextureOffset("_MainTex"),
-			new Vector2(health01 - 1, 0),
+			new Vector2(health01 * -1, 0),
 			Time.deltaTime * lerpSpeed));
 
 		// Set indicator color
