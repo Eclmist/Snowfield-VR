@@ -19,48 +19,84 @@ public class AudioManager : MonoBehaviour {
     protected void Awake()
     {
         ambient.Play();
+        dayTime.Play();
     }
 
     protected void Update()
     {
-        //if(timeline == day){  **Future Implementation
-        if (!dayIsPlaying)
-        {
-            dayTime.Play();
-            dayIsPlaying = true;
-        }
-        //}
-        //else // if timeline == night
+        //if (timeline == day && !dayIsPlaying)    //**Future Implementation
         //{
-        //  if(nightIsPlaying == false && dayIsPlaying == true)
-        //  {
-        //      FadeOut(dayTime);
-        //      dayIsPlaying = false;
-
-        //      nightTime.Play;
-        //      FadeIn(nightTime);
-        //      nightIsPlaying = true;
-        //  }
+        //    if (nightIsPlaying)
+        //    {
+        //        StartCoroutine(FadeOut(nightTime));
+        //        dayTime.Play();
+        //        StartCoroutine(FadeIn(dayTime));
+        //    }
         //}
+        //else if (timeline == night && !nightIsPlaying)
+        //{
+        //    if (dayIsPlaying)
+        //    {
+        //        StartCoroutine(FadeOut(ambient));
+        //        StartCoroutine(FadeOut(dayTime));
+        //        nightTime.Play();
+        //        StartCoroutine(FadeIn(nightTime));
+        //    }
+        //}
+
+        Debug();
     }
 
-    protected void FadeIn(AudioSource audio)
+    protected IEnumerator FadeIn(AudioSource audio)
     {
         audio.volume = 0.0f;
 
         while (audio.volume < 1)
         {
-            audio.volume += 0.00001f * Time.deltaTime / 5;
+            audio.volume += 0.01f;
+
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
-    protected void FadeOut(AudioSource audio)
+    protected IEnumerator FadeOut(AudioSource audio)
     {
         while (audio.volume > 0)
         {
-            audio.volume -= 0.00001f * Time.deltaTime / 5;
+            audio.volume -= 0.02f;
+
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        if(audio == dayTime)
+        {
+            dayIsPlaying = false;
+        }
+        else if(audio == nightTime)
+        {
+            nightIsPlaying = false;
         }
 
         audio.Stop();
+    }
+
+    protected void Debug()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            StartCoroutine(FadeOut(dayTime));
+            StartCoroutine(FadeOut(ambient));
+            nightTime.Play();
+            StartCoroutine(FadeIn(nightTime));
+        }
+
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            StartCoroutine(FadeOut(nightTime));
+            dayTime.Play();
+            StartCoroutine(FadeIn(dayTime));
+            ambient.Play();
+            StartCoroutine(FadeIn(ambient));
+        }
     }
 }
