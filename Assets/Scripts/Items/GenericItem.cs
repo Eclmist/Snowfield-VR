@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
-public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage, IDimensionable
+public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
 {
     protected Rigidbody rigidBody;
@@ -44,11 +44,18 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage, IDime
 
     #region IDimensionable
 
+    protected int id;
     [SerializeField]
     protected Sprite icon;
     [SerializeField]
     protected int maxStackSize = 1;
     protected int currentStackSize;
+    
+    public int ID
+    {
+        get { return this.id; }
+        set { this.id = value; }
+    }
 
     public Sprite Icon
     {

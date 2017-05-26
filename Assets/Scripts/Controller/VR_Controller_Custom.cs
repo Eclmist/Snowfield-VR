@@ -44,7 +44,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void ControllerInput()
     {
-        Debug.Log(interactableObject);
+        //Debug.Log(interactableObject);
         if (interactableObject != null)
         {
             interactableObject.Interact(this);

@@ -6,9 +6,8 @@ using UnityEngine;
 public class DimensionBag : GenericItem {
 
     public static DimensionBag Instance;
-    public GameObject sword;
 
-    private List<IDimensionable> dimensionItems;
+    private List<GenericItem> dimensionItems;
     private int itor = 0;
     private bool isInside;
 
@@ -25,11 +24,13 @@ public class DimensionBag : GenericItem {
 	// Use this for initialization
 	void Start ()
     { 
-        dimensionItems = new List<IDimensionable>();
+        dimensionItems = new List<GenericItem>();
+        GameObject g = Instantiate(ItemManager.Instance.Items[12]);
+        AddItemToDimension(g.GetComponent<GenericItem>());
+        GameObject ga = Instantiate(ItemManager.Instance.Items[12]);
+        AddItemToDimension(ga.GetComponent<GenericItem>());
 
-        AddItemToDimension(sword.GetComponent<IDimensionable>());
-
-	}
+    }
 	
     void Update()
     {
@@ -40,27 +41,33 @@ public class DimensionBag : GenericItem {
 
 
         }
-            
+
+        Debug.Log("number of things in list" + dimensionItems.Count);
+
     }
 
-    public List<IDimensionable> Items
+    public List<GenericItem> Items
     {
         get { return this.dimensionItems; }
         set { this.dimensionItems = value; }
     }
 
 
-    public void AddItemToDimension(IDimensionable item)
+    public void AddItemToDimension(GenericItem item)
     {
         bool added = false;
 
         if(item != null)
         {
             // Check for existing items to stack
-            foreach(IDimensionable d in dimensionItems)
+            foreach(GenericItem d in dimensionItems)
             {
-                if(item.Name == d.Name && d.CurrentStackSize < d.MaxStackSize)
+                Debug.Log("d " + d.ID);
+                Debug.Log("item " + item.ID);
+
+                if(item.ID == d.ID )//&& d.CurrentStackSize < d.MaxStackSize)
                 {
+                    Debug.Log("im here");
                     d.CurrentStackSize++;
                     added = true;
                     break;
@@ -80,22 +87,24 @@ public class DimensionBag : GenericItem {
 
     public void RetrieveItemFromDimension()
     {
-        IDimensionable d = dimensionItems[itor];
+        GenericItem d = dimensionItems[itor];
+        Debug.Log("sizeeeee" + d.CurrentStackSize);
         d.CurrentStackSize--;
 
         GameObject g = Instantiate(d.objReference);
-
-        
         g.GetComponent<GenericItem>().StartInteraction(LinkedController);
 
         if (d.CurrentStackSize < 1)
         {
             dimensionItems.Remove(d);
+            itor = 0;
         }
+
+        
 
     }
 
-    public IDimensionable GetSelectedItem()
+    public GenericItem GetSelectedItem()
     {
 
         return dimensionItems[itor];
