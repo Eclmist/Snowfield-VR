@@ -24,13 +24,13 @@
 		ZTest Always
 		ZWrite Off
 
-		//Stencil
-		//{
-		//	Ref[_StencilMask]
-		//	Comp equal
-		//	Pass Keep
-		//	Fail Keep
-		//}
+		Stencil
+		{
+			Ref[_StencilMask]
+			Comp equal
+			Pass Keep
+			Fail Keep
+		}
 
 		Pass
 		{
@@ -73,8 +73,8 @@
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
 				o.projPos = ComputeScreenPos(o.vertex);
+				o.depth = COMPUTE_EYEDEPTH(v.vertex);
 				
-				o.depth = (1 - UnityObjectToClipPos(v.vertex).z);
 				o.fragPos = float3(o.vertex.xy, o.vertex.w);
 				return o;
 			}
@@ -82,13 +82,12 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 
-				// sample the texture
+				// sample the texturedebug shaders
 				fixed4 col = tex2D(_MainTex, i.uv);
 
 				float2 correctedUV = (i.fragPos.xy / i.fragPos.z + 1) * 0.5;
 				fixed4 innerTex = (1 - tex2D(_InnerTexture, correctedUV * 5)) * _InnerColor * col;
-				float sceneZ = LinearEyeDepth(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos)).r) + _SceneZOffset;
-
+				float sceneZ = LinearEyeDepth(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))) +_SceneZOffset;
 				
 				if (abs(i.depth - sceneZ) > _DepthOffset) discard;
 				
