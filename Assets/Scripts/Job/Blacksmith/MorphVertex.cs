@@ -41,7 +41,10 @@ public class MorphVertex : MonoBehaviour
         {
             if (vertexCountCheck != morphPhases[i].vertices.Length)
             {
-                Debug.LogError("Mesh specified do not have the same number of vertices. The script will not work.");
+				Debug.Log("VertCount 1:" + vertexCountCheck);
+				Debug.Log("VertCount 2:" + morphPhases[i].vertices.Length);
+
+				Debug.LogError("Mesh specified do not have the same number of vertices. The script will not work.");
                 Destroy(this);
                 return;
             }
