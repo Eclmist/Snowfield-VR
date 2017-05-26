@@ -1,4 +1,8 @@
-﻿using System;using System.IO;using System.Runtime.Serialization;using System.Runtime.Serialization.Formatters.Binary;using UnityEngine;
+﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 public class SerializeManager
 {
@@ -24,7 +28,10 @@ public class SerializeManager
         catch (Exception e)
         {
             Debug.Log(e);
-        }    }    public static object Load(string fileName)
+        }
+    }
+
+    public static object Load(string fileName)
     {
         fileName = "SerializedFiles/" + fileName;
 
@@ -41,6 +48,10 @@ public class SerializeManager
             Debug.Log(e);
         }
 
-        return null;    }    public static void LoadUnserializableFile(System.Type type)
-    {    }
+        return null;
+    }
+
+    public static void LoadUnserializableFile(System.Type type)
+    {
+    }
 }
