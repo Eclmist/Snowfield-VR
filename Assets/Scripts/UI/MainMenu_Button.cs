@@ -110,7 +110,7 @@ public class MainMenu_Button : MonoBehaviour, IInteractable {
     }
     protected virtual void OnTriggerExit(Collider col)
     {
-        Debug.Log("I am fucking exiting.");
+        //Debug.Log("I am fucking exiting.");
         VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
         if (controller != null)
             StopInteraction(controller);

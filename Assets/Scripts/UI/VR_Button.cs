@@ -1,18 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Settings_Button : MonoBehaviour, IInteractable {
-
-    Vector3 posMid;
+public class VR_Button : EventTrigger,  IInteractable {
     protected VR_Controller_Custom linkedController = null;
-    private int percentage = 0;
-
-    void Awake()
-    {
-        posMid = transform.localPosition;
-        
-    }
 
     public VR_Controller_Custom LinkedController
     {
@@ -31,10 +23,7 @@ public class Settings_Button : MonoBehaviour, IInteractable {
 
         if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
-            Debug.Log("Triggered");
-            Collider coll = GetComponent<Collider>();
             StartInteraction(referenceCheck);
-            transform.position = new Vector3(referenceCheck.Device.transform.pos.x, transform.position.y, transform.position.z);
         }
         else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
         {
@@ -62,11 +51,17 @@ public class Settings_Button : MonoBehaviour, IInteractable {
     }
     protected virtual void OnTriggerExit(Collider col)
     {
-        Debug.Log("I am fucking exiting.");
+        //Debug.Log("I am fucking exiting.");
         VR_Controller_Custom controller = col.GetComponent<VR_Controller_Custom>();
         if (controller != null)
             StopInteraction(controller);
     }
+
+    public virtual void OnClickVR(BaseEventData eventData)
+    {
+
+    }
+
 
     // Use this for initialization
     void Start () {
@@ -74,17 +69,7 @@ public class Settings_Button : MonoBehaviour, IInteractable {
 	}
 	
 	// Update is called once per frame
-	void Update ()
-    {
-        posMid.x = Mathf.Clamp(transform.localPosition.x, -0.09f, 0.263f);
-        transform.localPosition = new Vector3(posMid.x, transform.localPosition.y, posMid.z);
-        percentage = (int)(((transform.localPosition.x - (-0.09f)) / 0.353f )* 100);
-
-        if (percentage < 0)
-            percentage = 0;
-        else if (percentage > 100)
-            percentage = 100;
-        
-        Settings.Instance.SetFill(percentage);
+	void Update () {
+		
 	}
 }

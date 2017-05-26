@@ -5,9 +5,9 @@ using UnityEngine;
 public class InGameUI_Button : MonoBehaviour, IInteractable
 {
     private VR_Controller_Custom linkedController = null;
-    private Vector3 pos, posStart;
+    //private Vector3 pos, posStart;
 
-    private bool menuCoroutineStarted = false;
+    //private bool menuCoroutineStarted = false;
     public VR_Controller_Custom LinkedController
     {
         get
@@ -22,45 +22,68 @@ public class InGameUI_Button : MonoBehaviour, IInteractable
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
-        if (gameObject.name == "MainMenuArea")
-        {
-            if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.ApplicationMenu))
-            {
-                Debug.Log("Interacting");
+        //if (gameObject.name == "MainMenuArea")
+        //{
+        //    if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        //    {
+        //        Debug.Log("Interacting");
 
-                if (!menuCoroutineStarted)
-                    StartCoroutine(MenuCoroutine(referenceCheck));
+        //        if (!menuCoroutineStarted)
+        //            StartCoroutine(MenuCoroutine(referenceCheck));
 
-            }
-            if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
-            {
+        //    }
+        //    if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.ApplicationMenu))
+        //    {
 
-            }
+        //    }
             
-        }
-        else if(referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        //}
+        if(referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
         {
-
+            Debug.Log("Triggered");
+            Collider coll = GetComponent<Collider>();
+            StartInteraction(referenceCheck);
+            if(coll.gameObject.name.Equals("Character"))
+            {
+                Debug.Log("Character");
+            }
+            else if (coll.gameObject.name.Equals("Order"))
+            {
+                Debug.Log("Order");
+            }
+            else if(coll.gameObject.name.Equals("Settings"))
+            {
+                Debug.Log("Settings");
+            }
+            else if(coll.gameObject.name.Equals("Exit"))
+            {
+                Debug.Log("Exit");
+            }
+        }
+        else if(referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            StopInteraction(referenceCheck);
         }
     }
+    
+    //IEnumerator MenuCoroutine(VR_Controller_Custom referenceCheck)
+    //{
+    //    posStart = referenceCheck.Device.transform.pos;
+    //    menuCoroutineStarted = true;
 
-    IEnumerator MenuCoroutine(VR_Controller_Custom referenceCheck)
-    {
-        posStart = referenceCheck.Device.transform.pos;
-        menuCoroutineStarted = true;
+    //    yield return new WaitForSeconds(0.7f);
 
-        yield return new WaitForSeconds(1.0f);
-
-        pos = referenceCheck.Device.transform.pos;
-        ///
-        ///
-        ///
-        if((float)(pos.x - posStart.x)/(pos.y - posStart.y) < 0.2f && pos.y - posStart.y >= 0.7)
-        {
-            Debug.Log("Main Menu appear");
-        }
-        menuCoroutineStarted = false;
-    }
+    //    pos = referenceCheck.Device.transform.pos;
+    //    ///
+    //    ///
+    //    ///
+    //    if((float)(pos.x - posStart.x)/(pos.y - posStart.y) < 0.2f && pos.y - posStart.y >= 0.7)
+    //    {
+    //        Debug.Log("Main Menu appear");
+    //    }
+    //    menuCoroutineStarted = false;
+    //}
+    
 
     public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
     {
@@ -95,8 +118,8 @@ public class InGameUI_Button : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(menuCoroutineStarted);
-        Debug.Log((float)(pos.x - posStart.x) );
+        //Debug.Log(menuCoroutineStarted);
+        //Debug.Log((float)(pos.x - posStart.x) );
     }
     
 
