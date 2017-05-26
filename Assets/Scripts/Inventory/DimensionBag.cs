@@ -6,6 +6,7 @@ using UnityEngine;
 public class DimensionBag : GenericItem {
 
     public static DimensionBag Instance;
+    public GameObject sword;
 
     private List<IDimensionable> dimensionItems;
     private int itor = 0;
@@ -26,7 +27,7 @@ public class DimensionBag : GenericItem {
     { 
         dimensionItems = new List<IDimensionable>();
 
-            
+        AddItemToDimension(sword.GetComponent<IDimensionable>());
 
 	}
 	
@@ -77,12 +78,15 @@ public class DimensionBag : GenericItem {
             
     }
 
-    public void RetrieveItemFromDimension(Transform t)
+    public void RetrieveItemFromDimension()
     {
         IDimensionable d = dimensionItems[itor];
         d.CurrentStackSize--;
 
-        Instantiate(d.objReference, t);
+        GameObject g = Instantiate(d.objReference);
+
+        
+        g.GetComponent<GenericItem>().StartInteraction(LinkedController);
 
         if (d.CurrentStackSize < 1)
         {
@@ -137,24 +141,19 @@ public class DimensionBag : GenericItem {
 
             if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) && dimensionItems.Count > 0)
             {
-                RetrieveItemFromDimension(LinkedController.transform);
+                StartInteraction(referenceCheck);
             }
         }
         
 
     }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        base.Interact(referenceCheck);
-
-    }
 
     public override void StartInteraction(VR_Controller_Custom referenceCheck)
     {
-        base.Interact(referenceCheck);
- 
-        
+        base.StartInteraction(referenceCheck);
+        RetrieveItemFromDimension();
+
     }
 
     void OnDrawGizmos()

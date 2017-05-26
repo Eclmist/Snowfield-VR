@@ -150,6 +150,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage, IDime
         if (linkedController != null && linkedController != referenceCheck)
             linkedController.SetInteraction(null);
         linkedController = referenceCheck;
+        linkedController.SetInteraction(this);
     }
 
     public virtual IEnumerator Throw(Actor thrower)
