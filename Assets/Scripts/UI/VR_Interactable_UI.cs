@@ -63,7 +63,9 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 
 			if (vrController && currentInteractingController == vrController)
 			{
-				OnControllerExit();
+                currentInteractingController = null;
+
+                OnControllerExit();
 			}
 		}
 	}
