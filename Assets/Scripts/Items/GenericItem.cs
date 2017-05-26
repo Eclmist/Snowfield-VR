@@ -74,14 +74,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         set { this.m_name = value; }
     }
 
-    //protected virtual void Update()
-
-    //{
-    //    if (linkedController != null)
-
-    //        UpdatePosition();
-
-    //}
 
     public virtual void Interact(VR_Controller_Custom referenceCheck)
     {
@@ -139,8 +131,8 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         {
             target = col.transform.GetComponent<IDamagable>();
         }
-        if (linkedController != null)
-            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+        if (col.gameObject.GetComponent<Rigidbody>() == null)
+            PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
     }
 
     protected void PlaySound(float volume)
