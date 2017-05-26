@@ -62,7 +62,7 @@ public class CraftedItem : GenericItem
         {
             PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
             IDamagable target = collision.GetComponent<IDamagable>();
-            if (target != null)
+            if (target != null) 
                 Player.Instance.Attack(this, target);
         }
     }
