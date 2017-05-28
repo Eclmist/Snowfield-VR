@@ -9,7 +9,7 @@ using UnityEngine;
 
 public abstract class VR_Interactable_UI : MonoBehaviour
 {
-	[SerializeField] protected bool interactable = true;
+	[SerializeField] public bool interactable = true;
 
 	protected virtual void OnControllerEnter() { }
 	protected virtual void OnControllerStay()	{ }

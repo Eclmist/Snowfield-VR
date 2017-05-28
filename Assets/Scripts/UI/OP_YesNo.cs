@@ -4,35 +4,30 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[System.Serializable]
-public struct OP_Elements
+
+public class OP_YesNo : OptionPane
 {
+
 	public VR_Button btnYes;
 	public VR_Button btnNo;
-	public Text title;
-	public Text message;
-}
 
-public class OP_YesNo : MonoBehaviour
-{
-	[SerializeField] [Tooltip("Don't touch this unless you're sam")]
-	private OP_Elements paneElements;
-
-	[SerializeField]
-	private string title;
-	[SerializeField]
-	[TextArea(3, 10)]
-	private string message;
-
-
-	protected void Start ()
+	public override void SetEvent(ButtonType button, UnityAction func)
 	{
-		paneElements.title.text = title;
-		paneElements.message.text = message;
+		switch (button)
+		{
+			case ButtonType.Yes:
+				btnYes.AddOnTriggerReleaseFunction(func);
+				break;
+			case ButtonType.No:
+				btnNo.AddOnTriggerReleaseFunction(func);
+				break;
+		}
 	}
 
-	protected void Update ()
+	public override void SetActiveButtons(int active)
 	{
-		
+		btnYes.interactable = active == 1 ? true : false;
+		btnNo.interactable = active == 1 ? true : false;
 	}
+
 }
