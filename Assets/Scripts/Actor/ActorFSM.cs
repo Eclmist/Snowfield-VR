@@ -142,9 +142,17 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected void ChangePath(List<Vector3> _path)
     {
-        pathFound = true;
-        path = _path;
-        requestedPath = false;
+        if (_path.Count > 0)
+        {
+            pathFound = true;
+            path = _path;
+            requestedPath = false;
+        }
+        else
+        {
+            pathFound = false;
+            requestedPath = false;
+        }
     }
 
     protected void ChangePath(Vector3 _path)
@@ -216,7 +224,6 @@ public abstract class ActorFSM : MonoBehaviour
         if (Physics.Raycast(eye.position, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-
             // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
@@ -226,7 +233,7 @@ public abstract class ActorFSM : MonoBehaviour
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-
+            Debug.Log(Hit.collider.gameObject.name);
             // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
@@ -236,11 +243,17 @@ public abstract class ActorFSM : MonoBehaviour
 
         else
         {
-            return (endPoint - transform.position).normalized * currentAI.MovementSpeed;
+            Vector3 dir = (endPoint - transform.position).normalized;
+            dir.y = 0;
+            return dir * currentAI.MovementSpeed;
         }
     }
 
-
+    public void DamageTaken()
+    {
+        animator.SetBool("KnockBack", true);
+        ChangeState(FSMState.COMBAT);
+    }
     protected void LookAtPlayer(Vector3 endPoint)
     {
         float distance = (endPoint - transform.position).magnitude / 60;
