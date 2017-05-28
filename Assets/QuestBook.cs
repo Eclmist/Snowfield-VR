@@ -15,11 +15,13 @@ public class QuestBook
         }
     }
 
-    public void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
+    public void RequestNextQuest(QuestEntry<StoryQuest> quest)
     {
-        
-            group.ProgressionIndex++;
-            StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
+
+        QuestEntryGroup<StoryQuest> group = GetStoryGroup(quest.Quest.JobType);
+
+        group.ProgressionIndex++;
+        StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
 
         if (newQuest == null)
             group.Completed = true;
@@ -28,7 +30,7 @@ public class QuestBook
             QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
             group.Add(questEntry);
         }
-        
+
     }
 
     public QuestEntry<StoryQuest> GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
@@ -83,6 +85,19 @@ public class QuestBook
         }
     }
 
-
+    public bool QuestProgess()
+    {
+        foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
+        {
+            if (questEntryGroup.Completed)
+                continue;
+            else if (!questEntryGroup[questEntryGroup.ProgressionIndex].Completed && questEntryGroup[questEntryGroup.ProgressionIndex].Started)
+            {
+                questEntryGroup[questEntryGroup.ProgressionIndex].ProgressQuest();
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

@@ -6,7 +6,9 @@ using UnityEngine;
 public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
-    [SerializeField][Range(5,30)][Tooltip("Max number of AI in town")]
+    [SerializeField]
+    [Range(5, 30)]
+    [Tooltip("Max number of AI in town")]
     private int population = 5;
 
     [SerializeField]
@@ -19,7 +21,7 @@ public class Town : MonoBehaviour
 
     [SerializeField]
     private List<Transform> spawnPoints = new List<Transform>();
-    
+
 
     public List<AI> AIs
     {
@@ -46,6 +48,7 @@ public class Town : MonoBehaviour
     private void Start()
     {
         allShops.AddRange(GetComponentsInChildren<Shop>());
+
     }
 
     public int Population//used to decide how many requests/day etc
@@ -69,5 +72,5 @@ public class Town : MonoBehaviour
         }
     }
 
-    
+
 }

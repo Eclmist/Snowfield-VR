@@ -8,9 +8,10 @@ public abstract class AI : Actor
 
     protected ActorFSM currentFSM;
     protected bool isConversing;
-    
 
-    [SerializeField] protected float movementSpeed = 3;
+
+    [SerializeField]
+    protected float movementSpeed = 3;
 
     public float MovementSpeed
     {
@@ -24,7 +25,7 @@ public abstract class AI : Actor
         }
     }
 
-    
+
 
     protected override void Awake()
     {
@@ -49,7 +50,7 @@ public abstract class AI : Actor
     public override void TakeDamage(int damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if(health <= 0)
+        if (health <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
         }
@@ -57,10 +58,8 @@ public abstract class AI : Actor
         {
             currentFSM.ChangeState(ActorFSM.FSMState.COMBAT);
             currentFSM.Target = attacker;
+
         }
     }
-
-
-    public abstract void DoneConversing();
 
 }

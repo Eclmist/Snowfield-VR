@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AdventurerFSM))]
-public class AdventurerAI : AI {
+public class AdventurerAI : AI
+{
 
-    
+
 
     private List<Relation> actorRelations = new List<Relation>();
-
+    [SerializeField]
+    [Range(1, 99)]
+    [Tooltip("How fast this guy finish quests 1 slowest")]
+    private float efficiency = 20;
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
     private QuestBook questBook;
@@ -76,7 +80,7 @@ public class AdventurerAI : AI {
     public override void TakeDamage(int damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        
+
     }
 
     public override void ChangeWield(Equipment item)
@@ -86,26 +90,26 @@ public class AdventurerAI : AI {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand.Item != null)
                     leftHand.Item.Unequip();
-                
-                    leftHand.Item = item;
-                    leftHand.Item.Equip(leftHand.transform);
-                
+
+                leftHand.Item = item;
+                leftHand.Item.Equip(leftHand.transform);
+
                 break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand.Item != null)
                     rightHand.Item.Unequip();
-                
-                    rightHand.Item = item;
-                    rightHand.Item.Equip(rightHand.transform);
-                
+
+                rightHand.Item = item;
+                rightHand.Item.Equip(rightHand.transform);
+
                 break;
         }
     }
-   
+
     public bool GotLobang()
     {
-        foreach(QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
+        foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
         {
             if (questBook.GetCompletableQuest(group) != null || questBook.GetStartableQuest(group) != null)
                 return true;
@@ -113,23 +117,32 @@ public class AdventurerAI : AI {
         return false;
     }
 
-    public override void DoneConversing()
-    {
-        currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
-        isConversing = false;
-        Debug.Log(isConversing);
-    }
-
     public void StartQuest(QuestEntry<StoryQuest> hunt)
     {
-        StartCoroutine(hunt.StartQuest(10));
-        Debug.Log(hunt.Started);
-        DoneConversing();
+        hunt.StartQuest((int)(((hunt.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level) * (100 - efficiency)));
+        isConversing = false;
+        if (!GotLobang())
+            currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
     }
 
     public void EndQuest(QuestEntry<StoryQuest> hunt)
     {
-        Debug.Log("fdfsdfsdfs");
+        GetJob(JobType.ADVENTURER).GainExperience(hunt.Quest.Experience);
+        QuestBook.RequestNextQuest(hunt);
+        isConversing = false;
+        if (!GotLobang())
+            currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
+
+    }
+
+    public bool QuestProgress()
+    {
+        return questBook.QuestProgess();
+    }
+
+    public void StartInteraction()
+    {
+
     }
 
 }

@@ -50,7 +50,7 @@ public class Player : Actor
 
     public override void Interact(Actor actor)
     {
-        if (Vector3.Distance(interactableArea.position, transform.position) < 1.25)
+        if (Vector3.Distance(interactableArea.position, transform.position) < 2)
         {
 
             if (actor is AdventurerAI)
@@ -61,7 +61,6 @@ public class Player : Actor
                     QuestEntry<StoryQuest> quest = (actor as AdventurerAI).QuestBook.GetCompletableQuest(group);
                     if (quest != null)
                     {
-                        (actor as AdventurerAI).QuestBook.RequestNextQuest(group);
                         DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>((actor as AdventurerAI).EndQuest, quest);
                     }
                 }

@@ -9,7 +9,9 @@ public class TownManager : MonoBehaviour
 
     [SerializeField]
     private Town currentTown;
-    [SerializeField][Tooltip("The time in seconds between each ai spawns")][Range(1,100)]
+    [SerializeField]
+    [Tooltip("The time in seconds between each ai spawns")]
+    [Range(1, 100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
     private float timer;
     // Use this for initialization
@@ -29,7 +31,7 @@ public class TownManager : MonoBehaviour
     void Start()
     {
         //currentTown = (Town)SerializeManager.Load("TownData");
-        
+
     }
 
     void Update()
@@ -45,11 +47,11 @@ public class TownManager : MonoBehaviour
             if (timer > aiSpawnTimer)
             {
                 timer = 0;
-                
+
                 Transform randomSpawn = GetRandomSpawnPoint();
                 AI randomAI = GetRandomAIType();
-                if(randomSpawn && randomAI)
-                currentTown.AIs.Add(Instantiate(GetRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+                if (randomSpawn && randomAI)
+                    currentTown.AIs.Add(Instantiate(GetRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
         }
     }
@@ -75,14 +77,29 @@ public class TownManager : MonoBehaviour
 
 
 
-    public Shop GetRandomShop()
+    public Shop GetRandomShop(List<Shop> visitedShop)
     {
-        int shopIndex = Random.Range(0, currentTown.Shops.Count);
-        shopIndex = shopIndex == currentTown.Shops.Count ? shopIndex - 1 : shopIndex;
-        if (shopIndex >= 0)
-            return currentTown.Shops[shopIndex];
+        List<Shop> possibleShops = new List<Shop>();
+        possibleShops.AddRange(currentTown.Shops);
+        foreach (Shop shop in visitedShop)
+        {
+            if (possibleShops.Contains(shop))
+                possibleShops.Remove(shop);
+        }
+
+        possibleShops.RemoveAll(Shop => Shop.Owner == null);
+        if (possibleShops.Count != 0)
+        {
+            int shopIndex = Random.Range(0, possibleShops.Count);
+            return possibleShops[shopIndex];
+        }
         else
             return null;
+    }
+
+    public int NumberOfShopsUnvisited(List<Shop> visitedShop)
+    {
+        return currentTown.Shops.Count - visitedShop.Count;
     }
     public Town CurrentTown
     {
