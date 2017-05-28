@@ -42,7 +42,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
     #endregion IInteractable
 
-    #region IDimensionable
+
 
     protected int id;
     [SerializeField]
@@ -74,8 +74,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         get { return this.gameObject; }
     }
 
-
-    #endregion IDimensionable
 
     #region
 

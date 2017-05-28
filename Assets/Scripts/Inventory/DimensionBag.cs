@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DimensionBag : GenericItem {
 
@@ -12,8 +13,9 @@ public class DimensionBag : GenericItem {
 
         public DimensionSlot(GenericItem item)
         {
+            
             this.stackSize = 1;
-            this.item = item;   
+            this.item = item;
         }
 
         public int StackSize { get; set; }
@@ -21,7 +23,8 @@ public class DimensionBag : GenericItem {
 
     }
 
-    public static DimensionBag Instance;    
+    public static DimensionBag Instance;
+    public GameObject thoughtBubble;
 
     private List<DimensionSlot> dimensionItems;
     private int itor = 0;
@@ -39,12 +42,19 @@ public class DimensionBag : GenericItem {
 
 	// Use this for initialization
 	void Start ()
-    { 
+    {
+        
         dimensionItems = new List<DimensionSlot>();
-        GameObject g = Instantiate(ItemManager.Instance.Items[12]);
-        AddItemToDimension(g.GetComponent<GenericItem>());
-        GameObject ga = Instantiate(ItemManager.Instance.Items[12]);
-        AddItemToDimension(ga.GetComponent<GenericItem>());
+
+
+        AddItemToDimension(ItemManager.Instance.GetItem(12));
+        AddItemToDimension(ItemManager.Instance.GetItem(12));
+
+        Debug.Log("stacksize  " + dimensionItems[0].StackSize);
+
+
+
+
 
     }
 	
@@ -54,11 +64,15 @@ public class DimensionBag : GenericItem {
         {
             // Play animation
 
-
-
         }
 
-        Debug.Log("number of things in list" + dimensionItems.Count);
+        isInside = (Input.GetKey(KeyCode.Z));
+
+        thoughtBubble.SetActive(isInside);
+        
+        
+        
+
 
     }
 
@@ -75,13 +89,13 @@ public class DimensionBag : GenericItem {
 
         if(item != null)
         {
-            // Check for existing items to stack
-            foreach(DimensionSlot d in dimensionItems)
-            {
 
-                if(item.ID == d.Item.ID && d.StackSize < d.Item.MaxStackSize)
+
+            // Check for existing items to stack
+            foreach (DimensionSlot d in dimensionItems)
+            {
+                if (item.ID == d.Item.ID && d.StackSize < d.Item.MaxStackSize)
                 {
-                    Debug.Log("im here");
                     d.StackSize++;
                     added = true;
                     break;
@@ -90,8 +104,11 @@ public class DimensionBag : GenericItem {
 
 
             if(!added)
-            {         
-                dimensionItems.Add(new DimensionSlot(item));
+            {
+                DimensionSlot slot = new DimensionSlot(item);
+                slot.Item = item;
+                slot.StackSize = 1;
+                dimensionItems.Add(slot);
             }
 
         }

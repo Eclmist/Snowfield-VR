@@ -41,26 +41,33 @@ public class ItemManager : MonoBehaviour {
             Debug.Log("Prefabs cant be found. Check if prefabs are in resources folder.");
         }
 
-
-      
-
+       
     }
 
-    public int GetID(GameObject g)
+    public GameObject SpawnItem(int id,Transform trans)
     {
-        int objID = 0;
-
-       foreach(int i in itemDictionary.Keys)
+        if(id < itemDictionary.Count)
         {
-            if(itemDictionary[i] == g)
-            {
-                objID = i;
-                break;
-            }
+            return Instantiate(itemDictionary[id],trans);
         }
-
-        return objID;
+        else
+        {
+            return null;
+        }
     }
+
+    public GenericItem GetItem(int id)
+    {
+        if (id < itemDictionary.Count)
+        {
+            return itemDictionary[id].GetComponent<GenericItem>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 
     // Use this for initialization
     void Start () {
