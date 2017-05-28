@@ -15,33 +15,42 @@ public class QuestBook
         }
     }
 
-    private void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
+    public void RequestNextQuest(QuestEntry<StoryQuest> quest)
     {
-        
-            group.ProgressionIndex++;
-            StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
-            if (newQuest == null)
-                group.Completed = true;
-            else
-                group.Add(newQuest);
-        
+
+        QuestEntryGroup<StoryQuest> group = GetStoryGroup(quest.Quest.JobType);
+
+        group.ProgressionIndex++;
+        StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
+
+        if (newQuest == null)
+            group.Completed = true;
+        else
+        {
+            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
+            group.Add(questEntry);
+        }
+
     }
 
-    public StoryQuest GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
+    public QuestEntry<StoryQuest> GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
     {
-     
-        if (group.Quest[group.ProgressionIndex].IsCompleted)
+
+        if (group.Completed)
+            return null;
+        else if ((group[group.ProgressionIndex].Completed))
         {
-            RequestNextQuest(group);
-            return group.Quest[group.ProgressionIndex];
+            return group[group.ProgressionIndex];
         }
 
         return null;
     }
 
-    public StoryQuest GetStartableQuest(QuestEntryGroup<StoryQuest> group)
+    public QuestEntry<StoryQuest> GetStartableQuest(QuestEntryGroup<StoryQuest> group)
     {
-        if (QuestManager.Instance.CanStartQuest(group.Quest[group.ProgressionIndex]))
+        if (group.Completed)
+            return null;
+        else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]))
             return group.Quest[group.ProgressionIndex];
 
         return null;
@@ -69,10 +78,26 @@ public class QuestBook
         {
             StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
             if (newQuest != null)
-                line.Add(newQuest);
+            {
+                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
+                line.Add(questEntry);
+            }
         }
     }
 
-
+    public bool QuestProgess()
+    {
+        foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
+        {
+            if (questEntryGroup.Completed)
+                continue;
+            else if (!questEntryGroup[questEntryGroup.ProgressionIndex].Completed && questEntryGroup[questEntryGroup.ProgressionIndex].Started)
+            {
+                questEntryGroup[questEntryGroup.ProgressionIndex].ProgressQuest();
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

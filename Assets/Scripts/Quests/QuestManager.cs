@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour {
+public class QuestManager : MonoBehaviour
+{
 
     public static QuestManager Instance;
 
-    [SerializeField]private string defaultDailyQuestTitle = "Daily Quest";
-    [SerializeField]private List<StoryLine> storylines = new List<StoryLine>();
+    [SerializeField]
+    private string defaultDailyQuestTitle = "Daily Quest";
+    [SerializeField]
+    private List<StoryLine> storylines = new List<StoryLine>();
     //[SerializeField]private Queue<AdventurerAI> aiQueue;
     //private Queue<Hunt> questDialogQueue;
 
@@ -24,16 +27,16 @@ public class QuestManager : MonoBehaviour {
 
     public List<StoryLine> Storylines
     {
-       get { return this.storylines; }
+        get { return this.storylines; }
         set { this.storylines = value; }
     }
 
-	void Awake()
+    void Awake()
     {
         Instance = this;
     }
 
-    
+
 
     // Call this function when visiting the store
 
@@ -78,9 +81,9 @@ public class QuestManager : MonoBehaviour {
         return null;
     }
 
-    public bool CanStartQuest(StoryQuest quest)
+    public bool CanStartQuest(QuestEntry<StoryQuest> questEntry)
     {
-        if (Player.Instance.GetJob(quest.JobType).Level >= quest.RequiredLevel)
+        if (Player.Instance.GetJob(questEntry.Quest.JobType).Level >= questEntry.Quest.RequiredLevel)
             return true;
         else
             return false;
