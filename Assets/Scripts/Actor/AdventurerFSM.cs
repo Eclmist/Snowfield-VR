@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AdventurerAI))]
 public class AdventurerFSM : ActorFSM
 {
     private List<Shop> visitedShop = new List<Shop>();
