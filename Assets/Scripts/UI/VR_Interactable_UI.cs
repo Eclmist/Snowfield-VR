@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+ * Base class for world space interactable VR UI.
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
