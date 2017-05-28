@@ -5,6 +5,22 @@ using UnityEngine;
 
 public class DimensionBag : GenericItem {
 
+    public class DimensionSlot
+    {
+        int stackSize;
+        GenericItem item;
+
+        public DimensionSlot(GenericItem item)
+        {
+            this.stackSize = 1;
+            this.item = item;   
+        }
+
+        public int StackSize { get; set; }
+        public GenericItem Item { get; set; }
+
+    }
+
     public static DimensionBag Instance;
 
     private List<GenericItem> dimensionItems;
