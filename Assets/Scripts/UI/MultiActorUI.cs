@@ -15,11 +15,33 @@ public class MultiActorUI : MonoBehaviour
 
 	private Animator anim;
 
-	protected void Start()
+	public bool disabled = true;
+
+	public GameObject Initiator
+	{
+		get { return initiator; }
+		set { initiator = value; }
+	}
+
+	public GameObject Receiver
+	{
+		get { return receiver; }
+		set { receiver = value; }
+	}
+
+	public void Start()
+	{
+		// Get Anim
+		anim = GetComponent<Animator>();
+		if (anim == null)
+			Destroy(this);
+	}
+
+	public void Initialize()
 	{
 		// Set starting position
 		Vector3 targetPosition = initiator.transform.position +
-			(receiver.transform.position- initiator.transform.position) * distanceFromActor;
+			(receiver.transform.position - initiator.transform.position) * distanceFromActor;
 
 		targetPosition.y = initiatorHeight;
 		transform.position = targetPosition;
@@ -29,10 +51,8 @@ public class MultiActorUI : MonoBehaviour
 		targetLookAt.y = transform.position.y;
 		transform.LookAt(targetLookAt);
 
-		// Get Anim
-		anim = GetComponent<Animator>();
-		if (anim == null)
-			Destroy(this);
+
+		disabled = false;
 	}
 
 
@@ -43,29 +63,39 @@ public class MultiActorUI : MonoBehaviour
 
 	private IEnumerator Rotate()
 	{
-		// Save starting transform state
-		Vector3 startPos = transform.position;
-		Quaternion startRot = transform.rotation;
-
-		// Calculate target point (rotation about pivot)
-		Vector3 pivot = (initiator.transform.position + receiver.transform.position) / 2;
-		pivot.y = startPos.y;
-
-		// Calculate target local rotation
-		Quaternion targetRot = 
-			Quaternion.LookRotation(receiver.transform.position- initiator.transform.position, Vector3.up);
-
-		for (float t = 0; t < 1; t += rotationSpeed)
+		if (!disabled)
 		{
-			Vector3 direction = startPos - pivot; // get point direction relative to pivot
-			direction = Quaternion.Euler(new Vector3(0, t/1 * 180, 0)) * direction; // generate Rotation
-			Vector3 targetPoint = direction + pivot; // calculate rotated point
-			transform.position = targetPoint;
+			yield return new WaitForSeconds(0.1F);
 
-			transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
-			yield return new WaitForFixedUpdate();
+			// Save starting transform state
+			Vector3 startPos = transform.position;
+			Quaternion startRot = transform.rotation;
+
+			// Calculate target point (rotation about pivot)
+			Vector3 pivot = (initiator.transform.position + receiver.transform.position) / 2;
+			pivot.y = startPos.y;
+
+			// Calculate target local rotation
+
+			Vector3 lookat = receiver.transform.position - initiator.transform.position;
+			lookat.y = 0;
+
+			Quaternion targetRot = Quaternion.LookRotation(lookat, Vector3.up);
+
+			for (float t = 0; t <= 1.05F; t += rotationSpeed)
+			{
+				Vector3 direction = startPos - pivot; // get point direction relative to pivot
+				direction = Quaternion.Euler(new Vector3(0, t / 1 * 180, 0)) * direction; // generate Rotation
+				Vector3 targetPoint = direction + pivot; // calculate rotated point
+				transform.position = targetPoint;
+
+				transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
+				yield return new WaitForFixedUpdate();
+			}
+
+			yield return new WaitForSeconds(0.1F);
+
 		}
-
 		anim.SetTrigger("Open");
 		Destroy(this);
 	}
