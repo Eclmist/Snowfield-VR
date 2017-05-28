@@ -11,7 +11,8 @@ public class TempKillScript : MonoBehaviour {
 	{
 		particle.transform.parent = null;
 		particle.SetActive(true);
-		Destroy(gameObject, 0.1F);
+		gameObject.SetActive(false);
+		Destroy(gameObject, 1);
 	}
 
 	void Update()

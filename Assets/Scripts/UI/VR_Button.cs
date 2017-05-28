@@ -74,6 +74,7 @@ public class VR_Button : VR_Interactable_UI
 	{
 		events.onTriggerHold.Invoke();
 	}
+
 	protected override void OnTriggerRelease()
 	{
 		events.onTriggerRelease.Invoke();
@@ -82,5 +83,10 @@ public class VR_Button : VR_Interactable_UI
 		{
 			targetGraphic.CrossFadeColor(hightlightedColor, fadeDuration, true, true);
 		}
+	}
+
+	public virtual void AddOnTriggerReleaseFunction(UnityAction newAction)
+	{
+		events.onTriggerRelease.AddListener(newAction);
 	}
 }
