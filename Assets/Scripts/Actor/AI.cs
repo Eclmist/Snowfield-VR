@@ -56,7 +56,7 @@ public abstract class AI : Actor
         }
         else if (Mathf.Sign(damage) == 1)
         {
-            currentFSM.ChangeState(ActorFSM.FSMState.COMBAT);
+            currentFSM.DamageTaken();
             currentFSM.Target = attacker;
 
         }
