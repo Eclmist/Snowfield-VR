@@ -21,9 +21,9 @@ public class DimensionBag : GenericItem {
 
     }
 
-    public static DimensionBag Instance;
+    public static DimensionBag Instance;    
 
-    private List<GenericItem> dimensionItems;
+    private List<DimensionSlot> dimensionItems;
     private int itor = 0;
     private bool isInside;
 
@@ -40,7 +40,7 @@ public class DimensionBag : GenericItem {
 	// Use this for initialization
 	void Start ()
     { 
-        dimensionItems = new List<GenericItem>();
+        dimensionItems = new List<DimensionSlot>();
         GameObject g = Instantiate(ItemManager.Instance.Items[12]);
         AddItemToDimension(g.GetComponent<GenericItem>());
         GameObject ga = Instantiate(ItemManager.Instance.Items[12]);
@@ -62,7 +62,7 @@ public class DimensionBag : GenericItem {
 
     }
 
-    public List<GenericItem> Items
+    public List<DimensionSlot> Items
     {
         get { return this.dimensionItems; }
         set { this.dimensionItems = value; }
@@ -76,15 +76,13 @@ public class DimensionBag : GenericItem {
         if(item != null)
         {
             // Check for existing items to stack
-            foreach(GenericItem d in dimensionItems)
+            foreach(DimensionSlot d in dimensionItems)
             {
-                Debug.Log("d " + d.ID);
-                Debug.Log("item " + item.ID);
 
-                if(item.ID == d.ID )//&& d.CurrentStackSize < d.MaxStackSize)
+                if(item.ID == d.Item.ID && d.StackSize < d.Item.MaxStackSize)
                 {
                     Debug.Log("im here");
-                    d.CurrentStackSize++;
+                    d.StackSize++;
                     added = true;
                     break;
                 }
@@ -92,9 +90,8 @@ public class DimensionBag : GenericItem {
 
 
             if(!added)
-            {
-                dimensionItems.Add(item);
-                item.CurrentStackSize++;
+            {         
+                dimensionItems.Add(new DimensionSlot(item));
             }
 
         }
@@ -103,14 +100,14 @@ public class DimensionBag : GenericItem {
 
     public void RetrieveItemFromDimension()
     {
-        GenericItem d = dimensionItems[itor];
-        Debug.Log("sizeeeee" + d.CurrentStackSize);
-        d.CurrentStackSize--;
 
-        GameObject g = Instantiate(d.objReference);
+        DimensionSlot d = dimensionItems[itor];
+        d.StackSize--;
+
+        GameObject g = Instantiate(d.Item.objReference);
         g.GetComponent<GenericItem>().StartInteraction(LinkedController);
 
-        if (d.CurrentStackSize < 1)
+        if (d.StackSize < 1)
         {
             dimensionItems.Remove(d);
             itor = 0;
@@ -123,7 +120,7 @@ public class DimensionBag : GenericItem {
     public GenericItem GetSelectedItem()
     {
 
-        return dimensionItems[itor];
+        return dimensionItems[itor].Item;
 
     }
 

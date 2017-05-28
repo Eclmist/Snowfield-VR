@@ -49,7 +49,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
     protected Sprite icon;
     [SerializeField]
     protected int maxStackSize = 1;
-    protected int currentStackSize;
     
     public int ID
     {
@@ -69,11 +68,6 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         set { this.maxStackSize = value; }
     }
 
-    public int CurrentStackSize
-    {
-        get { return this.currentStackSize; }
-        set { this.currentStackSize = value; }
-    }
 
     public GameObject objReference
     {
