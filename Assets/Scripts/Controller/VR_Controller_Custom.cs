@@ -26,11 +26,12 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void Start()
     {
-        device = SteamVR_Controller.Input((int)trackedObject.index);
+        
     }
     // Update is called once per frame
     void Update()
     {
+        device = SteamVR_Controller.Input((int)trackedObject.index);
         ControllerInput();
     }
 
