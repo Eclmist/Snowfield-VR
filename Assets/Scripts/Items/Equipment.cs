@@ -27,8 +27,8 @@ public class Equipment : CraftedItem, IBlock {
 
         if (referenceCheck != linkedController)
         {
-            
-            Equip(Player.Instance.transform);
+
+            owner = Player.Instance;
         }
 
         base.StartInteraction(referenceCheck);
@@ -39,8 +39,8 @@ public class Equipment : CraftedItem, IBlock {
     {
         if (removable && !toggled)
         {
+            owner = null;
             base.StopInteraction(referenceCheck);
-            Unequip();
         }
     }
 

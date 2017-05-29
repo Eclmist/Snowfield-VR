@@ -88,10 +88,12 @@ public abstract class Actor : MonoBehaviour, IDamagable
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 leftHand.Item = item;
+                leftHand.Item.Owner = this;
                 break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 rightHand.Item = item;
+                rightHand.Item.Owner = this;
                 break;
         }
     }
