@@ -261,6 +261,24 @@ public class QuestManagerEditor : Editor
             instance.Storylines[selectedGridIndex].Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, null, 0, 0, 0));
         }
 
+        if(GUILayout.Button("Delete Quest"))
+        {
+            if (instance.Storylines[selectedGridIndex].Quests.Count != 0 && instance.Storylines[selectedGridIndex].Quests.Count != 1)
+            {
+                instance.Storylines[selectedGridIndex].Quests.RemoveAt(selectedQuestIndex);
+
+                if (selectedQuestIndex == (instance.Storylines[selectedGridIndex].Quests.Count))
+                {
+                    selectedQuestIndex -= 1;
+                }
+            }
+            else if(instance.Storylines[selectedGridIndex].Quests.Count == 0 || instance.Storylines[selectedGridIndex].Quests.Count == 1)
+            {
+                Debug.Log("A storyline must contain at least 1 quests");
+            }
+
+        }
+
     }
 
     private void CheckForEmptyLists()
