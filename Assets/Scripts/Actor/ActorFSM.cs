@@ -214,6 +214,7 @@ public abstract class ActorFSM : MonoBehaviour
     public virtual void StartAttack()
     {
         Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
+        Debug.Log("hit");
         if (currentWeapon != null)
         {
             currentWeapon.SetBlockable(IfBlocked);
@@ -223,6 +224,7 @@ public abstract class ActorFSM : MonoBehaviour
     public virtual void EndAttack()
     {
         Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
+        Debug.Log("hit");
         if (currentWeapon != null)
         {
             currentWeapon.SetBlockable();
