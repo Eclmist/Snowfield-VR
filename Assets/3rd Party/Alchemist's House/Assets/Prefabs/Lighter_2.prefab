@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 403130}
   - component: {fileID: 3317834}
   - component: {fileID: 2324078}
+  - component: {fileID: 135965355380073820}
   m_Layer: 0
   m_Name: Lighter_2
   m_TagString: Untagged
@@ -73,8 +74,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 186274}
-  m_LocalRotation: {x: -0, y: -0.00019426641, z: -0, w: 1}
-  m_LocalPosition: {x: -2.598, y: 2.522, z: -1.948}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.92, y: 3.286, z: 1}
   m_LocalScale: {x: 1.0000005, y: 1, z: 1.0000005}
   m_Children:
   - {fileID: 473538}
@@ -286,3 +287,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 186274}
   m_IsPrefabParent: 1
+--- !u!135 &135965355380073820
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186274}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.23817077
+  m_Center: {x: 0, y: -0.41999996, z: 0.30000004}
