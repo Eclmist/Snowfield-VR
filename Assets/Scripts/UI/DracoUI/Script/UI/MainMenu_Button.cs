@@ -76,7 +76,8 @@ public class MainMenu_Button : MonoBehaviour, IInteractable {
                 Debug.Log("Right");
                 if (MainMenu.Instance.GetNextState() != MainMenuState.IDLE)
                 {
-                    MainMenu.Instance.SetState(MainMenu.Instance.GetNextState()); Debug.Log("Damn");
+                    MainMenu.Instance.SetState(MainMenu.Instance.GetNextState());
+                    Debug.Log("GoingRight");
                 }
                 else
                 {
