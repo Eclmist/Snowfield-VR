@@ -18,6 +18,11 @@ public class ItemManager : MonoBehaviour {
         get { return this.items; }
     }
 
+    public int NumberOfItems
+    {
+        get { return this.itemDictionary.Count; }
+    }
+
     void Awake()
     {
         Instance = this;
@@ -69,15 +74,5 @@ public class ItemManager : MonoBehaviour {
     }
 
 
-    // Use this for initialization
-    void Start () {
-		
-
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+ 
 }
