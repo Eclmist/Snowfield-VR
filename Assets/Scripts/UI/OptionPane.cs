@@ -30,21 +30,30 @@ public abstract class OptionPane : MonoBehaviour
 	[SerializeField]
 	[Tooltip("Don't touch this unless you're sam")]
 	protected OP_Elements paneElements;
+    [SerializeField] protected VR_Button[] buttons;
 
-	[SerializeField]
+    [SerializeField]
 	protected string title;
 	[SerializeField]
 	[TextArea(3, 10)]
 	protected string message;
 
-	private bool alreadySetContent = false;
 
+    private bool alreadySetContent = false;
+    private Animator anim;
 	protected virtual void Start()
 	{
 		if (!alreadySetContent)
 			SetContents(title, message);
 
-		SetActiveButtons(0);
+        anim = GetComponent<Animator>();
+
+        foreach (VR_Button button in buttons)
+        {
+            button.AddOnTriggerReleaseFunction(new UnityAction(ClosePane));
+        }
+
+        SetActiveButtons(0);
 	}
 
 	public void SetContents(string title, string message)
@@ -56,6 +65,21 @@ public abstract class OptionPane : MonoBehaviour
 
 	public abstract void SetEvent(ButtonType button, UnityAction func);
 
-	public abstract void SetActiveButtons(int active);
+    public virtual void SetActiveButtons(int active)
+    {
+        foreach (VR_Button btn in buttons)
+        {
+            btn.interactable = active == 1 ? true : false;
+        }
+    }
 
+    public virtual void ClosePane()
+    {
+        anim.SetTrigger("Close");
+    }
+
+    public virtual void Destroy()
+    {
+        Destroy(gameObject);
+    }
 }
