@@ -450,9 +450,10 @@ MonoBehaviour:
   paneElements:
     title: {fileID: 114105679686226090}
     message: {fileID: 114654395497624578}
+  buttons:
+  - {fileID: 114641895102208136}
   title: 
   message: 
-  btnOk: {fileID: 114641895102208136}
 --- !u!114 &114184943082380088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -518,7 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29411766}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -545,7 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.3137255}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.19607843}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -586,6 +587,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
+  triggerEnterVibration: 2
+  triggerExitVibration: 2
+  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114115067364143216}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}
@@ -674,10 +678,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initiator: {fileID: 0}
   receiver: {fileID: 0}
-  distanceFromActor: 0.2
   initiatorHeight: 1.5
   receiverHeight: 0.5
-  rotationSpeed: 0.05
   disabled: 1
 --- !u!114 &114733436891034912
 MonoBehaviour:
@@ -731,7 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29411766}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

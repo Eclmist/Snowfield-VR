@@ -161,21 +161,66 @@ public class QuestManagerEditor : Editor
                 }
 
 
-                GUILayout.Space(5);
+				GUILayout.Space(5);
 
-                //============================================ Ending Dialog  ===========================================================//
-                GUILayout.Label("Ending dialogs", EditorStyles.boldLabel);
+				//============================================ Ending Dialog  ===========================================================//
+				GUILayout.Label("Ending dialogs", EditorStyles.boldLabel);
 
-                if (GetSelectedQuest().EndDialog == null)
-                {
-                    GetSelectedQuest().EndDialog = new Session();
-                    GetSelectedQuest().EndDialog.Title = "Insert title here";
+				if (GetSelectedQuest().EndDialog == null)
+				{
+					GetSelectedQuest().EndDialog = new Session();
+					GetSelectedQuest().EndDialog.Title = "Insert title here";
 
-                }
-  
+				}
+				else
+					GetSelectedQuest().EndDialog.Title = EditorGUILayout.TextField("Session Title", GetSelectedQuest().EndDialog.Title);
 
-            }
-        }
+
+				if (GetSelectedQuest().EndDialog.Lines == null)
+				{
+					GetSelectedQuest().EndDialog.Lines = new List<Line>();
+					GetSelectedQuest().EndDialog.Lines.Add(new Line());
+				}
+
+				endMessageScrollPos = GUILayout.BeginScrollView(endMessageScrollPos, GUILayout.Height(150));
+				{
+					for (int i = 0; i < GetSelectedQuest().EndDialog.Lines.Count; i++)
+					{
+						Line l = GetSelectedQuest().EndDialog.Lines[i];
+
+						GUILayout.BeginVertical("Box");
+						{
+							GUILayout.Label("Message " + i, EditorStyles.boldLabel);
+							EditorStyles.textField.wordWrap = true;
+							l.Message = EditorGUILayout.TextArea(l.Message);
+							l.Clip = (AudioClip)EditorGUILayout.ObjectField("Audio", l.Clip, typeof(AudioClip), true);
+							if (l.Clip != null)
+								l.ClipPath = ConvertToPath(l.Clip);
+						}
+						GUILayout.EndVertical();
+
+
+						if (GUILayout.Button("Remove message") && GetSelectedQuest().EndDialog.Lines.Count > 1)
+						{
+							GetSelectedQuest().EndDialog.Lines.Remove(l);
+						}
+
+						GUILayout.Space(10);
+
+					}
+				}
+				GUILayout.EndScrollView();
+				GUILayout.Space(10);
+
+				if (GUILayout.Button("\nAdd new message\n"))
+				{
+					GetSelectedQuest().EndDialog.Lines.Add(new Line());
+				}
+				//==========================================================================================================//
+
+
+			}
+		}
         GUILayout.EndVertical();
 
         GUILayout.Space(10);
@@ -296,68 +341,4 @@ public class QuestManagerEditor : Editor
 
 
     }
-
-
-
-
-
-
 }
-
-
-                GUILayout.Space(5);
-
-                //============================================ Ending Dialog  ===========================================================//
-                GUILayout.Label("Ending dialogs", EditorStyles.boldLabel);
-
-                if (GetSelectedQuest().EndDialog == null)
-                {
-                    GetSelectedQuest().EndDialog = new Session();
-                    GetSelectedQuest().EndDialog.Title = "Insert title here";
-
-                }
-                else
-                    GetSelectedQuest().EndDialog.Title = EditorGUILayout.TextField("Session Title", GetSelectedQuest().EndDialog.Title);
-
-
-                if (GetSelectedQuest().EndDialog.Lines == null)
-                {
-                    GetSelectedQuest().EndDialog.Lines = new List<Line>();
-                    GetSelectedQuest().EndDialog.Lines.Add(new Line());
-                }
-
-                endMessageScrollPos = GUILayout.BeginScrollView(endMessageScrollPos, GUILayout.Height(150));
-                {
-                    for (int i = 0; i < GetSelectedQuest().EndDialog.Lines.Count; i++)
-                    {
-                        Line l = GetSelectedQuest().EndDialog.Lines[i];
-
-                        GUILayout.BeginVertical("Box");
-                        {
-                            GUILayout.Label("Message " + i, EditorStyles.boldLabel);
-                            EditorStyles.textField.wordWrap = true;
-                            l.Message = EditorGUILayout.TextArea(l.Message);
-                            l.Clip = (AudioClip)EditorGUILayout.ObjectField("Audio", l.Clip, typeof(AudioClip), true);
-                            if (l.Clip != null)
-                                l.ClipPath = ConvertToPath(l.Clip);
-                        }
-                        GUILayout.EndVertical();
-
-
-                        if (GUILayout.Button("Remove message") && GetSelectedQuest().EndDialog.Lines.Count > 1)
-                        {
-                            GetSelectedQuest().EndDialog.Lines.Remove(l);
-                        }
-
-                        GUILayout.Space(10);
-
-                    }
-                }
-                GUILayout.EndScrollView();
-                GUILayout.Space(10);
-
-                if (GUILayout.Button("\nAdd new message\n"))
-                {
-                    GetSelectedQuest().EndDialog.Lines.Add(new Line());
-                }
-                //==========================================================================================================//
