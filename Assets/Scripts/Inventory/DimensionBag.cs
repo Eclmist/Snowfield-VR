@@ -43,18 +43,11 @@ public class DimensionBag : GenericItem {
 	// Use this for initialization
 	void Start ()
     {
-        
         dimensionItems = new List<DimensionSlot>();
 
 
         AddItemToDimension(ItemManager.Instance.GetItem(12));
         AddItemToDimension(ItemManager.Instance.GetItem(12));
-
-        Debug.Log("stacksize  " + dimensionItems[0].StackSize);
-
-
-
-
 
     }
 	
@@ -66,10 +59,10 @@ public class DimensionBag : GenericItem {
 
         }
 
-        isInside = (Input.GetKey(KeyCode.Z));
-
         thoughtBubble.SetActive(isInside);
-        
+
+
+        Debug.Log(isInside);
         
         
 
@@ -137,18 +130,29 @@ public class DimensionBag : GenericItem {
     public GenericItem GetSelectedItem()
     {
 
-        return dimensionItems[itor].Item;
+        if (dimensionItems.Count < 1)
+            return null;
+        else
+            return dimensionItems[itor].Item;
 
     }
 
     void OnTriggerStay(Collider other)
     {
-        isInside = true;
+        if(other.gameObject.GetComponent<VR_Controller_Custom>() != null)
+        {
+            isInside = true;
+        }
+         
     }
 
     void OnTriggerExit(Collider other)
     {
-        isInside = false;
+        if (other.gameObject.GetComponent<VR_Controller_Custom>() != null)
+        {
+            isInside = false;
+        }
+            
     }
 
     public override void Interact(VR_Controller_Custom referenceCheck)
