@@ -9,7 +9,9 @@ public class TownManager : MonoBehaviour
 
     [SerializeField]
     private Town currentTown;
-    [SerializeField][Tooltip("The time in seconds between each ai spawns")][Range(1,100)]
+    [SerializeField]
+    [Tooltip("The time in seconds between each ai spawns")]
+    [Range(1, 100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
     private float timer;
     // Use this for initialization
@@ -29,7 +31,7 @@ public class TownManager : MonoBehaviour
     void Start()
     {
         //currentTown = (Town)SerializeManager.Load("TownData");
-        
+
     }
 
     void Update()
@@ -45,22 +47,59 @@ public class TownManager : MonoBehaviour
             if (timer > aiSpawnTimer)
             {
                 timer = 0;
-                
-                Transform randomSpawn = CurrentTown.getRandomSpawnPoint();
-                AI randomAI = CurrentTown.getRandomAIType();
-                if(randomSpawn && randomAI)
-                currentTown.AIs.Add(Instantiate(CurrentTown.getRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+
+                Transform randomSpawn = GetRandomSpawnPoint();
+                AI randomAI = GetRandomAIType();
+                if (randomSpawn && randomAI)
+                    currentTown.AIs.Add(Instantiate(GetRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
         }
     }
-    public Shop GetRandomShop()
+    public Transform GetRandomSpawnPoint()
     {
-        int shopIndex = Random.Range(0, currentTown.Shops.Count);
-        shopIndex = shopIndex == currentTown.Shops.Count ? shopIndex - 1 : shopIndex;
+        int shopIndex = Random.Range(0, currentTown.SpawnPoint.Count);
+        shopIndex = shopIndex == currentTown.SpawnPoint.Count ? shopIndex - 1 : shopIndex;
         if (shopIndex >= 0)
-            return currentTown.Shops[shopIndex];
+            return currentTown.SpawnPoint[shopIndex];
         else
             return null;
+    }
+
+    public AI GetRandomAIType()
+    {
+        int aiCount = Random.Range(0, currentTown.AIs.Count);
+        aiCount = aiCount == currentTown.AIs.Count ? aiCount - 1 : aiCount;
+        if (aiCount >= 0)
+            return currentTown.AIs[aiCount];
+        else
+            return null;
+    }
+
+
+
+    public Shop GetRandomShop(List<Shop> visitedShop)
+    {
+        List<Shop> possibleShops = new List<Shop>();
+        possibleShops.AddRange(currentTown.Shops);
+        foreach (Shop shop in visitedShop)
+        {
+            if (possibleShops.Contains(shop))
+                possibleShops.Remove(shop);
+        }
+
+        possibleShops.RemoveAll(Shop => Shop.Owner == null);
+        if (possibleShops.Count != 0)
+        {
+            int shopIndex = Random.Range(0, possibleShops.Count);
+            return possibleShops[shopIndex];
+        }
+        else
+            return null;
+    }
+
+    public int NumberOfShopsUnvisited(List<Shop> visitedShop)
+    {
+        return currentTown.Shops.Count - visitedShop.Count;
     }
     public Town CurrentTown
     {

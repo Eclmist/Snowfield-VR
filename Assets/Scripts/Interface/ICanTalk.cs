@@ -7,7 +7,7 @@ public interface ICanTalk  {
     Session Session
     {
         get;
-        set;
+
     }
 
 

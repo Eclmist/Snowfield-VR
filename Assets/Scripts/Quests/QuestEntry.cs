@@ -2,94 +2,152 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestEntry
+public class QuestEntry<T> : ICanTalk where T : Quest
 {
 
-    private Quest currentQuest;
-    private bool isCompleted;
+	private T currentQuest;
+	private bool hasStarted,isCompleted;
+	private int timeToComplete;
 
-    public QuestEntry(Quest quest)
-    {
-        isCompleted = false;
-        currentQuest = quest;
-    }
+	public QuestEntry(T quest)
+	{
+		hasStarted = false;
+		isCompleted = false;
+		currentQuest = quest;
+	}
+
+	public Session Session
+	{
+		get
+		{
+			if (!isCompleted)
+				return currentQuest.Dialog;
+			else
+				return currentQuest.EndDialog;
+		}
+	}
+
+	public bool Completed
+	{
+		get
+		{
+			return isCompleted;
+		}
+		set
+		{
+			isCompleted = value;
+		}
+	}
+
+	public bool Started
+	{
+		get
+		{
+			return hasStarted;
+		}
+		set
+		{
+			hasStarted = value;
+		}
+	}
+
+	public T Quest
+	{
+		get
+		{
+			return currentQuest;
+		}
+	}
+
+	public void StartQuest(int time)
+	{
+		timeToComplete = time;
+		hasStarted = true;
+	}
+
+	public void ProgressQuest()
+	{
+		timeToComplete--;
+		if (timeToComplete <= 0)
+			isCompleted = true;
+	}
 }
 
 public class QuestEntryGroup<T> where T : Quest
 {
-    private List<T> quests;
+	private List<QuestEntry<T>> quests;
 
-    private bool isCompleted;
+	private bool isCompleted;
 
-    private int progressionIndex;
+	private int progressionIndex;
 
-    private JobType jobType;
+	private JobType jobType;
 
-    public JobType JobType
-    {
-        get { return this.jobType; }
-    }
+	public JobType JobType
+	{
+		get { return this.jobType; }
+	}
 
-    public List<T> Quest
-    {
-        get
-        {
-            return quests;
-        }
-    }
+	public List<QuestEntry<T>> Quest
+	{
+		get
+		{
+			return quests;
+		}
+	}
 
-    public int ProgressionIndex
-    {
-        get
-        {
-            return progressionIndex;
-        }
-        set
-        {
-            progressionIndex = value;
-        }
-    }
+	public int ProgressionIndex
+	{
+		get
+		{
+			return progressionIndex;
+		}
+		set
+		{
+			progressionIndex = value;
+		}
+	}
 
-    public bool Completed
-    {
-        get
-        {
-            return isCompleted;
-        }
-        set
-        {
-            isCompleted = value;
-        }
-    }
+	public bool Completed
+	{
+		get
+		{
+			return isCompleted;
+		}
+		set
+		{
+			isCompleted = value;
+		}
+	}
 
-    public QuestEntryGroup(JobType type)
-    {
-        isCompleted = false;
-        quests = new List<T>();
-        progressionIndex = 0;
-        jobType = type;
-    }
+	public QuestEntryGroup(JobType type)
+	{
+		isCompleted = false;
+		quests = new List<QuestEntry<T>>();
+		progressionIndex = 0;
+		jobType = type;
+	}
 
-    public int Count
-    {
-        get { return quests.Count; }
-    }
+	public int Count
+	{
+		get { return quests.Count; }
+	}
 
-    public void Add(T _item)
-    {
-        quests.Add(_item);
-    }
+	public void Add(QuestEntry<T> _item)
+	{
+		quests.Add(_item);
+	}
 
-    public T this[int index]   // Indexer declaration  
-    {
-        get
-        {
-            return quests[index];
-        }
-        set
-        {
-            quests[index] = value;
-        }
-    }
+	public QuestEntry<T> this[int index]   // Indexer declaration  
+	{
+		get
+		{
+			return quests[index];
+		}
+		set
+		{
+			quests[index] = value;
+		}
+	}
 
 }

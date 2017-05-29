@@ -1,19 +1,31 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
 
-public class Weapon : Equipment, IBlockable
+public class Weapon : Equipment
 {
-    private bool blocked;
 
-    public bool Blocked
+    [SerializeField]
+    protected float range;
+
+    public float Range
     {
         get
         {
-            return blocked;
+            return range;
         }
         set
         {
-            blocked = value;
+            range = value;
         }
+    }
+
+    private Action<IBlock> IfBlocked;
+
+    public void SetBlockable(Action<IBlock> ifblocked = null)
+    {
+        IfBlocked = ifblocked;
     }
 
     protected override void UseItem()
@@ -21,29 +33,22 @@ public class Weapon : Equipment, IBlockable
         base.UseItem();
     }
 
-    protected override void OnTriggerStay(Collider collision)
+    protected override void OnTriggerEnter(Collider collision)
     {
-        base.OnTriggerStay(collision);
-        if (!blocked)
+        base.OnTriggerEnter(collision);
+        if (IfBlocked != null)
         {
             IBlock item = collision.GetComponentInParent<IBlock>();
-            if (item != null && item.CanBlock)
+            if (item != null)
             {
-                blocked = true;
+                IfBlocked(item);
             }
         }
     }
 
-    protected override void OnTriggerExit(Collider collision)
+    void OnDrawGizmos()
     {
-        base.OnTriggerExit(collision);
-        if (blocked)
-        {
-            IBlock item = collision.GetComponentInParent<IBlock>();
-            if (item != null && item.CanBlock)
-            {
-                blocked = false;
-            }
-        }
+        Gizmos.DrawSphere(transform.position, range);
     }
+
 }

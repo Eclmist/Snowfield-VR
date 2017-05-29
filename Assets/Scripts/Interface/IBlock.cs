@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IBlock {
 
-    bool CanBlock
+    Actor Owner
     {
         get;
         set;

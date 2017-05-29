@@ -46,11 +46,11 @@ public class TaoBaoDialogEditor : MonoBehaviour
         sessions.Clear();
         sessions = new List<Session>();
 
-        sessions = (List<Session>)SerializeManager.Load("Dialogs");
-        if (sessions != null)
-            Debug.Log(sessions.Count);
-        else
-            Debug.Log("nullll");
+        //sessions = (List<Session>)SerializeManager.Load("Dialogs");
+        //if (sessions != null)
+        //    Debug.Log(sessions.Count);
+        //else
+        //    Debug.Log("nullll");
     }
 
 

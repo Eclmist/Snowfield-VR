@@ -10,6 +10,14 @@ public class GameManager : MonoBehaviour {
     [SerializeField] [Range(1, 10000)] private int secondsPerDay;
 
     private GameClock gameClock;
+
+    public GameClock GameClock
+    {
+        get
+        {
+            return gameClock;
+        }
+    }
     #endregion
 
     #region RequestRegion
