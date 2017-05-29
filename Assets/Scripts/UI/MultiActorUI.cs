@@ -7,11 +7,11 @@ public class MultiActorUI : MonoBehaviour
 	[SerializeField] private GameObject initiator;
 	[SerializeField] private GameObject receiver;
 
-	[SerializeField] private float distanceFromActor = 0.3F;
 	[SerializeField] private float initiatorHeight = 1.5F;
 	[SerializeField] private float receiverHeight = 1.5F;
 
-	[SerializeField] private float rotationSpeed = 10;
+	private float distanceFromActor = 0.5F;
+	private float rotationSpeed = 1;
 
 	private Animator anim;
 
@@ -41,7 +41,7 @@ public class MultiActorUI : MonoBehaviour
 	{
 		// Set starting position
 		Vector3 targetPosition = initiator.transform.position +
-			(receiver.transform.position - initiator.transform.position) * distanceFromActor;
+			(receiver.transform.position - initiator.transform.position).normalized * distanceFromActor;
 
 		targetPosition.y = initiatorHeight;
 		transform.position = targetPosition;
@@ -82,12 +82,12 @@ public class MultiActorUI : MonoBehaviour
 
 			Quaternion targetRot = Quaternion.LookRotation(lookat, Vector3.up);
 
-			for (float t = 0; t <= 1.05F; t += rotationSpeed)
+
+
+			for (float t = 0; t <= 1; t += rotationSpeed * Time.deltaTime)
 			{
-				Vector3 direction = startPos - pivot; // get point direction relative to pivot
-				direction = Quaternion.Euler(new Vector3(0, t / 1 * 180, 0)) * direction; // generate Rotation
-				Vector3 targetPoint = direction + pivot; // calculate rotated point
-				transform.position = targetPoint;
+				Vector3 targetPos = startPos.RotatePointAroundPivot(pivot, new Vector3(0, t/1 * 180, 0));
+				transform.position = Vector3.Slerp(startPos, targetPos, t);
 
 				transform.rotation = Quaternion.Slerp(startRot, targetRot, t);
 				yield return new WaitForFixedUpdate();
