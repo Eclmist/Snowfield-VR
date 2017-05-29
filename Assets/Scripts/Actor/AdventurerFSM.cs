@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(AdventurerAI))]
 public class AdventurerFSM : ActorFSM
 {
 

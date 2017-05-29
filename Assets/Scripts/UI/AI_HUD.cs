@@ -8,9 +8,11 @@ public struct HUDColorSettings
 {
 	public Color friendly;
 	public Color hostile;
-
+	[ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f)]
 	public Color fullHealth;
+	[ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f)]
 	public Color lowHealth;
+
 }
 
 public class AI_HUD : MonoBehaviour {
@@ -71,11 +73,10 @@ public class AI_HUD : MonoBehaviour {
 		healthbarMatInstance.SetColor("_TintColor", targetColor);
 
 		// Set healthbar length
-		// TODO: Stencil mask out back of health bar
 
 		healthbarMatInstance.SetTextureOffset("_MainTex", Vector2.Lerp(
 			healthbarMatInstance.GetTextureOffset("_MainTex"),
-			new Vector2(health01, 0),
+			new Vector2(health01 - 1, 0),
 			Time.deltaTime * lerpSpeed));
 
 		// Set indicator color
