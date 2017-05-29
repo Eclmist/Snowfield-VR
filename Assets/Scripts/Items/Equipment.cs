@@ -6,10 +6,21 @@ public class Equipment : CraftedItem, IBlock {
 
     [SerializeField]
     private EquipSlot.EquipmentSlotType slot;
-    [SerializeField]
-    protected float range;
 
-    private bool canBlock;
+    private Actor owner;
+
+    public Actor Owner
+    {
+        get
+        {
+            return owner;
+        }
+        set
+        {
+            owner = value;
+        }
+    }
+
 
     public override void StartInteraction(VR_Controller_Custom referenceCheck)
     {
@@ -33,17 +44,7 @@ public class Equipment : CraftedItem, IBlock {
         }
     }
 
-    public bool CanBlock
-    {
-        get
-        {
-            return canBlock;
-        }
-        set
-        {
-            canBlock = value;
-        }
-    }
+   
     
     public EquipSlot.EquipmentSlotType Slot
     {
@@ -60,7 +61,6 @@ public class Equipment : CraftedItem, IBlock {
         transform.parent = parent;
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
-        canBlock = true;
     }
 
     public void Unequip()
@@ -68,21 +68,10 @@ public class Equipment : CraftedItem, IBlock {
         rigidBody.isKinematic = false;
         itemCollider.isTrigger = false;
         transform.parent = null;
-        canBlock = false;
     }
 
     
 
-    public float Range
-    {
-        get
-        {
-            return range;
-        }
-        set
-        {
-            range = value;
-        }
-    }
+    
 
 }
