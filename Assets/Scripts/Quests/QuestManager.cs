@@ -8,8 +8,6 @@ public class QuestManager : MonoBehaviour
     public static QuestManager Instance;
 
     [SerializeField]
-    private string defaultDailyQuestTitle = "Daily Quest";
-    [SerializeField]
     private List<StoryLine> storylines = new List<StoryLine>();
     //[SerializeField]private Queue<AdventurerAI> aiQueue;
     //private Queue<Hunt> questDialogQueue;
