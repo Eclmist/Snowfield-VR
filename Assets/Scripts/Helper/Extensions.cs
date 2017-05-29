@@ -50,4 +50,10 @@ public static class Extensions
 
 		return shortestDistance;
 	}
+
+	public static Vector3 RotatePointAroundPivot(this Vector3 point, Vector3 pivot, Vector3 angles)
+	{
+		return Quaternion.Euler(angles) * (point - pivot) + pivot;
+	}
+
 }
