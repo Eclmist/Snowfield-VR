@@ -68,6 +68,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 					OnTriggerHold();
 				else if (vrController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
 					OnTriggerRelease();
+
 			}
 		}
 	}
