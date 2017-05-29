@@ -7,7 +7,7 @@ namespace AC.TimeOfDaySystemFree
 	[ExecuteInEditMode]
 	public class TimeOfDayManager : TimeOfDay
 	{
-
+        
 
 		#region Resources.
 
@@ -410,7 +410,7 @@ namespace AC.TimeOfDaySystemFree
 		//---------------------------------------------------------------------------------------
 		#endregion
 
-
+        
 		void Update()
 		{
 
