@@ -12,8 +12,8 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 	[SerializeField] public bool interactable = true;
 
 	[Header("Vibrations")]
-	[SerializeField] [Range(0, 10)] protected float triggerEnterVibration = 0.8F;
-	[SerializeField] [Range(0, 10)] protected float triggerExitVibration = 0.3F;
+	[SerializeField] [Range(0, 10)] protected float triggerEnterVibration = 2;
+	[SerializeField] [Range(0, 10)] protected float triggerExitVibration = 2;
 	[SerializeField] [Range(0, 10)] protected float triggerPressVibration = 0;
 
 	protected virtual void OnControllerEnter()
@@ -81,8 +81,9 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 
 			if (vrController && currentInteractingController == vrController)
 			{
-                OnControllerExit();
                 currentInteractingController = null;
+
+                OnControllerExit();
 			}
 		}
 	}

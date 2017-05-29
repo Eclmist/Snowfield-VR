@@ -656,9 +656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114156226605420102}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -725,11 +722,10 @@ MonoBehaviour:
   paneElements:
     title: {fileID: 114080498134362602}
     message: {fileID: 114010401099358430}
-  buttons:
-  - {fileID: 114751993929235312}
-  - {fileID: 114533114082961594}
   title: Quest
   message: "Assign new quest to\n\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093"
+  btnYes: {fileID: 114751993929235312}
+  btnNo: {fileID: 114533114082961594}
 --- !u!114 &114684227997139540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -808,9 +804,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114190525219877134}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}

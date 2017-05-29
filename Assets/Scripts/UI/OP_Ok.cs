@@ -6,13 +6,21 @@ using UnityEngine.Events;
 
 public class OP_Ok : OptionPane 
 {
-    public override void SetEvent(ButtonType button, UnityAction func)
+
+	public VR_Button btnOk;
+
+	public override void SetEvent(ButtonType button, UnityAction func)
 	{
 		switch (button)
 		{
 			case ButtonType.Ok:
-				buttons[0].AddOnTriggerReleaseFunction(func);
+				btnOk.AddOnTriggerReleaseFunction(func);
 				break;
 		}
+	}
+
+	public override void SetActiveButtons(int active)
+	{
+		btnOk.interactable = active == 1 ? true : false;
 	}
 }
