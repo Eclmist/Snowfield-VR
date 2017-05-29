@@ -28,10 +28,11 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState currentState;
     protected Actor target;
     protected Animator animator;
+    [SerializeField]
     protected float timer = 0;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
-
+    protected Weapon currentUseWeapon;
     #region Avoidance
     [Header("Avoidance")]
     [SerializeField]
@@ -42,12 +43,14 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void ChangeState(FSMState state)
     {
+
         pathFound = false;
         currentState = state;
-        timer = 0;
+        timer = 5;
         rigidBody.isKinematic = false;
         animator.speed = 1;
         animator.SetFloat("Speed", 0);
+
         switch (state)
         {
             case FSMState.DEATH:
@@ -56,6 +59,7 @@ public abstract class ActorFSM : MonoBehaviour
             default:
                 break;
         }
+
     }
 
 
@@ -107,6 +111,8 @@ public abstract class ActorFSM : MonoBehaviour
         {
             animator.SetBool("Interaction", false);
         }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > .8)
+            animator.SetBool("KnockBack", false);
     }
     protected virtual void UpdateFSMState()
     {
@@ -171,10 +177,12 @@ public abstract class ActorFSM : MonoBehaviour
         if (target != null)
         {
             Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-
+            
             if (currentWeapon != null)
             {
-                if (Mathf.Abs(angle) < 90 && Vector3.Distance(transform.position, target.transform.position) < currentWeapon.Range)
+                Vector3 temptarget = target.transform.position;
+                temptarget.y = transform.position.y;
+                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentWeapon.Range)
                 {
                     currentAI.Attack(currentWeapon, target);
                 }
@@ -193,6 +201,31 @@ public abstract class ActorFSM : MonoBehaviour
                 animUseSlot = EquipSlot.EquipmentSlotType.RIGHTHAND;
                 break;
 
+        }
+    }
+
+    private void IfBlocked(IBlock block)
+    {
+        if (block.Owner == target)
+        {
+            animator.SetBool("KnockBack", true);
+        }
+    }
+    public virtual void StartAttack()
+    {
+        Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
+        if (currentWeapon != null)
+        {
+            currentWeapon.SetBlockable(IfBlocked);
+        }
+    }
+
+    public virtual void EndAttack()
+    {
+        Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
+        if (currentWeapon != null)
+        {
+            currentWeapon.SetBlockable();
         }
     }
 
@@ -233,7 +266,6 @@ public abstract class ActorFSM : MonoBehaviour
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            Debug.Log(Hit.collider.gameObject.name);
             // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
@@ -274,7 +306,7 @@ public abstract class ActorFSM : MonoBehaviour
         Vector3 dir = -transform.forward;
 
         if (Physics.Raycast(transform.position, dir, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask)) 
+            minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
 
             return Hit.point;
