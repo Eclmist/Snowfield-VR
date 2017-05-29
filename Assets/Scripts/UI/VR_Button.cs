@@ -35,11 +35,15 @@ public class VR_Button : VR_Interactable_UI
 
 	protected override void OnInteractableChange()
 	{
+		base.OnInteractableChange();
+
 		targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
 	}
 
 	protected override void OnControllerEnter()
 	{
+		base.OnControllerEnter();
+
 		events.onControllerEnter.Invoke();
 
 		if (useTransitions)
@@ -49,11 +53,15 @@ public class VR_Button : VR_Interactable_UI
 	}
 	protected override void OnControllerStay()
 	{
+		base.OnControllerStay();
+
 		events.onControllerStay.Invoke();
 	}
 	protected override void OnControllerExit()
 	{
 		events.onControllerExit.Invoke();
+
+		base.OnControllerExit();
 
 		if (useTransitions)
 		{
@@ -63,6 +71,8 @@ public class VR_Button : VR_Interactable_UI
 
 	protected override void OnTriggerPress()
 	{
+		base.OnTriggerPress();
+
 		events.onTriggerPress.Invoke();
 
 		if (useTransitions)
@@ -72,11 +82,15 @@ public class VR_Button : VR_Interactable_UI
 	}
 	protected override void OnTriggerHold()
 	{
+		base.OnTriggerHold();
+
 		events.onTriggerHold.Invoke();
 	}
 
 	protected override void OnTriggerRelease()
 	{
+		base.OnTriggerRelease();
+
 		events.onTriggerRelease.Invoke();
 
 		if (useTransitions)

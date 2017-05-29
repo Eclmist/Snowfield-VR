@@ -11,11 +11,25 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 {
 	[SerializeField] public bool interactable = true;
 
-	protected virtual void OnControllerEnter() { }
-	protected virtual void OnControllerStay()	{ }
-	protected virtual void OnControllerExit() { }
+	[Header("Vibrations")]
+	[SerializeField] [Range(0, 10)] protected float triggerEnterVibration = 2;
+	[SerializeField] [Range(0, 10)] protected float triggerExitVibration = 2;
+	[SerializeField] [Range(0, 10)] protected float triggerPressVibration = 0;
 
-	protected virtual void OnTriggerPress() { }
+	protected virtual void OnControllerEnter()
+	{
+		currentInteractingController.Vibrate(triggerEnterVibration);
+	}
+	protected virtual void OnControllerStay() { }
+	protected virtual void OnControllerExit()
+	{
+		currentInteractingController.Vibrate(triggerExitVibration);
+	}
+
+	protected virtual void OnTriggerPress()
+	{
+		currentInteractingController.Vibrate(triggerPressVibration);
+	}
 	protected virtual void OnTriggerHold() { }
 	protected virtual void OnTriggerRelease() { }
 
