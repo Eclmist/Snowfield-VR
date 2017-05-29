@@ -184,6 +184,7 @@ public class DimensionBag : GenericItem {
 
             if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) && dimensionItems.Count > 0)
             {
+                this.audioSource.Play();
                 StartInteraction(referenceCheck);
             }
         }
