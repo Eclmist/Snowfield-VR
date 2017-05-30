@@ -54,7 +54,7 @@ public class ForgedBlade : MonoBehaviour
 		Vector3 localScale = transform.localScale;
 		bool hit = false;
 		//Impact came from top
-		if (Mathf.Abs(Vector3.Dot(direction, transform.up)) > dotThreshold)
+		if (Mathf.Abs(Vector3.Dot(-direction.normalized, transform.up)) > dotThreshold)
 		{
 			if (vertexMorphScript != null)
 			{
@@ -70,7 +70,7 @@ public class ForgedBlade : MonoBehaviour
 			}
 
 		}
-		else if (Mathf.Abs(Vector3.Dot(direction, transform.right)) > dotThreshold)
+		else
 		{
 			if (vertexMorphScript != null)
 			{

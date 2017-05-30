@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MultiActorUI : MonoBehaviour
 {
-	[SerializeField] private GameObject initiator;
-	[SerializeField] private GameObject receiver;
+	[SerializeField] private Transform initiator;
+	[SerializeField] private Transform receiver;
 
 	[SerializeField] private float initiatorHeight = 1.5F;
 	[SerializeField] private float receiverHeight = 1.5F;
@@ -17,13 +17,13 @@ public class MultiActorUI : MonoBehaviour
 
 	public bool disabled = true;
 
-	public GameObject Initiator
+    public Transform Initiator
 	{
 		get { return initiator; }
 		set { initiator = value; }
 	}
 
-	public GameObject Receiver
+	public Transform Receiver
 	{
 		get { return receiver; }
 		set { receiver = value; }
@@ -47,7 +47,7 @@ public class MultiActorUI : MonoBehaviour
 		transform.position = targetPosition;
 
 		// Set starting rotation
-		Vector3 targetLookAt = initiator.transform.position;
+		Vector3 targetLookAt = initiator.position;
 		targetLookAt.y = transform.position.y;
 		transform.LookAt(targetLookAt);
 
@@ -72,12 +72,12 @@ public class MultiActorUI : MonoBehaviour
 			Quaternion startRot = transform.rotation;
 
 			// Calculate target point (rotation about pivot)
-			Vector3 pivot = (initiator.transform.position + receiver.transform.position) / 2;
+			Vector3 pivot = (initiator.position + receiver.position) / 2;
 			pivot.y = startPos.y;
 
 			// Calculate target local rotation
 
-			Vector3 lookat = receiver.transform.position - initiator.transform.position;
+			Vector3 lookat = receiver.position - initiator.position;
 			lookat.y = 0;
 
 			Quaternion targetRot = Quaternion.LookRotation(lookat, Vector3.up);

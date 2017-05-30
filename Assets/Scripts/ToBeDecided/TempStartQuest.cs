@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,7 +17,7 @@ public class TempStartQuest : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
 			OptionPane options = UIManager.Instance.Instantiate
-				(UIType.OP_YES_NO, "Quest", "Assign new quest to " + name, transform.position, player, gameObject);
+				(UIType.OP_YES_NO, "Quest", "Assign new quest to " + name, transform.position, Player.Instance.transform, transform);
 			
 			       // assign events
 			options.SetEvent(OptionPane.ButtonType.Yes, new UnityAction(QuestActivated));

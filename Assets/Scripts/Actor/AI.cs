@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
-public abstract class AI : Actor
+public class AI : Actor
 {
 
     protected ActorFSM currentFSM;
     protected bool isConversing;
 
-
     [SerializeField]
     protected float movementSpeed = 3;
 
+    
     public float MovementSpeed
     {
         get
@@ -38,14 +39,14 @@ public abstract class AI : Actor
     public bool IsConversing
     {
         get { return this.isConversing; }
-        set { this.isConversing = value; }
+        set { isConversing = value; }
     }
 
 
-    public override void Interact(Actor actor)
-    {
-        currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
-    }
+    //public override void Interact(Actor actor)
+    //{
+    //    currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
+    //}
 
     public override void TakeDamage(int damage, Actor attacker)
     {
@@ -60,6 +61,11 @@ public abstract class AI : Actor
             currentFSM.Target = attacker;
 
         }
+    }
+
+    public virtual void StopInteraction()
+    {
+        isConversing = false;
     }
 
 }

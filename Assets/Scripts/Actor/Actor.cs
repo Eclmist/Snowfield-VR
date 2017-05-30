@@ -88,10 +88,12 @@ public abstract class Actor : MonoBehaviour, IDamagable
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 leftHand.Item = item;
+                leftHand.Item.Owner = this;
                 break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 rightHand.Item = item;
+                rightHand.Item.Owner = this;
                 break;
         }
     }
@@ -117,29 +119,33 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     }
 
-    public float GetLongestRange()
+    public Weapon GetLongestWeapon()
     {
         float LongestRange = 0;
-        if (leftHand != null && leftHand.Item != null)
-            LongestRange = leftHand.Item.Range;
-        if (rightHand != null && rightHand.Item != null && rightHand.Item.Range > LongestRange)
-            LongestRange = rightHand.Item.Range;
-        return LongestRange;
+        Weapon LongestWeapon = null;
+        if (leftHand != null && leftHand.Item is Weapon)
+        {
+            LongestRange = (leftHand.Item as Weapon).Range;
+            LongestWeapon = leftHand.Item as Weapon;
+        }
+        if (rightHand != null && rightHand.Item is Weapon)
+        {
+            if ((rightHand.Item as Weapon).Range > LongestRange)
+                LongestWeapon = rightHand.Item as Weapon;
+        }
+        return LongestWeapon;
     }
+  
+
    
-    public abstract void Interact(Actor actor);
 
     public new virtual Transform transform
     {
         get
         {
-            Debug.Log("hit");
-            return transform;
+            return base.transform;
         }
-        set
-        {
-            transform = value;
-        }
+        
     }
 
 }

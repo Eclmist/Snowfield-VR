@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI
 {
-
-
-
     private List<Relation> actorRelations = new List<Relation>();
     [SerializeField]
     [Range(1, 99)]
@@ -70,18 +67,27 @@ public class AdventurerAI : AI
         }
     }
 
-    //void Update()
+    //public override void Interact(Actor actor)
     //{
-    //    if (Input.GetKeyDown(KeyCode.C))
-    //    {
-    //        TakeDamage(1, Player.Instance);
-    //    }
+    //    if (actor is Player)
+    //        isConversing = true;
     //}
-    public override void TakeDamage(int damage, Actor attacker)
-    {
-        base.TakeDamage(damage, attacker);
+    //public void Interact()
+    //{
+    //    //IsConversing = true;
 
-    }
+    //    //foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
+    //    //{
+    //    //    QuestEntry<StoryQuest> quest = questBook.GetCompletableQuest(group);
+    //    //    if (quest != null)
+    //    //    {
+    //    //        Debug.Log("hit");
+    //    //        UIManager.Instance.Instantiate(UIType.OP_YES_NO, quest.Quest.Name, quest.Quest.Dialog.Title, transform.position, Player.Instance.gameObject);
+    //    //    }
+    //    //}
+
+
+    //}
 
     public override void ChangeWield(Equipment item)
     {
@@ -93,6 +99,7 @@ public class AdventurerAI : AI
 
                 leftHand.Item = item;
                 leftHand.Item.Equip(leftHand.transform);
+                leftHand.Item.Owner = this;
 
                 break;
 
@@ -102,7 +109,7 @@ public class AdventurerAI : AI
 
                 rightHand.Item = item;
                 rightHand.Item.Equip(rightHand.transform);
-
+                rightHand.Item.Owner = this;
                 break;
         }
     }
@@ -117,22 +124,44 @@ public class AdventurerAI : AI
         return false;
     }
 
+    public void GetLobang()
+    {
+        foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
+        {
+            QuestEntry<StoryQuest> completableQuest = questBook.GetCompletableQuest(group);
+            if (completableQuest != null)
+            {
+
+                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(EndQuest, completableQuest);
+                isConversing = true;
+                return;
+            }
+
+            QuestEntry<StoryQuest> startableQuest = questBook.GetStartableQuest(group);
+
+            if (startableQuest != null)
+            {
+                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(StartQuest, startableQuest);
+                isConversing = true;
+                return;
+            }
+        }
+    }
+
     public void StartQuest(QuestEntry<StoryQuest> hunt)
     {
         hunt.StartQuest((int)(((hunt.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level) * (100 - efficiency)));
-        isConversing = false;
-        if (!GotLobang())
-            currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
+        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
+        op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
     }
 
     public void EndQuest(QuestEntry<StoryQuest> hunt)
     {
         GetJob(JobType.ADVENTURER).GainExperience(hunt.Quest.Experience);
         QuestBook.RequestNextQuest(hunt);
-        isConversing = false;
-        if (!GotLobang())
-            currentFSM.ChangeState(ActorFSM.FSMState.IDLE);
-
+        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
+        
+        op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
     }
 
     public bool QuestProgress()
@@ -140,9 +169,6 @@ public class AdventurerAI : AI
         return questBook.QuestProgess();
     }
 
-    public void StartInteraction()
-    {
 
-    }
 
 }
