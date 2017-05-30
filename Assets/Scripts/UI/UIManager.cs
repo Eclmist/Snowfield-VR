@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
 			Destroy(this);		
 	}
 	
-	public OptionPane Instantiate(UIType type, string title, string message, Vector3 position, GameObject receiver,
-		GameObject sender = null)
+	public OptionPane Instantiate(UIType type, string title, string message, Vector3 position, Transform receiver,
+		Transform sender = null)
 	{
 		GameObject newUIobject = null;
 		OptionPane options = null;
