@@ -8,8 +8,20 @@ public struct InGameMenuPrefabs
     public GameObject characterScreen;
     public GameObject settingsScreen;
 }
-public class InGameMenuArea : InGameMenuButton {
+
+
+
+public class InGameMenuArea : VR_Button {
     [SerializeField] private InGameMenuPrefabs prefabs;
+
+    private void Awake()
+    {
+        if (InGameUI.Instance.GetLastState() != InGameState.PAUSE)
+        {
+
+        }
+    }
+
     // Use this for initialization
     void Start () {
 		
@@ -38,6 +50,7 @@ public class InGameMenuArea : InGameMenuButton {
             InGameUI.Instance.SetGameMenuState(InGamePause.SETTINGS);
     }
 
+    
     
 
 }
