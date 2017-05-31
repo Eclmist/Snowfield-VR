@@ -20,7 +20,7 @@ public class Furnace : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        Ingot bsItem = other.GetComponent<Ingot>();
+        Ingot bsItem = other.GetComponentInParent<Ingot>();
         if (bsItem != null)
         {
             bsItem.SetHeatingEnvironment((sphereCollider.radius - (Vector3.Distance(other.transform.position,transform.TransformPoint(sphereCollider.center)))) * 1);

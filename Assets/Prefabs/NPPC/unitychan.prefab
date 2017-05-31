@@ -4087,13 +4087,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1059141841968734}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -0.082, y: 0.005, z: -0.005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4528649260443600}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!4 &4566496602091562
 Transform:
   m_ObjectHideFlags: 1
@@ -4491,13 +4491,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224208533281494}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -0.082, y: 0.005, z: -0.005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4352620727516696}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 90}
 --- !u!4 &4740363048661952
 Transform:
   m_ObjectHideFlags: 1
@@ -5559,6 +5559,7 @@ MonoBehaviour:
   eye: {fileID: 4109545584295362}
   detectionDistance: 10
   currentState: 0
+  timer: 0
   minimumDistToAvoid: 0.1
   avoidanceIgnoreMask:
     serializedVersion: 2
@@ -5639,7 +5640,7 @@ MonoBehaviour:
   movementSpeed: 3
   efficiency: 99
   inventory:
-  - {fileID: 114289618598633172, guid: a5bae54ae3509d24d985914530f7f956, type: 2}
+  - {fileID: 0}
 --- !u!114 &114946101404662260
 MonoBehaviour:
   m_ObjectHideFlags: 1
