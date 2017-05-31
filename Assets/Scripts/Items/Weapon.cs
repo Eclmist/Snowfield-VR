@@ -8,7 +8,13 @@ public class Weapon : Equipment
 
     [SerializeField]
     protected float range;
+    private Animator animator;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        animator = GetComponent<Animator>();
+    }
     public float Range
     {
         get
@@ -39,7 +45,7 @@ public class Weapon : Equipment
         if (IfBlocked != null)
         {
             IBlock item = collision.GetComponentInParent<IBlock>();
-            if (item != null)
+            if (item != null && item.IsBlocking)
             {
                 IfBlocked(item);
             }
@@ -49,6 +55,14 @@ public class Weapon : Equipment
     void OnDrawGizmos()
     {
         Gizmos.DrawSphere(transform.position, range);
+    }
+
+    public void StartCharge()
+    {
+        if(animator != null)
+        {
+            animator.SetTrigger("Charge");
+        }
     }
 
 }
