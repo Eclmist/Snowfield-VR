@@ -9,8 +9,6 @@ public class Weapon : Equipment
 
     [SerializeField]
     protected float range;
-
-    protected Renderer matRenderer;
     protected bool charging;
     [SerializeField]
     private float maxEmissiveValue;
@@ -19,7 +17,6 @@ public class Weapon : Equipment
     protected override void Awake()
     {
         base.Awake();
-        matRenderer = GetComponent<Renderer>();
         //trail = GetComponentInChildren<XftWeapon.XWeaponTrail>();
        
     }
@@ -57,10 +54,7 @@ public class Weapon : Equipment
 
     protected virtual void HandleMaterial()
     {
-        if (charging)
-        {
-            matRenderer.material.SetColor("_EmissionColor", Color.black);
-        }
+       
 
     }
     protected override void OnTriggerEnter(Collider collision)
