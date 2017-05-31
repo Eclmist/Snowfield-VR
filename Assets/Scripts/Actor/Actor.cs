@@ -6,7 +6,8 @@ public abstract class Actor : MonoBehaviour, IDamagable
 {
     [SerializeField]
     protected int health = 100;
-
+    [SerializeField]
+    protected TempKillScript deathAnim;
     [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
@@ -23,6 +24,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
     protected virtual void Awake()
     {
         maxHealth = health;
+        deathAnim = GetComponent<TempKillScript>();
     }
     public void GainExperience(JobType jobType, int value)
     {
@@ -144,4 +146,8 @@ public abstract class Actor : MonoBehaviour, IDamagable
         
     }
 
+    public void PlayDeath()
+    {
+        deathAnim.Kill();
+    }
 }
