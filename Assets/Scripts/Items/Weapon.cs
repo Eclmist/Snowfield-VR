@@ -22,7 +22,8 @@ public class Weapon : Equipment
 	private float timeSinceStartCharge = 0;
 	private float emissiveSlider = 0;
 	private ModifyRenderer modRen;
-	private bool charge = true;
+    private bool charge = false;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -115,7 +116,7 @@ public class Weapon : Equipment
 
 	public void StartCharge()
 	{
-		if (animator != null && timeSinceStartCharge > chargeDuration)
+		if (animator != null && timeSinceStartCharge > chargeDuration && !charge)
 		{
 			animator.SetTrigger("Charge");
 			timeSinceStartCharge = 0;

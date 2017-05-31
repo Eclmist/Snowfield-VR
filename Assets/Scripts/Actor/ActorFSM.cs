@@ -96,8 +96,15 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void Update()
     {
-        UpdateFSMState();
-        UpdateAnimatorState();
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+        {
+            UpdateFSMState();
+            UpdateAnimatorState();
+        }
+        else if(animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+        {
+            currentAI.PlayDeath();
+        }
     }
 
     protected void UpdateAnimatorState()
@@ -111,7 +118,6 @@ public abstract class ActorFSM : MonoBehaviour
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
         {
             animator.SetBool("Attacking", false);
-            EndAttack();
         }
     }
     protected virtual void UpdateFSMState()
@@ -207,8 +213,8 @@ public abstract class ActorFSM : MonoBehaviour
     {
         //if (block.Owner == target)
         //{
-        Debug.Log("hit");
-            animator.SetBool("KnockBack", true);
+        animator.SetBool("KnockBack", true);
+        EndAttack();
         //}
     }
     public virtual void StartAttack()
@@ -225,7 +231,8 @@ public abstract class ActorFSM : MonoBehaviour
     {
         if (currentUseWeapon != null)
         {
-            currentUseWeapon.SetCharge(false);
+            Debug.Log("EndCharge");
+            currentUseWeapon.EndCharge();
             currentUseWeapon.SetBlockable();
         }
     }
@@ -329,10 +336,10 @@ public abstract class ActorFSM : MonoBehaviour
     {
         
         currentUseWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        Debug.Log(currentUseWeapon);
+        
         if (currentUseWeapon != null)
         {
-            currentUseWeapon.SetCharge(true);
+            currentUseWeapon.StartCharge();
         }
     }
 }

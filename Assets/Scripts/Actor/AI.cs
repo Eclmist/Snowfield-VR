@@ -34,6 +34,7 @@ public class AI : Actor
         currentFSM = GetComponent<ActorFSM>();
         if (jobList.Count != 0)
             jobList.Clear();
+        
     }
 
     public bool IsConversing
@@ -55,7 +56,7 @@ public class AI : Actor
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
             UnEquipWeapons();
-            Destroy(gameObject, 3f);
+            
 
         }
         else if (Mathf.Sign(damage) == 1)
