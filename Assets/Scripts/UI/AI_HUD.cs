@@ -90,7 +90,7 @@ public class AI_HUD : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			actor.TakeDamage(5, null);
+			actor.TakeDamage(5, Player.Instance);
 		}
 	}
 }
