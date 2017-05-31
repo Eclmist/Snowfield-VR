@@ -23,7 +23,7 @@ public class InGameUI_MenuArea : VR_Button
     protected override void OnApplicationMenuPress()
     {
         base.OnApplicationMenuPress();
-        if (InGameUI.Instance.GetLastState() != InGameState.PAUSE)
+        if (InGameUI.Instance.GetLastState() != InGameState.PAUSE && InGameUI.Instance.GetCurState() != InGameState.PAUSE)
         {
             Instantiate(menu, currentInteractingController.transform.position + offset, Quaternion.Euler(Quaternion.identity.x, currentInteractingController.Device.transform.rot.eulerAngles.y , Quaternion.identity.z));
             InGameUI.Instance.SetGameState(InGameState.PAUSE);

@@ -104,5 +104,11 @@ public class InGameUI : MonoBehaviour
         curSelection = state;
     }
 
+    public InGameState GetCurState()
+    {
+        return curState;
+    }
     
+
+
 }
