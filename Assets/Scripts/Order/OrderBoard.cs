@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class OrderBoard : MonoBehaviour
 {
+    [SerializeField]
+    private List<Transform> t;
+
 	private class Slot
 	{
 		public Vector3 slotPosition;
@@ -25,7 +28,10 @@ public class OrderBoard : MonoBehaviour
 	[SerializeField]
 	private float offsetZ;
 
-	[SerializeField]
+    [SerializeField]
+    private GameObject orderG;
+
+    [SerializeField]
 	private OrderSlip order;
 
 	private List<OrderSlip> orderList = new List<OrderSlip>();
@@ -68,7 +74,7 @@ public class OrderBoard : MonoBehaviour
 		maxNumberOfOrders = rowElements * colElements;
 		slots = new Slot[maxNumberOfOrders];
 		boxCollider = GetComponent<BoxCollider>();
-		GenerateSlots();
+		GenerateSlots2();
 	}
 
 	public void RemoveFromBoard(OrderSlip order)
@@ -90,7 +96,7 @@ public class OrderBoard : MonoBehaviour
 		if (orderList.Count < maxNumberOfOrders)
 		{
 			Slot acquiredSlot = GetAvailableSlot();
-			OrderSlip g = Instantiate(order, acquiredSlot.slotPosition + transform.forward * offsetZ, order.transform.rotation).GetComponent<OrderSlip>();
+			OrderSlip g = Instantiate(orderG, acquiredSlot.slotPosition + transform.forward * offsetZ, transform.rotation).GetComponentInChildren<OrderSlip>();
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);
@@ -140,6 +146,14 @@ public class OrderBoard : MonoBehaviour
 		}
 
 	}
+
+    private void GenerateSlots2()
+    {
+        for(int i = 0; i < maxNumberOfOrders; i ++)
+        {
+            slots[i] = new Slot(t[i].position);
+        }
+    }
 
 
 	// Returns a slot on the board that is not occupied
