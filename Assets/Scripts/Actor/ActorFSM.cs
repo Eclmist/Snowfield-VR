@@ -46,7 +46,6 @@ public abstract class ActorFSM : MonoBehaviour
 
         pathFound = false;
         currentState = state;
-        timer = 5;
         rigidBody.isKinematic = false;
         animator.speed = 1;
         animator.SetFloat("Speed", 0);
