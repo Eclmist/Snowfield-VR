@@ -33,6 +33,12 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 	protected virtual void OnTriggerHold() { }
 	protected virtual void OnTriggerRelease() { }
 
+    protected virtual void OnApplicationMenuPress()
+    {
+        currentInteractingController.Vibrate(triggerPressVibration);
+        Debug.Log("App");
+    }
+
 	protected virtual void OnInteractableChange() { }
 
 	protected VR_Controller_Custom currentInteractingController;
@@ -62,12 +68,14 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 			{
 				OnControllerStay();
 
-				if (vrController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-					OnTriggerPress();
-				else if (vrController.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
-					OnTriggerHold();
-				else if (vrController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-					OnTriggerRelease();
+                if (vrController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+                    OnTriggerPress();
+                else if (vrController.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
+                    OnTriggerHold();
+                else if (vrController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+                    OnTriggerRelease();
+                else if (vrController.Device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
+                    OnApplicationMenuPress();
 
 			}
 		}
