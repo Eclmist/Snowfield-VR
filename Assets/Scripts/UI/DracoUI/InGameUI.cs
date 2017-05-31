@@ -15,19 +15,20 @@ public enum InGamePause
 {
     IDLE,
     CHARACTER,
-    ORDER,
     SETTINGS,
     EXIT
 }
 
 
+
+
 public class InGameUI : MonoBehaviour
 {
+    
     public static InGameUI Instance;
-    public InGameState curState = InGameState.INGAME, lastState = InGameState.IDLE;
-    private InGamePause curSelection = InGamePause.IDLE, lastSelection = InGamePause.IDLE;
-
-    private Transform[] go;
+    [SerializeField] private InGameState curState = InGameState.INGAME, lastState = InGameState.IDLE;
+    [SerializeField] private InGamePause curSelection = InGamePause.IDLE, lastSelection = InGamePause.IDLE;
+    
     void Awake()
     {
         if (!Instance)
@@ -44,7 +45,7 @@ public class InGameUI : MonoBehaviour
 
     // Use this for initialization
     void Start () {
-        go = GetComponentsInChildren<Transform>(true);
+        
         
 	}
 	
@@ -54,14 +55,12 @@ public class InGameUI : MonoBehaviour
         switch (curState)
         {
             case InGameState.INGAME:
-                CheckObject("InGame", "MainMenu");
                 lastState = curState;
                 curState = InGameState.IDLE;
                 curSelection = InGamePause.IDLE;
                 lastSelection = InGamePause.IDLE;
                 break;
             case InGameState.PAUSE:
-                CheckObject("MainMenu", "InGame");
                 lastState = curState;
                 curState = InGameState.IDLE;
                 break;
@@ -72,12 +71,16 @@ public class InGameUI : MonoBehaviour
         switch (curSelection)
         {
             case InGamePause.CHARACTER:
-                break;
-            case InGamePause.ORDER:
+                lastSelection = curSelection;
+                curSelection = InGamePause.IDLE;
                 break;
             case InGamePause.SETTINGS:
+                lastSelection = curSelection;
+                curSelection = InGamePause.IDLE;
                 break;
             case InGamePause.EXIT:
+                lastSelection = curSelection;
+                curSelection = InGamePause.IDLE;
                 break;
             default:
                 break;
@@ -90,37 +93,7 @@ public class InGameUI : MonoBehaviour
     {
         return lastState;
     }
-
-    private void CheckObject(string name1, string name2)
-    {
-        if (go != null)
-        {
-            foreach (Transform t in go)
-            {
-                if (t.name == name1)
-                {
-                    t.gameObject.SetActive(true);
-                }
-                if (t.name == name2)
-                {
-                    t.gameObject.SetActive(false);
-                }
-            }
-        }
-    }
-
-    public void ActivateMM()
-    {
-        if(lastState != InGameState.PAUSE)
-            curState = InGameState.PAUSE;
-    }
-
-    public void DiactivateMM()
-    {
-        if (lastState != InGameState.INGAME)
-            curState = InGameState.INGAME;
-    }
-
+    
     public void SetGameState(InGameState state)
     {
         curState = state;
@@ -130,4 +103,12 @@ public class InGameUI : MonoBehaviour
     {
         curSelection = state;
     }
+
+    public InGameState GetCurState()
+    {
+        return curState;
+    }
+    
+
+
 }

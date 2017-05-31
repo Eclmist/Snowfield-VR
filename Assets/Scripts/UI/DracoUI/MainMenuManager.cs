@@ -42,20 +42,14 @@ public class MainMenuManager : MonoBehaviour
 
     }
 
-    public void ActiveDeactiveSettings()
+    public void ActiveDeactiveSettings(bool active)
     {
-        if (!prefabs.Settings.activeInHierarchy && MainMenu.Instance.GetLastState() == MainMenuState.SETTINGS)
-            prefabs.Settings.SetActive(true);
-        else if (MainMenu.Instance.GetLastState() != MainMenuState.SETTINGS && prefabs.Settings.activeInHierarchy)
-            prefabs.Settings.SetActive(false);
+        prefabs.Settings.SetActive(active);
     }
 
-    public void ActiveDeactiveCredits()
+    public void ActiveDeactiveCredits(bool active)
     {
-        if (!prefabs.Settings.activeInHierarchy && MainMenu.Instance.GetLastState() == MainMenuState.CREDITS)
-            prefabs.Credits.SetActive(true);
-        else if (MainMenu.Instance.GetLastState() != MainMenuState.CREDITS && prefabs.Settings.activeInHierarchy)
-            prefabs.Credits.SetActive(false);
+        prefabs.Credits.SetActive(active);
     }
 
     public void TextChange(string newTxt)

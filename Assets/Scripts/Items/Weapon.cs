@@ -3,92 +3,131 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(Animator))]
 public class Weapon : Equipment
 {
 
-    [SerializeField]
-    protected float range;
-    protected bool charging;
-    [SerializeField]
-    private float maxEmissiveValue;
-    private float currentVal;
- 
-    protected override void Awake()
-    {
-        base.Awake();
-        //trail = GetComponentInChildren<XftWeapon.XWeaponTrail>();
-       
-    }
+	[SerializeField]
+	protected float range;
+	private Animator animator;
 
+	[Header("Weapon Charge")]
+	[SerializeField] [Range(0, 20)] private float chargeDuration = 10;
+	[SerializeField] private AnimationCurve emissiveCurve;
+	[SerializeField] [ColorUsageAttribute(true,true,0f,8f,0.125f,3f)]
+	private Color emissiveColor;
 
-    public float Range
-    {
-        get
-        {
-            return range;
-        }
-        set
-        {
-            range = value;
-        }
-    }
+	[SerializeField] [Range(0, 10)] private float fadeSpeed = 5;
+	[SerializeField] private XftWeapon.XWeaponTrail trail;
 
-    private Action<IBlock> IfBlocked;
+	private float timeSinceStartCharge = 0;
+	private float emissiveSlider = 0;
+	private ModifyRenderer modRen;
+	private bool charge = true;
+	protected override void Awake()
+	{
+		base.Awake();
+		animator = GetComponent<Animator>();
+		modRen = GetComponent<ModifyRenderer>();
+	}
 
-    public void SetBlockable(Action<IBlock> ifblocked = null)
-    {
-        IfBlocked = ifblocked;
-    }
+	private void Start()
+	{
+		modRen = GetComponent<ModifyRenderer>();
+	}
 
-    protected override void UseItem()
-    {
-        base.UseItem();
-    }
+	protected void Update()
+	{
+		if (modRen)
+		{
 
-    protected virtual void Update()
-    {
-        HandleMaterial();
-        //HandleTrail();
-    }
+			if (charge)
+			{
+				if (emissiveSlider < 1)
+				{
+					emissiveSlider += fadeSpeed * Time.deltaTime;
+					if (emissiveSlider > 1)
+						emissiveSlider = 1;
+				}
 
-    protected virtual void HandleMaterial()
-    {
-       
+				timeSinceStartCharge += Time.deltaTime;
+			}
+			else
+			{
+				if (emissiveSlider > 0)
+				{
+					emissiveSlider -= fadeSpeed * Time.deltaTime;
+					if (emissiveSlider < 0)
+						emissiveSlider = 0;
+				}
 
-    }
-    protected override void OnTriggerEnter(Collider collision)
-    {
-        base.OnTriggerEnter(collision);
-        Debug.Log(IfBlocked);
-        if (IfBlocked != null)
-        {
-            if(linkedController != null)
-            {
-                IDamagable target = collision.GetComponent<IDamagable>();
-                if (target != null)
-                    Player.Instance.Attack(this, target);
-            }
-            IBlock item = collision.GetComponentInParent<IBlock>();
-            
-            if (item != null && item.IsBlocking)
-            {
-                IfBlocked(item);
-            }
-        }
-    }
+			}
 
-  
+			Color targetColor = emissiveColor * emissiveCurve.Evaluate(emissiveSlider);
+			trail.MyColor = targetColor / 2;
+			modRen.SetColor("_EmissionColor", targetColor);
 
+			if (timeSinceStartCharge > chargeDuration + 1)
+				charge = false;
+		}
+	}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position, range);
-    }
+	public float Range
+	{
+		get
+		{
+			return range;
+		}
+		set
+		{
+			range = value;
+		}
+	}
 
-    public void SetCharge(bool val)
-    {
-        charging = val;
-    }
+	private Action<IBlock> IfBlocked;
 
+	public void SetBlockable(Action<IBlock> ifblocked = null)
+	{
+		IfBlocked = ifblocked;
+	}
+
+	protected override void UseItem()
+	{
+		base.UseItem();
+	}
+
+	protected override void OnTriggerEnter(Collider collision)
+	{
+		base.OnTriggerEnter(collision);
+		if (IfBlocked != null)
+		{
+			IBlock item = collision.GetComponentInParent<IBlock>();
+			if (item != null && item.IsBlocking)
+			{
+				IfBlocked(item);
+			}
+		}
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.DrawSphere(transform.position, range);
+	}
+
+	public void StartCharge()
+	{
+		if (animator != null && timeSinceStartCharge > chargeDuration)
+		{
+			animator.SetTrigger("Charge");
+			timeSinceStartCharge = 0;
+			charge = true;
+		}
+	}
+
+	public void EndCharge()
+	{
+		if (timeSinceStartCharge > chargeDuration)
+		{
+			charge = false;
+		}
+	}
 }
