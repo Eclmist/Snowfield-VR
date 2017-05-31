@@ -23,21 +23,21 @@ public class Cooler : MonoBehaviour {
 	private void OnTriggerEnter(Collider other)
 	{
 
-		if (other.gameObject.GetComponent<Ingot>() != null)
+		if (other.gameObject.GetComponentInParent<Ingot>() != null)
 		{
-			Ingot bsItem = other.GetComponent<Ingot>();
+			Ingot bsItem = other.GetComponentInParent<Ingot>();
             bsItem.QuenchRate = 10f;
             audioSource.volume = bsItem.CurrentTemperature / 1f;
-			audioSource.PlayOneShot(coolSound);
+			//audioSource.PlayOneShot(coolSound);
 		}
 	}
 
     private void OnTriggerExit(Collider other)
     {
 
-        if (other.gameObject.GetComponent<Ingot>() != null)
+        if (other.gameObject.GetComponentInParent<Ingot>() != null)
         {
-            Ingot bsItem = other.GetComponent<Ingot>();
+            Ingot bsItem = other.GetComponentInParent<Ingot>();
             bsItem.QuenchRate = 1f;
             
         }
