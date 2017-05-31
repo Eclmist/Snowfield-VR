@@ -6,6 +6,14 @@ public class Shield : Equipment,IBlock {
 
     private bool isBlocking;
 
+    private Ward ward;
+    protected override void Awake()
+    {
+        base.Awake();
+        ward = GetComponent<Ward>();
+        ward.SetWardActive(true);
+        isBlocking = true;
+    }
     public bool IsBlocking
     {
         get
@@ -24,10 +32,12 @@ public class Shield : Equipment,IBlock {
         if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Grip))
         {
             isBlocking = true;
+            ward.SetWardActive(true);
         }
         else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Grip))
         {
             isBlocking = false;
+            ward.SetWardActive(false);
         }
     }
 
