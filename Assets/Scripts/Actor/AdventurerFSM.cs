@@ -8,6 +8,8 @@ public class AdventurerFSM : ActorFSM
 
     private Shop targetShop;
 
+    private int currentShopIndex = 0;
+
     private void NewVisitToTown()
     {
         visitedShop.Clear();
@@ -88,7 +90,8 @@ public class AdventurerFSM : ActorFSM
                     return;
                 }
                 targetShop = _targetShop;
-                AStarManager.Instance.RequestPath(transform.position, _targetShop.GetNextLocation(), ChangePath);
+                AStarManager.Instance.RequestPath(transform.position, _targetShop.Location, ChangePath);
+                currentShopIndex = 0;
                 requestedPath = true;
                 nextState = FSMState.INTERACTION;
             }
@@ -155,30 +158,47 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateInteractionState()
     {
-
-        //if (CheckObstacles())
-        //{
-        //    ChangePath(GetReversePoint());
-        //    nextState = FSMState.INTERACTION;
-        //    ChangeState(FSMState.PETROL);
-        //    return;
-        //}
-
-        LookAtPlayer(targetShop.Location);
-        if (!currentAI.IsConversing)
+        Transform shopPoint = targetShop.GetPoint(currentShopIndex);
+        
+        if (timer < 0)
         {
-            if (targetShop.Owner is Player)
+            
+            if (shopPoint != null)
             {
-                if ((currentAI as AdventurerAI).GotLobang())
-                    (currentAI as AdventurerAI).GetLobang();
+                ChangePath(shopPoint.position);
+                nextState = FSMState.INTERACTION;
+                ChangeState(FSMState.PETROL);
+                currentShopIndex++;
+                if (targetShop.GetPoint(currentShopIndex) == null)
+                    timer = 0;
                 else
-                    ChangeState(FSMState.IDLE);
+                    timer = 5;
             }
+            else
+            {
+                if (!currentAI.IsConversing)
+                {
+                    if (targetShop.Owner is Player)
+                    {
+                        if ((currentAI as AdventurerAI).GotLobang())
+                            (currentAI as AdventurerAI).GetLobang();
+                        else
+                            ChangeState(FSMState.IDLE);
+                    }
 
+                }
+                else
+                {
+                    LookAtPlayer(targetShop.Owner.transform.position);
+                }
+            }
         }
         else
         {
-            LookAtPlayer(targetShop.Owner.transform.position);
+            Transform thisPoint = targetShop.GetPoint(currentShopIndex - 1);
+            if (thisPoint != null)
+                LookAtPlayer(thisPoint.position + thisPoint.forward);
+            timer -= Time.deltaTime;
         }
 
     }
