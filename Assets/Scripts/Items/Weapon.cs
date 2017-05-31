@@ -60,15 +60,25 @@ public class Weapon : Equipment
     protected override void OnTriggerEnter(Collider collision)
     {
         base.OnTriggerEnter(collision);
+        Debug.Log(IfBlocked);
         if (IfBlocked != null)
         {
+            if(linkedController != null)
+            {
+                IDamagable target = collision.GetComponent<IDamagable>();
+                if (target != null)
+                    Player.Instance.Attack(this, target);
+            }
             IBlock item = collision.GetComponentInParent<IBlock>();
+            
             if (item != null && item.IsBlocking)
             {
                 IfBlocked(item);
             }
         }
     }
+
+  
 
 
     void OnDrawGizmos()
