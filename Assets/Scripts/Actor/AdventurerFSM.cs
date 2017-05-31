@@ -106,13 +106,7 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer > 0 && target != null)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Cast") || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-            {
-                animator.SetBool("Attack", true);
-            }else
-            {
-                animator.SetBool("Attack", false);
-            }
+            
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -131,17 +125,20 @@ public class AdventurerFSM : ActorFSM
                     LookAtPlayer(target.transform.position);
                 }
 
-                Weapon currentWeapon = currentAI.GetLongestWeapon();
-                if (currentWeapon != null && distance <= currentWeapon.Range && Mathf.Abs(angle) < 45)
+                bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Cast");
+
+                if (isAttacking)
+                    animator.SetBool("Attacking",true);
+
+                Weapon longestWeapon = currentAI.GetLongestWeapon();
+                if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
                 {
-                    if (!animator.GetBool("Attack"))
-                    {
-                        animator.SetTrigger("Cast");
-                    }
+                    if(!isAttacking)
+                    animator.SetTrigger("Cast");
                 }
                 else
                 {
-                    animator.SetBool("Attack", false);
+                    animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", 2);//HardCoded
                 }
                 timer = 5f;//HardCoded

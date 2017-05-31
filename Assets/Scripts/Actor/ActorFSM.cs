@@ -102,16 +102,12 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected void UpdateAnimatorState()
     {
-
-        
         if (currentState != FSMState.INTERACTION)
         {
             animator.SetBool("Interaction", false);
         }
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
             animator.SetBool("KnockBack", false);
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))//change to weapon
-            EndAttack();
     }
     protected virtual void UpdateFSMState()
     {
@@ -175,15 +171,14 @@ public abstract class ActorFSM : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dir);
         if (target != null)
         {
-            Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
             
-            if (currentWeapon != null)
+            if (currentUseWeapon != null)
             {
                 Vector3 temptarget = target.transform.position;
                 temptarget.y = transform.position.y;
-                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentWeapon.Range)
+                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentUseWeapon.Range)
                 {
-                    currentAI.Attack(currentWeapon, target);
+                    currentAI.Attack(currentUseWeapon, target);
                 }
             }
         }
@@ -213,19 +208,19 @@ public abstract class ActorFSM : MonoBehaviour
     }
     public virtual void StartAttack()
     {
-        Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        if (currentWeapon != null)
+        
+        if (currentUseWeapon != null)
         {
-            currentWeapon.SetBlockable(IfBlocked);
+            currentUseWeapon.SetBlockable(IfBlocked);
         }
     }
 
     public virtual void EndAttack()
     {
-        Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        if (currentWeapon != null)
+        if (currentUseWeapon != null)
         {
-            currentWeapon.SetBlockable();
+            currentUseWeapon.SetCharge(false);
+            currentUseWeapon.SetBlockable();
         }
     }
 
@@ -283,8 +278,11 @@ public abstract class ActorFSM : MonoBehaviour
 
     public void DamageTaken(bool knockbacked,Actor attacker)
     {
-        if(knockbacked)
-        animator.SetBool("KnockBack", true);
+        if (knockbacked)
+        {
+            animator.SetBool("KnockBack", true);
+            EndAttack();
+        }
         target = attacker;
         ChangeState(FSMState.COMBAT);
     }
@@ -297,7 +295,7 @@ public abstract class ActorFSM : MonoBehaviour
         //float rotationSpeed = turnRateOverAngle.Evaluate(angle);
 
         Vector3 lookAtTarget = AvoidObstacles(endPoint);
-        lookAtTarget.y = transform.position.y; //Force no y change;
+        lookAtTarget.y = 0; //Force no y change;
    
         
         transform.rotation = Quaternion.Slerp(transform.rotation,
@@ -319,5 +317,16 @@ public abstract class ActorFSM : MonoBehaviour
         }
         else
             return (-transform.forward * minimumDistToAvoid) + transform.position;
+    }
+
+    public void StartCharge()
+    {
+        
+        currentUseWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
+        Debug.Log(currentUseWeapon);
+        if (currentUseWeapon != null)
+        {
+            currentUseWeapon.SetCharge(true);
+        }
     }
 }
