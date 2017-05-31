@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 82759117685754390}
   - component: {fileID: 54973756551085832}
   - component: {fileID: 114289618598633172}
+  - component: {fileID: 114016938063306828}
   m_Layer: 11
   m_Name: Sword
   m_TagString: Untagged
@@ -159,7 +160,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1553338861465962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.22, z: -0.477}
+  m_LocalPosition: {x: -6.615, y: 0.999, z: -0.477}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4793706010216276}
@@ -299,7 +300,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -398,6 +399,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114016938063306828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1553338861465962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda7920f64952874b94cf4576a472658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 23043501752922612}
 --- !u!114 &114289618598633172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -416,6 +430,28 @@ MonoBehaviour:
   maxForceVolume: 0
   slot: 1
   range: 2.5
+  chargeDuration: 10
+  emissiveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  emissiveColor: {r: 0, g: 1.0896554, b: 2, a: 1}
+  fadeSpeed: 5
+  trail: {fileID: 114526363969964190}
 --- !u!114 &114526363969964190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -435,7 +471,7 @@ MonoBehaviour:
   MaxFrame: 14
   Granularity: 60
   MyColor: {r: 1, g: 1, b: 1, a: 1}
-  MyMaterial: {fileID: 2100000, guid: 451b38e314bd8f14d8e520120465b7af, type: 2}
+  MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114694830372200026
 MonoBehaviour:
   m_ObjectHideFlags: 1

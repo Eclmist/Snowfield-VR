@@ -8,7 +8,6 @@ public class Weapon : Equipment
 
 	[SerializeField]
 	protected float range;
-	private Animator animator;
 
 	[Header("Weapon Charge")]
 	[SerializeField] [Range(0, 20)] private float chargeDuration = 10;
@@ -22,18 +21,17 @@ public class Weapon : Equipment
 	private float timeSinceStartCharge = 0;
 	private float emissiveSlider = 0;
 	private ModifyRenderer modRen;
-    private bool charge = false;
-
+	private bool charge = false;
 	protected override void Awake()
 	{
 		base.Awake();
-		animator = GetComponent<Animator>();
 		modRen = GetComponent<ModifyRenderer>();
 	}
 
 	private void Start()
 	{
 		modRen = GetComponent<ModifyRenderer>();
+
 	}
 
 	protected void Update()
@@ -64,7 +62,9 @@ public class Weapon : Equipment
 			}
 
 			Color targetColor = emissiveColor * emissiveCurve.Evaluate(emissiveSlider);
-			trail.MyColor = targetColor / 2;
+
+			if (trail != null)
+				trail.MyColor = targetColor / 2;
 			modRen.SetColor("_EmissionColor", targetColor);
 
 			if (timeSinceStartCharge > chargeDuration + 1)
@@ -109,16 +109,15 @@ public class Weapon : Equipment
 		}
 	}
 
-	void OnDrawGizmos()
-	{
-		Gizmos.DrawSphere(transform.position, range);
-	}
+	//void OnDrawGizmos()
+	//{
+	//	Gizmos.DrawSphere(transform.position, range);
+	//}
 
 	public void StartCharge()
 	{
-		if (animator != null && timeSinceStartCharge > chargeDuration && !charge)
+		if (!charge)
 		{
-			animator.SetTrigger("Charge");
 			timeSinceStartCharge = 0;
 			charge = true;
 		}
