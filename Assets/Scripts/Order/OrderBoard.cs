@@ -28,7 +28,10 @@ public class OrderBoard : MonoBehaviour
 	[SerializeField]
 	private float offsetZ;
 
-	[SerializeField]
+    [SerializeField]
+    private GameObject orderG;
+
+    [SerializeField]
 	private OrderSlip order;
 
 	private List<OrderSlip> orderList = new List<OrderSlip>();
@@ -93,8 +96,7 @@ public class OrderBoard : MonoBehaviour
 		if (orderList.Count < maxNumberOfOrders)
 		{
 			Slot acquiredSlot = GetAvailableSlot();
-			OrderSlip g = Instantiate(order, acquiredSlot.slotPosition + transform.forward * offsetZ, order.transform.rotation).GetComponent<OrderSlip>();
-            g.transform.Rotate(Vector3.forward,-90);
+			OrderSlip g = Instantiate(orderG, acquiredSlot.slotPosition + transform.forward * offsetZ, transform.rotation).GetComponentInChildren<OrderSlip>();
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);
