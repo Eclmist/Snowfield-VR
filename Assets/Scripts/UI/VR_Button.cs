@@ -19,7 +19,7 @@ public struct VR_Button_Events
 }
 
 [RequireComponent(typeof(Collider))]
-public class VR_Button : VR_Interactable_UI
+public class VR_Button : VR_Interactable
 {
 	[SerializeField] protected bool useTransitions = true;
 	[SerializeField] protected Graphic targetGraphic;
