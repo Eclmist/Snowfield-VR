@@ -24,4 +24,12 @@ public class ModifyRenderer : MonoBehaviour {
 		}
 	}
 
+	public void SetColor(string shaderVar, Color value)
+	{
+		foreach (Renderer ren in renderers)
+		{
+			ren.material.SetColor(shaderVar, value);
+		}
+	}
+
 }
