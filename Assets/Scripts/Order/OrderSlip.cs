@@ -60,10 +60,10 @@ public class OrderSlip : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            OrderEnd(true);
-        }
+        //if (Input.GetKeyDown(KeyCode.U))
+        //{
+        //    OrderEnd(true);
+        //}
     }
 
 
