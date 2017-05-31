@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hammer : MonoBehaviour {
+public class Hammer : BlacksmithItem {
 
 	// Use this for initialization
 	void Start () {
@@ -14,8 +14,10 @@ public class Hammer : MonoBehaviour {
 		
 	}
 
-	void OnCollisionEnter(Collision collision)
+	protected override void OnCollisionEnter(Collision collision)
 	{
+		base.OnCollisionEnter(collision);
+
 		foreach (ContactPoint contact in collision.contacts)
 		{
 			ForgedBlade ingot = contact.otherCollider.GetComponentInParent<ForgedBlade>();
