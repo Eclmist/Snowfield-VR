@@ -103,16 +103,15 @@ public abstract class ActorFSM : MonoBehaviour
     protected void UpdateAnimatorState()
     {
 
-        if (currentState != FSMState.COMBAT)
-        {
-            animator.SetBool("Attack", false);
-        }
+        
         if (currentState != FSMState.INTERACTION)
         {
             animator.SetBool("Interaction", false);
         }
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > .8)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
             animator.SetBool("KnockBack", false);
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))//change to weapon
+            EndAttack();
     }
     protected virtual void UpdateFSMState()
     {
@@ -206,15 +205,15 @@ public abstract class ActorFSM : MonoBehaviour
 
     private void IfBlocked(IBlock block)
     {
-        if (block.Owner == target)
-        {
+        //if (block.Owner == target)
+        //{
+        Debug.Log("hit");
             animator.SetBool("KnockBack", true);
-        }
+        //}
     }
     public virtual void StartAttack()
     {
         Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        Debug.Log("hit");
         if (currentWeapon != null)
         {
             currentWeapon.SetBlockable(IfBlocked);
@@ -224,7 +223,6 @@ public abstract class ActorFSM : MonoBehaviour
     public virtual void EndAttack()
     {
         Weapon currentWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        Debug.Log("hit");
         if (currentWeapon != null)
         {
             currentWeapon.SetBlockable();
@@ -283,11 +281,15 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    public void DamageTaken()
+    public void DamageTaken(bool knockbacked,Actor attacker)
     {
+        if(knockbacked)
         animator.SetBool("KnockBack", true);
+        target = attacker;
         ChangeState(FSMState.COMBAT);
     }
+
+
     protected void LookAtPlayer(Vector3 endPoint)
     {
         float distance = (endPoint - transform.position).magnitude / 60;
@@ -295,7 +297,9 @@ public abstract class ActorFSM : MonoBehaviour
         //float rotationSpeed = turnRateOverAngle.Evaluate(angle);
 
         Vector3 lookAtTarget = AvoidObstacles(endPoint);
-        lookAtTarget.y = 0; //Force no y change;
+        lookAtTarget.y = transform.position.y; //Force no y change;
+   
+        
         transform.rotation = Quaternion.Slerp(transform.rotation,
             Quaternion.LookRotation(lookAtTarget, Vector3.up),
             5 * Time.deltaTime);//hardcorded 10
