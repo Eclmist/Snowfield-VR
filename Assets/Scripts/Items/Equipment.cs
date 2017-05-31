@@ -2,49 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : CraftedItem, IBlock {
+public class Equipment : CraftedItem {
 
     [SerializeField]
     private EquipSlot.EquipmentSlotType slot;
 
-    private Actor owner;
-
-    public Actor Owner
-    {
-        get
-        {
-            return owner;
-        }
-        set
-        {
-            owner = value;
-        }
-    }
-
-
-    public override void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-
-        if (referenceCheck != linkedController)
-        {
-
-            owner = Player.Instance;
-        }
-
-        base.StartInteraction(referenceCheck);
-
-    }
 
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         if (removable && !toggled)
         {
-            owner = null;
             base.StopInteraction(referenceCheck);
         }
     }
 
-   
     
     public EquipSlot.EquipmentSlotType Slot
     {
@@ -66,8 +37,8 @@ public class Equipment : CraftedItem, IBlock {
     public void Unequip()
     {
         rigidBody.isKinematic = false;
-        itemCollider.isTrigger = false;
         transform.parent = null;
+        itemCollider.isTrigger = false;
     }
 
     

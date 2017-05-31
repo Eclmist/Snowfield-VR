@@ -42,14 +42,6 @@ public class AdventurerAI : AI
         }
     }
 
-    public void UnEquipWeapons()
-    {
-        if (leftHand.Item != null)
-            leftHand.Item.Unequip();
-        if (rightHand.Item != null)
-            rightHand.Item.Unequip();
-    }
-
     protected void GetSlots()
     {
         EquipSlot[] equipmentSlots = GetComponentsInChildren<EquipSlot>();
@@ -95,21 +87,19 @@ public class AdventurerAI : AI
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand.Item != null)
-                    leftHand.Item.Unequip();
+                    Destroy(leftHand.Item);
 
                 leftHand.Item = item;
                 leftHand.Item.Equip(leftHand.transform);
-                leftHand.Item.Owner = this;
 
                 break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand.Item != null)
-                    rightHand.Item.Unequip();
+                    Destroy(rightHand.Item);
 
                 rightHand.Item = item;
                 rightHand.Item.Equip(rightHand.transform);
-                rightHand.Item.Owner = this;
                 break;
         }
     }
