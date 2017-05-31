@@ -30,7 +30,7 @@ public class Furnace : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        Ingot bsItem = other.GetComponent<Ingot>();
+        Ingot bsItem = other.GetComponentInParent<Ingot>();
         if(bsItem != null)
         bsItem.HeatSourceDetected = false;
            
