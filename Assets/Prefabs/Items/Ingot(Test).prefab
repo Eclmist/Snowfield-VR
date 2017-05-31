@@ -180,7 +180,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -206,9 +206,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   m_name: 
+  icon: {fileID: 0}
+  maxStackSize: 1
   maxForceVolume: 0
   physicalMaterial:
     m_name: 
     costMultiplier: 0
     conductivity: 0
     Type: 0
+  directionalMultiplier: 20
