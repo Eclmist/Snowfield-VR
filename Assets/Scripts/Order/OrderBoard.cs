@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class OrderBoard : MonoBehaviour
 {
+    [SerializeField]
+    private List<Transform> t;
+
 	private class Slot
 	{
 		public Vector3 slotPosition;
@@ -68,7 +71,7 @@ public class OrderBoard : MonoBehaviour
 		maxNumberOfOrders = rowElements * colElements;
 		slots = new Slot[maxNumberOfOrders];
 		boxCollider = GetComponent<BoxCollider>();
-		GenerateSlots();
+		GenerateSlots2();
 	}
 
 	public void RemoveFromBoard(OrderSlip order)
@@ -91,6 +94,7 @@ public class OrderBoard : MonoBehaviour
 		{
 			Slot acquiredSlot = GetAvailableSlot();
 			OrderSlip g = Instantiate(order, acquiredSlot.slotPosition + transform.forward * offsetZ, order.transform.rotation).GetComponent<OrderSlip>();
+            g.transform.Rotate(Vector3.forward,-90);
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);
@@ -140,6 +144,14 @@ public class OrderBoard : MonoBehaviour
 		}
 
 	}
+
+    private void GenerateSlots2()
+    {
+        for(int i = 0; i < maxNumberOfOrders; i ++)
+        {
+            slots[i] = new Slot(t[i].position);
+        }
+    }
 
 
 	// Returns a slot on the board that is not occupied
