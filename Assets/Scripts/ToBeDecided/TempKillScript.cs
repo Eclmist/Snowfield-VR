@@ -7,7 +7,7 @@ public class TempKillScript : MonoBehaviour {
 
 	public GameObject particle;
 
-	void Kill()
+	public void Kill()
 	{
 		particle.transform.parent = null;
 		particle.SetActive(true);
