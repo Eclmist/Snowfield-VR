@@ -17,7 +17,7 @@ public class Ingot : BlacksmithItem {
     [SerializeField]
     private bool heatSourceDetected;
     private float distFromHeat;
-    private float quenchRate = 1;
+    private float quenchRate = 0.01f;
     protected ForgedBlade morpher;
 
     public PhysicalMaterial PhysicalMaterial
