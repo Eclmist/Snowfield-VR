@@ -88,7 +88,7 @@ public class AdventurerAI : AI
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand.Item != null)
                     Destroy(leftHand.Item);
-
+                Debug.Log("check");
                 leftHand.Item = item;
                 leftHand.Item.Equip(leftHand.transform);
 
@@ -97,7 +97,7 @@ public class AdventurerAI : AI
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand.Item != null)
                     Destroy(rightHand.Item);
-
+                Debug.Log("check");
                 rightHand.Item = item;
                 rightHand.Item.Equip(rightHand.transform);
                 break;

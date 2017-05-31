@@ -104,17 +104,15 @@ public abstract class Actor : MonoBehaviour, IDamagable
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand != null)
                     return leftHand.Item;
-                else return null;
+                break;
 
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand != null)
                     return rightHand.Item;
-                else
-                    return null;
-            default:
-                return null;
+                break;
+            
         }
-
+        return null;
     }
 
     public Weapon GetLongestWeapon()
