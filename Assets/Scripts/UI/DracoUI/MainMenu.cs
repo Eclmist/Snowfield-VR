@@ -58,16 +58,16 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.CONTINUE)
         {
-            MainMenuManager.Instance.ActiveDeactiveCredits();
-            MainMenuManager.Instance.ActiveDeactiveSettings();
+            MainMenuManager.Instance.ActiveDeactiveCredits(false);
+            MainMenuManager.Instance.ActiveDeactiveSettings(false);
             MainMenuManager.Instance.TextChange("Continue");
             lastState = curState;
             curState = MainMenuState.IDLE;
         }
         else if (curState == MainMenuState.NEW_GAME)
         {
-            MainMenuManager.Instance.ActiveDeactiveCredits();
-            MainMenuManager.Instance.ActiveDeactiveSettings();
+            MainMenuManager.Instance.ActiveDeactiveCredits(false);
+            MainMenuManager.Instance.ActiveDeactiveSettings(false);
             MainMenuManager.Instance.TextChange("New Game");
             lastLastState = MainMenuState.IDLE;
             lastState = curState;
@@ -76,8 +76,8 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.SETTINGS)
         {
-            MainMenuManager.Instance.ActiveDeactiveCredits();
-            MainMenuManager.Instance.ActiveDeactiveSettings();
+            MainMenuManager.Instance.ActiveDeactiveCredits(false);
+            MainMenuManager.Instance.ActiveDeactiveSettings(true);
             MainMenuManager.Instance.TextChange("Settings");
             lastLastState = MainMenuState.NEW_GAME;
             lastState = curState;
@@ -86,8 +86,8 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.CREDITS)
         {
-            MainMenuManager.Instance.ActiveDeactiveCredits();
-            MainMenuManager.Instance.ActiveDeactiveSettings();
+            MainMenuManager.Instance.ActiveDeactiveCredits(true);
+            MainMenuManager.Instance.ActiveDeactiveSettings(false);
             MainMenuManager.Instance.TextChange("Credits");
             lastLastState = MainMenuState.SETTINGS;
             lastState = curState;
@@ -97,8 +97,8 @@ public class MainMenu : MonoBehaviour
         }
         else if (curState == MainMenuState.QUIT)
         {
-            MainMenuManager.Instance.ActiveDeactiveCredits();
-            MainMenuManager.Instance.ActiveDeactiveSettings();
+            MainMenuManager.Instance.ActiveDeactiveCredits(false);
+            MainMenuManager.Instance.ActiveDeactiveSettings(false);
             Text txt = GetComponentInChildren<Text>();
             MainMenuManager.Instance.TextChange( "Quit");
             lastLastState = MainMenuState.CREDITS;

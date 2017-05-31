@@ -6,7 +6,7 @@ using UnityEngine;
 public class Ward : MonoBehaviour // , IBLOCK
 {
 	[SerializeField] private AnimationCurve opacityCurve;
-	[SerializeField] [Range(0,10)] private float fadeSpeed = 10;
+	[SerializeField] [Range(0,10)] private float fadeSpeed = 5;
 
 	private float opacitySlider;
 	[SerializeField] private bool wardActive = false;
