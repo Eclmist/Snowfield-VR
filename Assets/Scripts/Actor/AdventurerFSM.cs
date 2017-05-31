@@ -106,6 +106,13 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer > 0 && target != null)
         {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Cast") || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            {
+                animator.SetBool("Attack", true);
+            }else
+            {
+                animator.SetBool("Attack", false);
+            }
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -125,8 +132,13 @@ public class AdventurerFSM : ActorFSM
                 }
 
                 Weapon currentWeapon = currentAI.GetLongestWeapon();
-                if (currentWeapon != null && distance <= currentWeapon.Range && Mathf.Abs(angle) < 45)//HardCoded
-                    animator.SetBool("Attack", true);
+                if (currentWeapon != null && distance <= currentWeapon.Range && Mathf.Abs(angle) < 45)
+                {
+                    if (!animator.GetBool("Attack"))
+                    {
+                        animator.SetTrigger("Cast");
+                    }
+                }
                 else
                 {
                     animator.SetBool("Attack", false);

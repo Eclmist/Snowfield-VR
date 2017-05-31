@@ -13,7 +13,7 @@ public class AI : Actor
     [SerializeField]
     protected float movementSpeed = 3;
 
-    
+
     public float MovementSpeed
     {
         get
@@ -54,13 +54,25 @@ public class AI : Actor
         if (health <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
+            UnEquipWeapons();
+            Destroy(gameObject, 3f);
+
         }
         else if (Mathf.Sign(damage) == 1)
         {
-            currentFSM.DamageTaken();
-            currentFSM.Target = attacker;
-
+            bool knockedBack = false;
+            if (damage / (float)maxHealth > .2)
+                knockedBack = true;
+            currentFSM.DamageTaken(knockedBack,attacker);
         }
+    }
+
+    protected void UnEquipWeapons()
+    {
+        if (leftHand.Item != null)
+            leftHand.Item.Unequip();
+        if (rightHand.Item != null)
+            rightHand.Item.Unequip();
     }
 
     public virtual void StopInteraction()
