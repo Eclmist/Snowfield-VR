@@ -19,8 +19,6 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
 			
 			#include "UnityCG.cginc"
 
@@ -32,7 +30,6 @@
 
 			struct v2f
 			{
-				UNITY_FOG_COORDS(1)
 				float4 vertex : SV_POSITION;
 				float3 viewDir : TEXCOORD1;
 				float3 normal : TEXCOORD2;
@@ -55,8 +52,6 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 nDotV = 1 - abs(dot(i.normal, i.viewDir));
-				// apply fog
-				UNITY_APPLY_FOG(i.fogCoord, col);
 
 				return _Color * _Opacity * pow(nDotV, _Power);
 
