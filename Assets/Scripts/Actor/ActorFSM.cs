@@ -108,6 +108,11 @@ public abstract class ActorFSM : MonoBehaviour
         }
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
             animator.SetBool("KnockBack", false);
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
+        {
+            animator.SetBool("Attacking", false);
+            EndAttack();
+        }
     }
     protected virtual void UpdateFSMState()
     {
@@ -208,9 +213,10 @@ public abstract class ActorFSM : MonoBehaviour
     }
     public virtual void StartAttack()
     {
-        
+
         if (currentUseWeapon != null)
         {
+            Debug.Log(currentUseWeapon);
             currentUseWeapon.SetBlockable(IfBlocked);
         }
     }
