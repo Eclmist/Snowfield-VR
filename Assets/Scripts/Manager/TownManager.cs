@@ -13,7 +13,7 @@ public class TownManager : MonoBehaviour
     [Tooltip("The time in seconds between each ai spawns")]
     [Range(1, 100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
-    private float timer;
+    private float timer = 0;
     // Use this for initialization
     void Awake()
     {
@@ -41,17 +41,21 @@ public class TownManager : MonoBehaviour
 
     private void UpdateTown()
     {
-        if (CurrentTown != null && currentTown.AIs.Count != CurrentTown.Population)
+        
+        if (CurrentTown != null && currentTown.ListOfAIs.Count != CurrentTown.Population)
         {
             timer += Time.deltaTime;
+            
             if (timer > aiSpawnTimer)
             {
+                Debug.Log("hit");
                 timer = 0;
 
                 Transform randomSpawn = GetRandomSpawnPoint();
                 AI randomAI = GetRandomAIType();
+                Debug.Log(randomAI);
                 if (randomSpawn && randomAI)
-                    currentTown.AIs.Add(Instantiate(GetRandomAIType(), randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+                    currentTown.ListOfAIs.Add(Instantiate(randomAI, randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
         }
     }
@@ -67,10 +71,10 @@ public class TownManager : MonoBehaviour
 
     public AI GetRandomAIType()
     {
-        int aiCount = Random.Range(0, currentTown.AIs.Count);
-        aiCount = aiCount == currentTown.AIs.Count ? aiCount - 1 : aiCount;
+        int aiCount = Random.Range(0, currentTown.TypeOfAIs.Count);
+        aiCount = aiCount == currentTown.TypeOfAIs.Count ? aiCount - 1 : aiCount;
         if (aiCount >= 0)
-            return currentTown.AIs[aiCount];
+            return currentTown.TypeOfAIs[aiCount];
         else
             return null;
     }
