@@ -9,7 +9,7 @@ public class Town : MonoBehaviour
     [SerializeField]
     [Range(5, 30)]
     [Tooltip("Max number of AI in town")]
-    private int population = 5;
+    private int population = 3;
 
     [SerializeField]
     private List<Shop> allShops = new List<Shop>();
@@ -23,13 +23,22 @@ public class Town : MonoBehaviour
     private List<Transform> spawnPoints = new List<Transform>();
 
 
-    public List<AI> AIs
+    public List<AI> TypeOfAIs
+    {
+        get
+        {
+            return typeOfAI;
+        }
+    }
+
+    public List<AI> ListOfAIs
     {
         get
         {
             return listOfAI;
         }
     }
+
 
     public List<Transform> SpawnPoint
     {
