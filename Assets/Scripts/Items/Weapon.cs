@@ -107,16 +107,18 @@ public class Weapon : Equipment
     {
         base.OnTriggerEnter(collision);
 
+        if (LinkedController != null)
+        {
+            IDamagable target = collision.GetComponent<IDamagable>();
+            Debug.Log(target);
+            if (target != null)
+            {
+                target.TakeDamage(Damage, Player.Instance);
+            }
+        }
         if (IfBlocked != null)
         {
-            if (LinkedController != null)
-            {
-                IDamagable target = collision.GetComponent<IDamagable>();
-                if (target != null)
-                {
-                    target.TakeDamage(Damage, Player.Instance);
-                }
-            }
+            
 
             IBlock item = collision.GetComponentInParent<IBlock>();
             if (item != null && item.IsBlocking)
