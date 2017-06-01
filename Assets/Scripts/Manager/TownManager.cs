@@ -53,7 +53,6 @@ public class TownManager : MonoBehaviour
 
                 Transform randomSpawn = GetRandomSpawnPoint();
                 AI randomAI = GetRandomAIType();
-                Debug.Log(randomAI);
                 if (randomSpawn && randomAI)
                     currentTown.ListOfAIs.Add(Instantiate(randomAI, randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
             }
