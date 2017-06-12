@@ -6,128 +6,166 @@ using System;
 public class Weapon : Equipment
 {
 
-	[SerializeField]
-	protected float range;
+    [SerializeField]
+    protected float range;
 
-	[Header("Weapon Charge")]
-	[SerializeField] [Range(0, 20)] private float chargeDuration = 10;
-	[SerializeField] private AnimationCurve emissiveCurve;
-	[SerializeField] [ColorUsageAttribute(true,true,0f,8f,0.125f,3f)]
-	private Color emissiveColor;
+    [Header("Weapon Charge")]
+    [SerializeField]
+    [Range(0, 20)]
+    private float chargeDuration = 10;
+    [SerializeField]
+    private AnimationCurve emissiveCurve;
+    [SerializeField]
+    [ColorUsageAttribute(true, true, 0f, 8f, 0.125f, 3f)]
+    private Color emissiveColor;
 
-	[SerializeField] [Range(0, 10)] private float fadeSpeed = 5;
-	[SerializeField] private XftWeapon.XWeaponTrail trail;
+    [SerializeField]
+    [Range(0, 10)]
+    private float fadeSpeed = 5;
+    [SerializeField]
+    private XftWeapon.XWeaponTrail trail;
 
-	private float timeSinceStartCharge = 0;
-	private float emissiveSlider = 0;
-	private ModifyRenderer modRen;
-	private bool charge = false;
-	protected override void Awake()
-	{
-		base.Awake();
-		modRen = GetComponent<ModifyRenderer>();
-	}
+    private float timeSinceStartCharge = 0;
+    private float emissiveSlider = 0;
+    private ModifyRenderer modRen;
+    private bool charge = false;
+    protected override void Awake()
+    {
+        base.Awake();
+        modRen = GetComponent<ModifyRenderer>();
+    }
 
-	private void Start()
-	{
-		modRen = GetComponent<ModifyRenderer>();
+    public override void Interact(VR_Controller_Custom referenceCheck)
+    {
+        base.Interact(referenceCheck);
+        if (linkedController != null)
+        {
+            if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Grip))
+                StartCharge();
+            else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Grip))
+                EndCharge();
+        }
 
-	}
 
-	protected void Update()
-	{
-		if (modRen)
-		{
+    }
 
-			if (charge)
-			{
-				if (emissiveSlider < 1)
-				{
-					emissiveSlider += fadeSpeed * Time.deltaTime;
-					if (emissiveSlider > 1)
-						emissiveSlider = 1;
-				}
+    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+    {
+        base.StopInteraction(referenceCheck);
+        EndCharge();
+    }
+    private void Start()
+    {
+        modRen = GetComponent<ModifyRenderer>();
 
-				timeSinceStartCharge += Time.deltaTime;
-			}
-			else
-			{
-				if (emissiveSlider > 0)
-				{
-					emissiveSlider -= fadeSpeed * Time.deltaTime;
-					if (emissiveSlider < 0)
-						emissiveSlider = 0;
-				}
+    }
 
-			}
+    protected void Update()
+    {
+        if (modRen)
+        {
 
-			Color targetColor = emissiveColor * emissiveCurve.Evaluate(emissiveSlider);
+            if (charge)
+            {
+                if (emissiveSlider < 1)
+                {
+                    emissiveSlider += fadeSpeed * Time.deltaTime;
+                    if (emissiveSlider > 1)
+                        emissiveSlider = 1;
+                }
 
-			if (trail != null)
-				trail.MyColor = targetColor / 2;
-			modRen.SetColor("_EmissionColor", targetColor);
+                timeSinceStartCharge += Time.deltaTime;
+            }
+            else
+            {
+                if (emissiveSlider > 0)
+                {
+                    emissiveSlider -= fadeSpeed * Time.deltaTime;
+                    if (emissiveSlider < 0)
+                        emissiveSlider = 0;
+                }
 
-			if (timeSinceStartCharge > chargeDuration + 1)
-				charge = false;
-		}
-	}
+            }
 
-	public float Range
-	{
-		get
-		{
-			return range;
-		}
-		set
-		{
-			range = value;
-		}
-	}
+            Color targetColor = emissiveColor * emissiveCurve.Evaluate(emissiveSlider);
 
-	private Action<IBlock> IfBlocked;
+            if (trail != null)
+                trail.MyColor = targetColor / 2;
+            modRen.SetColor("_EmissionColor", targetColor);
 
-	public void SetBlockable(Action<IBlock> ifblocked = null)
-	{
-		IfBlocked = ifblocked;
-	}
+            if (timeSinceStartCharge > chargeDuration + 1)
+                charge = false;
+        }
+    }
 
-	protected override void UseItem()
-	{
-		base.UseItem();
-	}
+    public float Range
+    {
+        get
+        {
+            return range;
+        }
+        set
+        {
+            range = value;
+        }
+    }
 
-	protected override void OnTriggerEnter(Collider collision)
-	{
-		base.OnTriggerEnter(collision);
-		if (IfBlocked != null)
-		{
-			IBlock item = collision.GetComponentInParent<IBlock>();
-			if (item != null && item.IsBlocking)
-			{
-				IfBlocked(item);
-			}
-		}
-	}
+    private Action<IBlock> IfBlocked;
 
-	//void OnDrawGizmos()
-	//{
-	//	Gizmos.DrawSphere(transform.position, range);
-	//}
+    public void SetBlockable(Action<IBlock> ifblocked = null)
+    {
+        IfBlocked = ifblocked;
+    }
 
-	public void StartCharge()
-	{
-		if (!charge)
-		{
-			timeSinceStartCharge = 0;
-			charge = true;
-		}
-	}
+    protected override void UseItem()
+    {
+        base.UseItem();
+    }
 
-	public void EndCharge()
-	{
-		if (timeSinceStartCharge > chargeDuration)
-		{
-			charge = false;
-		}
-	}
+    protected override void OnTriggerEnter(Collider collision)
+    {
+        base.OnTriggerEnter(collision);
+
+        if (LinkedController != null)
+        {
+            IDamagable target = collision.GetComponent<IDamagable>();
+            Debug.Log(target);
+            if (target != null)
+            {
+                target.TakeDamage(Damage, Player.Instance);
+            }
+        }
+        if (IfBlocked != null)
+        {
+            
+
+            IBlock item = collision.GetComponentInParent<IBlock>();
+            if (item != null && item.IsBlocking)
+            {
+                IfBlocked(item);
+            }
+        }
+    }
+
+    //void OnDrawGizmos()
+    //{
+    //	Gizmos.DrawSphere(transform.position, range);
+    //}
+
+    public void StartCharge()
+    {
+        if (!charge)
+        {
+            timeSinceStartCharge = 0;
+            charge = true;
+        }
+    }
+
+    public void EndCharge()
+    {
+        if (timeSinceStartCharge > chargeDuration)
+        {
+            charge = false;
+        }
+    }
 }

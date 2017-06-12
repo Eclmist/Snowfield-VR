@@ -335,8 +335,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
         }
 
         if (col.gameObject.GetComponent<Rigidbody>() == null)
-
-            PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
+            PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : rigidBody.velocity.magnitude / maxForceVolume);
 
     }
 
