@@ -8,6 +8,8 @@ public class AdventurerFSM : ActorFSM
 
     private Shop targetShop;
 
+    private int currentShopIndex = 0;
+
     private void NewVisitToTown()
     {
         visitedShop.Clear();
@@ -88,7 +90,8 @@ public class AdventurerFSM : ActorFSM
                     return;
                 }
                 targetShop = _targetShop;
-                AStarManager.Instance.RequestPath(transform.position, _targetShop.GetNextLocation(), ChangePath);
+                AStarManager.Instance.RequestPath(transform.position, _targetShop.Location, ChangePath);
+                currentShopIndex = 0;
                 requestedPath = true;
                 nextState = FSMState.INTERACTION;
             }
@@ -106,13 +109,7 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer > 0 && target != null)
         {
-            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Cast") || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-            {
-                animator.SetBool("Attack", true);
-            }else
-            {
-                animator.SetBool("Attack", false);
-            }
+            
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -131,17 +128,20 @@ public class AdventurerFSM : ActorFSM
                     LookAtPlayer(target.transform.position);
                 }
 
-                Weapon currentWeapon = currentAI.GetLongestWeapon();
-                if (currentWeapon != null && distance <= currentWeapon.Range && Mathf.Abs(angle) < 45)
+                bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Cast");
+
+                if (isAttacking)
+                    animator.SetBool("Attacking",true);
+
+                Weapon longestWeapon = currentAI.GetLongestWeapon();
+                if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
                 {
-                    if (!animator.GetBool("Attack"))
-                    {
-                        animator.SetTrigger("Cast");
-                    }
+                    if(!isAttacking)
+                    animator.SetTrigger("Cast");
                 }
                 else
                 {
-                    animator.SetBool("Attack", false);
+                    animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", 2);//HardCoded
                 }
                 timer = 5f;//HardCoded
@@ -158,30 +158,47 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateInteractionState()
     {
-
-        //if (CheckObstacles())
-        //{
-        //    ChangePath(GetReversePoint());
-        //    nextState = FSMState.INTERACTION;
-        //    ChangeState(FSMState.PETROL);
-        //    return;
-        //}
-
-        LookAtPlayer(targetShop.Location);
-        if (!currentAI.IsConversing)
+        Transform shopPoint = targetShop.GetPoint(currentShopIndex);
+        
+        if (timer < 0)
         {
-            if (targetShop.Owner is Player)
+            
+            if (shopPoint != null)
             {
-                if ((currentAI as AdventurerAI).GotLobang())
-                    (currentAI as AdventurerAI).GetLobang();
+                ChangePath(shopPoint.position);
+                nextState = FSMState.INTERACTION;
+                ChangeState(FSMState.PETROL);
+                currentShopIndex++;
+                if (targetShop.GetPoint(currentShopIndex) == null)
+                    timer = 0;
                 else
-                    ChangeState(FSMState.IDLE);
+                    timer = 5;
             }
+            else
+            {
+                if (!currentAI.IsConversing)
+                {
+                    if (targetShop.Owner is Player)
+                    {
+                        if ((currentAI as AdventurerAI).GotLobang())
+                            (currentAI as AdventurerAI).GetLobang();
+                        else
+                            ChangeState(FSMState.IDLE);
+                    }
 
+                }
+                else
+                {
+                    LookAtPlayer(targetShop.Owner.transform.position);
+                }
+            }
         }
         else
         {
-            LookAtPlayer(targetShop.Owner.transform.position);
+            Transform thisPoint = targetShop.GetPoint(currentShopIndex - 1);
+            if (thisPoint != null)
+                LookAtPlayer(thisPoint.position + thisPoint.forward);
+            timer -= Time.deltaTime;
         }
 
     }

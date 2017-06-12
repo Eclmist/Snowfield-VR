@@ -142,8 +142,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1247624326001458}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.33, y: 0, z: 0.748}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 5.328647, y: 0.000000076267746, z: 6.63978}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4577756122882352}
@@ -151,7 +151,7 @@ Transform:
   - {fileID: 224332125000725816}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4185379096472258
 Transform:
   m_ObjectHideFlags: 1
@@ -172,13 +172,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1025593912619474}
-  m_LocalRotation: {x: -0.44247726, y: -0.00021830897, z: -0.0017036145, w: 0.89677817}
+  m_LocalRotation: {x: -0.0000021590527, y: 0.0009163224, z: -0.0023562077, w: 0.99999684}
   m_LocalPosition: {x: 0, y: 0.023999989, z: -0.77300006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4185379096472258}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -52.524002, y: 0.105000004, z: -0.27}
+  m_LocalEulerAnglesHint: {x: 0, y: 0.105000004, z: -0.27}
 --- !u!4 &4577756122882352
 Transform:
   m_ObjectHideFlags: 1
@@ -310,7 +310,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.92999995, y: 0.5, z: 0.74799997}
+  m_ConnectedAnchor: {x: 5.328647, y: 0.50000006, z: 6.23978}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -529,8 +529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0748708fb4045be4983b27ad0cf8bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRotationValue: 165
-  minRotationalValue: 0
+  maxRotationValue: 0
+  minRotationalValue: -150
   pivot: {fileID: 4577756122882352}
   force: 89.1
 --- !u!114 &114887121363983076
@@ -570,7 +570,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.54
+  m_Radius: 0.3
   m_Center: {x: 0.00000005960466, y: 0.27672756, z: -0.008698793}
 --- !u!222 &222256619801510008
 CanvasRenderer:
