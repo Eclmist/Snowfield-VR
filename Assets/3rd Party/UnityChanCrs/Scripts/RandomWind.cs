@@ -13,6 +13,8 @@ namespace UnityChan
 {
 	public class RandomWind : MonoBehaviour
 	{
+		public Vector3 multiplier = new Vector3(1, 0, 0);
+
 		private SpringBone[] springBones;
 		public bool isWindActive = true;
 
@@ -27,7 +29,7 @@ namespace UnityChan
 		{
 			Vector3 force = Vector3.zero;
 			if (isWindActive) {
-				force = new Vector3 (Mathf.PerlinNoise (Time.time, 0.0f) * 0.005f, 0, 0);
+				force = Vector3.Scale(multiplier, new Vector3 (Mathf.PerlinNoise (Time.time, 0.0f) * 0.005f, Mathf.PerlinNoise(Time.time, 0.0f) * 0.005f, Mathf.PerlinNoise(Time.time, 0.0f) * 0.005f));
 			}
 
 			for (int i = 0; i < springBones.Length; i++) {
