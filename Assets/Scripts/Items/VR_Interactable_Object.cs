@@ -43,16 +43,16 @@ public class VR_Interactable_Object : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    public virtual void OnControllerEnter(VR_Controller_Custom controller) { }
+    public virtual void OnControllerEnter(VR_Controller_Custom controller) {
+        controller.Vibrate(triggerEnterVibration);
+    }
 
     public virtual void OnControllerStay(VR_Controller_Custom controller) { }
 
     public virtual void OnTriggerPress(VR_Controller_Custom controller)
     {
-        if (currentInteractingController != null && currentInteractingController != controller)
+        if (currentInteractingController != null)
             currentInteractingController.SetInteraction(null);
-
-        
 
         currentInteractingController = controller;
 
@@ -65,9 +65,11 @@ public class VR_Interactable_Object : MonoBehaviour
     {
         currentInteractingController = null;
         controller.SetInteraction(null);
+        
         rigidBody.velocity = currentReleaseVelocityMagnitude;
-
         rigidBody.angularVelocity = currentReleaseAngularVelocityMagnitude;
+        Debug.Log("CurrentReleaseVelocity:" + rigidBody.velocity);
+        Debug.Log(rigidBody.angularVelocity);
     }
 
     public virtual void OnGripPress(VR_Controller_Custom controller) { }
@@ -78,7 +80,14 @@ public class VR_Interactable_Object : MonoBehaviour
 
     public virtual void OnInteracting(VR_Controller_Custom controller) {
 
-        currentReleaseVelocityMagnitude = Vector3.Lerp(currentReleaseVelocityMagnitude,controller.Velocity,Time.deltaTime);
-        currentReleaseAngularVelocityMagnitude = Vector3.Lerp(currentReleaseAngularVelocityMagnitude, controller.AngularVelocity, Time.deltaTime);
+        if (currentReleaseVelocityMagnitude.magnitude > controller.Velocity.magnitude)
+            currentReleaseVelocityMagnitude = Vector3.Lerp(currentReleaseVelocityMagnitude, controller.Velocity, Time.fixedDeltaTime * 5);
+        else
+            currentReleaseVelocityMagnitude = controller.Velocity;
+        if(currentReleaseAngularVelocityMagnitude.magnitude > controller.AngularVelocity.magnitude)
+        currentReleaseAngularVelocityMagnitude = Vector3.Lerp(currentReleaseAngularVelocityMagnitude, controller.AngularVelocity, Time.fixedDeltaTime * 5);
+        else
+            currentReleaseAngularVelocityMagnitude = controller.AngularVelocity;
+
     }
 }
