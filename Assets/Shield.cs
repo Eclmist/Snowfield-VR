@@ -26,26 +26,23 @@ public class Shield : Equipment,IBlock {
         }
     }
     // Use this for initialization
-    public override void Interact(VR_Controller_Custom referenceCheck)
+    public override void OnGripPress(VR_Controller_Custom controller)
     {
-        base.Interact(referenceCheck);
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Grip))
-        {
-            isBlocking = true;
-            ward.SetWardActive(true);
-        }
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Grip))
-        {
-            isBlocking = false;
-            ward.SetWardActive(false);
-        }
+        isBlocking = true;
+        ward.SetWardActive(true);
     }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+    public override void OnGripRelease(VR_Controller_Custom controller)
+    {
+        isBlocking = false;
+        ward.SetWardActive(false);
+    }
+
+    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
         if (removable && !toggled)
         {
-            base.StopInteraction(referenceCheck);
+            base.OnTriggerRelease(referenceCheck);
             IsBlocking = false;
         }
     }
