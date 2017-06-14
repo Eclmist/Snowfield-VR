@@ -86,6 +86,8 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
         itemCollider = GetComponentInChildren<Collider>();
 
         audioSource = GetComponent<AudioSource>();
+
+        base.Awake();
     }
 
     public int Damage
@@ -93,7 +95,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
         get
         {
             if (currentInteractingController != null)
-                return currentInteractingController.Velocity().magnitude < maxVelocityDamageMultiplier ? (int)(currentInteractingController.Velocity().magnitude * damage) : damage * maxVelocityDamageMultiplier;
+                return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? (int)(currentInteractingController.Velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
             else if (isFlying)
                 return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? (int)(rigidBody.velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
             else

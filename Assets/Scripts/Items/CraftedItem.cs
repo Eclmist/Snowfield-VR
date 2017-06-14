@@ -40,13 +40,7 @@ public class CraftedItem : GenericItem
     }
 
 
-    public override void OnTriggerHold(VR_Controller_Custom referenceCheck)
-    {
-
-        transform.position = referenceCheck.transform.position;
-        transform.rotation = referenceCheck.transform.rotation;
-
-    }
+   
     //public override void UpdatePosition()
     //{
     //    transform.position = linkedController.transform.position;
@@ -57,10 +51,18 @@ public class CraftedItem : GenericItem
     {
         if (currentInteractingController != null)
         {
-            PlaySound(currentInteractingController.Velocity().magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity().magnitude / maxSwingForce);
+            PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
 
         }
     }
+
+    public override void OnInteracting(VR_Controller_Custom controller)
+    {
+        base.OnInteracting(controller);
+        transform.position = referenceCheck.transform.position;
+        transform.rotation = referenceCheck.transform.rotation;
+    }
+
     protected virtual void OnTriggerStay(Collider collision)
     {
         if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)

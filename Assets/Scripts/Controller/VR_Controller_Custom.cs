@@ -39,6 +39,7 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactableObject != null)
         {
+            interactableObject.OnInteracting(this);
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
                 interactableObject.OnTriggerPress(this);
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
@@ -82,14 +83,14 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
-    public Vector3 Velocity()
+    public Vector3 Velocity
     {
-        return device.velocity;
+        get { return device.velocity; }
     }
 
-    public Vector3 AngularVelocity()
+    public Vector3 AngularVelocity
     {
-        return device.angularVelocity;
+        get { return device.angularVelocity; }
     }
 
     public void Vibrate(float val)//pass in 1 - 10
