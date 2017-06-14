@@ -31,6 +31,7 @@ public class CraftedItem : GenericItem
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
+        
         if (removable && !toggled)
         {
             base.OnTriggerRelease(referenceCheck);

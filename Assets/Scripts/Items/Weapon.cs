@@ -148,7 +148,7 @@ public class Weapon : Equipment
         }
     }
 
-    public override void OnGripPress(VR_Controller_Custom controller)
+    public override void OnGripHold(VR_Controller_Custom controller)
     {
         StartCharge();
     }

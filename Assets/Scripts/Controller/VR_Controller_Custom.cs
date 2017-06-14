@@ -25,13 +25,25 @@ public class VR_Controller_Custom : MonoBehaviour
         trackedObject = GetComponent<SteamVR_TrackedObject>();
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
         ControllerInput();
-        if (interactableObject)
-        {
+        
+    }
 
+    private void Update()
+    {
+        if (interactableObject != null)
+        {
+            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+                interactableObject.OnTriggerPress(this);
+            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+                interactableObject.OnTriggerRelease(this);
+            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+                interactableObject.OnGripPress(this);
+            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
+                interactableObject.OnGripRelease(this);
         }
     }
 
@@ -39,21 +51,17 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactableObject != null)
         {
-            interactableObject.OnInteracting(this);
-            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-                interactableObject.OnTriggerPress(this);
+            
+            
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactableObject.OnTriggerHold(this);
-            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-                interactableObject.OnTriggerRelease(this);
-            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-                interactableObject.OnGripPress(this);
+            
+            
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactableObject.OnGripHold(this);
-            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-                interactableObject.OnGripRelease(this);
-
-
+            
+            if (interactableObject.LinkedController == this)
+                interactableObject.OnInteracting(this);
 
         }
     }
