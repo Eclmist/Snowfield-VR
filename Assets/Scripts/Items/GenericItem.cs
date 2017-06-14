@@ -1,370 +1,175 @@
-﻿using System;
-
-using System.Collections;
-
-
+﻿using System.Collections;
 
 using UnityEngine;
 
 
-
-[RequireComponent(typeof(Rigidbody))]
-
 [RequireComponent(typeof(AudioSource))]
-
-public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
-
-
+public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 {
-
-    protected Rigidbody rigidBody;
-
-
+    
 
     protected Collider itemCollider;
 
-
-
     #region GenericItem
 
-
-
     [SerializeField]
-
     protected int damage;
 
-
-
     [SerializeField]
-
     protected string m_name;
-
-
 
     protected AudioSource audioSource;
 
-
-
     #endregion GenericItem
-
-
 
     #region IInteractable
 
-
-
-    protected VR_Controller_Custom linkedController = null;
-
-
-
     private bool isFlying;
-
-
 
     private IDamagable target;
 
-
-
-    public VR_Controller_Custom LinkedController
-
-    {
-
-        get
-
-        {
-
-            return linkedController;
-
-        }
-
-    }
-
-
+    [SerializeField]
+    private int maxVelocityDamageMultiplier = 5;
 
     #endregion IInteractable
-
-
-
-
-
-
 
     protected int id;
 
     [SerializeField]
-
     protected Sprite icon;
 
     [SerializeField]
-
     protected int maxStackSize = 1;
-
-    
 
     public int ID
 
     {
-
         get { return this.id; }
 
         set { this.id = value; }
-
     }
-
-
 
     public Sprite Icon
 
     {
+        get { return this.icon; }
 
-        get{ return this.icon; }
-
-        set{ this.icon = value; }
-
+        set { this.icon = value; }
     }
-
-
 
     public int MaxStackSize
 
     {
-
         get { return this.maxStackSize; }
 
         set { this.maxStackSize = value; }
-
     }
-
-
-
-
 
     public GameObject objReference
 
     {
-
         get { return this.gameObject; }
-
     }
-
-
-
-
 
     #region
 
-
-
     [SerializeField]
-
-    protected float maxForceVolume;
-
-
+    protected float maxSwingForce;
 
     #endregion
 
-
-
-    protected virtual void Awake()
+    protected override void Awake()
 
     {
-
-        rigidBody = GetComponent<Rigidbody>();
-
+        
         itemCollider = GetComponentInChildren<Collider>();
 
         audioSource = GetComponent<AudioSource>();
-
     }
 
-
-
     public int Damage
-
     {
-
         get
-
         {
-
-            if (LinkedController != null)
-
-                return linkedController.Velocity().magnitude < 5 ? (int)(linkedController.Velocity().magnitude * damage) : damage * 5;
-
+            if (currentInteractingController != null)
+                return currentInteractingController.Velocity().magnitude < maxVelocityDamageMultiplier ? (int)(currentInteractingController.Velocity().magnitude * damage) : damage * maxVelocityDamageMultiplier;
             else if (isFlying)
-
-                return rigidBody.velocity.magnitude < 5 ? (int)(rigidBody.velocity.magnitude * damage) : damage * 5;
-
+                return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? (int)(rigidBody.velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
             else
 
                 return damage;
-
         }
-
     }
-
-
 
     public string Name
 
     {
-
         get { return this.m_name; }
 
         set { this.m_name = value; }
-
     }
 
-
-
-
-
-    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 
     {
+        base.OnTriggerRelease(referenceCheck);
 
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
-
-        {
-
-            StartInteraction(referenceCheck);
-
-        }
-
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-
-        {
-
-            Debug.Log("hit");
-
-            StopInteraction(referenceCheck);
-
-        }
-
+        StartCoroutine(Throw(Player.Instance));
     }
 
-
-
-    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
-
-    {
-
-        if (linkedController == referenceCheck)
-
-        {
-
-            linkedController = null;
-
-            referenceCheck.SetInteraction(null);
-
-            rigidBody.velocity = referenceCheck.Device.velocity;
-
-            rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
-
-            StartCoroutine(Throw(Player.Instance));
-
-        }
-
-    }
-
-
-
-    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
-
-    {
-
-        if (linkedController != null && linkedController != referenceCheck)
-
-            linkedController.SetInteraction(null);
-
-        linkedController = referenceCheck;
-
-        linkedController.SetInteraction(this);
-
-    }
-
-
+  
 
     public virtual IEnumerator Throw(Actor thrower)
 
     {
-
         isFlying = true;
-
-
 
         while (rigidBody.velocity.magnitude > 0.1)
 
         {
-
             if (target != null)
 
             {
-
                 thrower.Attack(this, target);
 
                 target = null;
 
                 break;
-
             }
 
             yield return new WaitForEndOfFrame();
-
         }
 
         target = null;
 
         isFlying = false;
-
     }
 
-
-
     protected virtual void OnCollisionEnter(Collision col)
-
     {
-
         if (isFlying)
 
         {
-
             target = col.transform.GetComponent<IDamagable>();
-
         }
 
-        if (col.gameObject.GetComponent<Rigidbody>() == null)
-            PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : rigidBody.velocity.magnitude / maxForceVolume);
-
+        //if (col.gameObject.GetComponent<Rigidbody>() == null)
+        //    PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : rigidBody.velocity.magnitude / maxForceVolume);
+        //Sound Needs fixing
     }
-
-
 
     protected void PlaySound(float volume)
 
-
-
     {
-
         if (audioSource != null)
 
-
-
         {
-
             audioSource.volume = volume;
 
-
-
             audioSource.Play();
-
         }
-
     }
 
-
-
     //public abstract void UpdatePosition();
-
 }
