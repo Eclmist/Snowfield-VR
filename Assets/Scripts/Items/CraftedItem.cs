@@ -59,8 +59,8 @@ public class CraftedItem : GenericItem
     public override void OnInteracting(VR_Controller_Custom controller)
     {
         base.OnInteracting(controller);
-        transform.position = referenceCheck.transform.position;
-        transform.rotation = referenceCheck.transform.rotation;
+        transform.position = controller.transform.position;
+        transform.rotation = controller.transform.rotation;
     }
 
     protected virtual void OnTriggerStay(Collider collision)
