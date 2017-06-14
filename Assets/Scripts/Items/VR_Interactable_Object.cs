@@ -22,6 +22,8 @@ public class VR_Interactable_Object : MonoBehaviour
     [Range(0, 10)]
     protected float triggerPressVibration = 0;
 
+    private Vector3 currentReleaseVelocityMagnitude = Vector3.zero, currentReleaseAngularVelocityMagnitude = Vector3.zero;
+
     protected VR_Controller_Custom currentInteractingController;
 
     public VR_Controller_Custom LinkedController
@@ -63,9 +65,9 @@ public class VR_Interactable_Object : MonoBehaviour
     {
         currentInteractingController = null;
         controller.SetInteraction(null);
-        rigidBody.velocity = controller.Device.velocity;
+        rigidBody.velocity = currentReleaseVelocityMagnitude;
 
-        rigidBody.angularVelocity = controller.Device.angularVelocity;
+        rigidBody.angularVelocity = currentReleaseAngularVelocityMagnitude;
     }
 
     public virtual void OnGripPress(VR_Controller_Custom controller) { }
@@ -74,4 +76,9 @@ public class VR_Interactable_Object : MonoBehaviour
 
     public virtual void OnGripRelease(VR_Controller_Custom controller) { }
 
+    public virtual void OnInteracting(VR_Controller_Custom controller) {
+
+        currentReleaseVelocityMagnitude = Vector3.Lerp(currentReleaseVelocityMagnitude,controller.Velocity,Time.deltaTime);
+        currentReleaseAngularVelocityMagnitude = Vector3.Lerp(currentReleaseAngularVelocityMagnitude, controller.AngularVelocity, Time.deltaTime);
+    }
 }

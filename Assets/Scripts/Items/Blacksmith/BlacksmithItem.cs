@@ -15,8 +15,8 @@ public class BlacksmithItem : GenericItem {
     {
         base.OnTriggerRelease(referenceCheck);
         rigidBody.useGravity = true;
-        rigidBody.velocity = referenceCheck.Velocity();
-        rigidBody.angularVelocity = referenceCheck.AngularVelocity();
+        rigidBody.velocity = referenceCheck.Velocity;
+        rigidBody.angularVelocity = referenceCheck.AngularVelocity;
     }
 
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)
@@ -79,7 +79,7 @@ public class BlacksmithItem : GenericItem {
         base.OnCollisionEnter(collision);
         if (currentInteractingController != null)
         {
-            float value = currentInteractingController.Velocity().magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity().magnitude : collisionVibrationMagnitude;
+            float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
             currentInteractingController.Vibrate(value / 10);
             isColliding = true;
         }
