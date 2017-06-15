@@ -168,4 +168,14 @@ public class Weapon : Equipment
             charge = false;
         }
     }
+
+    public override void OnGripHold(VR_Controller_Custom controller)
+    {
+        StartCharge();
+    }
+
+    public override void OnGripRelease(VR_Controller_Custom controller)
+    {
+        EndCharge();
+    }
 }

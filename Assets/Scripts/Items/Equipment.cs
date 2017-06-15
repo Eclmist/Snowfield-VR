@@ -8,14 +8,6 @@ public class Equipment : CraftedItem {
     private EquipSlot.EquipmentSlotType slot;
 
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (removable && !toggled)
-        {
-            base.StopInteraction(referenceCheck);
-        }
-    }
-
     
     public EquipSlot.EquipmentSlotType Slot
     {
