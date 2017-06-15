@@ -24,9 +24,10 @@ public abstract class VR_Interactable : MonoBehaviour
 	protected virtual void OnControllerExit()
 	{
 		currentInteractingController.Vibrate(triggerExitVibration);
-	}
+        currentInteractingController = null;
+    }
 
-	protected virtual void OnTriggerPress()
+    protected virtual void OnTriggerPress()
 	{
 		currentInteractingController.Vibrate(triggerPressVibration);
 	}
@@ -91,7 +92,6 @@ public abstract class VR_Interactable : MonoBehaviour
 			if (vrController && currentInteractingController == vrController)
 			{
                 OnControllerExit();
-                currentInteractingController = null;
 			}
 		}
 	}
