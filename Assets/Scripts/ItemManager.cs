@@ -7,15 +7,22 @@ public class ItemManager : MonoBehaviour {
 
     public static ItemManager Instance;
 
+    public string path;
+
     [SerializeField]
-    private List<GameObject> items = new List<GameObject>();
+    private List<ItemData> itemDataList = new List<ItemData>();
 
     private Dictionary<int, GameObject> itemDictionary = new Dictionary<int, GameObject>();
 
 
-    public List<GameObject> Items
+    public List<ItemData> ItemDataList
     {
-        get { return this.items; }
+        get { return this.itemDataList; }
+    }
+
+    public Dictionary<int, GameObject> ItemDictionary
+    {
+        get { return this.itemDictionary; }
     }
 
     public int NumberOfItems
@@ -26,27 +33,15 @@ public class ItemManager : MonoBehaviour {
     void Awake()
     {
         Instance = this;
+    }
 
-        Object[] loadedStuff = Resources.LoadAll( "Items", typeof(GameObject));
-
-        if (loadedStuff != null)
+    void Start()
+    {
+        foreach(ItemData data in itemDataList)
         {
-            for(int i = 0;i < loadedStuff.Length;i++)
-            {
-                
-                GameObject g = loadedStuff[i] as GameObject;
-                g.GetComponent<GenericItem>().ID = i;
-                items.Add(g);
-                itemDictionary.Add(i,g);
-            }
-
+            itemDictionary.Add(data.ItemID,data.ObjectReference);
         }
-        else
-        {
-            Debug.Log("Prefabs cant be found. Check if prefabs are in resources folder.");
-        }
-
-       
+        
     }
 
     public GameObject SpawnItem(int id,Transform trans)
