@@ -2,26 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 public class DualCamera : MonoBehaviour
 {
-
+	[SerializeField] private Camera primaryCamera;
 	[SerializeField] private Camera secondaryCamera;
+	[SerializeField] private Vector3 secondaryCameraOffset;
+	private RenderTexture hiddenCameraRT;
 
-	private Vector3 secondaryCameraOffset;
-	private Camera primaryCamera;
-	//private RenderTexture hiddenCameraRT;
-
-	void Start ()
+	void Awake ()
 	{
-		primaryCamera = GetComponent<Camera>();
 		UpdateSecondaryCameraSettings();
 
-		//hiddenCameraRT = new RenderTexture(Screen.width, Screen.height, 24);
-		//secondaryCamera.targetTexture = hiddenCameraRT;
+		hiddenCameraRT = new RenderTexture(Screen.width, Screen.height, 24);
+		secondaryCamera.targetTexture = hiddenCameraRT;
 
-		//Shader.SetGlobalTexture("_HiddenCameraTexture", hiddenCameraRT);
+		Shader.SetGlobalTexture("_SecondaryCameraTex", hiddenCameraRT);
 	}
 
 	void Update ()
@@ -35,9 +32,15 @@ public class DualCamera : MonoBehaviour
 	{
 		secondaryCamera.nearClipPlane = primaryCamera.nearClipPlane;
 		secondaryCamera.farClipPlane = primaryCamera.farClipPlane;
-		secondaryCamera.hdr = primaryCamera.hdr;
+		secondaryCamera.allowHDR = primaryCamera.allowHDR;
+		secondaryCamera.allowMSAA = primaryCamera.allowMSAA;
 		secondaryCamera.renderingPath = primaryCamera.renderingPath;
 		secondaryCamera.fieldOfView = primaryCamera.fieldOfView;
+		secondaryCamera.SetStereoProjectionMatrix(Camera.StereoscopicEye.Left,
+			primaryCamera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left));
+		secondaryCamera.SetStereoProjectionMatrix(Camera.StereoscopicEye.Right,
+			primaryCamera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right));
+
 	}
 
 	public void SwapCamera()

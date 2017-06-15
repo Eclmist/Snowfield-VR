@@ -1,4 +1,4 @@
-﻿Shader "SP/Portals/Crystal"
+﻿Shader "SP/Portal"
 {
 	Properties
 	{
