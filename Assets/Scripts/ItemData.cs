@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ItemData {
+public class ItemData : IStorable {
 
     [SerializeField]
     private int ID;
@@ -15,7 +15,6 @@ public class ItemData {
     private Sprite icon;
     [SerializeField]
     private int maxStackSize = 1;
-
 
 
     public int ItemID
