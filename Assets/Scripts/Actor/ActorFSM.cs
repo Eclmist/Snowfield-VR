@@ -108,10 +108,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected void UpdateAnimatorState()
     {
-        if (currentState != FSMState.INTERACTION)
-        {
-            animator.SetBool("Interaction", false);
-        }
+        
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
             animator.SetBool("KnockBack", false);
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
