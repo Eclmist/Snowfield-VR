@@ -13,7 +13,7 @@ public class TownManager : MonoBehaviour
     [Tooltip("The time in seconds between each ai spawns")]
     [Range(1, 100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
-    private float timer = 0;
+    private float timer;
     // Use this for initialization
     void Awake()
     {
@@ -41,24 +41,21 @@ public class TownManager : MonoBehaviour
 
     private void UpdateTown()
     {
-        
-        if (CurrentTown != null && currentTown.ListOfAIs.Count != CurrentTown.Population)
+        if (CurrentTown != null && currentTown.AIs.Count != CurrentTown.Population)
         {
             timer += Time.deltaTime;
-            
             if (timer > aiSpawnTimer)
             {
-                Debug.Log("hit");
                 timer = 0;
 
-                Transform randomSpawn = GetRandomSpawnPoint();
+                Node randomSpawn = GetRandomSpawnPoint();
                 AI randomAI = GetRandomAIType();
                 if (randomSpawn && randomAI)
-                    currentTown.ListOfAIs.Add(Instantiate(randomAI, randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
+                    currentTown.AIs.Add(Instantiate(randomAI, randomSpawn.Position, Quaternion.identity).GetComponent<AI>());
             }
         }
     }
-    public Transform GetRandomSpawnPoint()
+    public Node GetRandomSpawnPoint()
     {
         int shopIndex = Random.Range(0, currentTown.SpawnPoint.Count);
         shopIndex = shopIndex == currentTown.SpawnPoint.Count ? shopIndex - 1 : shopIndex;
@@ -70,10 +67,10 @@ public class TownManager : MonoBehaviour
 
     public AI GetRandomAIType()
     {
-        int aiCount = Random.Range(0, currentTown.TypeOfAIs.Count);
-        aiCount = aiCount == currentTown.TypeOfAIs.Count ? aiCount - 1 : aiCount;
+        int aiCount = Random.Range(0, currentTown.AIs.Count);
+        aiCount = aiCount == currentTown.AIs.Count ? aiCount - 1 : aiCount;
         if (aiCount >= 0)
-            return currentTown.TypeOfAIs[aiCount];
+            return currentTown.AIs[aiCount];
         else
             return null;
     }

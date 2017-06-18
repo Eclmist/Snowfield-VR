@@ -2,18 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : IBundle<Node> {
+[System.Serializable]
+[RequireComponent(typeof(SphereCollider))]
+public class Node : MonoBehaviour, IBundle<Node>
+{
 
-    private Node[] neighbours = new Node[8];
-    private Vector3 worldPosition;
+    [SerializeField]
+    private List<Node> neighbours = new List<Node>();
     private float startCost, endCost;
     private bool isObstacle;
-
+    private bool isSelected = false;
     private int bundleIndex;
+    private Vector3 worldPosition;
+    
+    public bool Selected
+    {
+        get
+        {
+            return isSelected;
+        }
+        set
+        {
+            isSelected = value;
+        }
+    }
 
     #region ASTARONLY
     private Node parent;
     #endregion
+
+
 
     public Node Parent
     {
@@ -21,11 +39,7 @@ public class Node : IBundle<Node> {
         set { parent = value; }
     }
 
-    public Node(Vector3 _worldPosition, bool _isObstacle)
-    {
-        worldPosition = _worldPosition;
-        isObstacle = _isObstacle;
-    }
+
 
     public bool IsObstacle
     {
@@ -63,11 +77,11 @@ public class Node : IBundle<Node> {
         }
     }
 
-    public Node[] Neighbours
+    public List<Node> Neighbours
     {
         get
         {
-            return neighbours;  
+            return neighbours;
         }
         set
         {
@@ -83,12 +97,18 @@ public class Node : IBundle<Node> {
         }
     }
 
+    private void Awake()
+    {
+        worldPosition = transform.position;
+        GetComponent<SphereCollider>().enabled = false;
+    }
+
     public int CompareTo(object _node)
     {
-        Node node = (Node) _node;
+        Node node = (Node)_node;
         if (FCost < node.FCost || (FCost == node.FCost && this.SCost < node.SCost))
             return 1;
-        else if(FCost == node.FCost && this.SCost == node.SCost)
+        else if (FCost == node.FCost && this.SCost == node.SCost)
             return 0;
         else
         {
@@ -104,4 +124,21 @@ public class Node : IBundle<Node> {
         }
         set { bundleIndex = value; }
     }
+
+    protected void OnDrawGizmos()
+    {
+
+        if (!isSelected)
+            Gizmos.color = Color.white;
+        else
+            Gizmos.color = Color.red;
+
+        Gizmos.DrawSphere(transform.position, GetComponent<SphereCollider>().radius);
+
+        foreach (Node n in neighbours)
+        {
+            Gizmos.DrawLine(transform.position, n.transform.position);
+        }
+    }
+
 }

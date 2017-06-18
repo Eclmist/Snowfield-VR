@@ -14,7 +14,8 @@ public class AStarManager : MonoBehaviour
     private bool processingPath;
     private Heap<PathRequest> requestQueue = new Heap<PathRequest>();
 
-    [SerializeField] private bool exit;
+    [SerializeField]
+    private bool exit;
 
     //public enum TypeofPathFinding
     //{
@@ -60,7 +61,7 @@ public class AStarManager : MonoBehaviour
         {
             PathRequest newRequest = new PathRequest(_startPoint, _endPoint, _callback/*, _steppableHeight*/);
             requestQueue.Add(newRequest);
-           
+
         }
     }
     private void ProcessNextPath()
@@ -70,11 +71,11 @@ public class AStarManager : MonoBehaviour
         lock (requestQueue)
         {
             currentPathRequest = requestQueue.GetFirst();
-            
+
         }
-        
+
         CalculatePath(currentPathRequest);
-       
+
     }
 
     private void FinishedProcessingPath(PathRequest _request, List<Vector3> wayPoint)
@@ -88,7 +89,9 @@ public class AStarManager : MonoBehaviour
     private void CalculatePath(PathRequest _request)
     {
         List<Vector3> wayPoint = new List<Vector3>();
+
         Node startNode = GridManager.instance.NodeFromWorldPoint(_request.startPoint);
+
         Node endNode = GridManager.instance.NodeFromWorldPoint(_request.endPoint);
 
         if (!endNode.IsObstacle)
@@ -102,26 +105,26 @@ public class AStarManager : MonoBehaviour
                 Node currentNode = openNodes.GetFirst();
 
                 closeNodes.Add(currentNode);
-                
+
                 if (currentNode == endNode)
                 {
                     wayPoint = RetraceNodes(startNode, currentNode);
                     break;
                 }
-                
-                for (int i = 0; i < currentNode.Neighbours.Length; i++)
+
+                for (int i = 0; i < currentNode.Neighbours.Count; i++)
                 {
-                    
+
                     Node currentNeighbour = currentNode.Neighbours[i];
                     if (currentNeighbour == null
                         || currentNeighbour.IsObstacle
                         || closeNodes.Contains(currentNeighbour))
-                        /*|| Mathf.Abs(currentNeighbour.Position.y - currentNode.Position.y) > _request.stepHeight*/
+                    /*|| Mathf.Abs(currentNeighbour.Position.y - currentNode.Position.y) > _request.stepHeight*/
                     {
                         continue;
                     }
-                    
-                    
+
+
                     float newMovementCost = currentNode.SCost + Vector3.Distance(currentNode.Position, currentNeighbour.Position);
                     if (newMovementCost < currentNeighbour.SCost || !openNodes.Contains(currentNeighbour))
                     {
@@ -132,26 +135,24 @@ public class AStarManager : MonoBehaviour
                         if (!openNodes.Contains(currentNeighbour))
                         {
                             openNodes.Add(currentNeighbour);
-                            
+
                             openNodes.UpdateItem(currentNeighbour);
                         }
                         else
                             openNodes.UpdateItem(currentNeighbour);
                     }
-                    
-                    GridManager.instance.OpenNodes = openNodes;
+
                 }
             }
         }
 
-        FinishedProcessingPath(_request,wayPoint);
+        FinishedProcessingPath(_request, wayPoint);
     }
 
     private List<Vector3> RetraceNodes(Node _startNode, Node _endNode)
     {
         List<Node> path = new List<Node>();
         List<Vector3> wayPoint = new List<Vector3>();
-        GridManager.instance.path = path;
         Node currentNode = _endNode;
         while (currentNode != _startNode)
         {
@@ -213,10 +214,10 @@ public struct PathRequest : IBundle<PathRequest>
 
     public int CompareTo(object obj)
     {
-        PathRequest request = (PathRequest) obj;
+        PathRequest request = (PathRequest)obj;
         if (Vector3.Distance(startPoint, endPoint) > Vector3.Distance(request.startPoint, request.endPoint))
             return -1;
         else return 1;
     }
-    
+
 }

@@ -7,19 +7,17 @@ public class Shop : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Spot where AIs go to")]
-    private Transform location;
-    private List<Vector3> points = new List<Vector3>();
+    private Node locationNode;
+
     [SerializeField]
-    private LayerMask pointsIgnoreLayer;
-    [SerializeField]
-    private List<Transform> WaypointsBeforeOwner;
+    private List<Node> WaypointsBeforeOwner;
     private bool isOccupied = false;
 
-    public Vector3 Location
+    public Node Location
     {
         get
         {
-            return location.position;
+            return locationNode;
         }
 
     }
@@ -35,30 +33,22 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public Transform GetPoint(int currentAIWaypoint)
+    public Node GetPoint(int currentAIWaypoint)
     {
         if (currentAIWaypoint < WaypointsBeforeOwner.Count && currentAIWaypoint >= 0)
             return WaypointsBeforeOwner[currentAIWaypoint];
-        return null; 
+        return null;
     }
     private void Awake()
     {
 
-        if (!location)
+        if (!locationNode)
         {
             Debug.Log("Location for " + gameObject.name + ": store has not been set! Hence it wont be considered a shop");
             Destroy(this);
         }
-       
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(location.position, .1f);
-        foreach (Vector3 x in points)
-        {
-            Gizmos.DrawSphere(x, .1f);
-        }
 
     }
+
+
 }

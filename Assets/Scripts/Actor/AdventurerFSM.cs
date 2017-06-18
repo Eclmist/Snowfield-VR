@@ -90,15 +90,15 @@ public class AdventurerFSM : ActorFSM
                     return;
                 }
                 targetShop = _targetShop;
-                AStarManager.Instance.RequestPath(transform.position, _targetShop.Location, ChangePath);
+                AStarManager.Instance.RequestPath(transform.position, _targetShop.Location.Position, ChangePath);
                 currentShopIndex = 0;
                 requestedPath = true;
                 nextState = FSMState.INTERACTION;
             }
             else
             {
-                Transform endPoint = TownManager.Instance.GetRandomSpawnPoint();
-                AStarManager.Instance.RequestPath(transform.position, endPoint.position, ChangePath);
+                Node endPoint = TownManager.Instance.GetRandomSpawnPoint();
+                AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
                 requestedPath = true;
                 nextState = FSMState.QUESTING;
             }
@@ -109,7 +109,7 @@ public class AdventurerFSM : ActorFSM
     {
         if (timer > 0 && target != null)
         {
-            
+
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -131,13 +131,13 @@ public class AdventurerFSM : ActorFSM
                 bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Cast");
 
                 if (isAttacking)
-                    animator.SetBool("Attacking",true);
+                    animator.SetBool("Attacking", true);
 
                 Weapon longestWeapon = currentAI.GetLongestWeapon();
                 if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
                 {
-                    if(!isAttacking)
-                    animator.SetTrigger("Cast");
+                    if (!isAttacking)
+                        animator.SetTrigger("Cast");
                 }
                 else
                 {
@@ -158,14 +158,14 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateInteractionState()
     {
-        Transform shopPoint = targetShop.GetPoint(currentShopIndex);
-        
+        Node shopPoint = targetShop.GetPoint(currentShopIndex);
+
         if (timer < 0)
         {
-            
+
             if (shopPoint != null)
             {
-                ChangePath(shopPoint.position);
+                ChangePath(shopPoint.Position);
                 nextState = FSMState.INTERACTION;
                 ChangeState(FSMState.PETROL);
                 currentShopIndex++;
@@ -195,9 +195,9 @@ public class AdventurerFSM : ActorFSM
         }
         else
         {
-            Transform thisPoint = targetShop.GetPoint(currentShopIndex - 1);
-            if (thisPoint != null)
-                LookAtPlayer(thisPoint.position + thisPoint.forward);
+            Node thisPoint = targetShop.GetPoint(currentShopIndex - 1);
+            //if (thisPoint != null)
+            //    LookAtPlayer(thisPoint.position + thisPoint.forward);
             timer -= Time.deltaTime;
         }
 
