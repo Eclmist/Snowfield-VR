@@ -10,7 +10,7 @@ public class ItemData : IStorable {
     [SerializeField]
     private GameObject prefab;
     [SerializeField]
-    private bool isUnlocked;
+    private int levelUnlocked;
     [SerializeField]
     private Sprite icon;
     [SerializeField]
@@ -27,10 +27,10 @@ public class ItemData : IStorable {
         get { return this.prefab; }
     }
 
-    public bool IsUnlocked
+    public int LevelUnlocked
     {
-        get { return this.isUnlocked; }
-        set { this.isUnlocked = value; }
+        get { return this.levelUnlocked; }
+        set { this.levelUnlocked = value; }
     }
 
     public Sprite Icon

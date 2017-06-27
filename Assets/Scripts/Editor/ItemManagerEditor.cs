@@ -61,13 +61,13 @@ public class ItemManagerEditor : Editor {
            element.FindPropertyRelative("icon"), GUIContent.none);
 
         EditorGUI.PropertyField(
-           new Rect(rect.x + 440, rect.y, rect.xMin, EditorGUIUtility.singleLineHeight),
+           new Rect(rect.x + 420, rect.y, rect.xMin, EditorGUIUtility.singleLineHeight),
            element.FindPropertyRelative("maxStackSize"), GUIContent.none);
 
 
         EditorGUI.PropertyField(
-            new Rect(rect.x + rect.width - 50, rect.y, 10, EditorGUIUtility.singleLineHeight),
-            element.FindPropertyRelative("isUnlocked"),GUIContent.none);
+            new Rect(rect.x + rect.width - 50, rect.y, 20, EditorGUIUtility.singleLineHeight),
+            element.FindPropertyRelative("levelUnlocked"),GUIContent.none);
 
 
 
