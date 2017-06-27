@@ -53,8 +53,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224947111402293242}
-  - component: {fileID: 114978757821952104}
   - component: {fileID: 65842785538170224}
+  - component: {fileID: 114662476465199204}
   m_Layer: 0
   m_Name: InteractiveSlot
   m_TagString: Untagged
@@ -107,6 +107,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
+--- !u!114 &114662476465199204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769439562842444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c07a00daaa3643469341ff427620dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: 1
+  triggerEnterVibration: 0.8
+  triggerExitVibration: 0.3
+  triggerPressVibration: 0
 --- !u!114 &114817537569680672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,21 +149,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114978757821952104
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1769439562842444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 409f3de5acea2064daf575f28facdb16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
 --- !u!222 &222339170146304986
 CanvasRenderer:
   m_ObjectHideFlags: 1
