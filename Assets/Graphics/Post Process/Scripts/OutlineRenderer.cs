@@ -45,7 +45,7 @@ public class OutlineRenderer : MonoBehaviour
 		tempSecondaryCamera.CopyFrom(camera);
 		tempSecondaryCamera.clearFlags = CameraClearFlags.Color;
 		tempSecondaryCamera.backgroundColor = Color.black;
-		tempSecondaryCamera.SetReplacementShader(replacement, "Outline");
+		tempSecondaryCamera.SetReplacementShader(replacement, "RenderType");
 
 		//make the temporary rendertexture
 

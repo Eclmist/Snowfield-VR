@@ -22,11 +22,19 @@ public class VR_Interactable_Object : MonoBehaviour
     [Range(0, 10)]
     protected float triggerPressVibration = 0;
 
-    private Vector3 currentReleaseVelocityMagnitude = Vector3.zero, currentReleaseAngularVelocityMagnitude = Vector3.zero;
+	private Vector3 currentReleaseVelocityMagnitude = Vector3.zero, currentReleaseAngularVelocityMagnitude = Vector3.zero;
 
     protected VR_Controller_Custom currentInteractingController;
 
-    public VR_Controller_Custom LinkedController
+
+	// Outline Rendering
+	[SerializeField]
+	private Color outlineColor = Color.yellow;
+
+	private Renderer[] childRenderers;
+	private List<Material> childMaterials = new List<Material>();
+
+	public VR_Controller_Custom LinkedController
     {
         get
         {
@@ -40,18 +48,51 @@ public class VR_Interactable_Object : MonoBehaviour
 
     protected virtual void Awake()
     {
-        rigidBody = GetComponent<Rigidbody>();
-    }
+		childRenderers = GetComponentsInChildren<Renderer>();
 
-    public virtual void OnControllerEnter(VR_Controller_Custom controller) {
+		foreach (Renderer r in childRenderers)
+		{
+			if (r.GetComponent<ParticleSystem>())
+				continue;
+
+			foreach (Material m in r.materials)
+			{
+				if (m)
+				{
+					m.SetOverrideTag("RenderType", "Outline");
+					m.SetColor("_OutlineColor", Color.black);
+					childMaterials.Add(m);
+				}
+			}
+		}
+	}
+
+	protected virtual void Start()
+	{
+		rigidBody = GetComponent<Rigidbody>();
+	}
+
+	protected virtual void Update()
+	{
+	}
+
+	public virtual void OnControllerEnter(VR_Controller_Custom controller) {
         controller.Vibrate(triggerEnterVibration);
+		SetOutline(true);
     }
 
     public virtual void OnControllerStay(VR_Controller_Custom controller) { }
 
-    public virtual void OnTriggerPress(VR_Controller_Custom controller)
+	public virtual void OnControllerExit(VR_Controller_Custom controller)
+	{
+		SetOutline(false);
+	}
+
+	public virtual void OnTriggerPress(VR_Controller_Custom controller)
     {
-        if (currentInteractingController != null)
+		SetOutline(false);
+
+		if (currentInteractingController != null)
             currentInteractingController.SetInteraction(null);
 
         currentInteractingController = controller;
@@ -90,4 +131,17 @@ public class VR_Interactable_Object : MonoBehaviour
             currentReleaseAngularVelocityMagnitude = controller.AngularVelocity;
 
     }
+
+	public void SetOutline(bool enabled)
+	{
+		SetOutlineColor(enabled ? outlineColor : Color.black);
+	}
+
+	private void SetOutlineColor(Color color)
+	{
+		foreach (Material m in childMaterials)
+		{
+			m.SetColor("_OutlineColor", color);
+		}
+	}
 }

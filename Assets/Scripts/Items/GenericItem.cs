@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 {
-    
+	
 
     protected Collider itemCollider;
 
