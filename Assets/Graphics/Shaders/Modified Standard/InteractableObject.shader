@@ -9,7 +9,7 @@
 
 	SubShader{
 
-		Tags { "RenderType"="Opaque" "Outline"="true" }
+		Tags { "RenderType"="Outline" }
 
 
 		LOD 200
