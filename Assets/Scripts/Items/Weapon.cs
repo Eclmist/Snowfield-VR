@@ -35,26 +35,8 @@ public class Weapon : Equipment
         modRen = GetComponent<ModifyRenderer>();
     }
 
-	//public override void Interact(VR_Controller_Custom referenceCheck)
-	//{
-	//	base.Interact(referenceCheck);
-	//	if (linkedController != null)
-	//	{
-	//		if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Grip))
-	//			StartCharge();
-	//		else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Grip))
-	//			EndCharge();
-	//	}
-
-
-	//}
-
-	//public override void StopInteraction(VR_Controller_Custom referenceCheck)
-	//{
-	//	base.StopInteraction(referenceCheck);
-	//	EndCharge();
-	//}
-	private void Start()
+    
+    private void Start()
     {
         modRen = GetComponent<ModifyRenderer>();
 
