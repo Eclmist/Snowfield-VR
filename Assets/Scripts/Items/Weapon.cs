@@ -35,9 +35,10 @@ public class Weapon : Equipment
         modRen = GetComponent<ModifyRenderer>();
     }
 
-    
-    private void Start()
+
+	protected override void Start()
     {
+		base.Start();
         modRen = GetComponent<ModifyRenderer>();
 
     }
