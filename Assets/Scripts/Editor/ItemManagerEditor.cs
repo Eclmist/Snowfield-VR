@@ -64,6 +64,10 @@ public class ItemManagerEditor : Editor {
            new Rect(rect.x + 420, rect.y, rect.xMin, EditorGUIUtility.singleLineHeight),
            element.FindPropertyRelative("maxStackSize"), GUIContent.none);
 
+        EditorGUI.PropertyField(
+           new Rect(rect.x + 470, rect.y, 150, EditorGUIUtility.singleLineHeight),
+           element.FindPropertyRelative("jobType"), GUIContent.none);
+
 
         EditorGUI.PropertyField(
             new Rect(rect.x + rect.width - 50, rect.y, 20, EditorGUIUtility.singleLineHeight),
@@ -130,12 +134,16 @@ public class ItemManagerEditor : Editor {
                 if (g == null)
                     prefabName = "NO ITEM ASSIGNED";
                 else
+                {
                     prefabName = g.name;
+                }
+                    
 
                     string line = x + "\t" + prefabName;
                    
 
                 file.WriteLine(line);
+                
             }
 
             file.Close();
