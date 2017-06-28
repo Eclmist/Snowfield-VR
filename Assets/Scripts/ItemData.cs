@@ -15,8 +15,10 @@ public class ItemData : IStorable {
     private Sprite icon;
     [SerializeField]
     private int maxStackSize = 1;
+    [SerializeField]
+    private JobType jobType;
 
-
+    
     public int ItemID
     {
         get { return this.ID; }
@@ -43,6 +45,11 @@ public class ItemData : IStorable {
     public int MaxStackSize
     {
         get { return this.maxStackSize; }
+    }
+
+    public JobType JobType
+    {
+        get { return this.jobType; }
     }
 
 
