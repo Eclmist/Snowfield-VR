@@ -75,7 +75,7 @@ public class InteractableSlot : VR_Interactable {
         }
     }
 
-
+  
     private void AddToSlot(IStorable item)
     {
         if(slot.StoredItem == null)
@@ -86,13 +86,22 @@ public class InteractableSlot : VR_Interactable {
         {
             if(slot.CurrentStack < slot.StoredItem.MaxStackSize)
             {
-                //destroy the item
+                Destroy(item.ObjectReference);
             }
             else
             {
                 //show red outline
             }
         }
+       
+    }
+
+    protected override void OnTriggerPress()
+    {
+        base.OnTriggerPress();
+        
+        // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
+        // else call RemoveFromSlot()
     }
 
 
