@@ -16,15 +16,24 @@ public class WeaponTierManager : MonoBehaviour {
         private List<int> tierList;
 
 
+        public TYPE Type
+        {
+            get { return this.type; }
+        }
+
+        public List<int> TierList
+        {
+            get { return this.tierList; }
+        }
+
+
     }
 
     public static WeaponTierManager Instance;
-    public List<WeaponClass> weaponClassList = new List<WeaponClass>();
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+
+    [SerializeField]
+    private List<WeaponClass> weaponClassList = new List<WeaponClass>();
 
     void Awake()
     {
@@ -36,6 +45,41 @@ public class WeaponTierManager : MonoBehaviour {
 		
 	}
 
+    public List<WeaponClass> WeaponClassList
+    {
+        get { return this.weaponClassList; }
+    }
+
+    public int GetNumberOfTiersInClass(TYPE t)
+    {
+        foreach(WeaponClass wc in weaponClassList)
+        {
+            if(t == wc.Type)
+            {
+                return wc.TierList.Count;
+               
+            }
+        }
+
+        return 0;
+    }
+
+
+    public ItemData GetWeapon(TYPE type, int tier)
+    {
+        foreach(WeaponClass wc in weaponClassList)
+        {
+            if(wc.Type == type)
+            {
+                if (wc.TierList.Count < 1)
+                    return null;
+                else
+                    return ItemManager.Instance.GetItemData(wc.TierList[tier]);
+            }
+        }
+
+        return null;
+    }
 
 
 }
