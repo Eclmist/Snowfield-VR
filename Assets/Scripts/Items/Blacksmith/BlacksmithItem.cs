@@ -8,6 +8,13 @@ public class BlacksmithItem : GenericItem {
     protected bool isColliding = false;
     [SerializeField] private float directionalMultiplier = 20;
     protected float maxForce = 40f;
+
+    private void Start()
+    {
+        jobType = JobType.BLACKSMITH;
+        
+    }
+
     public override void StopInteraction(VR_Controller_Custom referenceCheck)
     {
         rigidBody.useGravity = true;
