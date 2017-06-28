@@ -17,7 +17,7 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
 
 {
-
+    protected JobType jobType;
     protected Rigidbody rigidBody;
 
 
