@@ -56,11 +56,14 @@ public class RotatableObject : VR_Interactable_Object
 
     public override void OnTriggerHold(VR_Controller_Custom controller)
     {
-        controller.Vibrate(rigidBody.velocity.magnitude);
-        Vector3 PositionDelta = (controller.transform.position - transform.position);
-        Vector3 velocity = PositionDelta * 20 * rigidBody.mass;
-        velocity = velocity.magnitude <= 1 ? velocity : velocity.normalized * 1f;
-        rigidBody.velocity = velocity;
+        if (currentInteractingController)
+        {
+            controller.Vibrate(rigidBody.velocity.magnitude);
+            Vector3 PositionDelta = (controller.transform.position - transform.position);
+            Vector3 velocity = PositionDelta * 20 * rigidBody.mass;
+            velocity = velocity.magnitude <= 1 ? velocity : velocity.normalized * 1f;
+            rigidBody.velocity = velocity;
+        }
     }
 
 
