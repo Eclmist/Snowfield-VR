@@ -18,7 +18,7 @@ public class Ingot : BlacksmithItem {
     private bool heatSourceDetected;
     private float distFromHeat;
     private float quenchRate = 0.01f;
-    protected ForgedBlade morpher;
+    protected IngotDeformer ingotDeformer;
 
     public PhysicalMaterial PhysicalMaterial
     {
@@ -37,7 +37,7 @@ public class Ingot : BlacksmithItem {
         }
         else
         {
-            morpher = GetComponentInChildren<ForgedBlade>();
+            ingotDeformer = GetComponentInChildren<IngotDeformer>();
 			initialMaterial = meshRenderer.material;
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
@@ -68,9 +68,9 @@ public class Ingot : BlacksmithItem {
     protected void UpdateMorpher()
     {
         if (currentTemperature > .8)
-            morpher.enabled = true;
+            ingotDeformer.enabled = true;
         else
-            morpher.enabled = false;
+            ingotDeformer.enabled = false;
     }
 
 

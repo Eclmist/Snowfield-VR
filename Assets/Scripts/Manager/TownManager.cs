@@ -48,7 +48,6 @@ public class TownManager : MonoBehaviour
             
             if (timer > aiSpawnTimer)
             {
-                Debug.Log("hit");
                 timer = 0;
 
                 Transform randomSpawn = GetRandomSpawnPoint();

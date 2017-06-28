@@ -8,14 +8,16 @@ public class Hammer : BlacksmithItem {
 	{
 		base.OnCollisionEnter(collision);
 
-		foreach (ContactPoint contact in collision.contacts)
-		{
-			ForgedBlade ingot = contact.otherCollider.GetComponentInParent<ForgedBlade>();
+		IngotDeformer ingotDeformer = collision.collider.GetComponentInParent<IngotDeformer>();
 
-			if (ingot != null)
+		if (ingotDeformer != null)
+		{
+			foreach (ContactPoint contact in collision.contacts)
 			{
-				ingot.Impact(collision.relativeVelocity, contact.point);
+				ingotDeformer.Impact(collision.relativeVelocity, contact.point);
 			}
+
+			// Ingot.IncrementMorphStep();
 		}
 
 	}
