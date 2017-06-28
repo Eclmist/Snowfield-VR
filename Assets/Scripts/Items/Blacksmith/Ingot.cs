@@ -76,7 +76,8 @@ public class Ingot : BlacksmithItem {
             ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.Type,currentMorphSteps);
             if(itemData != null)
             {
-                Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().fakeSelf);
+                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().fakeSelf);
+                g.GetComponent<FakeItem>().trueForm = itemData;
                 Destroy(this.gameObject);       
             }
         }
