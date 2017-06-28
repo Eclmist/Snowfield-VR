@@ -13,6 +13,7 @@ public class ItemManager : MonoBehaviour {
     private List<ItemData> itemDataList = new List<ItemData>();
 
     private Dictionary<int, GameObject> itemDictionary = new Dictionary<int, GameObject>();
+    private Dictionary<int, ItemData> itemDataDictionary = new Dictionary<int, ItemData>();
 
 
     public List<ItemData> ItemDataList
@@ -23,6 +24,11 @@ public class ItemManager : MonoBehaviour {
     public Dictionary<int, GameObject> ItemDictionary
     {
         get { return this.itemDictionary; }
+    }
+
+    public Dictionary<int, ItemData> ItemDataDictionary
+    {
+        get { return this.itemDataDictionary; }
     }
 
     public int NumberOfItems
@@ -40,7 +46,10 @@ public class ItemManager : MonoBehaviour {
         foreach(ItemData data in itemDataList)
         {
             itemDictionary.Add(data.ItemID,data.ObjectReference);
+            itemDataDictionary.Add(data.ItemID,data);
         }
+
+
         
     }
 
@@ -61,6 +70,18 @@ public class ItemManager : MonoBehaviour {
         if (id < itemDictionary.Count)
         {
             return itemDictionary[id].GetComponent<GenericItem>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public ItemData GetItemData(int id )
+    {
+        if (id < itemDataDictionary.Count)
+        {
+            return itemDataDictionary[id];
         }
         else
         {
