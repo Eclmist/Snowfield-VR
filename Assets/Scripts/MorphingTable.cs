@@ -6,7 +6,8 @@ using UnityEngine;
 public class MorphingTable : MonoBehaviour {
 
     public Transform lockTransform;
-    private bool isOccupied;
+
+    [SerializeField]
     private Ingot ingotReference;
 
     void Start()
@@ -18,10 +19,15 @@ public class MorphingTable : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        isOccupied = (ingotReference.transform.position == lockTransform.position
-                        && ingotReference.transform.rotation == lockTransform.rotation) ||
-                        (ingotReference != null);
-        
+        if(ingotReference!=null)
+        {
+            if (ingotReference.transform.position != lockTransform.position
+                        || ingotReference.transform.rotation != lockTransform.rotation)
+            {
+                ingotReference = null;
+            }
+
+        }
 
 	}
 
@@ -30,7 +36,7 @@ public class MorphingTable : MonoBehaviour {
 
         Ingot ingot = other.gameObject.GetComponent<Ingot>();
 
-        if (!isOccupied && ingot != null)
+        if (ingotReference == null && ingot != null)
         {
             ingotReference = ingot;
 
@@ -49,10 +55,14 @@ public class MorphingTable : MonoBehaviour {
         t.rotation = lockTransform.rotation;
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(GetComponent<SphereCollider>().center, GetComponent<SphereCollider>().radius);
+    }
 
 
 
-    
+
 
 
 
