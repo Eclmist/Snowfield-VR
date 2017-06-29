@@ -28,6 +28,7 @@ public class GridManager : MonoBehaviour
 
     [Header("Editor")]
     public Node nodePrefab;
+    
     public float nodesDistance;
     #endregion
 

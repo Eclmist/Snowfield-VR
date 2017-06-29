@@ -81,4 +81,8 @@ public class AI : Actor
         isConversing = false;
     }
 
+    public virtual void LookAtObject(Transform target,float time,float angle)
+    {
+        StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
+    }
 }

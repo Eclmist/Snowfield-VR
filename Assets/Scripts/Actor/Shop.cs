@@ -7,10 +7,10 @@ public class Shop : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Spot where AIs go to")]
-    private Node locationNode;
+    private Node locationNode,interactionNode;
 
     [SerializeField]
-    private List<Node> WaypointsBeforeOwner;
+    private List<Node> wayPoints;
     private bool isOccupied = false;
 
     public Node Location
@@ -22,6 +22,13 @@ public class Shop : MonoBehaviour
 
     }
 
+    public Node InteractionNode
+    {
+        get
+        {
+            return interactionNode;
+        }
+    }
     [SerializeField]
     private Actor shopOwner;
 
@@ -33,11 +40,18 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public Node GetPoint(int currentAIWaypoint)
+    public Node GetRandomPoint()
     {
-        if (currentAIWaypoint < WaypointsBeforeOwner.Count && currentAIWaypoint >= 0)
-            return WaypointsBeforeOwner[currentAIWaypoint];
-        return null;
+        List<Node> tempNode = new List<Node>();
+        tempNode.AddRange(wayPoints);
+        tempNode.RemoveAll(Node => Node.Occupied);
+        if (tempNode.Count == 0)
+            return null;
+        else
+        {
+            int randomNumber = Random.Range(0, tempNode.Count);
+            return tempNode[randomNumber];
+        }
     }
     private void Awake()
     {

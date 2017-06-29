@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider))]
 public abstract class ActorFSM : MonoBehaviour
 {
 
@@ -13,26 +14,27 @@ public abstract class ActorFSM : MonoBehaviour
         PETROL,
         QUESTING,
         INTERACTION,
-        INTRUSION,
         COMBAT,
+        EVENTHANDLING,
         DEATH
     }
+    protected CapsuleCollider capsuleCollider;
+    protected bool isHandlingAction = false;
     [SerializeField]
     protected Transform eye;
     [SerializeField]
     protected float detectionDistance = 10;
     protected AI currentAI;
-    protected List<Vector3> path;
+    protected List<Node> path;
     protected bool requestedPath, pathFound;
     [SerializeField]
     protected FSMState currentState;
     protected Actor target;
     protected Animator animator;
-    [SerializeField]
-    protected float timer = 0;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
     protected Weapon currentUseWeapon;
+    protected List<NodeEvent> handledEvents = new List<NodeEvent>();
     #region Avoidance
     [Header("Avoidance")]
     [SerializeField]
@@ -43,12 +45,16 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void ChangeState(FSMState state)
     {
-
+        StopAllCoroutines();
+        isHandlingAction = false;
         pathFound = false;
         currentState = state;
         rigidBody.isKinematic = false;
         animator.speed = 1;
         animator.SetFloat("Speed", 0);
+
+        if (state != FSMState.EVENTHANDLING)
+            handledEvents.Clear();
 
         switch (state)
         {
@@ -67,6 +73,7 @@ public abstract class ActorFSM : MonoBehaviour
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         currentAI = GetComponent<AI>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
     public Actor Target
     {
@@ -100,7 +107,7 @@ public abstract class ActorFSM : MonoBehaviour
             UpdateFSMState();
             UpdateAnimatorState();
         }
-        else if(animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
             currentAI.PlayDeath();
         }
@@ -108,7 +115,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected void UpdateAnimatorState()
     {
-        
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
             animator.SetBool("KnockBack", false);
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
@@ -118,12 +125,15 @@ public abstract class ActorFSM : MonoBehaviour
     }
     protected virtual void UpdateFSMState()
     {
-        rigidBody.velocity = Vector3.zero;
+        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
         rigidBody.angularVelocity = Vector3.zero;
         switch (currentState)
         {
             case FSMState.IDLE:
                 UpdateIdleState();
+                break;
+            case FSMState.EVENTHANDLING:
+                UpdateEventHandling();
                 break;
             case FSMState.PETROL:
                 UpdatePetrolState();
@@ -137,9 +147,69 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
+    protected virtual void UpdateEventHandling()
+    {
+        if (!isHandlingAction)
+        {
+            if (handledEvents.Count <= 0)
+            {
+                path[0].Occupied = false;
+                path.RemoveAt(0);
+                ChangeState(FSMState.PETROL);
+                return;
+            }
+            else
+            {
+                NodeEvent firstEvent = handledEvents[0];
+                handledEvents.RemoveAt(0);
+                firstEvent.HandleEvent(currentAI);
+            }
+        }
+    }
+
+    protected virtual void UpdatePetrolState()
+    {
+        if (path.Count == 0)
+        {
+            ChangeState(nextState);
+        }
+        else
+        {
+            Vector3 targetPoint = path[0].Position;
+            targetPoint.y = transform.position.y;
+            if (path.Count == 1 && path[0].Occupied)
+            {
+                animator.SetFloat("Speed", 0);
+            }
+            else
+            {
+                animator.SetFloat("Speed", 2);
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol"))
+                {
+                    rigidBody.velocity = AvoidObstacles(targetPoint);
+                }
+                LookAtPlayer(targetPoint);
+
+                if (Vector3.Distance(transform.position, targetPoint) < .25f)
+                {
+                    handledEvents.AddRange(path[0].Events);
+                    if (handledEvents.Count > 0)
+                    {
+                        path[0].Occupied = true;
+                        ChangeState(FSMState.EVENTHANDLING);
+                    }
+                    else
+                        path.RemoveAt(0);
+                }
+            }
+
+
+
+        }
+    }
+
     protected abstract void UpdateIdleState();
 
-    protected abstract void UpdatePetrolState();
 
     protected abstract void UpdateInteractionState();
 
@@ -148,7 +218,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected EquipSlot.EquipmentSlotType animUseSlot;
 
-    protected void ChangePath(List<Vector3> _path)
+    protected void ChangePath(List<Node> _path)
     {
         if (_path.Count > 0)
         {
@@ -163,9 +233,9 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    protected void ChangePath(Vector3 _path)
+    protected void ChangePath(Node _path)
     {
-        List<Vector3> newPath = new List<Vector3>();
+        List<Node> newPath = new List<Node>();
         newPath.Add(_path);
         ChangePath(newPath);
     }
@@ -178,7 +248,7 @@ public abstract class ActorFSM : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dir);
         if (target != null)
         {
-            
+
             if (currentUseWeapon != null)
             {
                 Vector3 temptarget = target.transform.position;
@@ -264,7 +334,7 @@ public abstract class ActorFSM : MonoBehaviour
             // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
-            distanceExp = 5 - distanceExp * 5;
+            //distanceExp = 5 - distanceExp * 5;
             return transform.forward - transform.right * distanceExp * currentAI.MovementSpeed;
         }
         else if (Physics.Raycast(eye.position, left45, out Hit,
@@ -273,19 +343,19 @@ public abstract class ActorFSM : MonoBehaviour
             // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
-            distanceExp = 5 - distanceExp * 5;
+            //distanceExp = 5 - distanceExp * 5;
             return transform.forward + transform.right * currentAI.MovementSpeed * distanceExp;
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir.y = 0;
-            return dir * currentAI.MovementSpeed;
-        }
+            dir = dir * currentAI.MovementSpeed;
+            dir.y = rigidBody.velocity.y;
+            return dir;        }
     }
 
-    public void DamageTaken(bool knockbacked,Actor attacker)
+    public void DamageTaken(bool knockbacked, Actor attacker)
     {
         if (knockbacked)
         {
@@ -299,43 +369,61 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected void LookAtPlayer(Vector3 endPoint)
     {
-        float distance = (endPoint - transform.position).magnitude / 60;
-        float angle = Vector3.Angle(endPoint - transform.position, transform.forward) / 180;
+        //float distance = (endPoint - transform.position).magnitude / 60;
+        //float angle = Vector3.Angle(endPoint - transform.position, transform.forward) / 180;
         //float rotationSpeed = turnRateOverAngle.Evaluate(angle);
 
         Vector3 lookAtTarget = AvoidObstacles(endPoint);
         lookAtTarget.y = 0; //Force no y change;
-   
-        
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-            Quaternion.LookRotation(lookAtTarget, Vector3.up),
-            5 * Time.deltaTime);//hardcorded 10
+
+        if (lookAtTarget != Vector3.zero)
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(lookAtTarget, Vector3.up),
+                5 * Time.deltaTime);//hardcorded 10
     }
 
-    protected Vector3 GetReversePoint()
-    {
-        RaycastHit Hit;
-        //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
-        Vector3 dir = -transform.forward;
+    //protected Vector3 GetReversePoint()
+    //{
+    //    RaycastHit Hit;
+    //    //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
+    //    Vector3 dir = -transform.forward;
 
-        if (Physics.Raycast(transform.position, dir, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask))
-        {
+    //    if (Physics.Raycast(transform.position, dir, out Hit,
+    //        minimumDistToAvoid, ~avoidanceIgnoreMask))
+    //    {
 
-            return Hit.point;
-        }
-        else
-            return (-transform.forward * minimumDistToAvoid) + transform.position;
-    }
+    //        return Hit.point;
+    //    }
+    //    else
+    //        return (-transform.forward * minimumDistToAvoid) + transform.position;
+    //}
 
     public void StartCharge()
     {
-        
+
         currentUseWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-        
+
         if (currentUseWeapon != null)
         {
             currentUseWeapon.StartCharge();
         }
+    }
+
+    public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
+    {
+        while (seconds >= 0)
+        {
+            isHandlingAction = true;
+
+            Vector3 dir = targetTransform.position - transform.position;
+            dir.y = 0;
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(dir, Vector3.up),
+                5 * Time.deltaTime);//hardcorded 10
+            yield return new WaitForEndOfFrame();
+            seconds -= Time.deltaTime;
+        }
+        isHandlingAction = false;
+
     }
 }

@@ -10,11 +10,36 @@ public class Node : MonoBehaviour, IBundle<Node>
     [SerializeField]
     private List<Node> neighbours = new List<Node>();
     private float startCost, endCost;
-    private bool isObstacle;
     private bool isSelected = false;
     private int bundleIndex;
     private Vector3 worldPosition;
+    [SerializeField]
+    protected LayerMask actorMask;
     
+    private List<NodeEvent> nodeEvents = new List<NodeEvent>();
+
+    protected bool isOccupied;
+    public List<NodeEvent> Events
+    {
+        get
+        {
+            return nodeEvents;
+        }
+    }
+
+
+    public bool Occupied
+    {
+        get
+        {
+            return isOccupied;
+        }
+        set
+        {
+            isOccupied = value;
+        }
+    }
+
     public bool Selected
     {
         get
@@ -32,19 +57,13 @@ public class Node : MonoBehaviour, IBundle<Node>
     #endregion
 
 
-
+    #region Properties
     public Node Parent
     {
         get { return parent; }
         set { parent = value; }
     }
 
-
-
-    public bool IsObstacle
-    {
-        get { return isObstacle; }
-    }
     private float FCost
     {
         get
@@ -97,10 +116,12 @@ public class Node : MonoBehaviour, IBundle<Node>
         }
     }
 
+    #endregion
     private void Awake()
     {
-        worldPosition = transform.position;
         GetComponent<SphereCollider>().enabled = false;
+        worldPosition = transform.position;
+        nodeEvents.AddRange(GetComponents<NodeEvent>());
     }
 
     public int CompareTo(object _node)

@@ -31,6 +31,14 @@ public class Town : MonoBehaviour
         }
     }
 
+    public List<AI> AITypes
+    {
+        get
+        {
+            return typeOfAI;
+        }
+    }
+
     public List<Node> SpawnPoint
     {
         get

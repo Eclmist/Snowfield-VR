@@ -67,7 +67,7 @@ public class GridManagerEditor : Editor
 
     void OnScene(SceneView sceneview)
     {
-        
+
         if (isToggled)
         {
             
@@ -125,19 +125,23 @@ public class GridManagerEditor : Editor
                     else
                     {
                         Node newNode = Instantiate(Instance.nodePrefab, hit.point, Quaternion.identity);
-                        newNode.transform.parent = Instance.transform;
-                        if (autoLink)
+                        
+                        if (newNode != null)
                         {
-                            foreach (Node nodes in Instance.worldNodes)
+                            newNode.transform.parent = Instance.transform;
+                            if (autoLink)
                             {
-                                if (Vector3.Distance(newNode.transform.position, nodes.transform.position) < Instance.nodesDistance)
+                                foreach (Node nodes in Instance.worldNodes)
                                 {
-                                    newNode.Neighbours.Add(nodes);
-                                    nodes.Neighbours.Add(newNode);
+                                    if (Vector3.Distance(newNode.transform.position, nodes.transform.position) < Instance.nodesDistance)
+                                    {
+                                        newNode.Neighbours.Add(nodes);
+                                        nodes.Neighbours.Add(newNode);
+                                    }
                                 }
                             }
+                            Instance.AddNode(newNode);
                         }
-                        Instance.AddNode(newNode);
                     }
                 }
             }

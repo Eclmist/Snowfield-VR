@@ -47,8 +47,9 @@ public class TownManager : MonoBehaviour
             if (timer > aiSpawnTimer)
             {
                 timer = 0;
-
+                
                 Node randomSpawn = GetRandomSpawnPoint();
+                
                 AI randomAI = GetRandomAIType();
                 if (randomSpawn && randomAI)
                     currentTown.AIs.Add(Instantiate(randomAI, randomSpawn.Position, Quaternion.identity).GetComponent<AI>());
@@ -67,10 +68,12 @@ public class TownManager : MonoBehaviour
 
     public AI GetRandomAIType()
     {
-        int aiCount = Random.Range(0, currentTown.AIs.Count);
-        aiCount = aiCount == currentTown.AIs.Count ? aiCount - 1 : aiCount;
+        int aiCount = Random.Range(0, currentTown.AITypes.Count);
+        
+        aiCount = aiCount == currentTown.AITypes.Count ? aiCount - 1 : aiCount;
+
         if (aiCount >= 0)
-            return currentTown.AIs[aiCount];
+            return currentTown.AITypes[aiCount];
         else
             return null;
     }

@@ -55,7 +55,7 @@ public class AStarManager : MonoBehaviour
         }
     }
 
-    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callback)
+    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callback)
     {
         lock (requestQueue)
         {
@@ -78,7 +78,7 @@ public class AStarManager : MonoBehaviour
 
     }
 
-    private void FinishedProcessingPath(PathRequest _request, List<Vector3> wayPoint)
+    private void FinishedProcessingPath(PathRequest _request, List<Node> wayPoint)
     {
         _request.callBack(wayPoint);
         processingPath = false;
@@ -88,14 +88,13 @@ public class AStarManager : MonoBehaviour
 
     private void CalculatePath(PathRequest _request)
     {
-        List<Vector3> wayPoint = new List<Vector3>();
+        List<Node> wayPoint = new List<Node>();
 
         Node startNode = GridManager.instance.NodeFromWorldPoint(_request.startPoint);
 
         Node endNode = GridManager.instance.NodeFromWorldPoint(_request.endPoint);
 
-        if (!endNode.IsObstacle)
-        {
+        
             Heap<Node> openNodes = new Heap<Node>();
             HashSet<Node> closeNodes = new HashSet<Node>();
             openNodes.Add(startNode);
@@ -117,7 +116,6 @@ public class AStarManager : MonoBehaviour
 
                     Node currentNeighbour = currentNode.Neighbours[i];
                     if (currentNeighbour == null
-                        || currentNeighbour.IsObstacle
                         || closeNodes.Contains(currentNeighbour))
                     /*|| Mathf.Abs(currentNeighbour.Position.y - currentNode.Position.y) > _request.stepHeight*/
                     {
@@ -142,17 +140,17 @@ public class AStarManager : MonoBehaviour
                             openNodes.UpdateItem(currentNeighbour);
                     }
 
-                }
+                
             }
         }
 
         FinishedProcessingPath(_request, wayPoint);
     }
 
-    private List<Vector3> RetraceNodes(Node _startNode, Node _endNode)
+    private List<Node> RetraceNodes(Node _startNode, Node _endNode)
     {
         List<Node> path = new List<Node>();
-        List<Vector3> wayPoint = new List<Vector3>();
+
         Node currentNode = _endNode;
         while (currentNode != _startNode)
         {
@@ -160,21 +158,21 @@ public class AStarManager : MonoBehaviour
             currentNode = currentNode.Parent;
         }
         //Just for visualizing to be removed
-        Vector3 direction = Vector3.zero;
+        //Vector3 direction = Vector3.zero;
 
-        for (int i = 1; i < path.Count; i++)
-        {
+        //for (int i = 1; i < path.Count; i++)
+        //{
 
-            Vector3 newDirection = path[i - 1].Position - path[i].Position;
-            if (direction != newDirection)
-            {
-                wayPoint.Add(path[i].Position);
+        //    Vector3 newDirection = path[i - 1].Position - path[i].Position;
+        //    if (direction != newDirection)
+        //    {
+        //        wayPoint.Add(path[i].Position);
 
-            }
-            direction = newDirection;
-        }
-        wayPoint.Reverse();
-        return wayPoint;
+        //    }
+        //    direction = newDirection;
+        //}
+        path.Reverse();
+        return path;
 
     }
 
@@ -190,11 +188,11 @@ public struct PathRequest : IBundle<PathRequest>
 {
     public readonly Vector3 startPoint;
     public readonly Vector3 endPoint;
-    public readonly Action<List<Vector3>> callBack;
+    public readonly Action<List<Node>> callBack;
     //public readonly float stepHeight;
     private int bundleIndex;
 
-    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callBack/* float _steppableHeight*/)
+    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callBack/* float _steppableHeight*/)
     {
         startPoint = _startPoint;
         endPoint = _endPoint;

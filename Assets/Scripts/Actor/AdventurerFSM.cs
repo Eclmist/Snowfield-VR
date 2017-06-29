@@ -8,15 +8,9 @@ public class AdventurerFSM : ActorFSM
 
     private Shop targetShop;
 
-    private int currentShopIndex = 0;
-
     private void NewVisitToTown()
     {
         visitedShop.Clear();
-    }
-
-    protected virtual void UpdateIntrusionState()
-    {
     }
 
     protected override void UpdateFSMState()
@@ -24,10 +18,6 @@ public class AdventurerFSM : ActorFSM
         base.UpdateFSMState();
         switch (currentState)
         {
-            case FSMState.INTRUSION:
-                UpdateInteractionState();
-                break;
-
             case FSMState.QUESTING:
                 UpdateQuestingState();
                 break;
@@ -65,7 +55,7 @@ public class AdventurerFSM : ActorFSM
                     (currentAI as AdventurerAI).EquipRandomWeapons();
                     //animator.SetBool("KnockBack", true);//Wrong place
                     animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
-                    timer = 5;
+                    //timer = 5;
                     break;
 
             }
@@ -83,15 +73,14 @@ public class AdventurerFSM : ActorFSM
             Shop _targetShop = TownManager.Instance.GetRandomShop(visitedShop);
             if (_targetShop != null)//And check for anymore shop
             {
-                if (_targetShop.Owner == Player.Instance && !(currentAI as AdventurerAI).GotLobang())
-                {
-                    if (TownManager.Instance.NumberOfShopsUnvisited(visitedShop) == 1)
-                        visitedShop.Add(_targetShop);
-                    return;
-                }
+                //if (_targetShop.Owner == Player.Instance && !(currentAI as AdventurerAI).GotLobang())
+                //{
+                //    if (TownManager.Instance.NumberOfShopsUnvisited(visitedShop) == 1)
+                //        visitedShop.Add(_targetShop);
+                //    return;
+                //}
                 targetShop = _targetShop;
                 AStarManager.Instance.RequestPath(transform.position, _targetShop.Location.Position, ChangePath);
-                currentShopIndex = 0;
                 requestedPath = true;
                 nextState = FSMState.INTERACTION;
             }
@@ -107,7 +96,7 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateCombatState()
     {
-        if (timer > 0 && target != null)
+        if (/*timer > 0 &&*/ target != null)
         {
 
             Vector3 temptarget = target.transform.position;
@@ -144,11 +133,11 @@ public class AdventurerFSM : ActorFSM
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", 2);//HardCoded
                 }
-                timer = 5f;//HardCoded
+                //timer = 5f;//HardCoded
             }
             else
             {
-                timer -= Time.deltaTime;
+                //timer -= Time.deltaTime;
                 animator.SetFloat("Speed", 0);
             }
         }
@@ -158,73 +147,48 @@ public class AdventurerFSM : ActorFSM
 
     protected override void UpdateInteractionState()
     {
-        Node shopPoint = targetShop.GetPoint(currentShopIndex);
-
-        if (timer < 0)
+        float val = Random.value;
+        if (val > .5)
         {
-
+            Node shopPoint = targetShop.GetRandomPoint();
             if (shopPoint != null)
             {
-                ChangePath(shopPoint.Position);
+                ChangePath(shopPoint);
                 nextState = FSMState.INTERACTION;
                 ChangeState(FSMState.PETROL);
-                currentShopIndex++;
-                if (targetShop.GetPoint(currentShopIndex) == null)
-                    timer = 0;
-                else
-                    timer = 5;
+            }
+        }
+        else
+        {
+            nextState = FSMState.IDLE;
+            if ((currentAI as AdventurerAI).GotLobang())
+            {
+                ChangePath(targetShop.InteractionNode);
+                ChangeState(FSMState.PETROL);
             }
             else
             {
-                if (!currentAI.IsConversing)
-                {
-                    if (targetShop.Owner is Player)
-                    {
-                        if ((currentAI as AdventurerAI).GotLobang())
-                            (currentAI as AdventurerAI).GetLobang();
-                        else
-                            ChangeState(FSMState.IDLE);
-                    }
 
-                }
-                else
-                {
-                    LookAtPlayer(targetShop.Owner.transform.position);
-                }
             }
         }
-        else
-        {
-            Node thisPoint = targetShop.GetPoint(currentShopIndex - 1);
-            //if (thisPoint != null)
-            //    LookAtPlayer(thisPoint.position + thisPoint.forward);
-            timer -= Time.deltaTime;
-        }
+            //else
+            //{
+            //    nextState = FSMState.IDLE;
+            //    ChangeState(FSMState.PETROL);
+            //    ChangePath(targetShop.Location);
+            //}
+        ////}
+        //else
+        //{
+        //    Node thisPoint = targetShop.GetPoint(currentShopIndex - 1);
+        //    //if (thisPoint != null)
+        //    //    LookAtPlayer(thisPoint.position + thisPoint.forward);
+        //    //timer -= Time.deltaTime;
+        //}
 
     }
 
 
 
-    protected override void UpdatePetrolState()
-    {
-        if (path.Count == 0)
-        {
-            ChangeState(nextState);
-        }
-        else
-        {
-            Vector3 targetPoint = path[0];
-            rigidBody.velocity = AvoidObstacles(targetPoint);
-            LookAtPlayer(targetPoint);
-            Collider[] col = Physics.OverlapSphere(path[0], 1f, ~avoidanceIgnoreMask);
-
-
-            bool hasThings = Vector3.Distance(transform.position, targetPoint) < .5f && col.Length != 0;
-            if (Vector3.Distance(transform.position, targetPoint) < .1f || hasThings)
-            {
-                path.RemoveAt(0);
-            }
-
-        }
-    }
+    
 }
