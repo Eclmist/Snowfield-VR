@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CraftedItem : GenericItem
 {
+
     #region PlayerInteraction
     protected bool removable = true, toggled = false;
     protected virtual void UseItem()
