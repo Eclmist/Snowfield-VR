@@ -22,13 +22,6 @@ public class OrderManagerEditor : Editor {
     {
         DrawDefaultInspector();
 
-        if (GUILayout.Button("\nAdd new template\n"))
-        {
-            instance.TemplateList.Add(new OrderTemplate());
-        }
-
-
-
 
     }
 

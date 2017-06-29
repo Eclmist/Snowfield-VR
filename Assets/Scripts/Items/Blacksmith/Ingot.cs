@@ -20,10 +20,6 @@ public class Ingot : BlacksmithItem {
     private float quenchRate = 0.01f;
     protected ForgedBlade morpher;
 
-    private int currentMorphSteps;
-    private int targetMorphSteps;
-
-
     public PhysicalMaterial PhysicalMaterial
     {
         get { return physicalMaterial; }
@@ -45,8 +41,6 @@ public class Ingot : BlacksmithItem {
 			initialMaterial = meshRenderer.material;
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
-
-        currentMorphSteps = 0;
     }
 
     public void Update()
@@ -62,30 +56,6 @@ public class Ingot : BlacksmithItem {
         //Debug.Log(heatSourceDetected);
         //Debug.Log(currentTemperature);
     }
-
-    public void IncrementMorphStep()
-    {
-        if(currentMorphSteps == 0)
-        {
-            // Generate morph chance
-            if(WeaponTierManager.Instance.WeaponClassList != null)
-                targetMorphSteps = Random.Range(0,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.Type));
-        }
-
-        currentMorphSteps++;
-        if(currentMorphSteps == targetMorphSteps)
-        {
-            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.Type,currentMorphSteps);
-            if(itemData != null)
-            {
-                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().fakeSelf);
-                g.GetComponent<FakeItem>().trueForm = itemData;
-                Destroy(this.gameObject);       
-            }
-        }
-    }
-
-
 
     //--------------- Properties -----------------//
 
@@ -208,10 +178,6 @@ public class Ingot : BlacksmithItem {
        meshRenderer.material.Lerp(initialMaterial, forgingMaterial, currentTemperature);
 
     }
-
-
-
-
 
 
 
