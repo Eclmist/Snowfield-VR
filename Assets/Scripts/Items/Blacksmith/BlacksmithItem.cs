@@ -13,8 +13,8 @@ public class BlacksmithItem : GenericItem
 
     protected override void Start()
     {
+        base.Start();
         jobType = JobType.BLACKSMITH;
-
     }
 
 

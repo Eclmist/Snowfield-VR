@@ -101,7 +101,7 @@ public class OrderManager : MonoBehaviour
 
         // Get a random template
 
-        OrderTemplate currentTemplate = currentTemplateList[Random.Range(0, currentTemplateList.Count)];
+        OrderTemplate currentTemplate = templateList[Random.Range(0, templateList.Count)];
 
         // Generate order based on job type
 
