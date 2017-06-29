@@ -10,10 +10,4 @@ public class AlchemyItem : GenericItem {
     //    throw new NotImplementedException();
     //}
 
-
-    void Start()
-    {
-        jobType = JobType.ALCHEMY;
-    }
-
 }

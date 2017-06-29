@@ -6,16 +6,12 @@ public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
     protected bool isColliding = false;
-    [SerializeField] private float directionalMultiplier = 20;
-    protected float maxForce = 40f;
+    [SerializeField] private float directionalMultiplier = 5f, maxLerpForce = 10f;
+    [SerializeField] private float collisionVibrationMagnitude = 0.8F;
 
-    private void Start()
-    {
-        jobType = JobType.BLACKSMITH;
-        
-    }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+
+    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
         base.OnTriggerRelease(referenceCheck);
         rigidBody.useGravity = true;

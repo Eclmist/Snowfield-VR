@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CraftedItem : GenericItem
 {
-    public GameObject fakeSelf;
-
     #region PlayerInteraction
     protected bool removable = true, toggled = false;
     protected virtual void UseItem()
