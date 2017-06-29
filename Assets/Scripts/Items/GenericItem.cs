@@ -5,9 +5,16 @@ using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public abstract class GenericItem : VR_Interactable_Object, IDamage
-
-{
-    
+{
+
+
+    protected JobType jobType;
+
+
+    public JobType JobType
+    {
+        get { return this.jobType; }
+    }
 
 
     protected Collider itemCollider;
@@ -35,44 +42,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     #endregion IInteractable
 
-    protected int id;
-
-    [SerializeField]
-    protected Sprite icon;
-
-    [SerializeField]
-    protected int maxStackSize = 1;
-
-    public int ID
-
-    {
-        get { return this.id; }
-
-        set { this.id = value; }
-    }
-
-    public Sprite Icon
-
-    {
-        get { return this.icon; }
-
-        set { this.icon = value; }
-    }
-
-    public int MaxStackSize
-
-    {
-        get { return this.maxStackSize; }
-
-        set { this.maxStackSize = value; }
-    }
-
-    public GameObject objReference
-
-    {
-        get { return this.gameObject; }
-    }
-
+   
     #region
 
     [SerializeField]
