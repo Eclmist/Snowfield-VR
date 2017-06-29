@@ -18,6 +18,12 @@ public abstract class GenericItem : MonoBehaviour, IInteractable, IDamage
 
 {
     protected JobType jobType;
+
+    public JobType JobType
+    {
+        get { return this.jobType; }
+    }
+
     protected Rigidbody rigidBody;
 
 
