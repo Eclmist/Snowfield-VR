@@ -30,7 +30,9 @@ public class Ingot : BlacksmithItem {
     {
 		base.Start();
 
-        if (meshRenderer == null)
+		meshRenderer = GetComponent<MeshRenderer>();
+
+		if (meshRenderer == null)
         {
             Debug.Log("no meshrenderer in ingot, ingot will be destroyed");
             Destroy(this);

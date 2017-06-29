@@ -56,6 +56,8 @@ public class IngotDeformer : MonoBehaviour
 
 
 		currentMesh.RecalculateBounds();
+		currentMesh.RecalculateNormals();
+		currentMesh.RecalculateTangents();
 		modelFilter.mesh = currentMesh;
 	}
 
@@ -75,11 +77,6 @@ public class IngotDeformer : MonoBehaviour
 					Debug.Log("MouseClick");
 				}
 			}
-
-		}
-		else
-		{
-			Debug.Log("!");
 		}
 	}
 }

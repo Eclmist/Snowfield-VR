@@ -6,6 +6,9 @@
 		_Metallic ("Metallic", Range(0,1)) = 0.0
 		[HDR]_Emission("Emission", Color) = (0,0,0,0)
 		_EmissionMaskTex("Emission Map(RGB)", 2D) = "white" {}
+		_EmissionMaskOpacity("Emission Opacity", Range(0,1)) = 1
+		_RedEdge("Red Edge Amount", Range(0,10)) = 1
+		_RimPower("Rim Power", Range(0.5,8.0)) = 3.0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -23,12 +26,17 @@
 
 		struct Input {
 			float2 uv_MainTex;
+			float3 viewDir;
 		};
 
 		half _Glossiness;
 		half _Metallic;
 		fixed4 _Color;
 		fixed4 _Emission;
+		float _EmissionMaskOpacity;
+		float _RedEdge;
+		float _RimPower;
+
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -38,6 +46,8 @@
 		UNITY_INSTANCING_CBUFFER_END
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
+
+			fixed4 emissionMask = tex2D(_EmissionMaskTex, IN.uv_MainTex);
 			// Albedo comes from a texture tinted by color
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
@@ -46,7 +56,9 @@
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
 
-			o.Emission = _Emission * (tex2D(_EmissionMaskTex, IN.uv_MainTex) + 0.5);
+			half rim = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
+
+			o.Emission = _Emission * lerp(1, max(0, emissionMask - pow(rim, _RimPower) * 2), _EmissionMaskOpacity);
 		}
 		ENDCG
 	}
