@@ -10,16 +10,16 @@ public class CraftedItem : GenericItem
     protected bool removable = true, toggled = false;
     protected virtual void UseItem()
     {
-        Debug.Log("You are using " + this.name);    
+        Debug.Log("You are using " + this.name);
     }
 
 
 
-    public override void StartInteraction(VR_Controller_Custom referenceCheck)
+    public override void OnTriggerPress(VR_Controller_Custom referenceCheck)
     {
-        if (referenceCheck != linkedController)
+        if (referenceCheck != currentInteractingController)
         {
-            base.StartInteraction(referenceCheck);
+            base.OnTriggerPress(referenceCheck);
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
@@ -31,27 +31,19 @@ public class CraftedItem : GenericItem
         //rigidBody.maxAngularVelocity = 100f;
     }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
+        
         if (removable && !toggled)
         {
-            base.StopInteraction(referenceCheck);
+            base.OnTriggerRelease(referenceCheck);
             itemCollider.isTrigger = false;
             rigidBody.useGravity = true;
         }
     }
 
 
-    public override void Interact(VR_Controller_Custom referenceCheck)
-    {
-        if (removable)
-        base.Interact(referenceCheck);
-        if (linkedController != null)
-        {
-            transform.position = linkedController.transform.position;
-            transform.rotation = linkedController.transform.rotation;
-        }
-    }
+   
     //public override void UpdatePosition()
     //{
     //    transform.position = linkedController.transform.position;
@@ -60,28 +52,36 @@ public class CraftedItem : GenericItem
 
     protected virtual void OnTriggerEnter(Collider collision)
     {
-        if(linkedController != null)
+        if (currentInteractingController != null)
         {
-            PlaySound(linkedController.Velocity().magnitude > maxForceVolume ? 1 : linkedController.Velocity().magnitude / maxForceVolume);
-            
+            PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
+
         }
     }
+
+    public override void OnInteracting(VR_Controller_Custom controller)
+    {
+        base.OnInteracting(controller);
+        transform.position = controller.transform.position;
+        transform.rotation = controller.transform.rotation;
+    }
+
     protected virtual void OnTriggerStay(Collider collision)
     {
-        if (linkedController != null && collision.gameObject != linkedController.gameObject)
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
         {
             removable = false;
-            linkedController.Vibrate(1);
+            currentInteractingController.Vibrate(1);
         }
     }
 
     protected virtual void OnTriggerExit(Collider collision)
     {
-        if (linkedController != null && collision.gameObject != linkedController.gameObject)
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
         {
             removable = true;
         }
     }
     #endregion
-    
+
 }

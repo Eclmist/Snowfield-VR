@@ -35,27 +35,10 @@ public class Weapon : Equipment
         modRen = GetComponent<ModifyRenderer>();
     }
 
-    public override void Interact(VR_Controller_Custom referenceCheck)
-    {
-        base.Interact(referenceCheck);
-        if (linkedController != null)
-        {
-            if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Grip))
-                StartCharge();
-            else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Grip))
-                EndCharge();
-        }
 
-
-    }
-
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+	protected override void Start()
     {
-        base.StopInteraction(referenceCheck);
-        EndCharge();
-    }
-    private void Start()
-    {
+		base.Start();
         modRen = GetComponent<ModifyRenderer>();
 
     }
@@ -167,5 +150,15 @@ public class Weapon : Equipment
         {
             charge = false;
         }
+    }
+
+    public override void OnGripHold(VR_Controller_Custom controller)
+    {
+        StartCharge();
+    }
+
+    public override void OnGripRelease(VR_Controller_Custom controller)
+    {
+        EndCharge();
     }
 }

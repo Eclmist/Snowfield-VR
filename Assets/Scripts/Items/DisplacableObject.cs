@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(ConfigurableJoint))]
 [RequireComponent(typeof(Rigidbody))]
-public class DisplacableObject : MonoBehaviour, IInteractable
+public class DisplacableObject : VR_Interactable_Object
 {
 
     [SerializeField]
@@ -15,27 +15,13 @@ public class DisplacableObject : MonoBehaviour, IInteractable
     [Tooltip("The maxdistance the object can travel in its unlocked axis")]
     private float maxDistance;
     private ConfigurableJoint joint;
-    private VR_Controller_Custom linkedController;
     [SerializeField]
     [Tooltip("The rigidbody this object is bound to")]
     private Rigidbody boundRigidBody;
-    private Rigidbody rigidBody;
 
-    public VR_Controller_Custom LinkedController
-    {
-        get
-        {
-            return linkedController;
-        }
-        set
-        {
-            linkedController = value;
-        }
-    }
 
-    void Awake()
+    protected override void Awake()
     {
-        rigidBody = GetComponent<Rigidbody>();
         joint = GetComponent<ConfigurableJoint>();
     }
     // Use this for initialization
@@ -57,44 +43,15 @@ public class DisplacableObject : MonoBehaviour, IInteractable
     }
 
 
-
-    public virtual void Interact(VR_Controller_Custom referenceCheck)
+    public override void OnTriggerHold(VR_Controller_Custom controller)
     {
-        if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger))
+        if (currentInteractingController != null)
         {
-            StartInteraction(referenceCheck);
-        }
-        else if (referenceCheck.Device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-        {
-            StopInteraction(referenceCheck);
-        }
-        else if (referenceCheck.Device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
-        {
-            linkedController.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
+            controller.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
-            Vector3 PositionDelta = (linkedController.transform.position - transform.position);
+            Vector3 PositionDelta = (controller.transform.position - transform.position);
 
             rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
         }
-    }
-
-    public virtual void StopInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController == referenceCheck)
-        {
-            linkedController = null;
-            referenceCheck.SetInteraction(null);
-
-            rigidBody.velocity = referenceCheck.Device.velocity;
-            rigidBody.angularVelocity = referenceCheck.Device.angularVelocity;
-        }
-    }
-
-    public virtual void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-        if (linkedController != null && linkedController != referenceCheck)
-            linkedController.SetInteraction(null);
-
-        linkedController = referenceCheck;
     }
 }

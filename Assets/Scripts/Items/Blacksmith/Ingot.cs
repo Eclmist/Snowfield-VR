@@ -7,7 +7,7 @@ public class Ingot : BlacksmithItem {
     [SerializeField][Range(1,10)]
     private int oreComposition;
 
-    public Material initialMaterial;
+    private Material initialMaterial;
     public Material forgingMaterial; // Material to lerp to when heated
     [SerializeField]
     protected MeshRenderer meshRenderer; // To modify the material
@@ -30,8 +30,10 @@ public class Ingot : BlacksmithItem {
         set { physicalMaterial = value; }
     }
 
-    protected virtual void Start()
+    protected override void Start()
     {
+		base.Start();
+
         if (meshRenderer == null)
         {
             Debug.Log("no meshrenderer in ingot, ingot will be destroyed");
@@ -40,7 +42,7 @@ public class Ingot : BlacksmithItem {
         else
         {
             morpher = GetComponentInChildren<ForgedBlade>();
-            meshRenderer.material = initialMaterial;
+			initialMaterial = meshRenderer.material;
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
 

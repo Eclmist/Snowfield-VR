@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,7 +51,7 @@ public class DimensionBag : GenericItem {
     public void RetrieveItemFromDimension()
     {
         GameObject g = Instantiate(dimensionItems[UnityEngine.Random.Range(0,dimensionItems.Count)]);
-        g.GetComponent<GenericItem>().StartInteraction(LinkedController);
+        //g.GetComponent<GenericItem>().StartInteraction(LinkedController); // fix later?
    
     }
 
@@ -74,34 +74,17 @@ public class DimensionBag : GenericItem {
 
     }
 
-    public override void Interact(VR_Controller_Custom referenceCheck)
-    {
 
 
-        if (isInside)
-        {
 
-            if (referenceCheck.Device.GetTouchDown(SteamVR_Controller.ButtonMask.Trigger) && dimensionItems.Count > 0)
-            {
-                this.audioSource.Play();
-                StartInteraction(referenceCheck);
-            }
-        }
+//    public override void StartInteraction(VR_Controller_Custom referenceCheck)
+//    {
+//        base.StartInteraction(referenceCheck);
+//        RetrieveItemFromDimension();
+
+//    }
 
 
-    }
 
-
-    public override void StartInteraction(VR_Controller_Custom referenceCheck)
-    {
-        base.StartInteraction(referenceCheck);
-        RetrieveItemFromDimension();
-
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, distanceToReact);
-    }
 
 }
