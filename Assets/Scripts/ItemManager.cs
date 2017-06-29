@@ -7,28 +7,15 @@ public class ItemManager : MonoBehaviour {
 
     public static ItemManager Instance;
 
-    public string path;
-
     [SerializeField]
-    private List<ItemData> itemDataList = new List<ItemData>();
+    private List<GameObject> items = new List<GameObject>();
 
     private Dictionary<int, GameObject> itemDictionary = new Dictionary<int, GameObject>();
-    private Dictionary<int, ItemData> itemDataDictionary = new Dictionary<int, ItemData>();
 
 
-    public List<ItemData> ItemDataList
+    public List<GameObject> Items
     {
-        get { return this.itemDataList; }
-    }
-
-    public Dictionary<int, GameObject> ItemDictionary
-    {
-        get { return this.itemDictionary; }
-    }
-
-    public Dictionary<int, ItemData> ItemDataDictionary
-    {
-        get { return this.itemDataDictionary; }
+        get { return this.items; }
     }
 
     public int NumberOfItems
@@ -39,18 +26,27 @@ public class ItemManager : MonoBehaviour {
     void Awake()
     {
         Instance = this;
-    }
 
-    void Start()
-    {
-        foreach(ItemData data in itemDataList)
+        Object[] loadedStuff = Resources.LoadAll( "Items", typeof(GameObject));
+
+        if (loadedStuff != null)
         {
-            itemDictionary.Add(data.ItemID,data.ObjectReference);
-            itemDataDictionary.Add(data.ItemID,data);
+            for(int i = 0;i < loadedStuff.Length;i++)
+            {
+                
+                GameObject g = loadedStuff[i] as GameObject;
+                g.GetComponent<GenericItem>().ID = i;
+                items.Add(g);
+                itemDictionary.Add(i,g);
+            }
+
+        }
+        else
+        {
+            Debug.Log("Prefabs cant be found. Check if prefabs are in resources folder.");
         }
 
-
-        
+       
     }
 
     public GameObject SpawnItem(int id,Transform trans)
@@ -76,25 +72,6 @@ public class ItemManager : MonoBehaviour {
             return null;
         }
     }
-
-    public ItemData GetItemData(int id )
-    {
-        if (id < itemDataDictionary.Count)
-        {
-            return itemDataDictionary[id];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public bool IsUnlocked(ItemData item)
-    {
-        return (item.LevelUnlocked >= Player.Instance.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);   
-    }
-    
-    
 
 
  

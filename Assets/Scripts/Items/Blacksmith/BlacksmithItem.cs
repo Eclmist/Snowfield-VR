@@ -6,16 +6,12 @@ public class BlacksmithItem : GenericItem {
 
     [SerializeField] protected PhysicalMaterial physicalMaterial;
     protected bool isColliding = false;
-    [SerializeField] private float directionalMultiplier = 20;
-    protected float maxForce = 40f;
+    [SerializeField] private float directionalMultiplier = 5f, maxLerpForce = 10f;
+    [SerializeField] private float collisionVibrationMagnitude = 0.8F;
 
-    private void Start()
-    {
-        jobType = JobType.BLACKSMITH;
-        
-    }
 
-    public override void StopInteraction(VR_Controller_Custom referenceCheck)
+
+    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
         base.OnTriggerRelease(referenceCheck);
         rigidBody.useGravity = true;
@@ -31,39 +27,36 @@ public class BlacksmithItem : GenericItem {
 
     
     public override void OnTriggerHold(VR_Controller_Custom referenceCheck)
-    {
-        if (currentInteractingController != null)
+    {        
+        Vector3 PositionDelta = (referenceCheck.transform.position - transform.position);
+
+        if (!isColliding)
         {
-            Vector3 PositionDelta = (referenceCheck.transform.position - transform.position);
+            rigidBody.MovePosition(referenceCheck.transform.position);
+            rigidBody.MoveRotation(referenceCheck.transform.rotation);
+        }
+        else
+        {
+            float currentForce = maxLerpForce;
 
-            if (!isColliding)
-            {
-                rigidBody.MovePosition(referenceCheck.transform.position);
-                rigidBody.MoveRotation(referenceCheck.transform.rotation);
-            }
-            else
-            {
-                float currentForce = maxLerpForce;
-
-                rigidBody.velocity =
-                    PositionDelta.magnitude * directionalMultiplier > currentForce ?
-                    (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+            rigidBody.velocity =
+                PositionDelta.magnitude * directionalMultiplier > currentForce ?
+                (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
 
 
-                // Rotation ----------------------------------------------
-                Quaternion RotationDelta = referenceCheck.transform.rotation * Quaternion.Inverse(this.transform.rotation);
-                float angle;
-                Vector3 axis;
-                RotationDelta.ToAngleAxis(out angle, out axis);
+            // Rotation ----------------------------------------------
+            Quaternion RotationDelta = referenceCheck.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+            float angle;
+            Vector3 axis;
+            RotationDelta.ToAngleAxis(out angle, out axis);
 
-                if (angle > 180)
-                    angle -= 360;
+            if (angle > 180)
+                angle -= 360;
 
-                float angularVelocityNumber = .2f;
+            float angularVelocityNumber = .2f;
 
-                // -------------------------------------------------------
-                rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
-            }
+            // -------------------------------------------------------
+            rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
         }
     }
 
@@ -93,6 +86,7 @@ public class BlacksmithItem : GenericItem {
         {
             float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
             currentInteractingController.Vibrate(value / 10);
+            
         }
 
     }

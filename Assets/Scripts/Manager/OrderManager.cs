@@ -24,6 +24,31 @@ public class OrderManager : MonoBehaviour
         set { this.templateList = value; }
     }
 
+    private void LoadTemplates()
+
+    {
+        foreach (OrderTemplate ot in templateList)
+
+        {
+            ot.Sprite = Resources.Load("Templates/" + ot.SpriteIndex.ToString()) as Sprite;
+        }
+    }
+
+    public void UpdateAvailableTemplates()
+
+    {
+        foreach (Job job in Player.Instance.JobListReference)
+
+        {
+            foreach (OrderTemplate ot in templateList)
+
+            {
+                if (ot.JobType == job.Type && ot.LevelUnlocked <= job.Level)
+
+                    availableTemplatesForCurrentLevel.Add(ot);
+            }
+        }
+    }
 
     // Use this for initialization
 
@@ -50,11 +75,20 @@ public class OrderManager : MonoBehaviour
     private void Start()
 
     {
-  
+        UpdateAvailableTemplates();
 
         //Debug.Log(availableTemplatesForCurrentLevel.Count);
     }
 
+    private void PopulateLists()
+
+    {
+        SerializeManager.Load("templateList");
+
+        UpdateAvailableTemplates();
+
+        SerializeManager.Load("materialList");
+    }
 
     public void NewRequest()
 
@@ -116,9 +150,9 @@ public class OrderManager : MonoBehaviour
 
                 PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
 
-                newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
+                newOrder = new Order(currentMaterial.Name + " " + currentTemplate.ProductSuffix.ToString()
 
-            , ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
+            , currentTemplate.Sprite
 
             , job.Level * baseDurationMultiplier * currentTemplate.Duration
 
@@ -126,7 +160,7 @@ public class OrderManager : MonoBehaviour
 
                 break;
         }
-        
+
         return newOrder;
     }
 

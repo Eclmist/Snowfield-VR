@@ -12,18 +12,47 @@ public enum SUFFIX
 [System.Serializable]
 public class OrderTemplate {
 
-
+    [SerializeField]
+    private Sprite sprite;
+    [HideInInspector]private string spritePath;
+    [SerializeField]
+    private int spriteIndex;
+    [SerializeField]
+    private Mesh mesh;
     [SerializeField]
     private int baseGold;
     [SerializeField]
     private int duration;
     [SerializeField]
+    private int levelUnlocked;
+    [SerializeField]
     private JobType jobType;
     [SerializeField]
-    private PhysicalMaterial physicalMaterial;
-    [SerializeField]
-    private int referenceItemID;
+    private SUFFIX productSuffix;
 
+    public Sprite Sprite
+    {
+        get { return this.sprite; }
+        set { this.sprite = value; }
+    }
+
+    public string SpritePath
+    {
+        get { return this.spritePath; }
+        set { this.spritePath = value; }
+    }
+    public int SpriteIndex
+    {
+        get { return this.spriteIndex; }
+        set { this.spriteIndex = value; }
+    }
+    public Mesh Mesh
+    {
+        get { return this.mesh; }
+        set { this.mesh = value; }
+
+
+    }
 
     public int BaseGold
     {
@@ -37,6 +66,11 @@ public class OrderTemplate {
         set { this.duration = value; }
     }
 
+    public int LevelUnlocked
+    {
+        get { return this.levelUnlocked; }
+        set { this.levelUnlocked = value; }
+    }
 
 
     public JobType JobType
@@ -45,17 +79,12 @@ public class OrderTemplate {
         set { this.jobType = value; }
     }
 
+    public SUFFIX ProductSuffix
+    {
+        get { return this.productSuffix; }
+        set { this.productSuffix = value; }
+    }
     
-    public PhysicalMaterial PhysicalMaterial
-    {
-        get { return this.physicalMaterial; }
-    }
-
-    public int ReferenceItemID
-    {
-        get { return this.referenceItemID; }
-    }
-
 
 
 
