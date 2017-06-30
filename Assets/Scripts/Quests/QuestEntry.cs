@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestEntry<T> : ICanTalk where T : Quest
+public class QuestEntry<T> where T : Quest
 {
 
 	private T currentQuest;
@@ -14,17 +14,6 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 		hasStarted = false;
 		isCompleted = false;
 		currentQuest = quest;
-	}
-
-	public Session Session
-	{
-		get
-		{
-			if (!isCompleted)
-				return currentQuest.Dialog;
-			else
-				return currentQuest.EndDialog;
-		}
 	}
 
 	public bool Completed

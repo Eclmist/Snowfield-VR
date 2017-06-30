@@ -97,8 +97,6 @@ public class OrderManager : MonoBehaviour
 
         Order newOrder = null;
 
-        List<OrderTemplate> currentTemplateList = GetTemplatesForJobType(job.Type);
-
         // Get a random template
 
         OrderTemplate currentTemplate = templateList[Random.Range(0, templateList.Count)];
