@@ -58,7 +58,7 @@
 
 			half rim = 1.0 - saturate(dot(normalize(IN.viewDir), o.Normal));
 
-			o.Emission = _Emission * lerp(1, max(0, emissionMask - pow(rim, _RimPower) * 2), _EmissionMaskOpacity);
+			o.Emission = _Emission * lerp(1, max(0, emissionMask - pow(rim, _RimPower)), _EmissionMaskOpacity);
 		}
 		ENDCG
 	}
