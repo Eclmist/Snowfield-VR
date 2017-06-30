@@ -39,17 +39,16 @@ public class ItemManager : MonoBehaviour {
     void Awake()
     {
         Instance = this;
-    }
 
-    void Start()
+		foreach (ItemData data in itemDataList)
+		{
+			itemDictionary.Add(data.ItemID, data.ObjectReference);
+			itemDataDictionary.Add(data.ItemID, data);
+		}
+	}
+
+	void Start()
     {
-        foreach(ItemData data in itemDataList)
-        {
-            itemDictionary.Add(data.ItemID,data.ObjectReference);
-            itemDataDictionary.Add(data.ItemID,data);
-        }
-
-
         
     }
 

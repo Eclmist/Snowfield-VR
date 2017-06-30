@@ -12,7 +12,9 @@ ModelImporter:
     400002: 01_sword.002
     400004: Ingot
     2300000: Ingot
+    2300002: //RootNode
     3300000: Ingot
+    3300002: //RootNode
     4300000: 01_sword.002
     4300002: Ingot
     7400000: 01_sword.002|01_Morph
@@ -28,6 +30,7 @@ ModelImporter:
     7400020: 01_sword.002|MorphAction.001
     7400022: 01_sword.002|02_Sword_Morph
     9500000: //RootNode
+    11100000: //RootNode
     13700000: //RootNode
     13700002: 01_sword.002
   materials:
@@ -46,7 +49,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -76,7 +79,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 1
+        functionName: RevealFinalForm
+        data: 
+        objectReferenceParameter: {fileID: 1690785724209874, guid: 2f3b250632e7a5d4eaab2279c893db3f,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

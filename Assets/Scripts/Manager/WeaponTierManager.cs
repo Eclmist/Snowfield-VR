@@ -10,20 +10,20 @@ public class WeaponTierManager : MonoBehaviour {
     public class WeaponClass
     {
         [SerializeField]
-        private TYPE type;
+        private PhysicalMaterial.Type type;
 
         [SerializeField][Header("Item ID")]
-        private List<int> tierList;
+        private List<ItemData> itemList;
 
 
-        public TYPE Type
+        public PhysicalMaterial.Type Type
         {
             get { return this.type; }
         }
 
-        public List<int> TierList
+        public List<ItemData> TierList
         {
-            get { return this.tierList; }
+            get { return this.itemList; }
         }
 
 
@@ -39,7 +39,34 @@ public class WeaponTierManager : MonoBehaviour {
     {
         Instance = this;
     }
-	
+
+	private void Start()
+	{
+		List<ItemData> itemDataList = ItemManager.Instance.ItemDataList;
+
+		foreach (ItemData item in itemDataList)
+		{
+			Weapon weaponScript = item.ObjectReference.GetComponent<Weapon>();
+
+			if (weaponScript)
+			{
+				foreach (WeaponClass wc in weaponClassList)
+				{
+					if (wc.Type == weaponScript.GetPhysicalMaterial())
+					{
+						wc.TierList.Add(item);
+						break;
+					}
+				}
+			}
+		}
+
+		foreach (WeaponClass wc in weaponClassList)
+		{
+			wc.TierList.Sort();
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
@@ -50,7 +77,7 @@ public class WeaponTierManager : MonoBehaviour {
         get { return this.weaponClassList; }
     }
 
-    public int GetNumberOfTiersInClass(TYPE t)
+    public int GetNumberOfTiersInClass(PhysicalMaterial.Type t)
     {
         foreach(WeaponClass wc in weaponClassList)
         {
@@ -65,7 +92,7 @@ public class WeaponTierManager : MonoBehaviour {
     }
 
 
-    public ItemData GetWeapon(TYPE type, int tier)
+    public ItemData GetWeapon(PhysicalMaterial.Type type, int tier)
     {
         foreach(WeaponClass wc in weaponClassList)
         {
@@ -74,7 +101,7 @@ public class WeaponTierManager : MonoBehaviour {
                 if (wc.TierList.Count < 1)
                     return null;
                 else
-                    return ItemManager.Instance.GetItemData(wc.TierList[tier]);
+                    return wc.TierList[tier];
             }
         }
 

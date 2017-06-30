@@ -22,7 +22,13 @@ public class Ingot : BlacksmithItem {
 
     private int currentMorphSteps;
     private int targetMorphSteps;
+	private int preNumberOfHits = 3;
 
+	public int PreNumberOfHits
+	{
+		get { return this.preNumberOfHits; }
+		set { this.preNumberOfHits = value; }
+	}
 
     public PhysicalMaterial PhysicalMaterial
     {
@@ -69,19 +75,30 @@ public class Ingot : BlacksmithItem {
     {
         if(currentMorphSteps == 0)
         {
-            // Generate morph chance
-            if(WeaponTierManager.Instance.WeaponClassList != null)
-                targetMorphSteps = Random.Range(0,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.Type));
+
+			preNumberOfHits = (int)Random.Range(2, 3);
+			// Generate morph chance
+			if (WeaponTierManager.Instance.WeaponClassList != null)
+				targetMorphSteps = Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits;
+				//targetMorphSteps = 1; // Random.Range(1,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type));
+			
         }
 
         currentMorphSteps++;
-        if(currentMorphSteps == targetMorphSteps)
+        if(currentMorphSteps >= targetMorphSteps)
         {
-            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.Type,currentMorphSteps);
+
+			Debug.Log("sdfsdfsf");
+            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
             if(itemData != null)
             {
-                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().fakeSelf);
-                g.GetComponent<FakeItem>().trueForm = itemData;
+				FakeItem fakeItem = new FakeItem();
+				fakeItem.trueForm = itemData;
+
+                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
+				Debug.Log(g.name);
+				g.AddComponent<FakeItem>();
+				g.GetComponent<FakeItem>().trueForm = itemData;
                 Destroy(this.gameObject);       
             }
         }
