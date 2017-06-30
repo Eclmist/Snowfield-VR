@@ -85,7 +85,7 @@ public class Ingot : BlacksmithItem {
         }
 
         currentMorphSteps++;
-        if(currentMorphSteps >= targetMorphSteps)
+        if(currentMorphSteps == targetMorphSteps)
         {
 
 			Debug.Log("sdfsdfsf");

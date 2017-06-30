@@ -41,7 +41,7 @@ public class MorphingTable : MonoBehaviour {
             ingotReference = ingot;
 
             if (ingot.LinkedController != null)
-                ingot.OnControllerExit(ingot.LinkedController);
+                ingot.OnTriggerRelease(ingot.LinkedController);
 
             ingot.GetComponent<Rigidbody>().isKinematic = true;
             LockIntoPosition(ingot.transform);

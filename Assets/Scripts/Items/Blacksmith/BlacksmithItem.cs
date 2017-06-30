@@ -24,6 +24,7 @@ public class BlacksmithItem : GenericItem
         rigidBody.useGravity = true;
         rigidBody.velocity = referenceCheck.Velocity;
         rigidBody.angularVelocity = referenceCheck.AngularVelocity;
+        rigidBody.isKinematic = false;
     }
 
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)
