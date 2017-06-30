@@ -42,8 +42,8 @@ MonoBehaviour:
   ambientOcclusion:
     m_Enabled: 0
     m_Settings:
-      intensity: 4
-      radius: 0.12
+      intensity: 1
+      radius: 0.3
       sampleCount: 10
       downsampling: 1
       forceForwardCompatibility: 0
@@ -71,9 +71,9 @@ MonoBehaviour:
   depthOfField:
     m_Enabled: 0
     m_Settings:
-      focusDistance: 10
-      aperture: 5.6
-      focalLength: 50
+      focusDistance: 5.04
+      aperture: 18
+      focalLength: 24
       useCameraFov: 0
       kernelSize: 3
   motionBlur:
@@ -100,14 +100,14 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.19
-        threshold: 0.6
+        intensity: 0.03
+        threshold: 0.27
         softKnee: 0.5
-        radius: 2.72
-        antiFlicker: 1
+        radius: 3.93
+        antiFlicker: 0
       lensDirt:
         texture: {fileID: 0}
-        intensity: 0
+        intensity: 3
   colorGrading:
     m_Enabled: 1
     m_Settings:
@@ -122,10 +122,10 @@ MonoBehaviour:
       basic:
         postExposure: 0
         temperature: 0
-        tint: 0
+        tint: 28
         hueShift: 0
-        saturation: 1.14
-        contrast: 1.1
+        saturation: 1.32
+        contrast: 1
       channelMixer:
         red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
@@ -138,9 +138,9 @@ MonoBehaviour:
           power: {r: 1, g: 1, b: 1, a: 0}
           offset: {r: 1, g: 1, b: 1, a: 0}
         linear:
-          lift: {r: 1, g: 1, b: 1, a: 0}
-          gamma: {r: 1, g: 1, b: 1, a: 0}
-          gain: {r: 1, g: 1, b: 1, a: 0}
+          lift: {r: 0, g: 0, b: 0, a: 0}
+          gamma: {r: 0, g: 0, b: 0, a: 0}
+          gain: {r: 0, g: 0, b: 0, a: 0}
       curves:
         master:
           curve:
