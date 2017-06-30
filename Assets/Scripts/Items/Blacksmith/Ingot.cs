@@ -20,6 +20,16 @@ public class Ingot : BlacksmithItem {
     private float quenchRate = 0.01f;
     protected IngotDeformer ingotDeformer;
 
+    private int currentMorphSteps;
+    private int targetMorphSteps;
+	private int preNumberOfHits = 3;
+
+	public int PreNumberOfHits
+	{
+		get { return this.preNumberOfHits; }
+		set { this.preNumberOfHits = value; }
+	}
+
     public PhysicalMaterial PhysicalMaterial
     {
         get { return physicalMaterial; }
@@ -43,6 +53,8 @@ public class Ingot : BlacksmithItem {
 			initialMaterial = meshRenderer.material;
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
+
+        currentMorphSteps = 0;
     }
 
     public void Update()
@@ -58,6 +70,41 @@ public class Ingot : BlacksmithItem {
         //Debug.Log(heatSourceDetected);
         //Debug.Log(currentTemperature);
     }
+
+    public void IncrementMorphStep()
+    {
+        if(currentMorphSteps == 0)
+        {
+
+			preNumberOfHits = (int)Random.Range(2, 3);
+			// Generate morph chance
+			if (WeaponTierManager.Instance.WeaponClassList != null)
+				targetMorphSteps = Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits;
+				//targetMorphSteps = 1; // Random.Range(1,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type));
+			
+        }
+
+        currentMorphSteps++;
+        if(currentMorphSteps >= targetMorphSteps)
+        {
+
+			Debug.Log("sdfsdfsf");
+            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
+            if(itemData != null)
+            {
+				FakeItem fakeItem = new FakeItem();
+				fakeItem.trueForm = itemData;
+
+                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
+				Debug.Log(g.name);
+				g.AddComponent<FakeItem>();
+				g.GetComponent<FakeItem>().trueForm = itemData;
+                Destroy(this.gameObject);       
+            }
+        }
+    }
+
+
 
     //--------------- Properties -----------------//
 
@@ -180,6 +227,10 @@ public class Ingot : BlacksmithItem {
        meshRenderer.material.Lerp(initialMaterial, forgingMaterial, currentTemperature);
 
     }
+
+
+
+
 
 
 

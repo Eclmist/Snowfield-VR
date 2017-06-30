@@ -121,8 +121,6 @@ public class AdventurerAI : AI
             QuestEntry<StoryQuest> completableQuest = questBook.GetCompletableQuest(group);
             if (completableQuest != null)
             {
-
-                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(EndQuest, completableQuest);
                 isConversing = true;
                 return;
             }
@@ -131,7 +129,6 @@ public class AdventurerAI : AI
 
             if (startableQuest != null)
             {
-                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(StartQuest, startableQuest);
                 isConversing = true;
                 return;
             }
@@ -141,7 +138,7 @@ public class AdventurerAI : AI
     public void StartQuest(QuestEntry<StoryQuest> hunt)
     {
         hunt.StartQuest((int)(((hunt.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level) * (100 - efficiency)));
-        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
+        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, "!QuestDescription", transform.position, Player.Instance.transform, transform);
         op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
     }
 
@@ -149,9 +146,10 @@ public class AdventurerAI : AI
     {
         GetJob(JobType.ADVENTURER).GainExperience(hunt.Quest.Experience);
         QuestBook.RequestNextQuest(hunt);
-        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
-        
-        op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
+        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, "!QuestDescription", transform.position, Player.Instance.transform, transform);
+
+
+		op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
     }
 
     public bool QuestProgress()

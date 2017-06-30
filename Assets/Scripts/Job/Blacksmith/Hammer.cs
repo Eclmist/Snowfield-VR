@@ -17,7 +17,7 @@ public class Hammer : BlacksmithItem {
 				ingotDeformer.Impact(collision.relativeVelocity, contact.point);
 			}
 
-			// Ingot.IncrementMorphStep();
+			collision.collider.GetComponent<Ingot>().IncrementMorphStep();
 		}
 
 	}
