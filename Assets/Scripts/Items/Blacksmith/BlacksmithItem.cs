@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlacksmithItem : GenericItem {
+public class BlacksmithItem : GenericItem
+{
 
+    //Comment empty Line
     [SerializeField] protected PhysicalMaterial physicalMaterial;
     protected bool isColliding = false;
     [SerializeField] private float directionalMultiplier = 5f, maxLerpForce = 10f;
     [SerializeField] private float collisionVibrationMagnitude = 0.8F;
 
+    protected override void Start()
+    {
+        base.Start();
+        jobType = JobType.BLACKSMITH;
+    }
 
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
@@ -25,9 +32,9 @@ public class BlacksmithItem : GenericItem {
         base.OnTriggerPress(referenceCheck);
     }
 
-    
+
     public override void OnTriggerHold(VR_Controller_Custom referenceCheck)
-    {        
+    {
         Vector3 PositionDelta = (referenceCheck.transform.position - transform.position);
 
         if (!isColliding)
@@ -43,6 +50,9 @@ public class BlacksmithItem : GenericItem {
                 PositionDelta.magnitude * directionalMultiplier > currentForce ?
                 (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
 
+            rigidBody.velocity =
+                PositionDelta.magnitude * directionalMultiplier > currentForce ?
+                (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
 
             // Rotation ----------------------------------------------
             Quaternion RotationDelta = referenceCheck.transform.rotation * Quaternion.Inverse(this.transform.rotation);
@@ -86,7 +96,7 @@ public class BlacksmithItem : GenericItem {
         {
             float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
             currentInteractingController.Vibrate(value / 10);
-            
+
         }
 
     }
@@ -102,7 +112,7 @@ public class BlacksmithItem : GenericItem {
 
             currentInteractingController.Vibrate(value / 720 * collisionVibrationMagnitude);
 
-            
+
         }
     }
 
