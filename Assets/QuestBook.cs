@@ -48,7 +48,7 @@ public class QuestBook
 
     public QuestEntry<StoryQuest> GetStartableQuest(QuestEntryGroup<StoryQuest> group)
     {
-        if (group.Completed)
+        if (group.Completed || group[group.ProgressionIndex].Checked)
             return null;
         else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]))
             return group.Quest[group.ProgressionIndex];

@@ -146,7 +146,7 @@ public class AdventurerAI : AI
     protected System.Collections.IEnumerator HandleQuest(QuestEntry<StoryQuest> parameter, OptionPane op)
     {
         isInteracting = true;
-
+        currentQuestMethod = null;
         while (true)
         {
             if(currentQuestMethod != null)
