@@ -40,11 +40,11 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public Node GetRandomPoint()
+    public Node GetRandomPoint(Vector3 currentPoint)
     {
         List<Node> tempNode = new List<Node>();
         tempNode.AddRange(wayPoints);
-        tempNode.RemoveAll(Node => Node.Occupied);
+        tempNode.RemoveAll(Node => Node.Occupied || Vector3.Distance(Node.Position,currentPoint) < 1);
         if (tempNode.Count == 0)
             return null;
         else

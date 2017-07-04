@@ -13,9 +13,9 @@ public abstract class ActorFSM : MonoBehaviour
         IDLE,
         PETROL,
         QUESTING,
-        INTERACTION,
         COMBAT,
         EVENTHANDLING,
+        SHOPPING,
         DEATH
     }
     protected CapsuleCollider capsuleCollider;
@@ -46,7 +46,6 @@ public abstract class ActorFSM : MonoBehaviour
     public virtual void ChangeState(FSMState state)
     {
         StopAllCoroutines();
-        isHandlingAction = false;
         pathFound = false;
         currentState = state;
         rigidBody.isKinematic = false;
@@ -54,7 +53,13 @@ public abstract class ActorFSM : MonoBehaviour
         animator.SetFloat("Speed", 0);
 
         if (state != FSMState.EVENTHANDLING)
+        {
+            foreach(NodeEvent e in handledEvents)
+            {
+                e.CurrentNode.enabled = false;
+            }
             handledEvents.Clear();
+        }
 
         switch (state)
         {
@@ -138,9 +143,6 @@ public abstract class ActorFSM : MonoBehaviour
             case FSMState.PETROL:
                 UpdatePetrolState();
                 break;
-            case FSMState.INTERACTION:
-                UpdateInteractionState();
-                break;
             case FSMState.COMBAT:
                 UpdateCombatState();
                 break;
@@ -149,13 +151,13 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateEventHandling()
     {
+
         if (!isHandlingAction)
         {
             if (handledEvents.Count <= 0)
             {
                 path[0].Occupied = false;
-                path.RemoveAt(0);
-                ChangeState(FSMState.PETROL);
+                ChangeState(nextState);
                 return;
             }
             else
@@ -209,9 +211,6 @@ public abstract class ActorFSM : MonoBehaviour
     }
 
     protected abstract void UpdateIdleState();
-
-
-    protected abstract void UpdateInteractionState();
 
     protected abstract void UpdateCombatState();
 
@@ -426,4 +425,5 @@ public abstract class ActorFSM : MonoBehaviour
         isHandlingAction = false;
 
     }
+
 }

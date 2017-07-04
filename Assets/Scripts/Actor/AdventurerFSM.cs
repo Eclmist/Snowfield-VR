@@ -11,7 +11,9 @@ public class AdventurerFSM : ActorFSM
     private void NewVisitToTown()
     {
         visitedShop.Clear();
+        (currentAI as AdventurerAI).ResetQuestOnNewTownVisit();
     }
+
 
     protected override void UpdateFSMState()
     {
@@ -21,6 +23,37 @@ public class AdventurerFSM : ActorFSM
             case FSMState.QUESTING:
                 UpdateQuestingState();
                 break;
+            case FSMState.SHOPPING:
+                UpdateShoppingState();
+                break;
+        }
+    }
+
+    protected virtual void UpdateShoppingState()
+    {
+        float val = Random.value;
+        Node shopPoint = targetShop.GetRandomPoint(transform.position);
+        if (val > .5 && shopPoint != null)
+        {
+
+            ChangePath(shopPoint);
+            nextState = FSMState.SHOPPING;
+            ChangeState(FSMState.PETROL);
+
+        }
+        else
+        {
+            visitedShop.Add(targetShop);
+            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && (currentAI as AdventurerAI).GotLobang()))
+            {
+                ChangePath(targetShop.InteractionNode);
+                ChangeState(FSMState.PETROL);
+                nextState = FSMState.IDLE;
+            }
+            else
+            {
+                ChangeState(FSMState.IDLE);
+            }
         }
     }
 
@@ -37,6 +70,8 @@ public class AdventurerFSM : ActorFSM
     public override void ChangeState(FSMState state)
     {
         FSMState previousState = currentState;
+        (currentAI as AdventurerAI).Interacting = false;
+
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -44,11 +79,6 @@ public class AdventurerFSM : ActorFSM
             {
                 case FSMState.PETROL:
                     animator.SetFloat("Speed", 2);
-                    break;
-
-                case FSMState.INTERACTION:
-                    rigidBody.isKinematic = true;
-                    visitedShop.Add(targetShop);
                     break;
 
                 case FSMState.COMBAT:
@@ -82,7 +112,8 @@ public class AdventurerFSM : ActorFSM
                 targetShop = _targetShop;
                 AStarManager.Instance.RequestPath(transform.position, _targetShop.Location.Position, ChangePath);
                 requestedPath = true;
-                nextState = FSMState.INTERACTION;
+                nextState = FSMState.SHOPPING;
+
             }
             else
             {
@@ -145,50 +176,52 @@ public class AdventurerFSM : ActorFSM
             ChangeState(FSMState.IDLE);
     }
 
-    protected override void UpdateInteractionState()
+    public System.Collections.IEnumerator Interact(Actor actor)
     {
-        float val = Random.value;
-        if (val > .5)
+        target = actor;
+        isHandlingAction = true;
+        float waitTimer = 5;
+
+        while (true)
         {
-            Node shopPoint = targetShop.GetRandomPoint();
-            if (shopPoint != null)
+            LookAtPlayer(actor.transform.position);
+
+            if (target is Player)
             {
-                ChangePath(shopPoint);
-                nextState = FSMState.INTERACTION;
-                ChangeState(FSMState.PETROL);
-            }
-        }
-        else
-        {
-            nextState = FSMState.IDLE;
-            if ((currentAI as AdventurerAI).GotLobang())
-            {
-                ChangePath(targetShop.InteractionNode);
-                ChangeState(FSMState.PETROL);
+                Player player = target as Player;
+                AdventurerAI currentAdventurer = currentAI as AdventurerAI;
+                if (currentAdventurer.GotLobang() || currentAdventurer.Interacting)
+                {
+                    if (player.CheckConversingWith(currentAdventurer))
+                    {
+                        waitTimer = 5;
+                        if (!currentAdventurer.Interacting)
+                            currentAdventurer.GetLobang();
+                    }
+                    else
+                    {
+                        waitTimer -= Time.deltaTime;
+                        if (waitTimer <= 0)
+                        {
+                            currentAI.Interacting = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    currentAI.Interacting = false;
+                    break;
+                }
             }
             else
             {
-
+                currentAI.Interacting = false;
+                break;
             }
+            yield return new WaitForEndOfFrame();
         }
-            //else
-            //{
-            //    nextState = FSMState.IDLE;
-            //    ChangeState(FSMState.PETROL);
-            //    ChangePath(targetShop.Location);
-            //}
-        ////}
-        //else
-        //{
-        //    Node thisPoint = targetShop.GetPoint(currentShopIndex - 1);
-        //    //if (thisPoint != null)
-        //    //    LookAtPlayer(thisPoint.position + thisPoint.forward);
-        //    //timer -= Time.deltaTime;
-        //}
 
+        isHandlingAction = false;
     }
-
-
-
-    
 }

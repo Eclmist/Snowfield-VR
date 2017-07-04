@@ -2,9 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : Actor
 {
+
+    [SerializeField]
+    public AudioClip dink;
     [SerializeField]
     private int gold;
 
@@ -24,7 +28,20 @@ public class Player : Actor
         }
     }
 
+    public override void Notify(AI ai)
+    {//Unimplemented .. test code
+        AudioSource ad = GetComponent<AudioSource>();
+        ad.Play();
+    }
 
+    public override bool CheckConversingWith(Actor target)
+    {
+        Vector3 rotation1 = transform.forward;
+        
+        Vector3 rotation2 = target.transform.forward;
+        rotation1.y = rotation2.y = 0;
+        return Mathf.Abs(Vector3.Angle(rotation1, rotation2) - 180) < 30;
+    }
 
     protected override void Awake()
     {

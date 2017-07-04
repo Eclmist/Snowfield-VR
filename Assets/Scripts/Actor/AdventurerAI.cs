@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +15,7 @@ public class AdventurerAI : AI
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
     private QuestBook questBook;
+
     protected override void Awake()
     {
         base.Awake();
@@ -88,7 +90,6 @@ public class AdventurerAI : AI
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 if (leftHand.Item != null)
                     Destroy(leftHand.Item);
-                Debug.Log("check");
                 leftHand.Item = item;
                 leftHand.Item.Equip(leftHand.transform);
 
@@ -97,7 +98,6 @@ public class AdventurerAI : AI
             case EquipSlot.EquipmentSlotType.RIGHTHAND:
                 if (rightHand.Item != null)
                     Destroy(rightHand.Item);
-                Debug.Log("check");
                 rightHand.Item = item;
                 rightHand.Item.Equip(rightHand.transform);
                 break;
@@ -116,14 +116,15 @@ public class AdventurerAI : AI
 
     public void GetLobang()
     {
+        
         foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
         {
             QuestEntry<StoryQuest> completableQuest = questBook.GetCompletableQuest(group);
             if (completableQuest != null)
             {
-
-                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(EndQuest, completableQuest);
-                isConversing = true;
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + completableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
+                op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
+                StartCoroutine(HandleQuest(completableQuest, op));
                 return;
             }
 
@@ -131,27 +132,71 @@ public class AdventurerAI : AI
 
             if (startableQuest != null)
             {
-                DialogManager.Instance.AddDialog<QuestEntry<StoryQuest>>(StartQuest, startableQuest);
-                isConversing = true;
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + startableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
+                op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
+                op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
+                StartCoroutine(HandleQuest(startableQuest, op));
                 return;
             }
         }
     }
 
+
+
+    protected System.Collections.IEnumerator HandleQuest(QuestEntry<StoryQuest> parameter, OptionPane op)
+    {
+        isInteracting = true;
+
+        while (true)
+        {
+            if(currentQuestMethod != null)
+            {
+                currentQuestMethod(parameter);
+                break;
+            }
+            else if (!isInteracting)
+            {
+                if (op)
+                    op.ClosePane();
+                break;
+            }
+            
+            yield return new WaitForEndOfFrame();
+        }
+        isInteracting = false;
+    }
+
+    protected Action<QuestEntry<StoryQuest>> currentQuestMethod = null;
+
+    public void StartQuestYESDelegate()
+    {
+        currentQuestMethod = StartQuest;
+    }
+
+    public void StartQuestNODelegate()
+    {
+        currentQuestMethod = RejectQuest;
+    }
+
+    public void CompleteQuestDelegate()
+    {
+        currentQuestMethod = EndQuest;
+    }
+
     public void StartQuest(QuestEntry<StoryQuest> hunt)
     {
         hunt.StartQuest((int)(((hunt.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level) * (100 - efficiency)));
-        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
-        op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
+    }
+
+    public void RejectQuest(QuestEntry<StoryQuest> hunt)
+    {
+        hunt.Checked = true;
     }
 
     public void EndQuest(QuestEntry<StoryQuest> hunt)
     {
         GetJob(JobType.ADVENTURER).GainExperience(hunt.Quest.Experience);
         QuestBook.RequestNextQuest(hunt);
-        OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, hunt.Quest.Name, hunt.Quest.Session.Title, transform.position, Player.Instance.transform, transform);
-        
-        op.SetEvent(OptionPane.ButtonType.Ok, StopInteraction);
     }
 
     public bool QuestProgress()
@@ -159,6 +204,14 @@ public class AdventurerAI : AI
         return questBook.QuestProgess();
     }
 
+    public override void Interact(Actor actor)
+    {
+        StartCoroutine((currentFSM as AdventurerFSM).Interact(actor));
+    }
 
+    public void ResetQuestOnNewTownVisit()
+    {
+        questBook.ResetChecked();
+    }
 
 }

@@ -4,15 +4,15 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public class AI : Actor
+public abstract class AI : Actor
 {
 
     protected ActorFSM currentFSM;
-    protected bool isConversing;
 
     [SerializeField]
     protected float movementSpeed = 3;
 
+    protected bool isInteracting = false;
 
     public float MovementSpeed
     {
@@ -26,7 +26,29 @@ public class AI : Actor
         }
     }
 
+    public bool Interacting
+    {
+        get
+        {
+            return isInteracting;
+        }
+        set
+        {
+            isInteracting = value;
+        }
+    }
 
+    public override void Notify(AI ai)
+    {
+        Interact(ai);
+    }
+
+    public override bool CheckConversingWith(Actor target)
+    {
+        return currentFSM.Target == target;
+    }
+
+    
 
     protected override void Awake()
     {
@@ -37,11 +59,7 @@ public class AI : Actor
         
     }
 
-    public bool IsConversing
-    {
-        get { return this.isConversing; }
-        set { isConversing = value; }
-    }
+
 
 
     //public override void Interact(Actor actor)
@@ -76,13 +94,12 @@ public class AI : Actor
             rightHand.Item.Unequip();
     }
 
-    public virtual void StopInteraction()
-    {
-        isConversing = false;
-    }
-
     public virtual void LookAtObject(Transform target,float time,float angle)
     {
         StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
     }
+
+    public abstract void Interact(Actor actor);
+
+
 }

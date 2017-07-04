@@ -36,7 +36,7 @@ public class QuestBook
     public QuestEntry<StoryQuest> GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
     {
 
-        if (group.Completed)
+        if (group.Completed || group[group.ProgressionIndex].Checked)
             return null;
         else if ((group[group.ProgressionIndex].Completed))
         {
@@ -98,6 +98,14 @@ public class QuestBook
             }
         }
         return false;
+    }
+
+    public void ResetChecked()
+    {
+        foreach(QuestEntryGroup<StoryQuest> line in storyQuest)
+        {
+            line[line.ProgressionIndex].Checked = false;
+        }
     }
 
 }

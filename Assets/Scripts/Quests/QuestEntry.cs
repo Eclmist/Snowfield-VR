@@ -6,15 +6,28 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 {
 
 	private T currentQuest;
-	private bool hasStarted,isCompleted;
+	private bool hasStarted,isCompleted,checkedInVisit;
 	private int timeToComplete;
 
 	public QuestEntry(T quest)
 	{
 		hasStarted = false;
 		isCompleted = false;
+        checkedInVisit = false;
 		currentQuest = quest;
 	}
+
+    public bool Checked
+    {
+        get
+        {
+            return checkedInVisit;
+        }
+        set
+        {
+            checkedInVisit = value;
+        }
+    }
 
 	public Session Session
 	{

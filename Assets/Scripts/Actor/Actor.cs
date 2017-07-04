@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public abstract class Actor : MonoBehaviour, IDamagable
 {
     [SerializeField]
@@ -20,6 +20,8 @@ public abstract class Actor : MonoBehaviour, IDamagable
         Job newJob = new Job(newJobType);
         jobList.Add(newJob);
     }
+
+    public abstract bool CheckConversingWith(Actor target);
 
     protected virtual void Awake()
     {
@@ -78,6 +80,9 @@ public abstract class Actor : MonoBehaviour, IDamagable
             return jobList;
         }
     }
+
+    public abstract void Notify(AI ai);
+
     public virtual void TakeDamage(int damage, Actor attacker)
     {
         health -= (damage >= health) ? health : damage;
@@ -133,10 +138,9 @@ public abstract class Actor : MonoBehaviour, IDamagable
         }
         return LongestWeapon;
     }
-  
+
 
    
-
     public new virtual Transform transform
     {
         get
