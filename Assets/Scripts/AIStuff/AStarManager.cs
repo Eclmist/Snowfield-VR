@@ -9,11 +9,10 @@ using Debug = UnityEngine.Debug;
 
 public class AStarManager : MonoBehaviour
 {
-    public static AStarManager Instance;
+    public static volatile AStarManager Instance;
     private Thread pathFindingThread;
     private bool processingPath;
-    private Heap<PathRequest> requestQueue = new Heap<PathRequest>();
-
+    private volatile List<PathRequest> requestQueue = new List<PathRequest>();
     [SerializeField]
     private bool exit;
 
@@ -41,9 +40,13 @@ public class AStarManager : MonoBehaviour
         {
             try
             {
+                
                 if (!processingPath && requestQueue.Count > 0)
                 {
                     ProcessNextPath();
+                }else
+                {
+                    Thread.Sleep(10);
                 }
 
             }
@@ -57,12 +60,14 @@ public class AStarManager : MonoBehaviour
 
     public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callback)
     {
+     
+        PathRequest newRequest = new PathRequest(_startPoint, _endPoint, _callback/*, _steppableHeight*/);
         lock (requestQueue)
         {
-            PathRequest newRequest = new PathRequest(_startPoint, _endPoint, _callback/*, _steppableHeight*/);
             requestQueue.Add(newRequest);
-
+            requestQueue.Sort();
         }
+        
     }
     private void ProcessNextPath()
     {
@@ -70,18 +75,16 @@ public class AStarManager : MonoBehaviour
         PathRequest currentPathRequest;
         lock (requestQueue)
         {
-            currentPathRequest = requestQueue.GetFirst();
-
+            currentPathRequest = requestQueue[0];
+            requestQueue.RemoveAt(0);
         }
-
         CalculatePath(currentPathRequest);
-
     }
 
     private void FinishedProcessingPath(PathRequest _request, List<Node> wayPoint)
     {
-        _request.callBack(wayPoint);
-        processingPath = false;
+       _request.callBack(wayPoint);
+       processingPath = false;
     }
 
     #region StandardAStar
@@ -157,6 +160,7 @@ public class AStarManager : MonoBehaviour
             path.Add(currentNode);
             currentNode = currentNode.Parent;
         }
+        path.Add(currentNode);
         //Just for visualizing to be removed
         //Vector3 direction = Vector3.zero;
 

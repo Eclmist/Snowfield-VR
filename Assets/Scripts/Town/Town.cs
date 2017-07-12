@@ -14,31 +14,20 @@ public class Town : MonoBehaviour
     [SerializeField]
     private List<Shop> allShops = new List<Shop>();
 
-    private List<AI> listOfAI = new List<AI>();
-
-    [SerializeField]
-    private List<AI> typeOfAI = new List<AI>();
-
     [SerializeField]
     private List<Node> spawnPoints = new List<Node>();
 
+    [SerializeField]
+    private Node wavePoint;
 
-    public List<AI> AIs
+    public Node WavePoint
     {
         get
         {
-            return listOfAI;
+            return wavePoint;
         }
     }
-
-    public List<AI> AITypes
-    {
-        get
-        {
-            return typeOfAI;
-        }
-    }
-
+   
     public List<Node> SpawnPoint
     {
         get
@@ -50,13 +39,11 @@ public class Town : MonoBehaviour
     private void Awake()
     {
         allShops = new List<Shop>();
-        listOfAI = new List<AI>();
     }
 
     private void Start()
     {
         allShops.AddRange(GetComponentsInChildren<Shop>());
-
     }
 
     public int Population//used to decide how many requests/day etc
@@ -80,5 +67,6 @@ public class Town : MonoBehaviour
         }
     }
 
+    
 
 }

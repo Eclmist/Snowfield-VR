@@ -8,6 +8,8 @@ public class AdventurerFSM : ActorFSM
 
     private Shop targetShop;
 
+    private bool inTown = true;
+
     private void NewVisitToTown()
     {
         visitedShop.Clear();
@@ -18,14 +20,32 @@ public class AdventurerFSM : ActorFSM
     protected override void UpdateFSMState()
     {
         base.UpdateFSMState();
-        switch (currentState)
+        if (GameManager.Instance.State == GameManager.GameState.NIGHTMODE)
         {
-            case FSMState.QUESTING:
-                UpdateQuestingState();
-                break;
-            case FSMState.SHOPPING:
-                UpdateShoppingState();
-                break;
+            switch (currentState)
+            {
+                case FSMState.COMBAT:
+                    UpdateCombatState();
+                    break;
+                case FSMState.IDLE:
+                    UpdateIdleStateNight();
+                    break;
+            }
+        }
+        else if (GameManager.Instance.State == GameManager.GameState.DAYMODE)
+        {
+            switch (currentState)
+            {
+                case FSMState.IDLE:
+                    UpdateIdleStateDay();
+                    break;
+                case FSMState.QUESTING:
+                    UpdateQuestingState();
+                    break;
+                case FSMState.SHOPPING:
+                    UpdateShoppingState();
+                    break;
+            }
         }
     }
 
@@ -57,42 +77,26 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
-    protected virtual void UpdateQuestingState()
+    protected virtual void UpdateIdleStateNight()
     {
-        bool progress = (currentAI as AdventurerAI).QuestProgress();
-        if (!progress)
+        if (pathFound)
         {
-            ChangeState(FSMState.IDLE);
-            NewVisitToTown();
+            ChangeState(FSMState.PETROL);
         }
-    }
-
-    public override void ChangeState(FSMState state)
-    {
-        FSMState previousState = currentState;
-        (currentAI as AdventurerAI).Interacting = false;
-
-        base.ChangeState(state);
-        if (previousState != currentState)
+        else if (!requestedPath)
         {
-            switch (state)
+            if (inTown)
             {
-                case FSMState.PETROL:
-                    animator.SetFloat("Speed", 2);
-                    break;
-
-                case FSMState.COMBAT:
-                    (currentAI as AdventurerAI).EquipRandomWeapons();
-                    //animator.SetBool("KnockBack", true);//Wrong place
-                    animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
-                    //timer = 5;
-                    break;
-
+                Node endPoint = TownManager.Instance.CurrentTown.WavePoint;
+                AStarManager.Instance.RequestPath(transform.position,endPoint.Position , ChangePath);
+                requestedPath = true;
+                inTown = false;
+                nextState = FSMState.COMBAT;
             }
         }
     }
 
-    protected override void UpdateIdleState()
+    protected virtual void UpdateIdleStateDay()
     {
         if (pathFound)
         {
@@ -124,6 +128,44 @@ public class AdventurerFSM : ActorFSM
             }
         }
     }
+
+    protected virtual void UpdateQuestingState()
+    {
+        bool progress = (currentAI as AdventurerAI).QuestProgress();
+        if (!progress)
+        {
+            ChangeState(FSMState.IDLE);
+            NewVisitToTown();
+        }
+    }
+
+    public override void ChangeState(FSMState state)
+    {
+        
+        FSMState previousState = currentState;
+        (currentAI as AdventurerAI).Interacting = false;
+
+        base.ChangeState(state);
+        if (previousState != currentState)
+        {
+            switch (state)
+            {
+                case FSMState.PETROL:
+                    animator.SetFloat("Speed", 2);
+                    break;
+
+                case FSMState.COMBAT:
+                    (currentAI as AdventurerAI).EquipRandomWeapons();
+                    //animator.SetBool("KnockBack", true);//Wrong place
+                    animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
+                    //timer = 5;
+                    break;
+
+            }
+        }
+    }
+
+   
 
     protected override void UpdateCombatState()
     {

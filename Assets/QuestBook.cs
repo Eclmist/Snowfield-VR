@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class QuestBook
 {
 
@@ -33,28 +34,36 @@ public class QuestBook
 
     }
 
-    public QuestEntry<StoryQuest> GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
+    public QuestEntry<StoryQuest> GetCompletableQuest()
     {
-
-        if (group.Completed || group[group.ProgressionIndex].Checked)
-            return null;
-        else if ((group[group.ProgressionIndex].Completed))
+        foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
-            return group[group.ProgressionIndex];
+            if (group.Completed)
+                continue;
+            else if ((group[group.ProgressionIndex].Completed) && !group[group.ProgressionIndex].Checked)
+            {
+                return group[group.ProgressionIndex];
+            }
         }
 
         return null;
     }
 
-    public QuestEntry<StoryQuest> GetStartableQuest(QuestEntryGroup<StoryQuest> group)
+
+    public QuestEntry<StoryQuest> GetStartableQuest()
     {
-        if (group.Completed || group[group.ProgressionIndex].Checked)
-            return null;
-        else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]))
-            return group.Quest[group.ProgressionIndex];
+        foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
+        {
+            if (group.Completed)
+                continue;
+            else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]) && !group[group.ProgressionIndex].Checked)
+                return group.Quest[group.ProgressionIndex];
+        }
 
         return null;
     }
+
+    
 
 
     public QuestEntryGroup<StoryQuest> GetStoryGroup(JobType jt)

@@ -56,7 +56,7 @@ public abstract class ActorFSM : MonoBehaviour
         {
             foreach(NodeEvent e in handledEvents)
             {
-                e.CurrentNode.enabled = false;
+                e.CurrentNode.Occupied = false;
             }
             handledEvents.Clear();
         }
@@ -134,17 +134,11 @@ public abstract class ActorFSM : MonoBehaviour
         rigidBody.angularVelocity = Vector3.zero;
         switch (currentState)
         {
-            case FSMState.IDLE:
-                UpdateIdleState();
-                break;
             case FSMState.EVENTHANDLING:
                 UpdateEventHandling();
                 break;
             case FSMState.PETROL:
                 UpdatePetrolState();
-                break;
-            case FSMState.COMBAT:
-                UpdateCombatState();
                 break;
         }
     }
@@ -157,14 +151,16 @@ public abstract class ActorFSM : MonoBehaviour
             if (handledEvents.Count <= 0)
             {
                 path[0].Occupied = false;
-                ChangeState(nextState);
+                path.RemoveAt(0);
+                ChangeState(FSMState.PETROL);
                 return;
             }
             else
             {
                 NodeEvent firstEvent = handledEvents[0];
                 handledEvents.RemoveAt(0);
-                firstEvent.HandleEvent(currentAI);
+                if(firstEvent.enabled)
+                    firstEvent.HandleEvent(currentAI);
             }
         }
     }
@@ -194,6 +190,7 @@ public abstract class ActorFSM : MonoBehaviour
 
                 if (Vector3.Distance(transform.position, targetPoint) < .25f)
                 {
+
                     handledEvents.AddRange(path[0].Events);
                     if (handledEvents.Count > 0)
                     {
@@ -204,13 +201,8 @@ public abstract class ActorFSM : MonoBehaviour
                         path.RemoveAt(0);
                 }
             }
-
-
-
         }
     }
-
-    protected abstract void UpdateIdleState();
 
     protected abstract void UpdateCombatState();
 

@@ -10,7 +10,7 @@ public abstract class AI : Actor
     protected ActorFSM currentFSM;
 
     [SerializeField]
-    protected float movementSpeed = 3;
+    protected float movementSpeed = 3;//replacable by generic script
 
     protected bool isInteracting = false;
 
@@ -54,18 +54,13 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
-        if (jobList.Count != 0)
-            jobList.Clear();
-        
+        Debug.Log(currentFSM);
     }
 
-
-
-
-    //public override void Interact(Actor actor)
-    //{
-    //    currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
-    //}
+    public void ChangeState(ActorFSM.FSMState state)
+    {
+        currentFSM.ChangeState(state);
+    }
 
     public override void TakeDamage(int damage, Actor attacker)
     {
@@ -80,7 +75,7 @@ public abstract class AI : Actor
         else if (Mathf.Sign(damage) == 1)
         {
             bool knockedBack = false;
-            if (damage / (float)maxHealth > .2)
+            if (damage / (float)actorData.Health > .2)
                 knockedBack = true;
             currentFSM.DamageTaken(knockedBack,attacker);
         }
@@ -101,5 +96,9 @@ public abstract class AI : Actor
 
     public abstract void Interact(Actor actor);
 
+    public void Warp(Vector3 position)
+    {
+        transform.position = position;
+    }
 
 }

@@ -7,32 +7,25 @@ using UnityEngine.Events;
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI
 {
-    private List<Relation> actorRelations = new List<Relation>();
-    [SerializeField]
-    [Range(1, 99)]
-    [Tooltip("How fast this guy finish quests 1 slowest")]
-    private float efficiency = 20;
+    //private List<Relation> actorRelations = new List<Relation>();
+    
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-    private QuestBook questBook;
+    
 
     protected override void Awake()
     {
         base.Awake();
-        AddJob(JobType.ADVENTURER);
+        
         GetSlots();
     }
 
-    protected virtual void Start()
-    {
-        questBook = new QuestBook();
-    }
 
     public QuestBook QuestBook
     {
         get
         {
-            return questBook;
+            return (actorData as AdventurerAIData).QuestBook;
         }
     }
     public void EquipRandomWeapons()
@@ -106,102 +99,81 @@ public class AdventurerAI : AI
 
     public bool GotLobang()
     {
-        foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
-        {
-            if (questBook.GetCompletableQuest(group) != null || questBook.GetStartableQuest(group) != null)
-                return true;
-        }
+
+        if ((actorData as AdventurerAIData).QuestBook.GetCompletableQuest() != null || (actorData as AdventurerAIData).QuestBook.GetStartableQuest() != null)
+            return true;
+
         return false;
     }
 
     public void GetLobang()
     {
-        
-        foreach (QuestEntryGroup<StoryQuest> group in questBook.StoryQuests)
+
+        foreach (QuestEntryGroup<StoryQuest> group in (actorData as AdventurerAIData).QuestBook.StoryQuests)
         {
-            QuestEntry<StoryQuest> completableQuest = questBook.GetCompletableQuest(group);
+            QuestEntry<StoryQuest> completableQuest = (actorData as AdventurerAIData).QuestBook.GetCompletableQuest();
             if (completableQuest != null)
             {
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + completableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-                StartCoroutine(HandleQuest(completableQuest, op));
+                StartCoroutine(StartInteraction(op));
                 return;
             }
 
-            QuestEntry<StoryQuest> startableQuest = questBook.GetStartableQuest(group);
+            QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
 
             if (startableQuest != null)
             {
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + startableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
                 op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-                StartCoroutine(HandleQuest(startableQuest, op));
+                StartCoroutine(StartInteraction(op));
                 return;
             }
         }
     }
 
-
-
-    protected System.Collections.IEnumerator HandleQuest(QuestEntry<StoryQuest> parameter, OptionPane op)
+    protected System.Collections.IEnumerator StartInteraction(OptionPane op)
     {
         isInteracting = true;
-        currentQuestMethod = null;
+
         while (true)
         {
-            if(currentQuestMethod != null)
-            {
-                currentQuestMethod(parameter);
-                break;
-            }
-            else if (!isInteracting)
+            if (!isInteracting)
             {
                 if (op)
                     op.ClosePane();
                 break;
             }
-            
+
             yield return new WaitForEndOfFrame();
         }
-        isInteracting = false;
+      
     }
-
-    protected Action<QuestEntry<StoryQuest>> currentQuestMethod = null;
 
     public void StartQuestYESDelegate()
     {
-        currentQuestMethod = StartQuest;
+        QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
+        startableQuest.StartQuest((int)(((startableQuest.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level)));
     }
 
     public void StartQuestNODelegate()
     {
-        currentQuestMethod = RejectQuest;
+        QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
+        startableQuest.Checked = true;
     }
 
     public void CompleteQuestDelegate()
     {
-        currentQuestMethod = EndQuest;
+        QuestEntry<StoryQuest> completableQuest = (actorData as AdventurerAIData).QuestBook.GetCompletableQuest();
+        GetJob(JobType.ADVENTURER).GainExperience(completableQuest.Quest.Experience);
+        QuestBook.RequestNextQuest(completableQuest);
     }
 
-    public void StartQuest(QuestEntry<StoryQuest> hunt)
-    {
-        hunt.StartQuest((int)(((hunt.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level) * (100 - efficiency)));
-    }
-
-    public void RejectQuest(QuestEntry<StoryQuest> hunt)
-    {
-        hunt.Checked = true;
-    }
-
-    public void EndQuest(QuestEntry<StoryQuest> hunt)
-    {
-        GetJob(JobType.ADVENTURER).GainExperience(hunt.Quest.Experience);
-        QuestBook.RequestNextQuest(hunt);
-    }
 
     public bool QuestProgress()
     {
-        return questBook.QuestProgess();
+        return (actorData as AdventurerAIData).QuestBook.QuestProgess();
     }
 
     public override void Interact(Actor actor)
@@ -211,7 +183,7 @@ public class AdventurerAI : AI
 
     public void ResetQuestOnNewTownVisit()
     {
-        questBook.ResetChecked();
+        (actorData as AdventurerAIData).QuestBook.ResetChecked();
     }
 
 }

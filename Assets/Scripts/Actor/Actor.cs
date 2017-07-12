@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 public abstract class Actor : MonoBehaviour, IDamagable
 {
+
     [SerializeField]
     protected int health = 100;
     [SerializeField]
@@ -11,26 +13,38 @@ public abstract class Actor : MonoBehaviour, IDamagable
     [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
-    protected int maxHealth;
+    protected ActorData actorData;
 
-    protected List<Job> jobList = new List<Job>();
+    public ActorData Data
+    {
+        get
+        {
+            return actorData;
+        }
+        set
+        {
+            
+            actorData = value;
+        }
+    }
+
 
     public void AddJob(JobType newJobType)
     {
         Job newJob = new Job(newJobType);
-        jobList.Add(newJob);
+        Debug.Log(actorData);
+        actorData.JobList.Add(newJob);
     }
 
     public abstract bool CheckConversingWith(Actor target);
 
     protected virtual void Awake()
     {
-        maxHealth = health;
         deathAnim = GetComponent<TempKillScript>();
     }
     public void GainExperience(JobType jobType, int value)
     {
-        foreach (Job currentJob in jobList)
+        foreach (Job currentJob in actorData.JobList)
         {
             if (currentJob.Type == jobType)
             {
@@ -42,7 +56,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     public Job GetJob(JobType type)
     {
-        foreach (Job job in jobList)
+        foreach (Job job in actorData.JobList)
         {
             if (job.Type == type)
             {
@@ -70,14 +84,14 @@ public abstract class Actor : MonoBehaviour, IDamagable
     {
         get
         {
-            return maxHealth;
+            return actorData.Health;
         }
     }
     public List<Job> JobListReference
     {
         get
         {
-            return jobList;
+            return actorData.JobList;
         }
     }
 
@@ -86,7 +100,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
     public virtual void TakeDamage(int damage, Actor attacker)
     {
         health -= (damage >= health) ? health : damage;
-        health = health > maxHealth ? maxHealth : health;
+        health = health > actorData.Health ? actorData.Health : health;
     }
 
     public virtual void ChangeWield(Equipment item)

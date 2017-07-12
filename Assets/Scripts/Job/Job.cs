@@ -10,7 +10,7 @@ public enum JobType
     ADVENTURER
 }
 
-
+[System.Serializable]
 public class Job {
 
     protected JobType currentJobType;

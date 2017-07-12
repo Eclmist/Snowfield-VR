@@ -49,13 +49,23 @@ public class Player : Actor
         if (!Instance)
         {
             Instance = this;
-            AddJob(JobType.BLACKSMITH);
+            actorData = (ActorData)SerializeManager.Load("PlayerData");
+            if (actorData == null)
+            {
+                actorData = new ActorData(null, "Player");
+                AddJob(JobType.BLACKSMITH);
+            }
         }
         else
         {
             Debug.Log("There should only be one instanc of Player.cs in the scene!");
             Destroy(this);
         }
+    }
+
+    protected void OnDisable()
+    {
+        SerializeManager.Save("PlayerData",actorData);
     }
 
 

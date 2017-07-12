@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class QuestEntry<T> : ICanTalk where T : Quest
 {
 
@@ -86,6 +87,7 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 	}
 }
 
+[System.Serializable]
 public class QuestEntryGroup<T> where T : Quest
 {
 	private List<QuestEntry<T>> quests;
