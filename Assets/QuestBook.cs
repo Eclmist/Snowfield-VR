@@ -16,10 +16,8 @@ public class QuestBook
         }
     }
 
-    public void RequestNextQuest(QuestEntry<StoryQuest> quest)
+    public void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
     {
-
-        QuestEntryGroup<StoryQuest> group = GetStoryGroup(quest.Quest.JobType);
 
         group.ProgressionIndex++;
         StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
@@ -28,21 +26,21 @@ public class QuestBook
             group.Completed = true;
         else
         {
-            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
-            group.Add(questEntry);
+            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>();
+            group.Quest = questEntry;
         }
 
     }
 
-    public QuestEntry<StoryQuest> GetCompletableQuest()
+    public QuestEntryGroup<StoryQuest> GetCompletableGroup()
     {
         foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
             if (group.Completed)
                 continue;
-            else if ((group[group.ProgressionIndex].Completed) && !group[group.ProgressionIndex].Checked)
+            else if ((group.Quest.Completed) && !group.Quest.Checked)
             {
-                return group[group.ProgressionIndex];
+                return group;
             }
         }
 
@@ -50,14 +48,14 @@ public class QuestBook
     }
 
 
-    public QuestEntry<StoryQuest> GetStartableQuest()
+    public QuestEntryGroup<StoryQuest> GetStartableGroup()
     {
         foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
             if (group.Completed)
                 continue;
-            else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]) && !group[group.ProgressionIndex].Checked)
-                return group.Quest[group.ProgressionIndex];
+            else if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group) && !group.Quest.Checked)
+                return group;
         }
 
         return null;
@@ -88,8 +86,8 @@ public class QuestBook
             StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
             if (newQuest != null)
             {
-                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
-                line.Add(questEntry);
+                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>();
+                line.Quest = questEntry;
             }
         }
     }
@@ -100,9 +98,9 @@ public class QuestBook
         {
             if (questEntryGroup.Completed)
                 continue;
-            else if (!questEntryGroup[questEntryGroup.ProgressionIndex].Completed && questEntryGroup[questEntryGroup.ProgressionIndex].Started)
+            else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started)
             {
-                questEntryGroup[questEntryGroup.ProgressionIndex].ProgressQuest();
+                questEntryGroup.Quest.ProgressQuest();
                 return true;
             }
         }
@@ -113,7 +111,7 @@ public class QuestBook
     {
         foreach(QuestEntryGroup<StoryQuest> line in storyQuest)
         {
-            line[line.ProgressionIndex].Checked = false;
+            line.Quest.Checked = false;
         }
     }
 

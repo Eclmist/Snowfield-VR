@@ -64,7 +64,7 @@ public class AdventurerFSM : ActorFSM
         else
         {
             visitedShop.Add(targetShop);
-            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && (currentAI as AdventurerAI).GotLobang()))
+            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && (currentAI as AdventurerAI).GotLobang() && !targetShop.InteractionNode.Occupied))
             {
                 ChangePath(targetShop.InteractionNode);
                 ChangeState(FSMState.PETROL);
@@ -72,6 +72,7 @@ public class AdventurerFSM : ActorFSM
             }
             else
             {
+                Debug.Log("hitidle");
                 ChangeState(FSMState.IDLE);
             }
         }
@@ -85,14 +86,10 @@ public class AdventurerFSM : ActorFSM
         }
         else if (!requestedPath)
         {
-            if (inTown)
-            {
-                Node endPoint = TownManager.Instance.CurrentTown.WavePoint;
-                AStarManager.Instance.RequestPath(transform.position,endPoint.Position , ChangePath);
-                requestedPath = true;
-                inTown = false;
-                nextState = FSMState.COMBAT;
-            }
+            Node endPoint = TownManager.Instance.CurrentTown.WavePoint;
+            AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
+            requestedPath = true;
+            nextState = FSMState.IDLE;
         }
     }
 
@@ -105,6 +102,7 @@ public class AdventurerFSM : ActorFSM
         else if (!requestedPath)
         {
             Shop _targetShop = TownManager.Instance.GetRandomShop(visitedShop);
+            Debug.Log(_targetShop);
             if (_targetShop != null)//And check for anymore shop
             {
                 //if (_targetShop.Owner == Player.Instance && !(currentAI as AdventurerAI).GotLobang())
@@ -141,10 +139,9 @@ public class AdventurerFSM : ActorFSM
 
     public override void ChangeState(FSMState state)
     {
-        
+
         FSMState previousState = currentState;
         (currentAI as AdventurerAI).Interacting = false;
-
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -165,7 +162,7 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
-   
+
 
     protected override void UpdateCombatState()
     {
@@ -224,8 +221,8 @@ public class AdventurerFSM : ActorFSM
         isHandlingAction = true;
         float waitTimer = 5;
 
-        while (true)
-        {
+        while (isHandlingAction) { 
+
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
@@ -238,7 +235,10 @@ public class AdventurerFSM : ActorFSM
                     {
                         waitTimer = 5;
                         if (!currentAdventurer.Interacting)
+                        {
+                            Debug.Log("hit");
                             currentAdventurer.GetLobang();
+                        }
                     }
                     else
                     {
@@ -262,7 +262,8 @@ public class AdventurerFSM : ActorFSM
                 break;
             }
             yield return new WaitForEndOfFrame();
-        }
+
+        } 
 
         isHandlingAction = false;
     }

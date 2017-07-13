@@ -5,8 +5,8 @@ using UnityEditor;
 
 public class AIManager : MonoBehaviour
 {
-
-    private List<ActorData> listOfAIData;
+    
+    private List<AdventurerAIData> listOfAIData;
 
     private List<AI> allAIsInScene = new List<AI>();
     [SerializeField]
@@ -32,10 +32,11 @@ public class AIManager : MonoBehaviour
     protected void Start()
     {
         
-        listOfAIData = (List<ActorData>)SerializeManager.Load("AIData");
+        listOfAIData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
+        Debug.Log(listOfAIData);
         if (listOfAIData == null)
         {
-            listOfAIData = new List<ActorData>();
+            listOfAIData = new List<AdventurerAIData>();
         }
 
         if(listOfAIData.Count < TownManager.Instance.CurrentTown.Population)
@@ -84,7 +85,6 @@ public class AIManager : MonoBehaviour
     
     private void OnDisable()
     {
-        
         SerializeManager.Save("AIData", listOfAIData);
     }
 

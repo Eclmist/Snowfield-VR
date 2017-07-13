@@ -54,7 +54,6 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
-        Debug.Log(currentFSM);
     }
 
     public void ChangeState(ActorFSM.FSMState state)

@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestEntry<T> : ICanTalk where T : Quest
+public class QuestEntry<T> where T : Quest
 {
-
-	private T currentQuest;
 	private bool hasStarted,isCompleted,checkedInVisit;
 	private int timeToComplete;
 
-	public QuestEntry(T quest)
+	public QuestEntry()
 	{
 		hasStarted = false;
 		isCompleted = false;
         checkedInVisit = false;
-		currentQuest = quest;
 	}
 
     public bool Checked
@@ -30,16 +27,16 @@ public class QuestEntry<T> : ICanTalk where T : Quest
         }
     }
 
-	public Session Session
-	{
-		get
-		{
-			if (!isCompleted)
-				return currentQuest.Dialog;
-			else
-				return currentQuest.EndDialog;
-		}
-	}
+	//public Session Session
+	//{
+	//	get
+	//	{
+	//		if (!isCompleted)
+	//			return currentQuest.Dialog;
+	//		else
+	//			return currentQuest.EndDialog;
+	//	}
+	//}
 
 	public bool Completed
 	{
@@ -65,13 +62,7 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 		}
 	}
 
-	public T Quest
-	{
-		get
-		{
-			return currentQuest;
-		}
-	}
+	
 
 	public void StartQuest(int time)
 	{
@@ -90,7 +81,7 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 [System.Serializable]
 public class QuestEntryGroup<T> where T : Quest
 {
-	private List<QuestEntry<T>> quests;
+    private QuestEntry<T> currentEntry;
 
 	private bool isCompleted;
 
@@ -103,12 +94,16 @@ public class QuestEntryGroup<T> where T : Quest
 		get { return this.jobType; }
 	}
 
-	public List<QuestEntry<T>> Quest
+	public QuestEntry<T> Quest
 	{
 		get
 		{
-			return quests;
+            return currentEntry;
 		}
+        set
+        {
+            currentEntry = value;
+        }
 	}
 
 	public int ProgressionIndex
@@ -138,31 +133,7 @@ public class QuestEntryGroup<T> where T : Quest
 	public QuestEntryGroup(JobType type)
 	{
 		isCompleted = false;
-		quests = new List<QuestEntry<T>>();
 		progressionIndex = 0;
 		jobType = type;
 	}
-
-	public int Count
-	{
-		get { return quests.Count; }
-	}
-
-	public void Add(QuestEntry<T> _item)
-	{
-		quests.Add(_item);
-	}
-
-	public QuestEntry<T> this[int index]   // Indexer declaration  
-	{
-		get
-		{
-			return quests[index];
-		}
-		set
-		{
-			quests[index] = value;
-		}
-	}
-
 }

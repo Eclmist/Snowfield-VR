@@ -29,6 +29,7 @@ public abstract class VR_Interactable : MonoBehaviour
 
     protected virtual void OnTriggerPress()
 	{
+        if(currentInteractingController)
 		currentInteractingController.Vibrate(triggerPressVibration);
 	}
 	protected virtual void OnTriggerHold() { }

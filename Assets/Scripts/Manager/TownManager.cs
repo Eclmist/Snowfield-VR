@@ -29,29 +29,6 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    
-
-    public void ChangeWarpPoint(GameManager.GameState state)
-    {
-        foreach(Node node in currentTown.SpawnPoint)
-        {
-            WarpEvent we = node.GetComponent<WarpEvent>();
-            switch (state)
-            {
-                //case GameManager.GameState.DAYMODE:
-                //    we.WarpPoint = null;
-                //    break;later
-                case GameManager.GameState.NIGHTMODE:
-                    we.WarpPoint = we.WarpPoint;
-                    break;
-
-            }
-        }
-    }
-
-        
-
-    
     //public IEnumerator SpawnCoroutine(
 
     void Update()

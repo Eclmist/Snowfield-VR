@@ -24,6 +24,7 @@ public class SerializeManager
         try
         {
             File.WriteAllLines(Path.Combine(Application.dataPath, fileName), temp);
+            memoryStream.Close();
         }
         catch (Exception e)
         {
@@ -40,8 +41,11 @@ public class SerializeManager
         try
         {
             data = File.ReadAllLines(Path.Combine(Application.dataPath, fileName));
+
             memoryStream = new MemoryStream(System.Convert.FromBase64String(data[0]));
-            return binaryFormatter.Deserialize(memoryStream);
+            object obj = binaryFormatter.Deserialize(memoryStream);
+            memoryStream.Close();
+            return obj;
         }
         catch (Exception e)
         {

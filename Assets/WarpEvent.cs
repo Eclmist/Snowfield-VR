@@ -29,7 +29,6 @@ public class WarpEvent : NodeEvent {
 
     public override void HandleEvent(AI ai)
     {
-        if(Vector3.Distance(ai.transform.position,transform.position) > .01)
             ai.Warp(currentPoint.Position);
         //if null despawn
     }

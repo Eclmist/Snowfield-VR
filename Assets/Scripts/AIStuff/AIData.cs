@@ -53,6 +53,7 @@ public class ActorData {
         jobList = new List<Job>();
         name = _name;
         maxHealth = 100;//replacable
+        Debug.Log("createnew");
     }
 }
 

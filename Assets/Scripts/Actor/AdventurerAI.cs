@@ -100,7 +100,7 @@ public class AdventurerAI : AI
     public bool GotLobang()
     {
 
-        if ((actorData as AdventurerAIData).QuestBook.GetCompletableQuest() != null || (actorData as AdventurerAIData).QuestBook.GetStartableQuest() != null)
+        if ((actorData as AdventurerAIData).QuestBook.GetCompletableGroup() != null || (actorData as AdventurerAIData).QuestBook.GetStartableGroup() != null)
             return true;
 
         return false;
@@ -109,28 +109,27 @@ public class AdventurerAI : AI
     public void GetLobang()
     {
 
-        foreach (QuestEntryGroup<StoryQuest> group in (actorData as AdventurerAIData).QuestBook.StoryQuests)
-        {
-            QuestEntry<StoryQuest> completableQuest = (actorData as AdventurerAIData).QuestBook.GetCompletableQuest();
-            if (completableQuest != null)
+        
+            QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
+            if (completableGroup != null)
             {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + completableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
                 StartCoroutine(StartInteraction(op));
                 return;
             }
 
-            QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
+            QuestEntryGroup<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
 
             if (startableQuest != null)
             {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + startableQuest.Quest.Name, transform.position, Player.Instance.transform, transform);
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
                 op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
                 StartCoroutine(StartInteraction(op));
                 return;
             }
-        }
+        
     }
 
     protected System.Collections.IEnumerator StartInteraction(OptionPane op)
@@ -139,7 +138,7 @@ public class AdventurerAI : AI
 
         while (true)
         {
-            if (!isInteracting)
+            if (!isInteracting || !op)
             {
                 if (op)
                     op.ClosePane();
@@ -148,26 +147,30 @@ public class AdventurerAI : AI
 
             yield return new WaitForEndOfFrame();
         }
+
+        isInteracting = false;
       
     }
 
     public void StartQuestYESDelegate()
     {
-        QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
-        startableQuest.StartQuest((int)(((startableQuest.Quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level)));
+        QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        StoryQuest quest = QuestManager.Instance.GetQuest(startableGroup);
+        startableGroup.Quest.StartQuest((int)(((quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level)));
     }
 
     public void StartQuestNODelegate()
     {
-        QuestEntry<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableQuest();
-        startableQuest.Checked = true;
+        QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        startableGroup.Quest.Checked = true;
     }
 
     public void CompleteQuestDelegate()
     {
-        QuestEntry<StoryQuest> completableQuest = (actorData as AdventurerAIData).QuestBook.GetCompletableQuest();
-        GetJob(JobType.ADVENTURER).GainExperience(completableQuest.Quest.Experience);
-        QuestBook.RequestNextQuest(completableQuest);
+        QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
+        StoryQuest quest = QuestManager.Instance.GetQuest(completableGroup);
+        GetJob(JobType.ADVENTURER).GainExperience(quest.Experience);
+        QuestBook.RequestNextQuest(completableGroup);
     }
 
 
@@ -178,6 +181,7 @@ public class AdventurerAI : AI
 
     public override void Interact(Actor actor)
     {
+        
         StartCoroutine((currentFSM as AdventurerFSM).Interact(actor));
     }
 

@@ -78,7 +78,6 @@ public class GameManager : MonoBehaviour {
         else if (gameClock.TimeOfDay < timeOfNight - preparationTime && currentState != GameState.DAYMODE)
         {
             currentState = GameState.DAYMODE;
-            TownManager.Instance.ChangeWarpPoint(currentState);
             AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
             Debug.Log("Day");
         }
@@ -88,7 +87,6 @@ public class GameManager : MonoBehaviour {
     {
         currentState = GameState.NIGHTMODE;
         AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
-        TownManager.Instance.ChangeWarpPoint(currentState);
         yield return new WaitForSecondsRealtime(preparationTime);
         //WaveManager.Start
 

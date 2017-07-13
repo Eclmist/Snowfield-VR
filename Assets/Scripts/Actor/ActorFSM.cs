@@ -45,6 +45,8 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void ChangeState(FSMState state)
     {
+        currentAI.Interacting = false;
+        isHandlingAction = false;
         StopAllCoroutines();
         pathFound = false;
         currentState = state;
@@ -159,7 +161,8 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 NodeEvent firstEvent = handledEvents[0];
                 handledEvents.RemoveAt(0);
-                if(firstEvent.enabled)
+                Debug.Log(path.Count);
+                if(firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
                     firstEvent.HandleEvent(currentAI);
             }
         }
