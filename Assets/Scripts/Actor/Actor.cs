@@ -9,7 +9,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
     [SerializeField]
     protected int health = 100;
     [SerializeField]
-    protected TempKillScript deathAnim;
+    protected ParticleSystem spawnPS, disablePS;
     [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
@@ -40,7 +40,7 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     protected virtual void Awake()
     {
-        deathAnim = GetComponent<TempKillScript>();
+        
     }
     public void GainExperience(JobType jobType, int value)
     {
@@ -164,8 +164,15 @@ public abstract class Actor : MonoBehaviour, IDamagable
         
     }
 
-    public void PlayDeath()
+    protected void OnDisable()
     {
-        deathAnim.Kill();
+        if (disablePS)
+            Instantiate(disablePS, transform.position, transform.rotation);
+    }
+
+    protected virtual void OnEnable()
+    {
+        if(spawnPS)
+            Instantiate(spawnPS, transform.position, transform.rotation);
     }
 }

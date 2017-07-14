@@ -8,6 +8,13 @@ public class GameClock {
 
     private float totalSecondsPerDay;
 
+    public float SecondsPerDay
+    {
+        get
+        {
+            return totalSecondsPerDay;
+        }
+    }
     public float SecondSinceStart
     {
         get

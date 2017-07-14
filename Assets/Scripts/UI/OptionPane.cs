@@ -46,12 +46,12 @@ public abstract class OptionPane : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            buttons[0].SendMessage("OnTriggerPress");
+            buttons[0].SendMessage("OnTriggerRelease");
         }else if (Input.GetKeyDown(KeyCode.N))
         {
             if(buttons.Length > 1)
             {
-                buttons[1].SendMessage("OnTriggerPress");
+                buttons[1].SendMessage("OnTriggerRelease");
             }
         }
     }

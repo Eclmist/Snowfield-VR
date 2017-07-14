@@ -95,9 +95,13 @@ public abstract class AI : Actor
 
     public abstract void Interact(Actor actor);
 
-    public void Warp(Vector3 position)
+    public virtual float GetOutOfTimeDuration()
     {
-        transform.position = position;
+        return 0;
     }
 
+    public virtual void OutOfTownProgress()
+    {
+
+    }
 }

@@ -8,15 +8,15 @@ using UnityEngine.Events;
 public class AdventurerAI : AI
 {
     //private List<Relation> actorRelations = new List<Relation>();
-    
+
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-    
+
 
     protected override void Awake()
     {
         base.Awake();
-        
+
         GetSlots();
     }
 
@@ -109,27 +109,27 @@ public class AdventurerAI : AI
     public void GetLobang()
     {
 
-        
-            QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
-            if (completableGroup != null)
-            {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
-                op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-                StartCoroutine(StartInteraction(op));
-                return;
-            }
 
-            QuestEntryGroup<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
+        if (completableGroup != null)
+        {
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
+            op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
+            StartCoroutine(StartInteraction(op));
+            return;
+        }
 
-            if (startableQuest != null)
-            {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
-                op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
-                op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-                StartCoroutine(StartInteraction(op));
-                return;
-            }
-        
+        QuestEntryGroup<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+
+        if (startableQuest != null)
+        {
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
+            op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
+            op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
+            StartCoroutine(StartInteraction(op));
+            return;
+        }
+
     }
 
     protected System.Collections.IEnumerator StartInteraction(OptionPane op)
@@ -149,16 +149,17 @@ public class AdventurerAI : AI
         }
 
         isInteracting = false;
-      
+
     }
 
     public void StartQuestYESDelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
         StoryQuest quest = QuestManager.Instance.GetQuest(startableGroup);
-        startableGroup.Quest.StartQuest((int)(((quest.RequiredLevel + 1) / (float)GetJob(JobType.ADVENTURER).Level)));
+        startableGroup.Quest.StartQuest();
     }
 
+    
     public void StartQuestNODelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
@@ -173,21 +174,35 @@ public class AdventurerAI : AI
         QuestBook.RequestNextQuest(completableGroup);
     }
 
-
-    public bool QuestProgress()
-    {
-        return (actorData as AdventurerAIData).QuestBook.QuestProgess();
-    }
-
     public override void Interact(Actor actor)
     {
-        
+
         StartCoroutine((currentFSM as AdventurerFSM).Interact(actor));
     }
 
-    public void ResetQuestOnNewTownVisit()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        (currentFSM as AdventurerFSM).NewVisitToTown();
         (actorData as AdventurerAIData).QuestBook.ResetChecked();
+        ChangeState(ActorFSM.FSMState.IDLE);
     }
 
+    public override float GetOutOfTimeDuration()
+    {
+        float totalDuration = 0;
+
+        totalDuration += (actorData as AdventurerAIData).QuestBook.GetFastestQuest().RemainingProgress;
+        //Can add more time here when taking into consideration item get
+        Debug.Log(totalDuration);
+        return totalDuration;
+    }
+
+    public override void OutOfTownProgress()//This method is ran by the aimanager every "tick out of town"
+    {
+        QuestEntry<StoryQuest> quest = (actorData as AdventurerAIData).QuestBook.GetFastestQuest();
+        if (quest != null)
+            quest.QuestProgress();
+        //Can get misc items here
+    }
 }

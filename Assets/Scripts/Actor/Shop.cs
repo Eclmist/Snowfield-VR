@@ -48,12 +48,11 @@ public class Shop : MonoBehaviour
         tempNode.RemoveAll(Node => Node.Occupied || Vector3.Distance(Node.Position,currentPoint) < 0.5);
         if (tempNode.Count == 0)
         {
-            Debug.Log("returnNull");
             return null;
         }
         else
         {
-            Debug.Log("returnSomething");
+
             int randomNumber = Random.Range(0, tempNode.Count);
 
             return tempNode[randomNumber];

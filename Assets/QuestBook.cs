@@ -26,7 +26,7 @@ public class QuestBook
             group.Completed = true;
         else
         {
-            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>();
+            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay / 24f));
             group.Quest = questEntry;
         }
 
@@ -86,25 +86,29 @@ public class QuestBook
             StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
             if (newQuest != null)
             {
-                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>();
+                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay/24f));
                 line.Quest = questEntry;
             }
         }
     }
 
-    public bool QuestProgess()
+    public QuestEntry<StoryQuest> GetFastestQuest()
     {
+        float shortestTime = 999999999;
+        QuestEntry<StoryQuest> fastestQuest = null;
         foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
         {
+            Debug.Log(questEntryGroup.Quest.Started);
             if (questEntryGroup.Completed)
                 continue;
-            else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started)
+            else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started && questEntryGroup.Quest.RemainingProgress <= shortestTime)
             {
-                questEntryGroup.Quest.ProgressQuest();
-                return true;
+
+                shortestTime = questEntryGroup.Quest.RemainingProgress;
+                fastestQuest = questEntryGroup.Quest;
             }
         }
-        return false;
+        return fastestQuest;
     }
 
     public void ResetChecked()

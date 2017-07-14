@@ -7,29 +7,15 @@ public class WarpEvent : NodeEvent {
 
     [SerializeField]
     private Node warpPoint;
-    private Node currentPoint;
 
-    public Node WarpPoint
-    {
-        get
-        {
-            return warpPoint;
-        }
-        set
-        {
-            currentPoint = value;
-        }
-    }
-	
-    protected override void Awake()
-    {
-        base.Awake();
-        currentPoint = warpPoint;
-    }
+    [SerializeField]
+    private float timeForWarp;
 
+    
     public override void HandleEvent(AI ai)
     {
-            ai.Warp(currentPoint.Position);
+        ai.gameObject.SetActive(false);
         //if null despawn
+        AIManager.Instance.Spawn(ai, timeForWarp, warpPoint);
     }
 }

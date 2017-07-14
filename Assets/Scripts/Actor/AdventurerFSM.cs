@@ -10,10 +10,10 @@ public class AdventurerFSM : ActorFSM
 
     private bool inTown = true;
 
-    private void NewVisitToTown()
+    public void NewVisitToTown()
     {
         visitedShop.Clear();
-        (currentAI as AdventurerAI).ResetQuestOnNewTownVisit();
+        Debug.Log("Cleared");
     }
 
 
@@ -39,9 +39,7 @@ public class AdventurerFSM : ActorFSM
                 case FSMState.IDLE:
                     UpdateIdleStateDay();
                     break;
-                case FSMState.QUESTING:
-                    UpdateQuestingState();
-                    break;
+
                 case FSMState.SHOPPING:
                     UpdateShoppingState();
                     break;
@@ -72,7 +70,6 @@ public class AdventurerFSM : ActorFSM
             }
             else
             {
-                Debug.Log("hitidle");
                 ChangeState(FSMState.IDLE);
             }
         }
@@ -102,7 +99,6 @@ public class AdventurerFSM : ActorFSM
         else if (!requestedPath)
         {
             Shop _targetShop = TownManager.Instance.GetRandomShop(visitedShop);
-            Debug.Log(_targetShop);
             if (_targetShop != null)//And check for anymore shop
             {
                 //if (_targetShop.Owner == Player.Instance && !(currentAI as AdventurerAI).GotLobang())
@@ -122,20 +118,10 @@ public class AdventurerFSM : ActorFSM
                 Node endPoint = TownManager.Instance.GetRandomSpawnPoint();
                 AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
                 requestedPath = true;
-                nextState = FSMState.QUESTING;
             }
         }
     }
 
-    protected virtual void UpdateQuestingState()
-    {
-        bool progress = (currentAI as AdventurerAI).QuestProgress();
-        if (!progress)
-        {
-            ChangeState(FSMState.IDLE);
-            NewVisitToTown();
-        }
-    }
 
     public override void ChangeState(FSMState state)
     {

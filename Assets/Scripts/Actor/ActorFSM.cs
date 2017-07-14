@@ -12,7 +12,6 @@ public abstract class ActorFSM : MonoBehaviour
     {
         IDLE,
         PETROL,
-        QUESTING,
         COMBAT,
         EVENTHANDLING,
         SHOPPING,
@@ -116,7 +115,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
-            currentAI.PlayDeath();
+            currentAI.gameObject.SetActive(false);
         }
     }
 
@@ -161,7 +160,6 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 NodeEvent firstEvent = handledEvents[0];
                 handledEvents.RemoveAt(0);
-                Debug.Log(path.Count);
                 if(firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
                     firstEvent.HandleEvent(currentAI);
             }

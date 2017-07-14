@@ -6,13 +6,15 @@ using UnityEngine;
 public class QuestEntry<T> where T : Quest
 {
 	private bool hasStarted,isCompleted,checkedInVisit;
-	private int timeToComplete;
+	private float timeToComplete;
 
-	public QuestEntry()
+	public QuestEntry(float _timeToComplete)
 	{
 		hasStarted = false;
 		isCompleted = false;
         checkedInVisit = false;
+        timeToComplete = _timeToComplete;
+        Debug.Log("QuestProg:" +_timeToComplete);
 	}
 
     public bool Checked
@@ -24,6 +26,14 @@ public class QuestEntry<T> where T : Quest
         set
         {
             checkedInVisit = value;
+        }
+    }
+
+    public float RemainingProgress
+    {
+        get
+        {
+            return timeToComplete;
         }
     }
 
@@ -64,18 +74,18 @@ public class QuestEntry<T> where T : Quest
 
 	
 
-	public void StartQuest(int time)
+	public void StartQuest()
 	{
-		timeToComplete = time;
 		hasStarted = true;
 	}
 
-	public void ProgressQuest()
-	{
-		timeToComplete--;
-		if (timeToComplete <= 0)
-			isCompleted = true;
-	}
+    public void QuestProgress()
+    {
+        Debug.Log(timeToComplete);
+        timeToComplete--;
+        if (timeToComplete <= 0)
+            isCompleted = true;
+    }
 }
 
 [System.Serializable]
