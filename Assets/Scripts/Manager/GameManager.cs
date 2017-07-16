@@ -102,10 +102,7 @@ public class GameManager : MonoBehaviour {
 	}
 	public void AddPlayerGold(int value)
     {
-        if (!Player.Instance.AddGold(value))
-        {
-            //Lose
-        }
+        Player.Instance.AddGold(value);
     }
 
     

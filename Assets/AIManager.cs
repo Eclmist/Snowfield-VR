@@ -31,9 +31,12 @@ public class AIManager : MonoBehaviour
 
     protected void Start()
     {
+        HandleAdventurerAI();
+    }
 
+    protected void HandleAdventurerAI()
+    {
         listOfAIData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
-        Debug.Log(listOfAIData);
         if (listOfAIData == null)
         {
             listOfAIData = new List<AdventurerAIData>();
@@ -44,7 +47,6 @@ public class AIManager : MonoBehaviour
             for (int i = listOfAIData.Count; i < TownManager.Instance.CurrentTown.Population; i++)
             {
                 listOfAIData.Add(CreateNewAdventurerAI());
-                Debug.Log("created");
             }
         }
         else if (listOfAIData.Count > TownManager.Instance.CurrentTown.Population)
@@ -65,12 +67,11 @@ public class AIManager : MonoBehaviour
             StartCoroutine(SpawnCoroutine(ai, Random.Range(1, 20), TownManager.Instance.GetRandomSpawnPoint()));
         }
     }
-
     protected AdventurerAIData CreateNewAdventurerAI()
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        AdventurerAIData newData = new AdventurerAIData(myPath, "NewAI");
+        AdventurerAIData newData = new AdventurerAIData(newAI.Data.Name,(newAI.Data as AdventurerAIData).CurrentJob.DPL, (newAI.Data as AdventurerAIData).CurrentJob.HPL, (newAI.Data as AdventurerAIData).CurrentJob.HRPL,myPath);//Random name gen
         return newData;
     }
 
@@ -84,7 +85,6 @@ public class AIManager : MonoBehaviour
         
         if (invokingEvent == null)
         {
-            Debug.Log("hit1");
             yield return new WaitForSecondsRealtime(timeToSpawn);
         }
         else
@@ -98,7 +98,7 @@ public class AIManager : MonoBehaviour
         }
         Debug.Log("hit2");
         currentAI.transform.position = spawnNode.Position;
-        currentAI.gameObject.SetActive(true);
+        currentAI.Spawn();
     }
 
 

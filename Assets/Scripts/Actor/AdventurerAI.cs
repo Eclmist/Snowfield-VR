@@ -170,19 +170,18 @@ public class AdventurerAI : AI
     {
         QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
         StoryQuest quest = QuestManager.Instance.GetQuest(completableGroup);
-        GetJob(JobType.ADVENTURER).GainExperience(quest.Experience);
+        GainExperience(quest.Experience);
         QuestBook.RequestNextQuest(completableGroup);
     }
 
     public override void Interact(Actor actor)
     {
-
         StartCoroutine((currentFSM as AdventurerFSM).Interact(actor));
     }
 
-    protected override void OnEnable()
+    public override void Spawn()
     {
-        base.OnEnable();
+        base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
         (actorData as AdventurerAIData).QuestBook.ResetChecked();
         ChangeState(ActorFSM.FSMState.IDLE);

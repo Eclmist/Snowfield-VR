@@ -14,6 +14,25 @@ public abstract class AI : Actor
 
     protected bool isInteracting = false;
 
+    [SerializeField]
+    protected CombatAIData actorData;
+
+    [SerializeField]
+    protected ParticleSystem spawnPS, disablePS;
+
+    public override ActorData Data
+    {
+        get
+        {
+            return actorData;
+        }
+
+        set
+        {
+            actorData = (CombatAIData)value;
+        }
+    }
+
     public float MovementSpeed
     {
         get
@@ -48,7 +67,21 @@ public abstract class AI : Actor
         return currentFSM.Target == target;
     }
 
-    
+    public override int AttackValue
+    {
+        get
+        {
+            return (actorData as CombatAIData).CurrentJob.Level * (actorData as CombatAIData).CurrentJob.DPL;
+        }
+    }
+
+    public override int MaxHealth
+    {
+        get
+        {
+            return (actorData as CombatAIData).CurrentJob.Level * (actorData as CombatAIData).CurrentJob.HPL;
+        }
+    }
 
     protected override void Awake()
     {
@@ -73,10 +106,7 @@ public abstract class AI : Actor
         }
         else if (Mathf.Sign(damage) == 1)
         {
-            bool knockedBack = false;
-            if (damage / (float)actorData.Health > .2)
-                knockedBack = true;
-            currentFSM.DamageTaken(knockedBack,attacker);
+            currentFSM.DamageTaken(attacker);
         }
     }
 
@@ -103,5 +133,28 @@ public abstract class AI : Actor
     public virtual void OutOfTownProgress()
     {
 
+    }
+
+    protected void GainExperience(int value)
+    {
+        (actorData as CombatAIData).CurrentJob.GainExperience(value);
+    }
+
+    public virtual void Spawn()
+    {
+        if (disablePS)
+        {
+            Destroy(Instantiate(disablePS, transform.position, transform.rotation),3);
+            gameObject.SetActive(true);
+        }
+    }
+
+    public virtual void Despawn()
+    {
+        if (spawnPS)
+        {
+            Destroy(Instantiate(spawnPS, transform.position, transform.rotation),3);
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -37,7 +37,7 @@ public class OrderManager : MonoBehaviour
     public void UpdateAvailableTemplates()
 
     {
-        foreach (Job job in Player.Instance.JobListReference)
+        foreach (Job job in Player.Instance.JobList)
 
         {
             foreach (OrderTemplate ot in templateList)
@@ -95,7 +95,7 @@ public class OrderManager : MonoBehaviour
     {
         int totalExperienceValue = 0;
 
-        foreach (Job job in Player.Instance.JobListReference)
+        foreach (Job job in Player.Instance.JobList)
 
         {
             totalExperienceValue += job.Experience;
@@ -105,7 +105,7 @@ public class OrderManager : MonoBehaviour
 
         totalExperienceValue = 0;
 
-        foreach (Job job in Player.Instance.JobListReference)
+        foreach (Job job in Player.Instance.JobList)
 
         {
             totalExperienceValue += job.Experience;

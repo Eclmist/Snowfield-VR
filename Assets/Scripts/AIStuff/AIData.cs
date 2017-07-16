@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class ActorData {
+public class ActorData
+{
 
     protected string prefabPath;
 
-    protected List<Job> jobList = new List<Job>();
-
-    protected int maxHealth;//Can be replaced with generic script
-
     protected string name;
-    
+
     //put inventory crap here
 
     public string Path
@@ -20,22 +17,6 @@ public class ActorData {
         get
         {
             return prefabPath;
-        }
-    }
-
-    public List<Job> JobList
-    {
-        get
-        {
-            return jobList;
-        }
-    }
-
-    public int Health
-    {
-        get
-        {
-            return maxHealth;
         }
     }
 
@@ -47,26 +28,41 @@ public class ActorData {
         }
     }
 
-    public ActorData(string _prefabPath,string _name)
+    public ActorData(string _name, string _prefabPath = "")
     {
         prefabPath = _prefabPath;
-        jobList = new List<Job>();
         name = _name;
-        maxHealth = 100;//replacable
-        Debug.Log("createnew");
     }
 }
 
 [System.Serializable]
-public class AdventurerAIData : ActorData
+public class CombatAIData : ActorData
 {
+    [SerializeField]
+    protected CombatJob combatJob;
+    public CombatAIData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _prefabPath)
+    {
+        combatJob = new CombatJob(JobType.COMBAT, _DPL, _HPL, _HRPL);
+    }
+
+    public CombatJob CurrentJob
+    {
+        get
+        {
+            return combatJob;
+        }
+    }
+}
+
+[System.Serializable]
+public class AdventurerAIData : CombatAIData
+{
+
     private QuestBook questBook;
 
-    public AdventurerAIData(string _prefabPath,string _name) : base(_prefabPath,_name)
+    public AdventurerAIData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL, _prefabPath)
     {
         questBook = new QuestBook();
-        Job newJob = new Job(JobType.ADVENTURER);
-        jobList.Add(newJob);
     }
 
     public QuestBook QuestBook
@@ -76,4 +72,38 @@ public class AdventurerAIData : ActorData
             return questBook;
         }
     }
+}
+
+[System.Serializable]
+public class PlayerData : CombatAIData
+{
+    [SerializeField]
+    protected List<Job> jobList = new List<Job>();
+    protected int gold;
+    public PlayerData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL, _prefabPath)
+    {
+        gold = 0;
+    }
+
+    public List<Job> JobList
+    {
+        get
+        {
+            return jobList;
+        }
+    }
+
+    public int Gold
+    {
+        get
+        {
+            return gold;
+        }
+
+        set
+        {
+            gold = value;
+        }
+    }
+
 }

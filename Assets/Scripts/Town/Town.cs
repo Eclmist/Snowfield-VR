@@ -18,13 +18,21 @@ public class Town : MonoBehaviour
     private List<Node> spawnPoints = new List<Node>();
 
     [SerializeField]
-    private Node wavePoint;
+    private Node wavePoint,monsterPoint;
 
     public Node WavePoint
     {
         get
         {
             return wavePoint;
+        }
+    }
+
+    public Node MonsterPoint
+    {
+        get
+        {
+            return monsterPoint;
         }
     }
    

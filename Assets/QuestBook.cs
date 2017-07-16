@@ -61,7 +61,7 @@ public class QuestBook
         return null;
     }
 
-    
+
 
 
     public QuestEntryGroup<StoryQuest> GetStoryGroup(JobType jt)
@@ -80,16 +80,16 @@ public class QuestBook
 
     public QuestBook()
     {
-        storyQuest = QuestManager.Instance.CreateNewStoryLines();
-        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
+        if (QuestManager.Instance)
         {
-            StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
-            if (newQuest != null)
+            storyQuest = QuestManager.Instance.CreateNewStoryLines();
+            foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
             {
-                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay/24f));
-                line.Quest = questEntry;
+                line.ProgressionIndex = -1;
+                RequestNextQuest(line);
             }
         }
+
     }
 
     public QuestEntry<StoryQuest> GetFastestQuest()
@@ -113,7 +113,7 @@ public class QuestBook
 
     public void ResetChecked()
     {
-        foreach(QuestEntryGroup<StoryQuest> line in storyQuest)
+        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
         {
             line.Quest.Checked = false;
         }

@@ -8,33 +8,9 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     [SerializeField]
     protected int health = 100;
-    [SerializeField]
-    protected ParticleSystem spawnPS, disablePS;
+    
     [SerializeField]
     protected EquipSlot leftHand, rightHand;
-
-    protected ActorData actorData;
-
-    public ActorData Data
-    {
-        get
-        {
-            return actorData;
-        }
-        set
-        {
-            
-            actorData = value;
-        }
-    }
-
-
-    public void AddJob(JobType newJobType)
-    {
-        Job newJob = new Job(newJobType);
-        Debug.Log(actorData);
-        actorData.JobList.Add(newJob);
-    }
 
     public abstract bool CheckConversingWith(Actor target);
 
@@ -42,30 +18,12 @@ public abstract class Actor : MonoBehaviour, IDamagable
     {
         
     }
-    public void GainExperience(JobType jobType, int value)
-    {
-        foreach (Job currentJob in actorData.JobList)
-        {
-            if (currentJob.Type == jobType)
-            {
-                currentJob.GainExperience(value);
-                break;
-            }
-        }
-    }
 
-    public Job GetJob(JobType type)
+    public abstract ActorData Data
     {
-        foreach (Job job in actorData.JobList)
-        {
-            if (job.Type == type)
-            {
-                return job;
-            }
-        }
-        return null;
+        get;
+        set;
     }
-
     public int Health
     {
         get
@@ -75,32 +33,32 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     }
 
-    public virtual void Attack(IDamage item, IDamagable target)
+    public abstract int AttackValue
     {
-        target.TakeDamage(item.Damage, this);
+        get;
     }
 
-    public int MaxHealth
+    public abstract int MaxHealth
     {
-        get
-        {
-            return actorData.Health;
-        }
+        get;
     }
-    public List<Job> JobListReference
+
+
+
+    public virtual void Attack(IDamage item, IDamagable target)
     {
-        get
-        {
-            return actorData.JobList;
-        }
+        target.TakeDamage(item.Damage + AttackValue, this);
     }
+
+   
+
 
     public abstract void Notify(AI ai);
 
     public virtual void TakeDamage(int damage, Actor attacker)
     {
         health -= (damage >= health) ? health : damage;
-        health = health > actorData.Health ? actorData.Health : health;
+        health = health > MaxHealth ? MaxHealth : health;
     }
 
     public virtual void ChangeWield(Equipment item)
@@ -164,15 +122,5 @@ public abstract class Actor : MonoBehaviour, IDamagable
         
     }
 
-    protected void OnDisable()
-    {
-        if (disablePS)
-            Instantiate(disablePS, transform.position, transform.rotation);
-    }
-
-    protected virtual void OnEnable()
-    {
-        if(spawnPS)
-            Instantiate(spawnPS, transform.position, transform.rotation);
-    }
+    
 }

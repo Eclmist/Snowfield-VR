@@ -347,14 +347,8 @@ public abstract class ActorFSM : MonoBehaviour
             return dir;        }
     }
 
-    public void DamageTaken(bool knockbacked, Actor attacker)
+    public void DamageTaken( Actor attacker)
     {
-        if (knockbacked)
-        {
-            animator.SetBool("KnockBack", true);
-            EndAttack();
-        }
-        target = attacker;
         ChangeState(FSMState.COMBAT);
     }
 

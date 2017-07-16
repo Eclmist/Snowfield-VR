@@ -13,7 +13,6 @@ public class AdventurerFSM : ActorFSM
     public void NewVisitToTown()
     {
         visitedShop.Clear();
-        Debug.Log("Cleared");
     }
 
 
@@ -140,7 +139,6 @@ public class AdventurerFSM : ActorFSM
                 case FSMState.COMBAT:
                     (currentAI as AdventurerAI).EquipRandomWeapons();
                     //animator.SetBool("KnockBack", true);//Wrong place
-                    animator.speed = 1 + (currentAI.GetJob(JobType.ADVENTURER).Level * .1f);
                     //timer = 5;
                     break;
 

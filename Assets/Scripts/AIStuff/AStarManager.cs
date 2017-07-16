@@ -188,13 +188,12 @@ public class AStarManager : MonoBehaviour
 
 }
 
-public struct PathRequest : IBundle<PathRequest>
+public struct PathRequest
 {
     public readonly Vector3 startPoint;
     public readonly Vector3 endPoint;
     public readonly Action<List<Node>> callBack;
     //public readonly float stepHeight;
-    private int bundleIndex;
 
     public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callBack/* float _steppableHeight*/)
     {
@@ -202,16 +201,6 @@ public struct PathRequest : IBundle<PathRequest>
         endPoint = _endPoint;
         callBack = _callBack;
         //stepHeight = _steppableHeight;
-        bundleIndex = 0;
-    }
-
-    public int BundleIndex
-    {
-        get
-        {
-            return bundleIndex;
-        }
-        set { bundleIndex = value; }
     }
 
     public int CompareTo(object obj)

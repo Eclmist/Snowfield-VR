@@ -9,35 +9,71 @@ public class Player : Actor
 
     [SerializeField]
     public AudioClip dink;
-    [SerializeField]
-    private int gold;
 
     [SerializeField]
     private Transform vivePosition;
 
-    [SerializeField]
-    private Transform interactableArea;
-
     public static Player Instance;
-
+    [SerializeField]
+    protected PlayerData actorData;
     public int Gold
     {
         get
         {
-            return gold;
+            return actorData.Gold;
         }
     }
 
+    public override int AttackValue
+    {
+        get
+        {
+            
+            return actorData.CurrentJob.Level * actorData.CurrentJob.DPL;
+        }
+    }
+
+    public override int MaxHealth
+    {
+        get
+        {
+            return actorData.CurrentJob.HPL * actorData.CurrentJob.Level;
+        }
+    }
     public override void Notify(AI ai)
     {//Unimplemented .. test code
         AudioSource ad = GetComponent<AudioSource>();
         ad.Play();
     }
 
+    public void AddJob(JobType newJobType)
+    {
+        Job newJob = new Job(newJobType);
+        actorData.JobList.Add(newJob);
+    }
+
+    public void GainExperience(JobType jobType, int value)
+    {
+        foreach (Job currentJob in actorData.JobList)
+        {
+            if (currentJob.Type == jobType)
+            {
+                currentJob.GainExperience(value);
+                break;
+            }
+        }
+    }
+
+    public List<Job> JobList
+    {
+        get
+        {
+            return actorData.JobList;
+        }
+    }
     public override bool CheckConversingWith(Actor target)
     {
         Vector3 rotation1 = transform.forward;
-        
         Vector3 rotation2 = target.transform.forward;
         rotation1.y = rotation2.y = 0;
         return Mathf.Abs(Vector3.Angle(rotation1, rotation2) - 180) < 30;
@@ -49,10 +85,13 @@ public class Player : Actor
         if (!Instance)
         {
             Instance = this;
-            actorData = (ActorData)SerializeManager.Load("PlayerData");
-            if (actorData == null)
+            PlayerData data = (PlayerData)SerializeManager.Load("PlayerData");
+            if (data != null)
             {
-                actorData = new ActorData(null, "Player");
+                actorData = data;
+            }
+            else
+            {
                 AddJob(JobType.BLACKSMITH);
             }
         }
@@ -68,11 +107,23 @@ public class Player : Actor
         SerializeManager.Save("PlayerData",actorData);
     }
 
-
-    public bool AddGold(int value)
+    public Job GetJob(JobType type)
     {
-        gold += value;
-        return gold >= 0;
+        foreach (Job job in actorData.JobList)
+        {
+            if (job.Type == type)
+            {
+                return job;
+            }
+        }
+        return null;
+    }
+
+    public void AddGold(int value)
+    {
+        (actorData as PlayerData).Gold += value;
+        if ((actorData as PlayerData).Gold < 0)
+            ;//lose
     }
 
 
@@ -86,6 +137,19 @@ public class Player : Actor
         get
         {
             return vivePosition;
+        }
+    }
+
+    public override ActorData Data
+    {
+        get
+        {
+            return actorData;
+        }
+
+        set
+        {
+            actorData = (PlayerData)value;
         }
     }
 }

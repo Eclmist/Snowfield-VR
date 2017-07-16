@@ -14,7 +14,6 @@ public class QuestEntry<T> where T : Quest
 		isCompleted = false;
         checkedInVisit = false;
         timeToComplete = _timeToComplete;
-        Debug.Log("QuestProg:" +_timeToComplete);
 	}
 
     public bool Checked
