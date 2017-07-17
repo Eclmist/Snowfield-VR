@@ -232,26 +232,26 @@ public abstract class ActorFSM : MonoBehaviour
         ChangePath(newPath);
     }
 
-    public virtual void CheckHit()
-    {
-        Vector3 dir = target.transform.position - transform.position;
-        dir.y = 0;
-        dir.Normalize();
-        float angle = Vector3.Angle(transform.forward, dir);
-        if (target != null)
-        {
+    //public virtual void CheckHit()
+    //{
+    //    Vector3 dir = target.transform.position - transform.position;
+    //    dir.y = 0;
+    //    dir.Normalize();
+    //    float angle = Vector3.Angle(transform.forward, dir);
+    //    if (target != null)
+    //    {
 
-            if (currentUseWeapon != null)
-            {
-                Vector3 temptarget = target.transform.position;
-                temptarget.y = transform.position.y;
-                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentUseWeapon.Range)
-                {
-                    currentAI.Attack(currentUseWeapon, target);
-                }
-            }
-        }
-    }
+    //        if (currentUseWeapon != null)
+    //        {
+    //            Vector3 temptarget = target.transform.position;
+    //            temptarget.y = transform.position.y;
+    //            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentUseWeapon.Range)
+    //            {
+    //                currentAI.Attack(currentUseWeapon, target);
+    //            }
+    //        }
+    //    }
+    //}
 
     public virtual void SetAnimUseSlot(int i)
     {

@@ -98,7 +98,6 @@ public class QuestBook
         QuestEntry<StoryQuest> fastestQuest = null;
         foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
         {
-            Debug.Log(questEntryGroup.Quest.Started);
             if (questEntryGroup.Completed)
                 continue;
             else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started && questEntryGroup.Quest.RemainingProgress <= shortestTime)

@@ -57,7 +57,7 @@ public class AIManager : MonoBehaviour
             }
         }
 
-        foreach (ActorData data in listOfAIData)
+        foreach (AdventurerAIData data in listOfAIData)
         {
             AI newActor = ((GameObject)Resources.Load(data.Path)).GetComponent<AI>();
             AI ai = Instantiate(newActor).GetComponent<AI>();
@@ -71,7 +71,7 @@ public class AIManager : MonoBehaviour
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        AdventurerAIData newData = new AdventurerAIData(newAI.Data.Name,(newAI.Data as AdventurerAIData).CurrentJob.DPL, (newAI.Data as AdventurerAIData).CurrentJob.HPL, (newAI.Data as AdventurerAIData).CurrentJob.HRPL,myPath);//Random name gen
+        AdventurerAIData newData = new AdventurerAIData(newAI.Data.Name,(newAI.Data as AdventurerAIData).CurrentJob.DPL, (newAI.Data as AdventurerAIData).CurrentJob.HPL, (newAI.Data as AdventurerAIData).CurrentJob.HRPL, newAI.MovementSpeed,myPath);//Random name gen
         return newData;
     }
 

@@ -8,7 +8,8 @@ using UnityEngine.Events;
 public class AdventurerAI : AI
 {
     //private List<Relation> actorRelations = new List<Relation>();
-
+    [SerializeField]
+    protected AdventurerAIData data;
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
 
@@ -16,16 +17,27 @@ public class AdventurerAI : AI
     protected override void Awake()
     {
         base.Awake();
-
         GetSlots();
     }
 
+    public override CombatActorData Data
+    {
+        get
+        {
+            return data;
+        }
+
+        set
+        {
+            data = (AdventurerAIData)value;
+        }
+    }
 
     public QuestBook QuestBook
     {
         get
         {
-            return (actorData as AdventurerAIData).QuestBook;
+            return data.QuestBook;
         }
     }
     public void EquipRandomWeapons()
@@ -100,7 +112,7 @@ public class AdventurerAI : AI
     public bool GotLobang()
     {
 
-        if ((actorData as AdventurerAIData).QuestBook.GetCompletableGroup() != null || (actorData as AdventurerAIData).QuestBook.GetStartableGroup() != null)
+        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null)
             return true;
 
         return false;
@@ -110,7 +122,7 @@ public class AdventurerAI : AI
     {
 
 
-        QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
+        QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
         if (completableGroup != null)
         {
             OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
@@ -119,7 +131,7 @@ public class AdventurerAI : AI
             return;
         }
 
-        QuestEntryGroup<StoryQuest> startableQuest = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        QuestEntryGroup<StoryQuest> startableQuest = data.QuestBook.GetStartableGroup();
 
         if (startableQuest != null)
         {
@@ -154,7 +166,7 @@ public class AdventurerAI : AI
 
     public void StartQuestYESDelegate()
     {
-        QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
         StoryQuest quest = QuestManager.Instance.GetQuest(startableGroup);
         startableGroup.Quest.StartQuest();
     }
@@ -162,13 +174,13 @@ public class AdventurerAI : AI
     
     public void StartQuestNODelegate()
     {
-        QuestEntryGroup<StoryQuest> startableGroup = (actorData as AdventurerAIData).QuestBook.GetStartableGroup();
+        QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
         startableGroup.Quest.Checked = true;
     }
 
     public void CompleteQuestDelegate()
     {
-        QuestEntryGroup<StoryQuest> completableGroup = (actorData as AdventurerAIData).QuestBook.GetCompletableGroup();
+        QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
         StoryQuest quest = QuestManager.Instance.GetQuest(completableGroup);
         GainExperience(quest.Experience);
         QuestBook.RequestNextQuest(completableGroup);
@@ -183,7 +195,7 @@ public class AdventurerAI : AI
     {
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
-        (actorData as AdventurerAIData).QuestBook.ResetChecked();
+        data.QuestBook.ResetChecked();
         ChangeState(ActorFSM.FSMState.IDLE);
     }
 
@@ -191,7 +203,7 @@ public class AdventurerAI : AI
     {
         float totalDuration = 0;
 
-        totalDuration += (actorData as AdventurerAIData).QuestBook.GetFastestQuest().RemainingProgress;
+        totalDuration += data.QuestBook.GetFastestQuest().RemainingProgress;
         //Can add more time here when taking into consideration item get
         Debug.Log(totalDuration);
         return totalDuration;
@@ -199,7 +211,7 @@ public class AdventurerAI : AI
 
     public override void OutOfTownProgress()//This method is ran by the aimanager every "tick out of town"
     {
-        QuestEntry<StoryQuest> quest = (actorData as AdventurerAIData).QuestBook.GetFastestQuest();
+        QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
         if (quest != null)
             quest.QuestProgress();
         //Can get misc items here

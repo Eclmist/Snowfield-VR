@@ -3121,6 +3121,7 @@ GameObject:
   - component: {fileID: 114856429651179404}
   - component: {fileID: 114637017769914016}
   - component: {fileID: 136767684491069712}
+  - component: {fileID: 114687067659681994}
   m_Layer: 13
   m_Name: UnityChan White
   m_TagString: Untagged
@@ -8038,13 +8039,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc7169c0d9050949b5fa8042783d5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
   spawnPS: {fileID: 198889709728010164, guid: 2f3aa3ed109ed2d458175e27e73ee383, type: 2}
   disablePS: {fileID: 198889709728010164, guid: 2f3aa3ed109ed2d458175e27e73ee383,
     type: 2}
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  movementSpeed: 3
+  data:
+    combatJob:
+      level: 0
+      damagePerLevel: 3
+      healthPerLevel: 3
+      healthRegenPerLevel: 3
+      movementSpeed: 3
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
 --- !u!114 &114642153487147178
@@ -8181,6 +8187,18 @@ MonoBehaviour:
   - {fileID: 114826084185258692}
   debug: 1
   threshold: 0.01
+--- !u!114 &114687067659681994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitSound: {fileID: 0}
 --- !u!114 &114689479551104964
 MonoBehaviour:
   m_ObjectHideFlags: 1

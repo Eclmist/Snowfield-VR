@@ -83,7 +83,7 @@ public class WaveManager : MonoBehaviour
             for (int j = 0; j < groups[i].monsters.Length; j++)
             {
                 Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
-                (monster.Data as CombatAIData).CurrentJob.SetLevel(level);
+                (monster.Data as CombatActorData).CurrentJob.SetLevel(level);
                 yield return new WaitForSecondsRealtime(timeBetweenEachMonsterSpawn);
             }
 

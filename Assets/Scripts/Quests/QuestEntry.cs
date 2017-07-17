@@ -80,7 +80,6 @@ public class QuestEntry<T> where T : Quest
 
     public void QuestProgress()
     {
-        Debug.Log(timeToComplete);
         timeToComplete--;
         if (timeToComplete <= 0)
             isCompleted = true;

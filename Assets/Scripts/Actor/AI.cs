@@ -4,46 +4,16 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public abstract class AI : Actor
+public abstract class AI : CombatActor
 {
 
     protected ActorFSM currentFSM;
 
-    [SerializeField]
-    protected float movementSpeed = 3;//replacable by generic script
-
     protected bool isInteracting = false;
-
-    [SerializeField]
-    protected CombatAIData actorData;
 
     [SerializeField]
     protected ParticleSystem spawnPS, disablePS;
 
-    public override ActorData Data
-    {
-        get
-        {
-            return actorData;
-        }
-
-        set
-        {
-            actorData = (CombatAIData)value;
-        }
-    }
-
-    public float MovementSpeed
-    {
-        get
-        {
-            return movementSpeed;
-        }
-        set
-        {
-            movementSpeed = value;
-        }
-    }
 
     public bool Interacting
     {
@@ -67,22 +37,6 @@ public abstract class AI : Actor
         return currentFSM.Target == target;
     }
 
-    public override int AttackValue
-    {
-        get
-        {
-            return (actorData as CombatAIData).CurrentJob.Level * (actorData as CombatAIData).CurrentJob.DPL;
-        }
-    }
-
-    public override int MaxHealth
-    {
-        get
-        {
-            return (actorData as CombatAIData).CurrentJob.Level * (actorData as CombatAIData).CurrentJob.HPL;
-        }
-    }
-
     protected override void Awake()
     {
         base.Awake();
@@ -97,16 +51,14 @@ public abstract class AI : Actor
     public override void TakeDamage(int damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (health <= 0)
+        if (variable.GetCurrentHealth() <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
             UnEquipWeapons();
-            
-
         }
-        else if (Mathf.Sign(damage) == 1)
+        else
         {
-            currentFSM.DamageTaken(attacker);
+            //currentFSM.DamageTaken(attacker);
         }
     }
 
@@ -133,11 +85,6 @@ public abstract class AI : Actor
     public virtual void OutOfTownProgress()
     {
 
-    }
-
-    protected void GainExperience(int value)
-    {
-        (actorData as CombatAIData).CurrentJob.GainExperience(value);
     }
 
     public virtual void Spawn()

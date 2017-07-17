@@ -36,13 +36,14 @@ public class ActorData
 }
 
 [System.Serializable]
-public class CombatAIData : ActorData
+public class CombatActorData : ActorData
 {
     [SerializeField]
     protected CombatJob combatJob;
-    public CombatAIData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _prefabPath)
+    public CombatActorData(string _name, int _DPL, int _HPL, int _HRPL, int movementSpeed, string _prefabPath = "") : base(_name, _prefabPath)
     {
-        combatJob = new CombatJob(JobType.COMBAT, _DPL, _HPL, _HRPL);
+        combatJob = new CombatJob(JobType.COMBAT, _DPL, _HPL, _HRPL,movementSpeed);
+        Debug.Log(combatJob.HRPL);
     }
 
     public CombatJob CurrentJob
@@ -55,12 +56,12 @@ public class CombatAIData : ActorData
 }
 
 [System.Serializable]
-public class AdventurerAIData : CombatAIData
+public class AdventurerAIData : CombatActorData
 {
 
     private QuestBook questBook;
 
-    public AdventurerAIData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL, _prefabPath)
+    public AdventurerAIData(string _name, int _DPL, int _HPL, int _HRPL,int movementSpeed, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL,movementSpeed, _prefabPath)
     {
         questBook = new QuestBook();
     }
@@ -75,12 +76,12 @@ public class AdventurerAIData : CombatAIData
 }
 
 [System.Serializable]
-public class PlayerData : CombatAIData
+public class PlayerData : CombatActorData
 {
     [SerializeField]
     protected List<Job> jobList = new List<Job>();
     protected int gold;
-    public PlayerData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL, _prefabPath)
+    public PlayerData(string _name, int _DPL, int _HPL, int _HRPL, string _prefabPath = "") : base(_name, _DPL, _HPL, _HRPL, 0, _prefabPath)
     {
         gold = 0;
     }

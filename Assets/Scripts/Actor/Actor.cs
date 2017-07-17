@@ -3,63 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class Actor : MonoBehaviour, IDamagable
+public abstract class Actor : MonoBehaviour
 {
 
-    [SerializeField]
-    protected int health = 100;
-    
     [SerializeField]
     protected EquipSlot leftHand, rightHand;
 
     public abstract bool CheckConversingWith(Actor target);
-
-    protected virtual void Awake()
-    {
-        
-    }
-
-    public abstract ActorData Data
-    {
-        get;
-        set;
-    }
-    public int Health
-    {
-        get
-        {
-            return health;
-        }
-
-    }
-
-    public abstract int AttackValue
-    {
-        get;
-    }
 
     public abstract int MaxHealth
     {
         get;
     }
 
-
-
-    public virtual void Attack(IDamage item, IDamagable target)
-    {
-        target.TakeDamage(item.Damage + AttackValue, this);
-    }
-
-   
-
-
     public abstract void Notify(AI ai);
 
-    public virtual void TakeDamage(int damage, Actor attacker)
-    {
-        health -= (damage >= health) ? health : damage;
-        health = health > MaxHealth ? MaxHealth : health;
-    }
+  
 
     public virtual void ChangeWield(Equipment item)
     {
@@ -122,5 +81,4 @@ public abstract class Actor : MonoBehaviour, IDamagable
         
     }
 
-    
 }

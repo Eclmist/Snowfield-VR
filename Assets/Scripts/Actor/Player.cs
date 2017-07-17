@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : Actor
+public class Player : CombatActor
 {
 
     [SerializeField]
@@ -14,32 +14,31 @@ public class Player : Actor
     private Transform vivePosition;
 
     public static Player Instance;
+
     [SerializeField]
-    protected PlayerData actorData;
+    protected PlayerData data;
+
+    public override CombatActorData Data
+    {
+        get
+        {
+            return data;
+        }
+
+        set
+        {
+            data = (PlayerData)value;
+        }
+    }
     public int Gold
     {
         get
         {
-            return actorData.Gold;
+            return data.Gold;
         }
     }
 
-    public override int AttackValue
-    {
-        get
-        {
-            
-            return actorData.CurrentJob.Level * actorData.CurrentJob.DPL;
-        }
-    }
-
-    public override int MaxHealth
-    {
-        get
-        {
-            return actorData.CurrentJob.HPL * actorData.CurrentJob.Level;
-        }
-    }
+    
     public override void Notify(AI ai)
     {//Unimplemented .. test code
         AudioSource ad = GetComponent<AudioSource>();
@@ -49,12 +48,12 @@ public class Player : Actor
     public void AddJob(JobType newJobType)
     {
         Job newJob = new Job(newJobType);
-        actorData.JobList.Add(newJob);
+        data.JobList.Add(newJob);
     }
 
     public void GainExperience(JobType jobType, int value)
     {
-        foreach (Job currentJob in actorData.JobList)
+        foreach (Job currentJob in data.JobList)
         {
             if (currentJob.Type == jobType)
             {
@@ -68,7 +67,7 @@ public class Player : Actor
     {
         get
         {
-            return actorData.JobList;
+            return data.JobList;
         }
     }
     public override bool CheckConversingWith(Actor target)
@@ -85,10 +84,11 @@ public class Player : Actor
         if (!Instance)
         {
             Instance = this;
-            PlayerData data = (PlayerData)SerializeManager.Load("PlayerData");
-            if (data != null)
+            PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
+            
+            if (_data != null)
             {
-                actorData = data;
+                data = _data;
             }
             else
             {
@@ -104,12 +104,12 @@ public class Player : Actor
 
     protected void OnDisable()
     {
-        SerializeManager.Save("PlayerData",actorData);
+        SerializeManager.Save("PlayerData", data);
     }
 
     public Job GetJob(JobType type)
     {
-        foreach (Job job in actorData.JobList)
+        foreach (Job job in data.JobList)
         {
             if (job.Type == type)
             {
@@ -121,8 +121,8 @@ public class Player : Actor
 
     public void AddGold(int value)
     {
-        (actorData as PlayerData).Gold += value;
-        if ((actorData as PlayerData).Gold < 0)
+        data.Gold += value;
+        if (data.Gold < 0)
             ;//lose
     }
 
@@ -140,16 +140,5 @@ public class Player : Actor
         }
     }
 
-    public override ActorData Data
-    {
-        get
-        {
-            return actorData;
-        }
-
-        set
-        {
-            actorData = (PlayerData)value;
-        }
-    }
+    
 }
