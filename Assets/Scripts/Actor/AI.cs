@@ -4,67 +4,61 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public class AI : Actor
+public abstract class AI : CombatActor
 {
 
     protected ActorFSM currentFSM;
-    protected bool isConversing;
+
+    protected bool isInteracting = false;
 
     [SerializeField]
-    protected float movementSpeed = 3;
+    protected ParticleSystem spawnPS, disablePS;
 
 
-    public float MovementSpeed
+    public bool Interacting
     {
         get
         {
-            return movementSpeed;
+            return isInteracting;
         }
         set
         {
-            movementSpeed = value;
+            isInteracting = value;
         }
     }
 
+    public override void Notify(AI ai)
+    {
+        Interact(ai);
+    }
 
+    public override bool CheckConversingWith(Actor target)
+    {
+        return currentFSM.Target == target;
+    }
 
     protected override void Awake()
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
-        if (jobList.Count != 0)
-            jobList.Clear();
-        
     }
 
-    public bool IsConversing
+    public void ChangeState(ActorFSM.FSMState state)
     {
-        get { return this.isConversing; }
-        set { isConversing = value; }
+        currentFSM.ChangeState(state);
     }
-
-
-    //public override void Interact(Actor actor)
-    //{
-    //    currentFSM.ChangeState(ActorFSM.FSMState.INTERACTION);
-    //}
 
     public override void TakeDamage(int damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (health <= 0)
+        if (variable.GetCurrentHealth() <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
             UnEquipWeapons();
-            
-
         }
-        else if (Mathf.Sign(damage) == 1)
+        else
         {
-            bool knockedBack = false;
-            if (damage / (float)maxHealth > .2)
-                knockedBack = true;
-            currentFSM.DamageTaken(knockedBack,attacker);
+            //currentFSM.DamageTaken(attacker);
         }
     }
 
@@ -76,9 +70,38 @@ public class AI : Actor
             rightHand.Item.Unequip();
     }
 
-    public virtual void StopInteraction()
+    public virtual void LookAtObject(Transform target,float time,float angle)
     {
-        isConversing = false;
+        StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
     }
 
+    public abstract void Interact(Actor actor);
+
+    public virtual float GetOutOfTimeDuration()
+    {
+        return 0;
+    }
+
+    public virtual void OutOfTownProgress()
+    {
+
+    }
+
+    public virtual void Spawn()
+    {
+        if (disablePS)
+        {
+            Destroy(Instantiate(disablePS, transform.position, transform.rotation),3);
+            gameObject.SetActive(true);
+        }
+    }
+
+    public virtual void Despawn()
+    {
+        if (spawnPS)
+        {
+            Destroy(Instantiate(spawnPS, transform.position, transform.rotation),3);
+            gameObject.SetActive(false);
+        }
+    }
 }

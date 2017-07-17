@@ -7,40 +7,36 @@ public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
     [SerializeField]
-    [Range(5, 30)]
+    [Range(1, 30)]
     [Tooltip("Max number of AI in town")]
-    private int population = 3;
+    private int population = 1;
 
     [SerializeField]
     private List<Shop> allShops = new List<Shop>();
 
-    private List<AI> listOfAI = new List<AI>();
+    [SerializeField]
+    private List<Node> spawnPoints = new List<Node>();
 
     [SerializeField]
-    private List<AI> typeOfAI = new List<AI>();
+    private Node wavePoint,monsterPoint;
 
-    [SerializeField]
-    private List<Transform> spawnPoints = new List<Transform>();
-
-
-    public List<AI> TypeOfAIs
+    public Node WavePoint
     {
         get
         {
-            return typeOfAI;
+            return wavePoint;
         }
     }
 
-    public List<AI> ListOfAIs
+    public Node MonsterPoint
     {
         get
         {
-            return listOfAI;
+            return monsterPoint;
         }
     }
-
-
-    public List<Transform> SpawnPoint
+   
+    public List<Node> SpawnPoint
     {
         get
         {
@@ -51,13 +47,11 @@ public class Town : MonoBehaviour
     private void Awake()
     {
         allShops = new List<Shop>();
-        listOfAI = new List<AI>();
     }
 
     private void Start()
     {
         allShops.AddRange(GetComponentsInChildren<Shop>());
-
     }
 
     public int Population//used to decide how many requests/day etc
@@ -81,5 +75,6 @@ public class Town : MonoBehaviour
         }
     }
 
+    
 
 }

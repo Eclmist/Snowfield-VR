@@ -41,6 +41,20 @@ public abstract class OptionPane : MonoBehaviour
 
     private bool alreadySetContent = false;
     private Animator anim;
+
+    void Update()//Fully for debugging
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            buttons[0].SendMessage("OnTriggerRelease");
+        }else if (Input.GetKeyDown(KeyCode.N))
+        {
+            if(buttons.Length > 1)
+            {
+                buttons[1].SendMessage("OnTriggerRelease");
+            }
+        }
+    }
 	protected virtual void Start()
 	{
 		if (!alreadySetContent)
@@ -50,6 +64,7 @@ public abstract class OptionPane : MonoBehaviour
 
         foreach (VR_Button button in buttons)
         {
+            
             button.AddOnTriggerReleaseFunction(new UnityAction(ClosePane));
         }
 

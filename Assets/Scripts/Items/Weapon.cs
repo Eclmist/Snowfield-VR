@@ -120,8 +120,6 @@ public class Weapon : Equipment
         }
         if (IfBlocked != null)
         {
-            
-
             IBlock item = collision.GetComponentInParent<IBlock>();
             if (item != null && item.IsBlocking)
             {

@@ -72,7 +72,7 @@ public class VR_Button : VR_Interactable
 	protected override void OnTriggerPress()
 	{
 		base.OnTriggerPress();
-
+        Debug.Log("hit");
 		events.onTriggerPress.Invoke();
 
 		if (useTransitions)

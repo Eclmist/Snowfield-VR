@@ -2,30 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestEntry<T> : ICanTalk where T : Quest
+[System.Serializable]
+public class QuestEntry<T> where T : Quest
 {
+	private bool hasStarted,isCompleted,checkedInVisit;
+	private float timeToComplete;
 
-	private T currentQuest;
-	private bool hasStarted,isCompleted;
-	private int timeToComplete;
-
-	public QuestEntry(T quest)
+	public QuestEntry(float _timeToComplete)
 	{
 		hasStarted = false;
 		isCompleted = false;
-		currentQuest = quest;
+        checkedInVisit = false;
+        timeToComplete = _timeToComplete;
 	}
 
-	public Session Session
-	{
-		get
-		{
-			if (!isCompleted)
-				return currentQuest.Dialog;
-			else
-				return currentQuest.EndDialog;
-		}
-	}
+    public bool Checked
+    {
+        get
+        {
+            return checkedInVisit;
+        }
+        set
+        {
+            checkedInVisit = value;
+        }
+    }
+
+    public float RemainingProgress
+    {
+        get
+        {
+            return timeToComplete;
+        }
+    }
+
+	//public Session Session
+	//{
+	//	get
+	//	{
+	//		if (!isCompleted)
+	//			return currentQuest.Dialog;
+	//		else
+	//			return currentQuest.EndDialog;
+	//	}
+	//}
 
 	public bool Completed
 	{
@@ -51,31 +71,25 @@ public class QuestEntry<T> : ICanTalk where T : Quest
 		}
 	}
 
-	public T Quest
-	{
-		get
-		{
-			return currentQuest;
-		}
-	}
+	
 
-	public void StartQuest(int time)
+	public void StartQuest()
 	{
-		timeToComplete = time;
 		hasStarted = true;
 	}
 
-	public void ProgressQuest()
-	{
-		timeToComplete--;
-		if (timeToComplete <= 0)
-			isCompleted = true;
-	}
+    public void QuestProgress()
+    {
+        timeToComplete--;
+        if (timeToComplete <= 0)
+            isCompleted = true;
+    }
 }
 
+[System.Serializable]
 public class QuestEntryGroup<T> where T : Quest
 {
-	private List<QuestEntry<T>> quests;
+    private QuestEntry<T> currentEntry;
 
 	private bool isCompleted;
 
@@ -88,12 +102,16 @@ public class QuestEntryGroup<T> where T : Quest
 		get { return this.jobType; }
 	}
 
-	public List<QuestEntry<T>> Quest
+	public QuestEntry<T> Quest
 	{
 		get
 		{
-			return quests;
+            return currentEntry;
 		}
+        set
+        {
+            currentEntry = value;
+        }
 	}
 
 	public int ProgressionIndex
@@ -123,31 +141,7 @@ public class QuestEntryGroup<T> where T : Quest
 	public QuestEntryGroup(JobType type)
 	{
 		isCompleted = false;
-		quests = new List<QuestEntry<T>>();
 		progressionIndex = 0;
 		jobType = type;
 	}
-
-	public int Count
-	{
-		get { return quests.Count; }
-	}
-
-	public void Add(QuestEntry<T> _item)
-	{
-		quests.Add(_item);
-	}
-
-	public QuestEntry<T> this[int index]   // Indexer declaration  
-	{
-		get
-		{
-			return quests[index];
-		}
-		set
-		{
-			quests[index] = value;
-		}
-	}
-
 }
