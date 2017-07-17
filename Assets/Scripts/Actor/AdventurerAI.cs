@@ -202,8 +202,9 @@ public class AdventurerAI : AI
     public override float GetOutOfTimeDuration()
     {
         float totalDuration = 0;
-
-        totalDuration += data.QuestBook.GetFastestQuest().RemainingProgress;
+        QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
+        if (quest != null)
+            totalDuration += quest.RemainingProgress;
         //Can add more time here when taking into consideration item get
         Debug.Log(totalDuration);
         return totalDuration;
