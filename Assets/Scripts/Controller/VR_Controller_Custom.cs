@@ -87,9 +87,10 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactableObject != null && interactableObject.LinkedController != this)
         {
+            interactableObject.OnControllerExit(this);
             interactableObject = null;
-        }
-    }
+		}
+	}
 
     public Vector3 Velocity
     {
