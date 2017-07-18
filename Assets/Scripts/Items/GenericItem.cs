@@ -273,7 +273,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-    public virtual IEnumerator Throw(CombatActor thrower)
+    public virtual IEnumerator Throw(Actor thrower)
 
 
 

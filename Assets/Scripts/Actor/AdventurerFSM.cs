@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AdventurerFSM : ActorFSM
 {
     private List<Shop> visitedShop = new List<Shop>();
+
+    private AdventurerAI currentAdventurerAI;
 
     private Shop targetShop;
 
@@ -15,6 +17,18 @@ public class AdventurerFSM : ActorFSM
         visitedShop.Clear();
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        currentAdventurerAI = GetComponent<AdventurerAI>();
+    }
+    public override AI CurrentAI
+    {
+        get
+        {
+            return currentAdventurerAI;
+        }
+    }
 
     protected override void UpdateFSMState()
     {
@@ -61,7 +75,7 @@ public class AdventurerFSM : ActorFSM
         else
         {
             visitedShop.Add(targetShop);
-            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && (currentAI as AdventurerAI).GotLobang() && !targetShop.InteractionNode.Occupied))
+            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang() && !targetShop.InteractionNode.Occupied))
             {
                 ChangePath(targetShop.InteractionNode);
                 ChangeState(FSMState.PETROL);
@@ -126,7 +140,7 @@ public class AdventurerFSM : ActorFSM
     {
 
         FSMState previousState = currentState;
-        (currentAI as AdventurerAI).Interacting = false;
+        currentAdventurerAI.Interacting = false;
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -137,7 +151,7 @@ public class AdventurerFSM : ActorFSM
                     break;
 
                 case FSMState.COMBAT:
-                    (currentAI as AdventurerAI).EquipRandomWeapons();
+                    currentAdventurerAI.EquipRandomWeapons();
                     //animator.SetBool("KnockBack", true);//Wrong place
                     //timer = 5;
                     break;
@@ -176,7 +190,7 @@ public class AdventurerFSM : ActorFSM
                 if (isAttacking)
                     animator.SetBool("Attacking", true);
 
-                Weapon longestWeapon = currentAI.GetLongestWeapon();
+                Weapon longestWeapon = currentAdventurerAI.GetLongestWeapon();
                 if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
                 {
                     if (!isAttacking)
@@ -199,6 +213,17 @@ public class AdventurerFSM : ActorFSM
             ChangeState(FSMState.IDLE);
     }
 
+    public void StartCharge()
+    {
+
+        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
+
+        if (currentUseWeapon != null)
+        {
+            currentUseWeapon.StartCharge();
+        }
+    }
+
     public System.Collections.IEnumerator Interact(Actor actor)
     {
         target = actor;
@@ -212,16 +237,15 @@ public class AdventurerFSM : ActorFSM
             if (target is Player)
             {
                 Player player = target as Player;
-                AdventurerAI currentAdventurer = currentAI as AdventurerAI;
-                if (currentAdventurer.GotLobang() || currentAdventurer.Interacting)
+                if (currentAdventurerAI.GotLobang() || currentAdventurerAI.Interacting)
                 {
-                    if (player.CheckConversingWith(currentAdventurer))
+                    if (player.CheckConversingWith(currentAdventurerAI))
                     {
                         waitTimer = 5;
-                        if (!currentAdventurer.Interacting)
+                        if (!currentAdventurerAI.Interacting)
                         {
                             Debug.Log("hit");
-                            currentAdventurer.GetLobang();
+                            currentAdventurerAI.GetLobang();
                         }
                     }
                     else
@@ -229,20 +253,20 @@ public class AdventurerFSM : ActorFSM
                         waitTimer -= Time.deltaTime;
                         if (waitTimer <= 0)
                         {
-                            currentAI.Interacting = false;
+                            currentAdventurerAI.Interacting = false;
                             break;
                         }
                     }
                 }
                 else
                 {
-                    currentAI.Interacting = false;
+                    currentAdventurerAI.Interacting = false;
                     break;
                 }
             }
             else
             {
-                currentAI.Interacting = false;
+                currentAdventurerAI.Interacting = false;
                 break;
             }
             yield return new WaitForEndOfFrame();

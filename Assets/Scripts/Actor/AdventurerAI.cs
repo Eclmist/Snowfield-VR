@@ -20,17 +20,40 @@ public class AdventurerAI : AI
         GetSlots();
     }
 
-    public override CombatActorData Data
+    protected virtual void Start()
+    {
+        if (QuestBook.StoryQuests == null)
+            QuestBook.BeginQuestBook();
+    }
+
+    public Weapon GetLongestWeapon()
+    {
+        float LongestRange = 0;
+        Weapon LongestWeapon = null;
+        if (leftHand != null && leftHand.Item is Weapon)
+        {
+            LongestRange = (leftHand.Item as Weapon).Range;
+            LongestWeapon = leftHand.Item as Weapon;
+        }
+        if (rightHand != null && rightHand.Item is Weapon)
+        {
+            if ((rightHand.Item as Weapon).Range > LongestRange)
+                LongestWeapon = rightHand.Item as Weapon;
+        }
+        return LongestWeapon;
+    }
+
+    public override ActorData Data
     {
         get
         {
             return data;
         }
-
         set
         {
             data = (AdventurerAIData)value;
         }
+
     }
 
     public QuestBook QuestBook
@@ -178,6 +201,11 @@ public class AdventurerAI : AI
         startableGroup.Quest.Checked = true;
     }
 
+    protected void GainExperience(int value)
+    {
+        data.CurrentJob.GainExperience(value);
+    }
+
     public void CompleteQuestDelegate()
     {
         QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
@@ -206,7 +234,6 @@ public class AdventurerAI : AI
         if (quest != null)
             totalDuration += quest.RemainingProgress;
         //Can add more time here when taking into consideration item get
-        Debug.Log(totalDuration);
         return totalDuration;
     }
 

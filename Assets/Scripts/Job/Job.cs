@@ -13,7 +13,7 @@ public enum JobType
 public class CombatJob : Job
 {
     [SerializeField]
-    protected int damagePerLevel, healthPerLevel, healthRegenPerLevel, movementSpeed;
+    protected int damagePerLevel, healthPerLevel, healthRegenPerLevel;
 
     public int DPL
     {
@@ -39,21 +39,13 @@ public class CombatJob : Job
         }
     }
 
-    public CombatJob(JobType currentJob, int _DPL, int _HPL, int _HRPL, int _movementSpeed) : base(currentJob)
+    public CombatJob(JobType currentJob, CombatJob copyJob) : base(currentJob)
     {
         currentJob = JobType.COMBAT;
-        damagePerLevel = _DPL;
-        healthPerLevel = _HPL;
-        healthRegenPerLevel = _HRPL;
-        movementSpeed = _movementSpeed;
-    }
-
-    public int MovementSpeed
-    {
-        get
-        {
-            return movementSpeed;
-        }
+        damagePerLevel = copyJob.DPL;
+        healthPerLevel = copyJob.HPL;
+        healthRegenPerLevel = copyJob.HRPL;
+       
     }
 }
 [System.Serializable]

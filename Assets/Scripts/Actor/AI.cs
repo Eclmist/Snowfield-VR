@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public abstract class AI : CombatActor
+public abstract class AI : Actor
 {
 
     protected ActorFSM currentFSM;
@@ -58,7 +58,7 @@ public abstract class AI : CombatActor
         }
         else
         {
-            //currentFSM.DamageTaken(attacker);
+            currentFSM.DamageTaken(attacker);
         }
     }
 
