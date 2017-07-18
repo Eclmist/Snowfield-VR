@@ -6,7 +6,7 @@ using UnityEngine;
 public class QuestBook
 {
 
-    private List<QuestEntryGroup<StoryQuest>> storyQuest = new List<QuestEntryGroup<StoryQuest>>();
+    private List<QuestEntryGroup<StoryQuest>> storyQuest;
 
     public List<QuestEntryGroup<StoryQuest>> StoryQuests
     {
@@ -78,18 +78,14 @@ public class QuestBook
         return null;
     }
 
-    public QuestBook()
+    public void BeginQuestBook()
     {
-        if (QuestManager.Instance)
+        storyQuest = QuestManager.Instance.CreateNewStoryLines();
+        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
         {
-            storyQuest = QuestManager.Instance.CreateNewStoryLines();
-            foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
-            {
-                line.ProgressionIndex = -1;
-                RequestNextQuest(line);
-            }
+            line.ProgressionIndex = -1;
+            RequestNextQuest(line);
         }
-
     }
 
     public QuestEntry<StoryQuest> GetFastestQuest()
@@ -112,10 +108,11 @@ public class QuestBook
 
     public void ResetChecked()
     {
-        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
-        {
-            line.Quest.Checked = false;
-        }
+        if (storyQuest != null)
+            foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
+            {
+                line.Quest.Checked = false;
+            }
     }
 
 }

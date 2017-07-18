@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : CombatActor
+public class Player : Actor
 {
 
     [SerializeField]
@@ -18,17 +18,17 @@ public class Player : CombatActor
     [SerializeField]
     protected PlayerData data;
 
-    public override CombatActorData Data
+    public override ActorData Data
     {
         get
         {
             return data;
         }
-
         set
         {
             data = (PlayerData)value;
         }
+
     }
     public int Gold
     {

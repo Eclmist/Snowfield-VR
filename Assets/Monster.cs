@@ -8,7 +8,7 @@ public class Monster : AI {
     [SerializeField]
     protected CombatActorData data;
 
-    public override CombatActorData Data
+    public override ActorData Data
     {
         get
         {

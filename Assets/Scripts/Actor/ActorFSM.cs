@@ -23,7 +23,6 @@ public abstract class ActorFSM : MonoBehaviour
     protected Transform eye;
     [SerializeField]
     protected float detectionDistance = 10;
-    protected AI currentAI;
     protected List<Node> path;
     protected bool requestedPath, pathFound;
     [SerializeField]
@@ -42,9 +41,13 @@ public abstract class ActorFSM : MonoBehaviour
     protected LayerMask avoidanceIgnoreMask;
     #endregion
 
+    public abstract AI CurrentAI
+    {
+        get;
+    }
     public virtual void ChangeState(FSMState state)
     {
-        currentAI.Interacting = false;
+        CurrentAI.Interacting = false;
         isHandlingAction = false;
         StopAllCoroutines();
         pathFound = false;
@@ -55,7 +58,7 @@ public abstract class ActorFSM : MonoBehaviour
 
         if (state != FSMState.EVENTHANDLING)
         {
-            foreach(NodeEvent e in handledEvents)
+            foreach (NodeEvent e in handledEvents)
             {
                 e.CurrentNode.Occupied = false;
             }
@@ -78,7 +81,6 @@ public abstract class ActorFSM : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        currentAI = GetComponent<AI>();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
     public Actor Target
@@ -115,7 +117,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
-            currentAI.gameObject.SetActive(false);
+            CurrentAI.Despawn();
         }
     }
 
@@ -160,8 +162,8 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 NodeEvent firstEvent = handledEvents[0];
                 handledEvents.RemoveAt(0);
-                if(firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
-                    firstEvent.HandleEvent(currentAI);
+                if (firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
+                    firstEvent.HandleEvent(CurrentAI);
             }
         }
     }
@@ -327,7 +329,7 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward - transform.right * distanceExp * currentAI.MovementSpeed;
+            return transform.forward - transform.right * distanceExp * CurrentAI.MovementSpeed;
         }
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
@@ -336,18 +338,19 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward + transform.right * currentAI.MovementSpeed * distanceExp;
+            return transform.forward + transform.right * CurrentAI.MovementSpeed * distanceExp;
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir = dir * currentAI.MovementSpeed;
+            dir = dir * CurrentAI.MovementSpeed;
             dir.y = rigidBody.velocity.y;
-            return dir;        }
+            return dir;
+        }
     }
 
-    public void DamageTaken( Actor attacker)
+    public void DamageTaken(Actor attacker)
     {
         ChangeState(FSMState.COMBAT);
     }
@@ -384,16 +387,7 @@ public abstract class ActorFSM : MonoBehaviour
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
 
-    public void StartCharge()
-    {
-
-        currentUseWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-
-        if (currentUseWeapon != null)
-        {
-            currentUseWeapon.StartCharge();
-        }
-    }
+   
 
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {

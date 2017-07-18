@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
-public abstract class Actor : MonoBehaviour
+[RequireComponent(typeof(CombatVariable))]
+public abstract class Actor : MonoBehaviour, IDamagable
 {
 
     [SerializeField]
@@ -11,9 +11,66 @@ public abstract class Actor : MonoBehaviour
 
     public abstract bool CheckConversingWith(Actor target);
 
-    public abstract int MaxHealth
+    protected CombatVariable variable;
+
+    protected virtual void Awake()
+    {
+        variable = GetComponent<CombatVariable>();
+    }
+    public abstract ActorData Data
     {
         get;
+        set;
+    }
+
+    public int MaxHealth
+    {
+        get
+        {
+            return Data.Health;
+        }
+    }
+
+    public int Health
+    {
+        get
+        {
+            return variable.GetCurrentHealth();
+        }
+    }
+
+    public virtual void TakeDamage(int value, Actor attacker)
+    {
+        variable.ReduceHealth(value);
+    }
+
+    public virtual void Attack(IDamage item, IDamagable target)
+    {
+        target.TakeDamage(item.Damage + AttackDamage, this);
+    }
+
+    public int AttackDamage
+    {
+        get
+        {
+            return Data.Attack;
+        }
+    }
+
+    public int HealthRegeneration
+    {
+        get
+        {
+            return Data.HealthRegeneration;
+        }
+    }
+
+    public int MovementSpeed
+    {
+        get
+        {
+            return Data.MovementSpeed;
+        }
     }
 
     public abstract void Notify(AI ai);
@@ -53,25 +110,7 @@ public abstract class Actor : MonoBehaviour
         return null;
     }
 
-    public Weapon GetLongestWeapon()
-    {
-        float LongestRange = 0;
-        Weapon LongestWeapon = null;
-        if (leftHand != null && leftHand.Item is Weapon)
-        {
-            LongestRange = (leftHand.Item as Weapon).Range;
-            LongestWeapon = leftHand.Item as Weapon;
-        }
-        if (rightHand != null && rightHand.Item is Weapon)
-        {
-            if ((rightHand.Item as Weapon).Range > LongestRange)
-                LongestWeapon = rightHand.Item as Weapon;
-        }
-        return LongestWeapon;
-    }
 
-
-   
     public new virtual Transform transform
     {
         get

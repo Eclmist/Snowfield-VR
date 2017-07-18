@@ -6,15 +6,16 @@ public class CombatVariable : MonoBehaviour
 
     public AudioSource hitSound;
 
+    [SerializeField]
     private int currentHealth;
 
     private float timeSinceLastDamageTaken;
 
-    private CombatActor actor;
+    private Actor actor;
     // Use this for initialization
     void Start()
     {
-        actor = GetComponent<CombatActor>();
+        actor = GetComponent<Actor>();
         currentHealth = actor.MaxHealth;
         timeSinceLastDamageTaken = 0;
     }
@@ -29,7 +30,7 @@ public class CombatVariable : MonoBehaviour
     {
         if (timeSinceLastDamageTaken > 10 && currentHealth < actor.MaxHealth)
         {
-            currentHealth += actor.HealthRegen;
+            currentHealth += actor.HealthRegeneration;
             if (currentHealth > actor.MaxHealth)
                 currentHealth = actor.MaxHealth;
         }
