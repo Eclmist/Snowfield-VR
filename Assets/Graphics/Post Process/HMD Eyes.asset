@@ -31,12 +31,12 @@ MonoBehaviour:
   antialiasing:
     m_Enabled: 1
     m_Settings:
-      method: 0
+      method: 1
       fxaaSettings:
         preset: 4
       taaSettings:
-        jitterSpread: 0.835
-        sharpen: 3
+        jitterSpread: 1
+        sharpen: 0
         stationaryBlending: 0.99
         motionBlending: 0.746
   ambientOcclusion:
@@ -71,9 +71,9 @@ MonoBehaviour:
   depthOfField:
     m_Enabled: 0
     m_Settings:
-      focusDistance: 10
-      aperture: 5.6
-      focalLength: 50
+      focusDistance: 0.1
+      aperture: 3.08
+      focalLength: 46
       useCameraFov: 0
       kernelSize: 3
   motionBlur:
@@ -100,10 +100,10 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 0.19
-        threshold: 0.6
+        intensity: 0.43
+        threshold: 0.28
         softKnee: 0.5
-        radius: 2.72
+        radius: 2.42
         antiFlicker: 1
       lensDirt:
         texture: {fileID: 0}
@@ -121,11 +121,11 @@ MonoBehaviour:
         neutralWhiteClip: 10
       basic:
         postExposure: 0
-        temperature: 0
-        tint: 0
-        hueShift: 0
-        saturation: 1.14
-        contrast: 1.1
+        temperature: 8.3
+        tint: 53.1
+        hueShift: 3.2
+        saturation: 1.41
+        contrast: 1.069
       channelMixer:
         red: {x: 1, y: 0, z: 0}
         green: {x: 0, y: 1, z: 0}
@@ -293,19 +293,19 @@ MonoBehaviour:
       size: 1
       luminanceContribution: 0.8
   vignette:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.45
+      intensity: 0.51
       smoothness: 0.2
       roundness: 1
       mask: {fileID: 0}
       opacity: 1
       rounded: 0
   dithering:
-    m_Enabled: 0
+    m_Enabled: 1
   monitors:
     currentMonitorID: 0
     refreshOnPlay: 0
