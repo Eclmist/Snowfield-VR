@@ -18,7 +18,7 @@ public class StoragePanel : Inventory {
 
         slotPanel = panel.transform.Find("slotPanel").gameObject;
         glp = slotPanel.GetComponent<GridLayoutGroup>();
-		AddSlots ();
+		InitializeInteractableSlots ();
 	}
 
 
@@ -29,7 +29,8 @@ public class StoragePanel : Inventory {
 
 	}
 
-	private void AddSlots()
+
+	private void InitializeInteractableSlots()
 	{
 		foreach (InventorySlot slot in InventoryItems)
 		{
@@ -44,10 +45,6 @@ public class StoragePanel : Inventory {
 
 	}
 
-    private void PopulateSlots()
-    {
-
-    }
 
 
 
