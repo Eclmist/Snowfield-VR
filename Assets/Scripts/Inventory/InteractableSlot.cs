@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractableSlot : VR_Interactable {
+public class InteractableSlot : MonoBehaviour {
 
     private Image image;
     private Sprite itemDisplayIcon;
     private Text stack;
+    private VR_Interactable_Object pendingItem;
 
     Color temp;
     
@@ -24,7 +25,7 @@ public class InteractableSlot : VR_Interactable {
 	// Update is called once per frame
 	void Update ()
     {
-        base.Update();
+  
  
 	}
 
@@ -71,7 +72,6 @@ public class InteractableSlot : VR_Interactable {
             }
 
             Instantiate(slot.StoredItem.ObjectReference,t);
-            
         }
     }
 
@@ -96,13 +96,15 @@ public class InteractableSlot : VR_Interactable {
        
     }
 
-    protected override void OnTriggerPress()
-    {
-        base.OnTriggerPress();
+    //protected override void OnTriggerPress()
+    //{
+    //    base.OnTriggerPress();
         
-        // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
-        // else call RemoveFromSlot()
-    }
+    //    // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
+        
+    //    // else call RemoveFromSlot()
+    //}
+
 
 
 
