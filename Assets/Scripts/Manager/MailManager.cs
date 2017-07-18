@@ -44,11 +44,17 @@ public class MailManager : MonoBehaviour {
 
     }
 
+    public static MailManager Instance;
 
+    [SerializeField] private GameObject notifier;
     [SerializeField] private Text count;
-    [SerializeField]private Animator animator;
-    [SerializeField]private List<Mail> inbox = new List<Mail>();
+    
+    [SerializeField] private Animator animator;
+    [SerializeField] private List<Mail> inbox = new List<Mail>();
     [SerializeField] private int totalUnreadMails;
+    
+
+    private Mail currentlyDisplayedMail;
 
     public List<Mail> Inbox
     {
@@ -65,24 +71,23 @@ public class MailManager : MonoBehaviour {
         get { return this.inbox.Count; }
     }
 
-   
-
-
-    public static MailManager Instance;
-
 
     private void Awake()
     {
         Instance = this;
     }
+    private void Start()
+    {
+        notifier.SetActive(true);
+    }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             SendMail("This is a test mail",null);
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             if(inbox.Count > 0)
                 ReadMail(inbox[0]);
@@ -110,17 +115,28 @@ public class MailManager : MonoBehaviour {
         inbox.Add(new Mail(message,clip));
     }
 
+
+    
     public void ReadMail(Mail mail)
     {
-        // Play the clip if it has not been read before
+        DisplayMail(mail);
         if(!mail.IsRead)
         {
-            mail.IsRead = true;
-        }
-        else
-        {
+            //play clip
+
             
         }
+
+        mail.IsRead = true;
+        
+        
+        
+
+    }
+
+    public void DisplayMail(Mail mail)
+    {
+        
     }
 
     public void DisplayInbox()
