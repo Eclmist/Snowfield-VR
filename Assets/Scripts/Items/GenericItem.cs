@@ -47,8 +47,17 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     protected Collider itemCollider;
 
+    #region itemData
 
+    private ItemData itemData;
 
+    public ItemData ItemData
+    {
+        get { return this.itemData; }
+        set { this.itemData = value; }
+    }
+
+    #endregion itemData
 
 
     #region GenericItem

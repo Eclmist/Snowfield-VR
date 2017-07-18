@@ -47,6 +47,14 @@ public class ItemManager : MonoBehaviour {
         {
             itemDictionary.Add(data.ItemID,data.ObjectReference);
             itemDataDictionary.Add(data.ItemID,data);
+
+            GenericItem gs = data.ObjectReference.GetComponent<GenericItem>();
+            if(gs != null)
+            {
+                gs.ItemData = data;
+            }
+
+
         }
 
 
