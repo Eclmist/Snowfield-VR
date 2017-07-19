@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
+
 public abstract class ActorFSM : MonoBehaviour
 {
 
@@ -21,8 +22,10 @@ public abstract class ActorFSM : MonoBehaviour
     protected bool isHandlingAction = false;
     [SerializeField]
     protected Transform eye;
+
     [SerializeField]
-    protected float detectionDistance = 10;
+    protected float detectionDistance = 10, attackRange = 0;
+    protected Vector3 targetPoint = Vector3.zero;
     protected List<Node> path;
     protected bool requestedPath, pathFound;
     [SerializeField]
@@ -33,6 +36,8 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState nextState;
     protected Weapon currentUseWeapon;
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
+
+
     #region Avoidance
     [Header("Avoidance")]
     [SerializeField]
@@ -55,6 +60,7 @@ public abstract class ActorFSM : MonoBehaviour
         rigidBody.isKinematic = false;
         animator.speed = 1;
         animator.SetFloat("Speed", 0);
+        animator.SetBool("Attacking", false);
 
         if (state != FSMState.EVENTHANDLING)
         {
@@ -113,7 +119,6 @@ public abstract class ActorFSM : MonoBehaviour
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
-            UpdateAnimatorState();
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
@@ -121,16 +126,6 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    protected void UpdateAnimatorState()
-    {
-
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
-            animator.SetBool("KnockBack", false);
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
-        {
-            animator.SetBool("Attacking", false);
-        }
-    }
     protected virtual void UpdateFSMState()
     {
         rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
@@ -139,12 +134,83 @@ public abstract class ActorFSM : MonoBehaviour
         {
             case FSMState.EVENTHANDLING:
                 UpdateEventHandling();
-                break;
+                return;
             case FSMState.PETROL:
                 UpdatePetrolState();
-                break;
+                return;
+            case FSMState.COMBAT:
+                UpdateCombatState();
+                return;
         }
     }
+
+    private bool backing = false;
+
+    protected virtual void UpdateCombatState()
+    {
+        if (target != null)
+        {
+
+            Vector3 temptarget = target.transform.position;
+            temptarget.y = transform.position.y;
+            Vector3 dir = temptarget - transform.position;
+            float distance = Vector3.Distance(temptarget, transform.position);
+            float angle = Vector3.Angle(transform.forward, dir);
+
+
+            //Debug.DrawRay(head.transform.position - head.right, _direction);
+            if (distance < detectionDistance)
+            {
+                Debug.Log(distance);
+                if (backing)
+                {
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = transform.position - dir;
+                    if (distance > attackRange / 2.0)
+                        backing = false;
+                }
+                else if (!backing && distance < attackRange / 5.0)
+                {
+                    animator.SetBool("Attacking", false);
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = transform.position - dir;
+                    backing = true;
+                }
+                else if (distance > attackRange || Mathf.Abs(angle) > 45)
+                {
+                    animator.SetBool("Attacking", false);
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = target.transform.position;
+                }
+                else
+                {
+                    animator.SetFloat("Speed", 0);
+                    HandleCombatAction();
+
+                }
+
+            }
+            else
+            {
+                ChangeState(FSMState.IDLE);
+                return;
+            }
+        }
+        else
+        {
+            ChangeState(FSMState.IDLE);
+            return;
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
+        {
+            rigidBody.velocity = AvoidObstacles(targetPoint);
+            LookAtPlayer(targetPoint);
+            return;
+        }
+    }
+
+    protected abstract void HandleCombatAction();
 
     protected virtual void UpdateEventHandling()
     {
@@ -184,7 +250,7 @@ public abstract class ActorFSM : MonoBehaviour
             }
             else
             {
-                animator.SetFloat("Speed", 2);
+                animator.SetFloat("Speed", CurrentAI.MovementSpeed);
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol"))
                 {
                     rigidBody.velocity = AvoidObstacles(targetPoint);
@@ -206,9 +272,6 @@ public abstract class ActorFSM : MonoBehaviour
             }
         }
     }
-
-    protected abstract void UpdateCombatState();
-
 
     protected EquipSlot.EquipmentSlotType animUseSlot;
 
@@ -266,24 +329,6 @@ public abstract class ActorFSM : MonoBehaviour
                 animUseSlot = EquipSlot.EquipmentSlotType.RIGHTHAND;
                 break;
 
-        }
-    }
-
-    private void IfBlocked(IBlock block)
-    {
-        //if (block.Owner == target)
-        //{
-        animator.SetBool("KnockBack", true);
-        EndAttack();
-        //}
-    }
-    public virtual void StartAttack()
-    {
-
-        if (currentUseWeapon != null)
-        {
-            Debug.Log(currentUseWeapon);
-            currentUseWeapon.SetBlockable(IfBlocked);
         }
     }
 
@@ -353,6 +398,8 @@ public abstract class ActorFSM : MonoBehaviour
     public void DamageTaken(Actor attacker)
     {
         ChangeState(FSMState.COMBAT);
+        target = attacker;
+        Debug.Log("DamageTaken");
     }
 
 
@@ -387,7 +434,7 @@ public abstract class ActorFSM : MonoBehaviour
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
 
-   
+
 
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {

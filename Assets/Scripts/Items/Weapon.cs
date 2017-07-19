@@ -28,13 +28,20 @@ public class Weapon : Equipment
     private float timeSinceStartCharge = 0;
     private float emissiveSlider = 0;
     private ModifyRenderer modRen;
-    private bool charge = false;
+    private bool charge = false, powered = false;
     protected override void Awake()
     {
         base.Awake();
         modRen = GetComponent<ModifyRenderer>();
     }
 
+    public bool Powered
+    {
+        get
+        {
+            return powered;
+        }
+    }
 
 	protected override void Start()
     {
@@ -43,8 +50,9 @@ public class Weapon : Equipment
 
     }
 
-    protected void Update()
+    protected override void Update()
     {
+        base.Update();
         if (modRen)
         {
 
@@ -54,7 +62,10 @@ public class Weapon : Equipment
                 {
                     emissiveSlider += fadeSpeed * Time.deltaTime;
                     if (emissiveSlider > 1)
+                    {
+                        powered = true;
                         emissiveSlider = 1;
+                    }
                 }
 
                 timeSinceStartCharge += Time.deltaTime;
@@ -65,7 +76,10 @@ public class Weapon : Equipment
                 {
                     emissiveSlider -= fadeSpeed * Time.deltaTime;
                     if (emissiveSlider < 0)
+                    {
+                        powered = false;
                         emissiveSlider = 0;
+                    }
                 }
 
             }

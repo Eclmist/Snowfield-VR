@@ -17,7 +17,7 @@ public class VR_Controller_Custom : MonoBehaviour
     private SteamVR_TrackedObject trackedObject;
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable_Object interactableObject;
+    private VR_Interactable_Object interactableObject, secondaryInteractableObject;
 
 
     void Awake()
@@ -51,8 +51,6 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactableObject != null)
         {
-            
-            
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactableObject.OnTriggerHold(this);
             
@@ -85,10 +83,22 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (interactableObject != null && interactableObject.LinkedController != this)
+        VR_Interactable_Object obj = other.GetComponent<VR_Interactable_Object>();
+        if (obj != null)
         {
-            interactableObject.OnControllerExit(this);
-            interactableObject = null;
+            if (interactableObject == obj && obj.LinkedController == null)
+            {
+                interactableObject.OnControllerExit(this);
+                
+            } else if(secondaryInteractableObject == obj)
+            {
+                interactableObject.OnControllerExitSecondary(this);
+            }
+
+            if(obj.LinkedController != null)
+            {
+
+            }
 		}
 	}
 
@@ -114,6 +124,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     public void SetInteraction(VR_Interactable_Object _interacted)
     {
+        secondaryInteractableObject = null;
         interactableObject = _interacted;
     }
 

@@ -49,8 +49,8 @@ public class VR_Interactable_Object : MonoBehaviour
     protected virtual void Awake()
     {
 		childRenderers = GetComponentsInChildren<Renderer>();
-
-		foreach (Renderer r in childRenderers)
+        rigidBody = GetComponent<Rigidbody>();
+        foreach (Renderer r in childRenderers)
 		{
 			if (r.GetComponent<ParticleSystem>())
 				continue;
@@ -69,7 +69,7 @@ public class VR_Interactable_Object : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		rigidBody = GetComponent<Rigidbody>();
+		
 	}
 
 	protected virtual void Update()
@@ -83,7 +83,13 @@ public class VR_Interactable_Object : MonoBehaviour
 
     public virtual void OnControllerStay(VR_Controller_Custom controller) { }
 
-	public virtual void OnControllerExit(VR_Controller_Custom controller)
+    public virtual void OnControllerEnterSecondary(VR_Controller_Custom controller) { }
+
+    public virtual void OnControllerStaySecondary(VR_Controller_Custom controller) { }
+
+    public virtual void OnControllerExitSecondary(VR_Controller_Custom controller) { }
+
+    public virtual void OnControllerExit(VR_Controller_Custom controller)
 	{
 		SetOutline(false);
 	}

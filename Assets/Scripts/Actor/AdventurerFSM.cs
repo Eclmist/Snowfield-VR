@@ -37,12 +37,9 @@ public class AdventurerFSM : ActorFSM
         {
             switch (currentState)
             {
-                case FSMState.COMBAT:
-                    UpdateCombatState();
-                    break;
                 case FSMState.IDLE:
                     UpdateIdleStateNight();
-                    break;
+                    return;
             }
         }
         else if (GameManager.Instance.State == GameManager.GameState.DAYMODE)
@@ -51,11 +48,11 @@ public class AdventurerFSM : ActorFSM
             {
                 case FSMState.IDLE:
                     UpdateIdleStateDay();
-                    break;
+                    return;
 
                 case FSMState.SHOPPING:
                     UpdateShoppingState();
-                    break;
+                    return;
             }
         }
     }
@@ -148,69 +145,37 @@ public class AdventurerFSM : ActorFSM
             {
                 case FSMState.PETROL:
                     animator.SetFloat("Speed", 2);
-                    break;
+                    return;
 
                 case FSMState.COMBAT:
                     currentAdventurerAI.EquipRandomWeapons();
                     //animator.SetBool("KnockBack", true);//Wrong place
                     //timer = 5;
-                    break;
+                    return;
 
             }
         }
     }
 
-
-
     protected override void UpdateCombatState()
     {
-        if (/*timer > 0 &&*/ target != null)
-        {
+        animator.SetBool("Cast", false);
+        base.UpdateCombatState();
+    }
 
-            Vector3 temptarget = target.transform.position;
-            temptarget.y = transform.position.y;
-            Vector3 dir = temptarget - transform.position;
-            float distance = Vector3.Distance(temptarget, transform.position);
-            //dir.Normalize();
+    protected override void HandleCombatAction()
+    {
+        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
+       
+        animator.SetBool("Attacking", true);
 
-            float angle = Vector3.Angle(transform.forward, dir);
-
-            //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance)
-            {
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
-                {
-                    rigidBody.velocity = AvoidObstacles(target.transform.position);
-
-                    LookAtPlayer(target.transform.position);
-                }
-
-                bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Cast");
-
-                if (isAttacking)
-                    animator.SetBool("Attacking", true);
-
-                Weapon longestWeapon = currentAdventurerAI.GetLongestWeapon();
-                if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
-                {
-                    if (!isAttacking)
-                        animator.SetTrigger("Cast");
-                }
-                else
-                {
-                    animator.SetBool("Attacking", false);
-                    animator.SetFloat("Speed", 2);//HardCoded
-                }
-                //timer = 5f;//HardCoded
-            }
-            else
-            {
-                //timer -= Time.deltaTime;
-                animator.SetFloat("Speed", 0);
-            }
-        }
+        if (currentUseWeapon == null || !currentUseWeapon.Powered)
+            animator.SetBool("Cast", true);
         else
-            ChangeState(FSMState.IDLE);
+        {
+            animator.SetBool("Cast", false);
+        }
+
     }
 
     public void StartCharge()
@@ -230,7 +195,8 @@ public class AdventurerFSM : ActorFSM
         isHandlingAction = true;
         float waitTimer = 5;
 
-        while (isHandlingAction) { 
+        while (isHandlingAction)
+        {
 
             LookAtPlayer(actor.transform.position);
 
@@ -244,7 +210,6 @@ public class AdventurerFSM : ActorFSM
                         waitTimer = 5;
                         if (!currentAdventurerAI.Interacting)
                         {
-                            Debug.Log("hit");
                             currentAdventurerAI.GetLobang();
                         }
                     }
@@ -271,7 +236,7 @@ public class AdventurerFSM : ActorFSM
             }
             yield return new WaitForEndOfFrame();
 
-        } 
+        }
 
         isHandlingAction = false;
     }

@@ -26,23 +26,6 @@ public class AdventurerAI : AI
             QuestBook.BeginQuestBook();
     }
 
-    public Weapon GetLongestWeapon()
-    {
-        float LongestRange = 0;
-        Weapon LongestWeapon = null;
-        if (leftHand != null && leftHand.Item is Weapon)
-        {
-            LongestRange = (leftHand.Item as Weapon).Range;
-            LongestWeapon = leftHand.Item as Weapon;
-        }
-        if (rightHand != null && rightHand.Item is Weapon)
-        {
-            if ((rightHand.Item as Weapon).Range > LongestRange)
-                LongestWeapon = rightHand.Item as Weapon;
-        }
-        return LongestWeapon;
-    }
-
     public override ActorData Data
     {
         get

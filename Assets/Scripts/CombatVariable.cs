@@ -3,9 +3,6 @@ using System.Collections;
 
 public class CombatVariable : MonoBehaviour
 {
-
-    public AudioSource hitSound;
-
     [SerializeField]
     private int currentHealth;
 
@@ -40,7 +37,7 @@ public class CombatVariable : MonoBehaviour
     {
         timeSinceLastDamageTaken = 0;
         currentHealth -= amount;
-        hitSound.Play();
+        //hitSound.Play();
     }
 
     public int GetCurrentHealth()

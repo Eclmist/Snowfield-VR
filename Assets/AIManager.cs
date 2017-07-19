@@ -97,7 +97,6 @@ public class AIManager : MonoBehaviour
                 timeToSpawn -= intervalBetweenInvoke;
             }
         }
-        Debug.Log("hit2");
         currentAI.transform.position = spawnNode.Position;
         currentAI.Spawn();
     }

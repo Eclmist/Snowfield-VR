@@ -7,8 +7,6 @@ public class Equipment : CraftedItem {
     [SerializeField]
     private EquipSlot.EquipmentSlotType slot;
 
-
-    
     public EquipSlot.EquipmentSlotType Slot
     {
         get
