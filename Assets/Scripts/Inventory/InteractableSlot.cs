@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractableSlot : MonoBehaviour {
+public class InteractableSlot : VR_Interactable {
 
     private Image image;
     private Sprite itemDisplayIcon;
     private Text stack;
     private VR_Interactable_Object pendingItem;
+    private StoragePanel storagePanel;
 
     Color temp;
     
@@ -16,6 +17,9 @@ public class InteractableSlot : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        storagePanel = GetComponentInParent<StoragePanel>();
+        GetComponent<BoxCollider>().isTrigger = true;
         image = GetComponentInChildren<Image>();
         itemDisplayIcon = image.sprite;
         stack = GetComponentInChildren<Text>();
@@ -63,47 +67,67 @@ public class InteractableSlot : MonoBehaviour {
 
     private void RemoveFromSlot(Transform t)
     {
-        if(slot.StoredItem != null)
+        if(storagePanel.SafeToUse)
         {
-            slot.CurrentStack--;
-            if(slot.CurrentStack < 1)
+            if (slot.StoredItem != null)
             {
-                slot.EmptySlot();
-            }
+                slot.CurrentStack--;
+                if (slot.CurrentStack < 1)
+                {
+                    slot.EmptySlot();
+                }
 
-            Instantiate(slot.StoredItem.ObjectReference,t);
+                Instantiate(slot.StoredItem.ObjectReference, t);
+            }
         }
+        
     }
 
   
     private void AddToSlot(IStorable item)
     {
-        if(slot.StoredItem == null)
+        if(storagePanel.SafeToUse)
         {
-            slot.StoredItem = item;
-        }
-        else if(slot.StoredItem.ItemID == item.ItemID)
-        {
-            if(slot.CurrentStack < slot.StoredItem.MaxStackSize)
+            if (slot.StoredItem == null)
             {
-                Destroy(item.ObjectReference);
+                slot.StoredItem = item;
             }
-            else
+            else if (slot.StoredItem.ItemID == item.ItemID)
             {
-                //show red outline
+                if (slot.CurrentStack < slot.StoredItem.MaxStackSize)
+                {
+                    Destroy(item.ObjectReference);
+                }
+                else
+                {
+                    //show red outline
+                }
             }
         }
+        
        
     }
 
-    //protected override void OnTriggerPress()
-    //{
-    //    base.OnTriggerPress();
-        
-    //    // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
-        
-    //    // else call RemoveFromSlot()
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        storagePanel.NumberOfHoveredSlots++;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        storagePanel.NumberOfHoveredSlots--;
+    }
+
+
+
+    protected override void OnTriggerPress()
+    {
+        base.OnTriggerPress();
+
+        // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
+
+        // else call RemoveFromSlot()
+    }
 
 
 

@@ -12,6 +12,20 @@ public class StoragePanel : Inventory {
 	private GameObject slotPanel;	// Contains the gridLayoutGroup
     private GridLayoutGroup glp;
 
+    private int numberOfHoveredSlots;
+    private bool safeToUse;
+
+    public int NumberOfHoveredSlots
+    {
+        get { return this.numberOfHoveredSlots; }
+        set { this.numberOfHoveredSlots = value; }
+    }
+
+    public bool SafeToUse
+    {
+        get { return this.safeToUse; }
+    }
+
 	protected override void Start()
 	{
         base.Start();
@@ -24,10 +38,11 @@ public class StoragePanel : Inventory {
 
 	void Update()
 	{
-
-        
-
+        safeToUse = numberOfHoveredSlots <= 1;
+        Debug.Log(numberOfHoveredSlots);
 	}
+
+    
 
 
 	private void InitializeInteractableSlots()
