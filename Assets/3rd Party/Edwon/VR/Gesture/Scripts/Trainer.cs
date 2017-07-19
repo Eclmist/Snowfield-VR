@@ -68,8 +68,6 @@ namespace Edwon.VR.Gesture
                 }
             }
             BuildOutputDictionary();
-
-            RetardScript.Instance.listofGestures = gestureList;
         }
 
         public void BuildOutputDictionary()
