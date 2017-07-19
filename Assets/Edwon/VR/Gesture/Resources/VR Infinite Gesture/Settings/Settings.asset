@@ -13,33 +13,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 0
   vrType: 0
-  showVRUI: 0
+  showVRUI: 1
   gestureButton: 5
-  confidenceThreshold: 0.9440535306930542
+  confidenceThreshold: 0.9890000224113464
   gestureSyncDelay: 500
   minimumGestureAxisLength: 0.1
   beginInDetectMode: 0
   vrGestureDetectType: 0
-  currentNeuralNet: Neural Net 1
-  lastNeuralNet: Neural Net 1
-  neuralNets: []
+  currentNeuralNet: SpellCasting
+  lastNeuralNet: SpellCasting
+  neuralNets:
+  - SpellCasting
   gestureBank:
-  - name: Gesture 1
+  - name: Charge1
     hand: 1
     isSynchronous: 0
-    exampleCount: 10
-  - name: Gesture 2
+    exampleCount: 100
+  - name: Charge2
     hand: 1
     isSynchronous: 0
-    exampleCount: 10
+    exampleCount: 50
+  - name: Cast1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
   gestureBankPreEdit:
-  - name: Gesture 1
+  - name: Charge1
     hand: 1
     isSynchronous: 0
-    exampleCount: 10
-  - name: Gesture 2
+    exampleCount: 100
+  - name: Charge2
     hand: 1
     isSynchronous: 0
-    exampleCount: 0
+    exampleCount: 50
+  - name: Cast1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
   state: 0
   stateInitial: 0
