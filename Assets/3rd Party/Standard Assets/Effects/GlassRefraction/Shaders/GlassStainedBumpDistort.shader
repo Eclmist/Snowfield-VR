@@ -29,7 +29,7 @@ Category {
 		Pass {
 			Name "BASE"
 			Tags { "LightMode" = "Always" }
-			
+	
 CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag
