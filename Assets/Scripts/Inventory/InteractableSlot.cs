@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractableSlot : VR_Interactable {
+public class InteractableSlot : VR_Interactable_UI {
 
     private Image image;
     private Sprite itemDisplayIcon;

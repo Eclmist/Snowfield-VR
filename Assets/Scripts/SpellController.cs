@@ -36,20 +36,26 @@ public class SpellController : MonoBehaviour {
 
 	void OnGestureDetected(string gestureName, double confidence, Handedness hand, bool isDouble = false)
 	{
-		switch (gestureName)
-		{
-		case "Circle1":
-			{
-				// DO SOMETHING REACTIN TO CIRCLE GESTURE
-				SorceryCast.Instance.Charge(rightHand);
-			}
-			break;
-		case "Push1":
-			{
-				// DO SOMETHING REACTING TO TRIANGLE GESTURE
-				SorceryCast.Instance.Cast(rightHand);
-			}
-			break;
-		}
+        //switch (gestureName)
+        //{
+        //case "Circle1":
+        //	{
+        //		// DO SOMETHING REACTIN TO CIRCLE GESTURE
+        //		SorceryCast.Instance.Charge(rightHand);
+        //	}
+        //	break;
+        //case "Push1":
+        //	{
+        //		// DO SOMETHING REACTING TO TRIANGLE GESTURE
+        //		SorceryCast.Instance.Cast(rightHand);
+        //	}
+        //	break;
+        //}
+
+        Spell spell = SpellManager.Instance.GetSpell(gestureName);
+        vrController.SetInteraction(spell);
+        spell.LinkedController = vrController;
+        
+
 	}
 }

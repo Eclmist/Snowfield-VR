@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class VR_Interactable_Object : VR_Interactable_Thing
+public class VR_Interactable_Object : VR_Interactable
 {
 
     protected Rigidbody rigidBody;
