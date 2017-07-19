@@ -20,6 +20,9 @@ public class TeleportVive : MonoBehaviour {
     [Tooltip("The player feels a haptic pulse in the controller when they raise / lower the controller by this many degrees.  Lower value = faster pulses.")]
     public float HapticClickAngleStep = 10;
 
+	[SerializeField]
+	public Transform plane;
+
     /// BorderRenderer to render the chaperone bounds (when choosing a location to teleport to)
     private BorderRenderer RoomBorder;
 
@@ -169,12 +172,22 @@ public class TeleportVive : MonoBehaviour {
                 {
                     // We have finished fading in
                     CurrentTeleportState = TeleportState.None;
-                } else
+                } 
+				else
                 {
                     // We have finished fading out - time to teleport!
-                    Vector3 offset = OriginTransform.position - HeadTransform.position;
-                    offset.y = 0;
-                    OriginTransform.position = Pointer.SelectedPoint + offset;
+					if ((Pointer.SelectedPoint.x <= plane.position.x + 0.5f && Pointer.SelectedPoint.x >= plane.position.x - 0.5f)
+					    && (Pointer.SelectedPoint.y <= plane.position.y + 0.5f && Pointer.SelectedPoint.y >= plane.position.y - 0.5f)
+					    && (Pointer.SelectedPoint.z <= plane.position.z + 0.5f && Pointer.SelectedPoint.z >= plane.position.z - 0.5f)) 
+					{
+						OriginTransform.position = Pointer.SelectedPoint;
+					} 
+					else 
+					{
+						Vector3 offset = OriginTransform.position - HeadTransform.position;
+						offset.y = 0;
+						OriginTransform.position = Pointer.SelectedPoint + offset;
+					}
                 }
 
                 TeleportTimeMarker = Time.time;
