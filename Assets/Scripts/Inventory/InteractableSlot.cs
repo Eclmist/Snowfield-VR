@@ -128,20 +128,22 @@ public class InteractableSlot : VR_Interactable_UI {
 
             GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
 
-            if (g != null)
+            if (g)
             {
-                
+                AddToSlot(g.ItemData);
+            }
+            else
+            {
+                currentInteractingController.SetInteraction(g);
+                RemoveFromSlot(currentInteractingController.transform);
+
             }
 
 
             // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
             // else call RemoveFromSlot()
         }
-        base.OnTriggerPress();
-
-        // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
-
-        // else call RemoveFromSlot()
+ 
     }
 
     protected override void OnControllerEnter()

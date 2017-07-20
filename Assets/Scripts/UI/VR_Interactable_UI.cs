@@ -49,7 +49,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 	{
 		if (interactable)
 		{
-			VR_Controller_Custom vrController = other.GetComponent<VR_Controller_Custom>();
+			VR_Controller_Custom vrController = other.GetComponentInChildren<VR_Controller_Custom>();
 
 			if (vrController && currentInteractingController == null)
 			{
@@ -64,7 +64,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 		if (interactable)
 		{
 
-			VR_Controller_Custom vrController = other.GetComponent<VR_Controller_Custom>();
+			VR_Controller_Custom vrController = other.GetComponentInChildren<VR_Controller_Custom>();
 
 			if (vrController && currentInteractingController == vrController)
 			{
@@ -88,7 +88,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 		if (interactable)
 		{
 
-			VR_Controller_Custom vrController = other.GetComponent<VR_Controller_Custom>();
+			VR_Controller_Custom vrController = other.GetComponentInChildren<VR_Controller_Custom>();
 
 			if (vrController && currentInteractingController == vrController)
 			{
