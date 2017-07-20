@@ -107,13 +107,6 @@ public class Weapon : Equipment
         }
     }
 
-    private Action<IBlock> IfBlocked;
-
-    public void SetBlockable(Action<IBlock> ifblocked = null)
-    {
-        IfBlocked = ifblocked;
-    }
-
     protected override void UseItem()
     {
         base.UseItem();
@@ -126,20 +119,13 @@ public class Weapon : Equipment
         if (LinkedController != null)
         {
             IDamagable target = collision.GetComponent<IDamagable>();
-            Debug.Log(target);
-            if (target != null)
+            
+            if (target != null && target is Monster)
             {
                 target.TakeDamage(Damage, Player.Instance);
             }
         }
-        if (IfBlocked != null)
-        {
-            IBlock item = collision.GetComponentInParent<IBlock>();
-            if (item != null && item.IsBlocking)
-            {
-                IfBlocked(item);
-            }
-        }
+    
     }
 
     //void OnDrawGizmos()

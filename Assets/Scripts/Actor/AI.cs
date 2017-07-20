@@ -32,9 +32,12 @@ public abstract class AI : Actor
         Interact(ai);
     }
 
-    public override bool CheckConversingWith(Actor target)
+    public override bool CheckConversingWith(Actor target)//switch to iinteractable
     {
-        return currentFSM.Target == target;
+        if (currentFSM.Target is Actor)
+            return (currentFSM.Target as Actor) == target;
+        else
+            return false;
     }
 
     protected override void Awake()

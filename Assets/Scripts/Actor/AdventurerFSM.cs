@@ -51,7 +51,6 @@ public class AdventurerFSM : ActorFSM
         {
             Debug.Log("EndCharge");
             currentUseWeapon.EndCharge();
-            currentUseWeapon.SetBlockable();
         }
     }
 
