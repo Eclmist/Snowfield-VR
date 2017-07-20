@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class VR_Interactable_Object : MonoBehaviour
+public class VR_Interactable_Object : VR_Interactable
 {
 
     protected Rigidbody rigidBody;
@@ -24,9 +24,6 @@ public class VR_Interactable_Object : MonoBehaviour
 
 	private Vector3 currentReleaseVelocityMagnitude = Vector3.zero, currentReleaseAngularVelocityMagnitude = Vector3.zero;
 
-    protected VR_Controller_Custom currentInteractingController;
-
-
 	// Outline Rendering
 	[SerializeField]
 	private Color outlineColor = Color.yellow;
@@ -34,20 +31,11 @@ public class VR_Interactable_Object : MonoBehaviour
 	private Renderer[] childRenderers;
 	private List<Material> childMaterials = new List<Material>();
 
-	public VR_Controller_Custom LinkedController
-    {
-        get
-        {
-            return currentInteractingController;
-        }
-        set
-        {
-            currentInteractingController = value;
-        }
-    }
 
-    protected virtual void Awake()
-    {
+
+	protected override void Awake()
+	{
+		rigidBody = GetComponent<Rigidbody> ();
 		childRenderers = GetComponentsInChildren<Renderer>();
 
 		foreach (Renderer r in childRenderers)
@@ -66,29 +54,24 @@ public class VR_Interactable_Object : MonoBehaviour
 			}
 		}
 	}
-
-	protected virtual void Start()
-	{
-		rigidBody = GetComponent<Rigidbody>();
-	}
+		
 
 	protected virtual void Update()
 	{
 	}
 
-	public virtual void OnControllerEnter(VR_Controller_Custom controller) {
+	public override void OnControllerEnter(VR_Controller_Custom controller) {
         controller.Vibrate(triggerEnterVibration);
 		SetOutline(true);
     }
+		
 
-    public virtual void OnControllerStay(VR_Controller_Custom controller) { }
-
-	public virtual void OnControllerExit(VR_Controller_Custom controller)
+	public override void OnControllerExit(VR_Controller_Custom controller)
 	{
 		SetOutline(false);
 	}
 
-	public virtual void OnTriggerPress(VR_Controller_Custom controller)
+	public override void OnTriggerPress(VR_Controller_Custom controller)
     {
 		SetOutline(false);
 
@@ -99,10 +82,9 @@ public class VR_Interactable_Object : MonoBehaviour
 
         currentInteractingController.SetInteraction(this);
     }
+		
 
-    public virtual void OnTriggerHold(VR_Controller_Custom controller) { }
-
-    public virtual void OnTriggerRelease(VR_Controller_Custom controller)
+	public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
         currentInteractingController = null;
         controller.SetInteraction(null);
@@ -112,14 +94,9 @@ public class VR_Interactable_Object : MonoBehaviour
         Debug.Log("CurrentReleaseVelocity:" + rigidBody.velocity);
         Debug.Log(rigidBody.angularVelocity);
     }
+		
 
-    public virtual void OnGripPress(VR_Controller_Custom controller) { }
-
-    public virtual void OnGripHold(VR_Controller_Custom controller) { }
-
-    public virtual void OnGripRelease(VR_Controller_Custom controller) { }
-
-    public virtual void OnInteracting(VR_Controller_Custom controller) {
+	public override void OnInteracting(VR_Controller_Custom controller) {
 
         if (currentReleaseVelocityMagnitude.magnitude > controller.Velocity.magnitude)
             currentReleaseVelocityMagnitude = Vector3.Lerp(currentReleaseVelocityMagnitude, controller.Velocity, Time.fixedDeltaTime * 5);

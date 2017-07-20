@@ -7,23 +7,28 @@ public class Shop : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Spot where AIs go to")]
-    private Transform location;
-    private List<Vector3> points = new List<Vector3>();
+    private Node locationNode,interactionNode;
+
     [SerializeField]
-    private LayerMask pointsIgnoreLayer;
-    [SerializeField]
-    private List<Transform> WaypointsBeforeOwner;
+    private List<Node> wayPoints;
     private bool isOccupied = false;
 
-    public Vector3 Location
+    public Node Location
     {
         get
         {
-            return location.position;
+            return locationNode;
         }
 
     }
 
+    public Node InteractionNode
+    {
+        get
+        {
+            return interactionNode;
+        }
+    }
     [SerializeField]
     private Actor shopOwner;
 
@@ -35,30 +40,34 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public Transform GetPoint(int currentAIWaypoint)
+    public Node GetRandomPoint(Vector3 currentPoint)
     {
-        if (currentAIWaypoint < WaypointsBeforeOwner.Count && currentAIWaypoint >= 0)
-            return WaypointsBeforeOwner[currentAIWaypoint];
-        return null; 
+        List<Node> tempNode = new List<Node>();
+        tempNode.AddRange(wayPoints);
+        
+        tempNode.RemoveAll(Node => Node.Occupied || Vector3.Distance(Node.Position,currentPoint) < 0.5);
+        if (tempNode.Count == 0)
+        {
+            return null;
+        }
+        else
+        {
+
+            int randomNumber = Random.Range(0, tempNode.Count);
+
+            return tempNode[randomNumber];
+        }
     }
     private void Awake()
     {
 
-        if (!location)
+        if (!locationNode)
         {
             Debug.Log("Location for " + gameObject.name + ": store has not been set! Hence it wont be considered a shop");
             Destroy(this);
         }
-       
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(location.position, .1f);
-        foreach (Vector3 x in points)
-        {
-            Gizmos.DrawSphere(x, .1f);
-        }
 
     }
+
+
 }

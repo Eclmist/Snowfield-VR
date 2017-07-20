@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class QuestBook
 {
 
@@ -15,10 +16,8 @@ public class QuestBook
         }
     }
 
-    public void RequestNextQuest(QuestEntry<StoryQuest> quest)
+    public void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
     {
-
-        QuestEntryGroup<StoryQuest> group = GetStoryGroup(quest.Quest.JobType);
 
         group.ProgressionIndex++;
         StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
@@ -27,34 +26,42 @@ public class QuestBook
             group.Completed = true;
         else
         {
-            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
-            group.Add(questEntry);
+            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay / 24f));
+            group.Quest = questEntry;
         }
 
     }
 
-    public QuestEntry<StoryQuest> GetCompletableQuest(QuestEntryGroup<StoryQuest> group)
+    public QuestEntryGroup<StoryQuest> GetCompletableGroup()
     {
-
-        if (group.Completed)
-            return null;
-        else if ((group[group.ProgressionIndex].Completed))
+        foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
-            return group[group.ProgressionIndex];
+            if (group.Completed)
+                continue;
+            else if ((group.Quest.Completed) && !group.Quest.Checked)
+            {
+                return group;
+            }
         }
 
         return null;
     }
 
-    public QuestEntry<StoryQuest> GetStartableQuest(QuestEntryGroup<StoryQuest> group)
+
+    public QuestEntryGroup<StoryQuest> GetStartableGroup()
     {
-        if (group.Completed)
-            return null;
-        else if (!group[group.ProgressionIndex].Started && QuestManager.Instance.CanStartQuest(group[group.ProgressionIndex]))
-            return group.Quest[group.ProgressionIndex];
+        foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
+        {
+            if (group.Completed)
+                continue;
+            else if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group) && !group.Quest.Checked)
+                return group;
+        }
 
         return null;
     }
+
+
 
 
     public QuestEntryGroup<StoryQuest> GetStoryGroup(JobType jt)
@@ -73,31 +80,42 @@ public class QuestBook
 
     public QuestBook()
     {
-        storyQuest = QuestManager.Instance.CreateNewStoryLines();
-        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
+        if (QuestManager.Instance)
         {
-            StoryQuest newQuest = QuestManager.Instance.GetQuest(line);
-            if (newQuest != null)
+            storyQuest = QuestManager.Instance.CreateNewStoryLines();
+            foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
             {
-                QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>(newQuest);
-                line.Add(questEntry);
+                line.ProgressionIndex = -1;
+                RequestNextQuest(line);
             }
         }
+
     }
 
-    public bool QuestProgess()
+    public QuestEntry<StoryQuest> GetFastestQuest()
     {
+        float shortestTime = 999999999;
+        QuestEntry<StoryQuest> fastestQuest = null;
         foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
         {
             if (questEntryGroup.Completed)
                 continue;
-            else if (!questEntryGroup[questEntryGroup.ProgressionIndex].Completed && questEntryGroup[questEntryGroup.ProgressionIndex].Started)
+            else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started && questEntryGroup.Quest.RemainingProgress <= shortestTime)
             {
-                questEntryGroup[questEntryGroup.ProgressionIndex].ProgressQuest();
-                return true;
+
+                shortestTime = questEntryGroup.Quest.RemainingProgress;
+                fastestQuest = questEntryGroup.Quest;
             }
         }
-        return false;
+        return fastestQuest;
+    }
+
+    public void ResetChecked()
+    {
+        foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
+        {
+            line.Quest.Checked = false;
+        }
     }
 
 }

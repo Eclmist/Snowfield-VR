@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TownManager : MonoBehaviour
 {
@@ -11,9 +12,9 @@ public class TownManager : MonoBehaviour
     private Town currentTown;
     [SerializeField]
     [Tooltip("The time in seconds between each ai spawns")]
-    [Range(1, 100)]
+    [Range(0, 100)]
     private float aiSpawnTimer;//can be made to react with gamemanager in the future
-    private float timer = 0;
+    private float timer;
     // Use this for initialization
     void Awake()
     {
@@ -28,11 +29,7 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        //currentTown = (Town)SerializeManager.Load("TownData");
-
-    }
+    //public IEnumerator SpawnCoroutine(
 
     void Update()
     {
@@ -42,25 +39,10 @@ public class TownManager : MonoBehaviour
     private void UpdateTown()
     {
         
-        if (CurrentTown != null && currentTown.ListOfAIs.Count != CurrentTown.Population)
-        {
-            timer += Time.deltaTime;
-            
-            if (timer > aiSpawnTimer)
-            {
-                Debug.Log("hit");
-                timer = 0;
-
-                Transform randomSpawn = GetRandomSpawnPoint();
-                AI randomAI = GetRandomAIType();
-                if (randomSpawn && randomAI)
-                    currentTown.ListOfAIs.Add(Instantiate(randomAI, randomSpawn.position, randomSpawn.rotation).GetComponent<AI>());
-            }
-        }
     }
-    public Transform GetRandomSpawnPoint()
+    public Node GetRandomSpawnPoint()
     {
-        int shopIndex = Random.Range(0, currentTown.SpawnPoint.Count);
+        int shopIndex = UnityEngine.Random.Range(0, currentTown.SpawnPoint.Count);
         shopIndex = shopIndex == currentTown.SpawnPoint.Count ? shopIndex - 1 : shopIndex;
         if (shopIndex >= 0)
             return currentTown.SpawnPoint[shopIndex];
@@ -68,15 +50,7 @@ public class TownManager : MonoBehaviour
             return null;
     }
 
-    public AI GetRandomAIType()
-    {
-        int aiCount = Random.Range(0, currentTown.TypeOfAIs.Count);
-        aiCount = aiCount == currentTown.TypeOfAIs.Count ? aiCount - 1 : aiCount;
-        if (aiCount >= 0)
-            return currentTown.TypeOfAIs[aiCount];
-        else
-            return null;
-    }
+   
 
 
 
@@ -93,7 +67,7 @@ public class TownManager : MonoBehaviour
         possibleShops.RemoveAll(Shop => Shop.Owner == null);
         if (possibleShops.Count != 0)
         {
-            int shopIndex = Random.Range(0, possibleShops.Count);
+            int shopIndex = UnityEngine.Random.Range(0, possibleShops.Count);
             return possibleShops[shopIndex];
         }
         else

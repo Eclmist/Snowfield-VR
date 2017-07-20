@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fc1825353372948a7b78d71a0c6848, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  playerID: 0
+  vrType: 0
+  showVRUI: 1
+  gestureButton: 5
+  confidenceThreshold: 0.9890000224113464
+  gestureSyncDelay: 500
+  minimumGestureAxisLength: 0.1
+  beginInDetectMode: 0
+  vrGestureDetectType: 0
+  currentNeuralNet: SpellCasting
+  lastNeuralNet: SpellCasting
+  neuralNets:
+  - SpellCasting
+  gestureBank:
+  - name: Charge1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 100
+  - name: Charge2
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
+  - name: Cast1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
+  gestureBankPreEdit:
+  - name: Charge1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 100
+  - name: Charge2
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
+  - name: Cast1
+    hand: 1
+    isSynchronous: 0
+    exampleCount: 50
+  state: 0
+  stateInitial: 0

@@ -18,13 +18,35 @@ public class GameManager : MonoBehaviour {
             return gameClock;
         }
     }
+
+    [SerializeField]
+    [Range(0.5f, 1)]
+    private float timeOfNight = .6f;
+
+    [SerializeField]
+    [Range(0.01f, 0.1f)]
+    private float preparationTime = .05f;
     #endregion
 
     #region RequestRegion
 
     [SerializeField] [Range(1, 100)] private int requestConstant;
     private float nextRequest = 0;
+    public enum GameState
+    {
+        DAYMODE,
+        NIGHTMODE
+    }
 
+    private GameState currentState;
+
+    public GameState State
+    {
+        get
+        {
+            return currentState;
+        }
+    }
     #endregion
     protected void Awake()
     {
@@ -43,8 +65,32 @@ public class GameManager : MonoBehaviour {
     protected void Update()
     {
         RequestBoardUpdate();
+        GameHandle();
     }
 
+    private void GameHandle()
+    {
+        if (gameClock.TimeOfDay >= timeOfNight - preparationTime && currentState != GameState.NIGHTMODE)
+        {
+            StartCoroutine(PrepareForNight());
+            Debug.Log("Night");
+        }
+        else if (gameClock.TimeOfDay < timeOfNight - preparationTime && currentState != GameState.DAYMODE)
+        {
+            currentState = GameState.DAYMODE;
+            AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
+            Debug.Log("Day");
+        }
+    }
+
+    private IEnumerator PrepareForNight()
+    {
+        currentState = GameState.NIGHTMODE;
+        AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
+        yield return new WaitForSecondsRealtime(preparationTime);
+        //WaveManager.Start
+
+    }
     private void RequestBoardUpdate()
     {
 		if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
@@ -56,11 +102,10 @@ public class GameManager : MonoBehaviour {
 	}
 	public void AddPlayerGold(int value)
     {
-        if (!Player.Instance.AddGold(value))
-        {
-            //Lose
-        }
+        Player.Instance.AddGold(value);
     }
+
+    
 
 
 

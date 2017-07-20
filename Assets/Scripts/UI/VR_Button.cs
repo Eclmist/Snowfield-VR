@@ -19,7 +19,7 @@ public struct VR_Button_Events
 }
 
 [RequireComponent(typeof(Collider))]
-public class VR_Button : VR_Interactable
+public class VR_Button : VR_Interactable_UI
 {
 	[SerializeField] protected bool useTransitions = true;
 	[SerializeField] protected Graphic targetGraphic;
@@ -72,7 +72,7 @@ public class VR_Button : VR_Interactable
 	protected override void OnTriggerPress()
 	{
 		base.OnTriggerPress();
-
+        Debug.Log("hit");
 		events.onTriggerPress.Invoke();
 
 		if (useTransitions)

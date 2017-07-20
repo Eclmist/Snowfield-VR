@@ -9,12 +9,12 @@ using Debug = UnityEngine.Debug;
 
 public class AStarManager : MonoBehaviour
 {
-    public static AStarManager Instance;
+    public static volatile AStarManager Instance;
     private Thread pathFindingThread;
     private bool processingPath;
-    private Heap<PathRequest> requestQueue = new Heap<PathRequest>();
-
-    [SerializeField] private bool exit;
+    private volatile List<PathRequest> requestQueue = new List<PathRequest>();
+    [SerializeField]
+    private bool exit;
 
     //public enum TypeofPathFinding
     //{
@@ -40,9 +40,13 @@ public class AStarManager : MonoBehaviour
         {
             try
             {
+                
                 if (!processingPath && requestQueue.Count > 0)
                 {
                     ProcessNextPath();
+                }else
+                {
+                    Thread.Sleep(10);
                 }
 
             }
@@ -54,14 +58,16 @@ public class AStarManager : MonoBehaviour
         }
     }
 
-    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callback)
+    public void RequestPath(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callback)
     {
+     
+        PathRequest newRequest = new PathRequest(_startPoint, _endPoint, _callback/*, _steppableHeight*/);
         lock (requestQueue)
         {
-            PathRequest newRequest = new PathRequest(_startPoint, _endPoint, _callback/*, _steppableHeight*/);
             requestQueue.Add(newRequest);
-           
+            requestQueue.Sort();
         }
+        
     }
     private void ProcessNextPath()
     {
@@ -69,30 +75,29 @@ public class AStarManager : MonoBehaviour
         PathRequest currentPathRequest;
         lock (requestQueue)
         {
-            currentPathRequest = requestQueue.GetFirst();
-            
+            currentPathRequest = requestQueue[0];
+            requestQueue.RemoveAt(0);
         }
-        
         CalculatePath(currentPathRequest);
-       
     }
 
-    private void FinishedProcessingPath(PathRequest _request, List<Vector3> wayPoint)
+    private void FinishedProcessingPath(PathRequest _request, List<Node> wayPoint)
     {
-        _request.callBack(wayPoint);
-        processingPath = false;
+       _request.callBack(wayPoint);
+       processingPath = false;
     }
 
     #region StandardAStar
 
     private void CalculatePath(PathRequest _request)
     {
-        List<Vector3> wayPoint = new List<Vector3>();
+        List<Node> wayPoint = new List<Node>();
+
         Node startNode = GridManager.instance.NodeFromWorldPoint(_request.startPoint);
+
         Node endNode = GridManager.instance.NodeFromWorldPoint(_request.endPoint);
 
-        if (!endNode.IsObstacle)
-        {
+        
             Heap<Node> openNodes = new Heap<Node>();
             HashSet<Node> closeNodes = new HashSet<Node>();
             openNodes.Add(startNode);
@@ -102,26 +107,25 @@ public class AStarManager : MonoBehaviour
                 Node currentNode = openNodes.GetFirst();
 
                 closeNodes.Add(currentNode);
-                
+
                 if (currentNode == endNode)
                 {
                     wayPoint = RetraceNodes(startNode, currentNode);
                     break;
                 }
-                
-                for (int i = 0; i < currentNode.Neighbours.Length; i++)
+
+                for (int i = 0; i < currentNode.Neighbours.Count; i++)
                 {
-                    
+
                     Node currentNeighbour = currentNode.Neighbours[i];
                     if (currentNeighbour == null
-                        || currentNeighbour.IsObstacle
                         || closeNodes.Contains(currentNeighbour))
-                        /*|| Mathf.Abs(currentNeighbour.Position.y - currentNode.Position.y) > _request.stepHeight*/
+                    /*|| Mathf.Abs(currentNeighbour.Position.y - currentNode.Position.y) > _request.stepHeight*/
                     {
                         continue;
                     }
-                    
-                    
+
+
                     float newMovementCost = currentNode.SCost + Vector3.Distance(currentNode.Position, currentNeighbour.Position);
                     if (newMovementCost < currentNeighbour.SCost || !openNodes.Contains(currentNeighbour))
                     {
@@ -132,48 +136,47 @@ public class AStarManager : MonoBehaviour
                         if (!openNodes.Contains(currentNeighbour))
                         {
                             openNodes.Add(currentNeighbour);
-                            
+
                             openNodes.UpdateItem(currentNeighbour);
                         }
                         else
                             openNodes.UpdateItem(currentNeighbour);
                     }
-                    
-                    GridManager.instance.OpenNodes = openNodes;
-                }
+
+                
             }
         }
 
-        FinishedProcessingPath(_request,wayPoint);
+        FinishedProcessingPath(_request, wayPoint);
     }
 
-    private List<Vector3> RetraceNodes(Node _startNode, Node _endNode)
+    private List<Node> RetraceNodes(Node _startNode, Node _endNode)
     {
         List<Node> path = new List<Node>();
-        List<Vector3> wayPoint = new List<Vector3>();
-        GridManager.instance.path = path;
+
         Node currentNode = _endNode;
         while (currentNode != _startNode)
         {
             path.Add(currentNode);
             currentNode = currentNode.Parent;
         }
+        path.Add(currentNode);
         //Just for visualizing to be removed
-        Vector3 direction = Vector3.zero;
+        //Vector3 direction = Vector3.zero;
 
-        for (int i = 1; i < path.Count; i++)
-        {
+        //for (int i = 1; i < path.Count; i++)
+        //{
 
-            Vector3 newDirection = path[i - 1].Position - path[i].Position;
-            if (direction != newDirection)
-            {
-                wayPoint.Add(path[i].Position);
+        //    Vector3 newDirection = path[i - 1].Position - path[i].Position;
+        //    if (direction != newDirection)
+        //    {
+        //        wayPoint.Add(path[i].Position);
 
-            }
-            direction = newDirection;
-        }
-        wayPoint.Reverse();
-        return wayPoint;
+        //    }
+        //    direction = newDirection;
+        //}
+        path.Reverse();
+        return path;
 
     }
 
@@ -185,38 +188,27 @@ public class AStarManager : MonoBehaviour
 
 }
 
-public struct PathRequest : IBundle<PathRequest>
+public struct PathRequest
 {
     public readonly Vector3 startPoint;
     public readonly Vector3 endPoint;
-    public readonly Action<List<Vector3>> callBack;
+    public readonly Action<List<Node>> callBack;
     //public readonly float stepHeight;
-    private int bundleIndex;
 
-    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Vector3>> _callBack/* float _steppableHeight*/)
+    public PathRequest(Vector3 _startPoint, Vector3 _endPoint, Action<List<Node>> _callBack/* float _steppableHeight*/)
     {
         startPoint = _startPoint;
         endPoint = _endPoint;
         callBack = _callBack;
         //stepHeight = _steppableHeight;
-        bundleIndex = 0;
-    }
-
-    public int BundleIndex
-    {
-        get
-        {
-            return bundleIndex;
-        }
-        set { bundleIndex = value; }
     }
 
     public int CompareTo(object obj)
     {
-        PathRequest request = (PathRequest) obj;
+        PathRequest request = (PathRequest)obj;
         if (Vector3.Distance(startPoint, endPoint) > Vector3.Distance(request.startPoint, request.endPoint))
             return -1;
         else return 1;
     }
-    
+
 }
