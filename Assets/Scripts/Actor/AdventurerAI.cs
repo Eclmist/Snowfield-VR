@@ -227,4 +227,11 @@ public class AdventurerAI : AI
             quest.QuestProgress();
         //Can get misc items here
     }
+
+    public override void TakeDamage(int damage, Actor attacker)
+    {
+        base.TakeDamage(damage, attacker);
+        if (Health <= 0)
+            AIManager.Instance.Spawn(this, data.CurrentJob.Level * 20, TownManager.Instance.GetRandomSpawnPoint());
+    }
 }

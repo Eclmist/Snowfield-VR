@@ -8,12 +8,12 @@ public class CombatVariable : MonoBehaviour
 
     private float timeSinceLastDamageTaken;
 
-    private Actor actor;
+    private IHasVariable iHasVariable;
     // Use this for initialization
     void Start()
     {
-        actor = GetComponent<Actor>();
-        currentHealth = actor.MaxHealth;
+        iHasVariable = GetComponent<IHasVariable>();
+        currentHealth = iHasVariable.MaxHealth;
         timeSinceLastDamageTaken = 0;
     }
 
@@ -25,11 +25,14 @@ public class CombatVariable : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (timeSinceLastDamageTaken > 10 && currentHealth < actor.MaxHealth)
+        if (currentHealth > 0)
         {
-            currentHealth += actor.HealthRegeneration;
-            if (currentHealth > actor.MaxHealth)
-                currentHealth = actor.MaxHealth;
+            if (timeSinceLastDamageTaken > 10 && currentHealth < iHasVariable.MaxHealth)
+            {
+                currentHealth += iHasVariable.HealthRegeneration;
+                if (currentHealth > iHasVariable.MaxHealth)
+                    currentHealth = iHasVariable.MaxHealth;
+            }
         }
     }
 

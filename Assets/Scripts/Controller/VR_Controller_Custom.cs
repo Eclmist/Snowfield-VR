@@ -17,7 +17,7 @@ public class VR_Controller_Custom : MonoBehaviour
     private SteamVR_TrackedObject trackedObject;
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable_Object interactableObject, secondaryInteractableObject;
+    private VR_Interactable_Object interactableObject;
 
 
     void Awake()
@@ -29,7 +29,7 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
         ControllerInput();
-        
+
     }
 
     private void Update()
@@ -51,13 +51,15 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactableObject != null)
         {
+
+
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactableObject.OnTriggerHold(this);
-            
-            
+
+
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactableObject.OnGripHold(this);
-            
+
             if (interactableObject.LinkedController == this)
                 interactableObject.OnInteracting(this);
 
@@ -83,24 +85,12 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        VR_Interactable_Object obj = other.GetComponent<VR_Interactable_Object>();
-        if (obj != null)
+        if (interactableObject != null && interactableObject.LinkedController != this)
         {
-            if (interactableObject == obj && obj.LinkedController == null)
-            {
-                interactableObject.OnControllerExit(this);
-                
-            } else if(secondaryInteractableObject == obj)
-            {
-                interactableObject.OnControllerExitSecondary(this);
-            }
-
-            if(obj.LinkedController != null)
-            {
-
-            }
-		}
-	}
+            interactableObject.OnControllerExit(this);
+            interactableObject = null;
+        }
+    }
 
     public Vector3 Velocity
     {
@@ -124,7 +114,6 @@ public class VR_Controller_Custom : MonoBehaviour
 
     public void SetInteraction(VR_Interactable_Object _interacted)
     {
-        secondaryInteractableObject = null;
         interactableObject = _interacted;
     }
 

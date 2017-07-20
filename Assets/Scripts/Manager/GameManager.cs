@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour {
 
     protected void Update()
     {
-        RequestBoardUpdate();
         GameHandle();
     }
 
@@ -73,13 +72,11 @@ public class GameManager : MonoBehaviour {
         if (gameClock.TimeOfDay >= timeOfNight - preparationTime && currentState != GameState.NIGHTMODE)
         {
             StartCoroutine(PrepareForNight());
-            Debug.Log("Night");
         }
         else if (gameClock.TimeOfDay < timeOfNight - preparationTime && currentState != GameState.DAYMODE)
         {
             currentState = GameState.DAYMODE;
             AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
-            Debug.Log("Day");
         }
     }
 
@@ -87,19 +84,19 @@ public class GameManager : MonoBehaviour {
     {
         currentState = GameState.NIGHTMODE;
         AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
-        yield return new WaitForSecondsRealtime(preparationTime);
-        //WaveManager.Start
+        yield return new WaitForSecondsRealtime(preparationTime * gameClock.SecondsPerDay);
+        WaveManager.Instance.SpawnWave(gameClock.Day);
 
     }
-    private void RequestBoardUpdate()
-    {
-		if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
-		{
-			nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
-			if (!OrderBoard.Instance.IsMaxedOut)
-				OrderManager.Instance.NewRequest();
-		}
-	}
+ //   private void RequestBoardUpdate()
+ //   {
+	//	if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
+	//	{
+	//		nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
+	//		if (!OrderBoard.Instance.IsMaxedOut)
+	//			OrderManager.Instance.NewRequest();
+	//	}
+	//}
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);

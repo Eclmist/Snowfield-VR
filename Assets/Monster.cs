@@ -8,6 +8,7 @@ public class Monster : AI {
     [SerializeField]
     protected CombatActorData data;
 
+    
     public override ActorData Data
     {
         get
@@ -26,6 +27,20 @@ public class Monster : AI {
         throw new NotImplementedException();//Monsters cant interact atm
     }
 
+    public override void TakeDamage(int damage, Actor attacker)
+    {
+        base.TakeDamage(damage, attacker);
+        if(Health <= 0)
+            WaveManager.Instance.DestroyMonster(this);
+    }
 
-    
+    public override void Despawn()
+    {
+        base.Despawn();
+        Destroy(gameObject, 3);
+    }
+
+
+
+
 }

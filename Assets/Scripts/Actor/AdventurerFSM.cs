@@ -12,6 +12,8 @@ public class AdventurerFSM : ActorFSM
 
     private bool inTown = true;
 
+    protected Weapon currentUseWeapon;
+
     public void NewVisitToTown()
     {
         visitedShop.Clear();
@@ -33,27 +35,36 @@ public class AdventurerFSM : ActorFSM
     protected override void UpdateFSMState()
     {
         base.UpdateFSMState();
-        if (GameManager.Instance.State == GameManager.GameState.NIGHTMODE)
-        {
-            switch (currentState)
-            {
-                case FSMState.IDLE:
-                    UpdateIdleStateNight();
-                    return;
-            }
-        }
-        else if (GameManager.Instance.State == GameManager.GameState.DAYMODE)
-        {
-            switch (currentState)
-            {
-                case FSMState.IDLE:
-                    UpdateIdleStateDay();
-                    return;
 
-                case FSMState.SHOPPING:
-                    UpdateShoppingState();
-                    return;
-            }
+        switch (currentState)
+        {
+            case FSMState.SHOPPING:
+                UpdateShoppingState();
+                return;
+        }
+
+    }
+
+    public virtual void EndAttack()
+    {
+        if (currentUseWeapon != null)
+        {
+            Debug.Log("EndCharge");
+            currentUseWeapon.EndCharge();
+            currentUseWeapon.SetBlockable();
+        }
+    }
+
+    protected override void UpdateIdleState()
+    {
+        switch (GameManager.Instance.State)
+        {
+            case GameManager.GameState.DAYMODE:
+                UpdateIdleStateDay();
+                return;
+            case GameManager.GameState.NIGHTMODE:
+                UpdateIdleStateNight();
+                break;
         }
     }
 
@@ -93,13 +104,35 @@ public class AdventurerFSM : ActorFSM
         }
         else if (!requestedPath)
         {
-            Node endPoint = TownManager.Instance.CurrentTown.WavePoint;
-            AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
-            requestedPath = true;
+            Monster mob = WaveManager.Instance.GetClosestMonster(transform.position);
             nextState = FSMState.IDLE;
+            if (!mob)
+            {
+                Node endPoint = TownManager.Instance.GetRandomSpawnPoint();
+                AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
+                requestedPath = true;
+
+            }
+            else
+            {
+                AStarManager.Instance.RequestPath(transform.position, mob.transform.position, ChangePath);
+                requestedPath = true;
+                target = mob;
+            }
         }
     }
 
+    protected override void UpdatePetrolState()
+    {
+        base.UpdatePetrolState();
+        if (target is Monster && target.Health > 0)
+        {
+            if (Vector3.Distance(target.transform.position, transform.position) < detectionDistance)
+            {
+                ChangeState(FSMState.COMBAT);
+            }
+        }
+    }
     protected virtual void UpdateIdleStateDay()
     {
         if (pathFound)
@@ -138,6 +171,9 @@ public class AdventurerFSM : ActorFSM
 
         FSMState previousState = currentState;
         currentAdventurerAI.Interacting = false;
+        if (state != FSMState.COMBAT)
+            currentAdventurerAI.UnEquipWeapons();
+
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -166,7 +202,7 @@ public class AdventurerFSM : ActorFSM
     protected override void HandleCombatAction()
     {
         currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
-       
+
         animator.SetBool("Attacking", true);
 
         if (currentUseWeapon == null || !currentUseWeapon.Powered)

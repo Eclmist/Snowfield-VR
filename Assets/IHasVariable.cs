@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamagable
-{
+public interface IHasVariable  {
 
-    int Health
+    int MaxHealth
     {
         get;
     }
 
-    void TakeDamage(int damage, Actor attacker);
-
-    Transform transform
+    int HealthRegeneration
     {
         get;
     }

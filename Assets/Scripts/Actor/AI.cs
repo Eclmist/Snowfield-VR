@@ -62,11 +62,11 @@ public abstract class AI : Actor
         }
     }
 
-    protected void UnEquipWeapons()
+    public void UnEquipWeapons()
     {
-        if (leftHand.Item != null)
+        if (leftHand != null && leftHand.Item != null)
             leftHand.Item.Unequip();
-        if (rightHand.Item != null)
+        if (rightHand != null && rightHand.Item != null)
             rightHand.Item.Unequip();
     }
 
@@ -75,6 +75,10 @@ public abstract class AI : Actor
         StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
     }
 
+    public void SetNode(Node n)
+    {
+        currentFSM.SetNode(n);
+    }
     public abstract void Interact(Actor actor);
 
     public virtual float GetOutOfTimeDuration()

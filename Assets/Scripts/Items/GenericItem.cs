@@ -57,10 +57,8 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
     }
 
     public int Damage
-
     {
         get
-
         {
             if (currentInteractingController != null)
 
@@ -136,10 +134,8 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     {
         if (audioSource != null)
-
         {
             audioSource.volume = volume;
-
             audioSource.Play();
         }
     }

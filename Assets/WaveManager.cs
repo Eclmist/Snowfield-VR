@@ -17,7 +17,7 @@ public class WaveManager : MonoBehaviour
 {
 
     public static WaveManager Instance;
-
+    protected bool isSpawning = false;
     [SerializeField]
     protected List<WaveGroup> groups = new List<WaveGroup>();
     [SerializeField]
@@ -28,6 +28,8 @@ public class WaveManager : MonoBehaviour
     private int maxCost = 30;
     [SerializeField]
     private float timeBetweenEachMonsterSpawn = .5f, timeBetweenEachGroupSpawn = 2f;
+    [SerializeField]
+    private List<Monster> monstersInTheScene = new List<Monster>();
     protected void Awake()
     {
         if (!Instance)
@@ -44,6 +46,27 @@ public class WaveManager : MonoBehaviour
     protected void Start()
     {
         groups.Sort();
+    }
+    public void DestroyMonster(Monster monster)
+    {
+        monstersInTheScene.Remove(monster);
+    }
+
+    public Monster GetClosestMonster(Vector3 position)
+    {
+        float closestDistance = 999999;
+        Monster monster = null;
+        foreach(Monster mob in monstersInTheScene)
+        {
+            float dist = Vector3.Distance(mob.transform.position, position);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                monster = mob;
+            }
+        }
+
+        return monster;
     }
 
     public void SpawnWave(int waveNumber)//waveNumber = cost
@@ -72,23 +95,28 @@ public class WaveManager : MonoBehaviour
         }
         if (waveNumber % bossWaveNumbers == 0)
             spawnGroups.Add(bossGroup);
+        if (isSpawning)
+            StopAllCoroutines();
         StartCoroutine(StartSpawn(spawnGroups, level));
     }
 
-    public IEnumerator StartSpawn(List<WaveGroup> groups, int level)
+    protected IEnumerator StartSpawn(List<WaveGroup> groups, int level)
     {
+        isSpawning = true;
         for (int i = 0; i < groups.Count; i++)
         {
 
             for (int j = 0; j < groups[i].monsters.Length; j++)
             {
                 Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
+                monstersInTheScene.Add(monster);
                 (monster.Data as CombatActorData).CurrentJob.SetLevel(level);
                 yield return new WaitForSecondsRealtime(timeBetweenEachMonsterSpawn);
             }
 
             yield return new WaitForSecondsRealtime(timeBetweenEachGroupSpawn);
         }
+        isSpawning = false;
 
     }
 

@@ -30,11 +30,11 @@ public abstract class ActorFSM : MonoBehaviour
     protected bool requestedPath, pathFound;
     [SerializeField]
     protected FSMState currentState;
-    protected Actor target;
+    protected IDamagable target;
     protected Animator animator;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
-    protected Weapon currentUseWeapon;
+
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
 
 
@@ -89,7 +89,7 @@ public abstract class ActorFSM : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
-    public Actor Target
+    public IDamagable Target
     {
         get
         {
@@ -141,16 +141,23 @@ public abstract class ActorFSM : MonoBehaviour
             case FSMState.COMBAT:
                 UpdateCombatState();
                 return;
+            case FSMState.IDLE:
+                UpdateIdleState();
+                return;
+
         }
     }
 
+    protected abstract void UpdateIdleState();
     private bool backing = false;
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null)
+        if (target != null && target.Health > 0)
         {
-
+            float tempAttackRange = attackRange;
+            if (target is Player)
+                tempAttackRange += 3;
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -161,22 +168,21 @@ public abstract class ActorFSM : MonoBehaviour
             //Debug.DrawRay(head.transform.position - head.right, _direction);
             if (distance < detectionDistance)
             {
-                Debug.Log(distance);
                 if (backing)
                 {
                     animator.SetFloat("Speed", CurrentAI.MovementSpeed);
                     targetPoint = transform.position - dir;
-                    if (distance > attackRange / 2.0)
+                    if (distance > tempAttackRange / 2.0)
                         backing = false;
                 }
-                else if (!backing && distance < attackRange / 5.0)
+                else if (!backing && distance < tempAttackRange / 5.0)
                 {
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", CurrentAI.MovementSpeed);
                     targetPoint = transform.position - dir;
                     backing = true;
                 }
-                else if (distance > attackRange || Mathf.Abs(angle) > 45)
+                else if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
                 {
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", CurrentAI.MovementSpeed);
@@ -202,7 +208,7 @@ public abstract class ActorFSM : MonoBehaviour
             return;
         }
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
+        if (CanMove())
         {
             rigidBody.velocity = AvoidObstacles(targetPoint);
             LookAtPlayer(targetPoint);
@@ -251,7 +257,7 @@ public abstract class ActorFSM : MonoBehaviour
             else
             {
                 animator.SetFloat("Speed", CurrentAI.MovementSpeed);
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol"))
+                if (CanMove())
                 {
                     rigidBody.velocity = AvoidObstacles(targetPoint);
                 }
@@ -271,6 +277,22 @@ public abstract class ActorFSM : MonoBehaviour
                 }
             }
         }
+    }
+
+    protected virtual bool CanMove()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol");
+    }
+    public void SetNode(Node n)
+    {
+        int index = -1;
+        for(int i = 0;i < path.Count; i++)
+        {
+            if (path[i] == n)
+                index = i;
+        }
+        if(index != 1)
+        path.RemoveRange(0, index);
     }
 
     protected EquipSlot.EquipmentSlotType animUseSlot;
@@ -297,26 +319,32 @@ public abstract class ActorFSM : MonoBehaviour
         ChangePath(newPath);
     }
 
-    //public virtual void CheckHit()
-    //{
-    //    Vector3 dir = target.transform.position - transform.position;
-    //    dir.y = 0;
-    //    dir.Normalize();
-    //    float angle = Vector3.Angle(transform.forward, dir);
-    //    if (target != null)
-    //    {
+    public virtual void CheckHit()
+    {
+        float tempAttackRange = attackRange;
+        if (target is Player)
+            tempAttackRange += 3;
+        Vector3 dir = target.transform.position - transform.position;
+        dir.y = 0;
+        dir.Normalize();
+        float angle = Vector3.Angle(transform.forward, dir);
+        if (target != null)
+        {
+            Debug.Log("CheckedHit");
+            Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
+            Vector3 temptarget = target.transform.position;
+            temptarget.y = transform.position.y;
+            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
+            {
+                CurrentAI.Attack(currentUseWeapon, target);
+            }
+            else
+            {
+                CurrentAI.Attack(0, target);
+            }
+        }
+    }
 
-    //        if (currentUseWeapon != null)
-    //        {
-    //            Vector3 temptarget = target.transform.position;
-    //            temptarget.y = transform.position.y;
-    //            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentUseWeapon.Range)
-    //            {
-    //                currentAI.Attack(currentUseWeapon, target);
-    //            }
-    //        }
-    //    }
-    //}
 
     public virtual void SetAnimUseSlot(int i)
     {
@@ -332,15 +360,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    public virtual void EndAttack()
-    {
-        if (currentUseWeapon != null)
-        {
-            Debug.Log("EndCharge");
-            currentUseWeapon.EndCharge();
-            currentUseWeapon.SetBlockable();
-        }
-    }
+
 
     protected bool CheckObstacles()
     {
@@ -397,9 +417,11 @@ public abstract class ActorFSM : MonoBehaviour
 
     public void DamageTaken(Actor attacker)
     {
-        ChangeState(FSMState.COMBAT);
-        target = attacker;
-        Debug.Log("DamageTaken");
+        if (!(target is Actor))
+        {
+            ChangeState(FSMState.COMBAT);
+            target = attacker;
+        }
     }
 
 
@@ -433,8 +455,6 @@ public abstract class ActorFSM : MonoBehaviour
     //    else
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
-
-
 
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 [RequireComponent(typeof(CombatVariable))]
-public abstract class Actor : MonoBehaviour, IDamagable
+public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
 {
 
     [SerializeField]
@@ -46,9 +46,17 @@ public abstract class Actor : MonoBehaviour, IDamagable
 
     public virtual void Attack(IDamage item, IDamagable target)
     {
-        target.TakeDamage(item.Damage + AttackDamage, this);
+        int damage = item != null ? item.Damage : 0;
+        if(target != null)
+            target.TakeDamage(damage + AttackDamage, this);
     }
 
+    public virtual void Attack(int damage,IDamagable target)
+    {
+        target.TakeDamage(damage, this);
+    }
+
+    
     public int AttackDamage
     {
         get

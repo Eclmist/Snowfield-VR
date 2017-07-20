@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarpEvent : NodeEvent {
+public class WarpEvent : NodeEvent
+{
 
     [SerializeField]
     private Node warpPoint;
@@ -11,11 +12,18 @@ public class WarpEvent : NodeEvent {
     [SerializeField]
     private float timeForWarp;
 
-    
+
     public override void HandleEvent(AI ai)
     {
-        ai.gameObject.SetActive(false);
-        //if null despawn
-        AIManager.Instance.Spawn(ai, timeForWarp, warpPoint);
+        if (ai is AdventurerAI)
+        {
+            Debug.Log("hitttt");
+            if (Vector3.Distance(ai.transform.position, CurrentNode.Position) > .01)
+            {
+                ai.gameObject.SetActive(false);
+                ai.SetNode(CurrentNode);
+                AIManager.Instance.Spawn(ai, timeForWarp, warpPoint);
+            }
+        }
     }
 }
