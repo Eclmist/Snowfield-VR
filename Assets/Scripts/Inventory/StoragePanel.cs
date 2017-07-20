@@ -49,7 +49,7 @@ public class StoragePanel : Inventory {
 		foreach (InventorySlot slot in InventoryItems)
 		{
 			GameObject g = Instantiate (interactiveSlot);
-            g.transform.SetParent(glp.transform);
+            g.transform.SetParent(glp.transform,false);
             g.transform.localPosition = Vector3.zero;
             g.transform.localScale = Vector3.one;
 
