@@ -19,6 +19,19 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private VR_Interactable interactable;
 
+    private VR_Interactable_UI currentInteractingUI;
+
+    public VR_Interactable_UI UI
+    {
+        get
+        {
+            return currentInteractingUI;
+        }
+        set
+        {
+            currentInteractingUI = value;
+        }
+    }
 
     void Awake()
     {

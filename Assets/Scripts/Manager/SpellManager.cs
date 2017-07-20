@@ -15,6 +15,13 @@ public class SpellManager : MonoBehaviour {
         [SerializeField] private Spell spell;
         [SerializeField] private bool isUnlocked;
 
+        public SpellEntry()
+        {
+            gestureName = "";
+            spell = null;
+            isUnlocked = false;
+        }
+
         public Spell _Spell
         {
             get { return this.spell; }
@@ -35,9 +42,16 @@ public class SpellManager : MonoBehaviour {
     }
 
 
-
-
     [SerializeField] private List<SpellEntry> spellBook;
+
+    [InspectorButton("AddNewEntry",ButtonWidth = 200)]
+    public bool addNewEntry;
+
+    private void AddNewEntry()
+    {
+        spellBook.Add(new SpellEntry());
+    }
+
 
 
     private void Awake()

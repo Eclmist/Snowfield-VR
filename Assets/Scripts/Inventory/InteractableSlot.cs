@@ -60,6 +60,7 @@ public class InteractableSlot : VR_Interactable_UI {
     }
 
 
+
     private void RemoveFromSlot(Transform t)
     {
         if(slot.StoredItem != null)
@@ -98,13 +99,35 @@ public class InteractableSlot : VR_Interactable_UI {
 
     protected override void OnTriggerPress()
     {
-        base.OnTriggerPress();
-        
-        // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
-        // else call RemoveFromSlot()
+        if (currentInteractingController.UI == this)
+        {
+
+            GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
+
+            if (g != null)
+            {
+                
+            }
+
+
+            // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
+            // else call RemoveFromSlot()
+        }
     }
 
+    protected override void OnControllerEnter()
+    {
+        base.OnControllerEnter();
+        if (currentInteractingController)
+            currentInteractingController.UI = this;
+    }
 
+    protected override void OnControllerExit()
+    {
+        if (currentInteractingController.UI == this)
+            currentInteractingController.UI = null;
+        base.OnControllerExit();
+    }
 
 
 
