@@ -89,7 +89,6 @@ public class CraftedItem : GenericItem
         if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
         {
             removable = false;
-            currentInteractingController.Vibrate(1);
         }
     }
 
