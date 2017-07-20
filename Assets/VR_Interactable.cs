@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VR_Interactable_Thing : MonoBehaviour {
+public class VR_Interactable : MonoBehaviour {
 
 	protected VR_Controller_Custom currentInteractingController;
 

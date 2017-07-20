@@ -55,6 +55,8 @@ GameObject:
   - component: {fileID: 224947111402293242}
   - component: {fileID: 65842785538170224}
   - component: {fileID: 114662476465199204}
+  - component: {fileID: 222052301368670012}
+  - component: {fileID: 114652976014240592}
   m_Layer: 0
   m_Name: InteractiveSlot
   m_TagString: Untagged
@@ -69,11 +71,11 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1769439562842444}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 123.17, y: 124.2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 198.09534, y: 200.0013, z: 1}
+  m_Center: {x: 0.4381118, y: 1.0829768, z: 0}
 --- !u!114 &114492587972379536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,6 +109,33 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: New Text
+--- !u!114 &114652976014240592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769439562842444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300002, guid: c24d3928d86fab94cb9b0c5789f34dcf, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114662476465199204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,13 +144,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1769439562842444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c07a00daaa3643469341ff427620dd2, type: 3}
+  m_Script: {fileID: 11500000, guid: b7d03997ac57acd4681ed828db87922a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
   triggerEnterVibration: 0.8
   triggerExitVibration: 0.3
   triggerPressVibration: 0
+  image: {fileID: 114817537569680672}
+  stack: {fileID: 114492587972379536}
 --- !u!114 &114817537569680672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.058823526, g: 0.058823526, b: 0.058823526, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -149,6 +180,12 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!222 &222052301368670012
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769439562842444}
 --- !u!222 &222339170146304986
 CanvasRenderer:
   m_ObjectHideFlags: 1

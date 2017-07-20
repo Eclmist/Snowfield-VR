@@ -5,6 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(SteamVR_TrackedObject))]
 public class VR_Controller_Custom : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject model;
+
+    public GameObject Model
+    {
+        get
+        {
+            return model;
+        }
+    }
 
     public enum Controller_Handle
     {
@@ -17,8 +27,21 @@ public class VR_Controller_Custom : MonoBehaviour
     private SteamVR_TrackedObject trackedObject;
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable_Thing interactable;
+    private VR_Interactable interactable;
 
+    private VR_Interactable_UI currentInteractingUI;
+
+    public VR_Interactable_UI UI
+    {
+        get
+        {
+            return currentInteractingUI;
+        }
+        set
+        {
+            currentInteractingUI = value;
+        }
+    }
 
     void Awake()
     {
@@ -68,7 +91,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        VR_Interactable_Thing currentObject = collider.GetComponentInParent<VR_Interactable_Thing>();
+        VR_Interactable currentObject = collider.GetComponentInParent<VR_Interactable>();
 
         if (currentObject && (interactable == null || interactable.LinkedController != this))
         {
@@ -112,7 +135,7 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
-    public void SetInteraction(VR_Interactable_Thing _interacted)
+    public void SetInteraction(VR_Interactable _interacted)
     {
         interactable = _interacted;
     }
