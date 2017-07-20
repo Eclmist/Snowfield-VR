@@ -6,22 +6,25 @@ using Edwon.VR;
 
 public class SpellController : MonoBehaviour {
 
-	protected VRGestureRig rig;
+	//protected VRGestureRig rig;
 
-	protected Transform leftHand;
-	protected Transform rightHand;
+	//protected Transform leftHand;
+	//protected Transform rightHand;
 
+    [SerializeField]
 	protected VR_Controller_Custom vrController;
 
-	void Start()
-	{
-		rig = FindObjectOfType<VRGestureRig> ();
-		if (rig == null) {
-			Debug.Log ("there is no VRGestureRig in the scene, please add one");
-		}
+    protected Spell currentSpell;
 
-		rightHand = rig.handRight;
-		leftHand = rig.handLeft;
+    void Start()
+	{
+		//rig = FindObjectOfType<VRGestureRig> ();
+		//if (rig == null) {
+		//	Debug.Log ("there is no VRGestureRig in the scene, please add one");
+		//}
+
+		//rightHand = rig.handRight;
+		//leftHand = rig.handLeft;
 	}
 
 	void OnEnable()
@@ -52,10 +55,44 @@ public class SpellController : MonoBehaviour {
         //	break;
         //}
 
+        //Spell spell = SpellManager.Instance.GetSpell(gestureName);
+        //Instantiate(spell, vrController.transform);
+        //vrController.SetInteraction(spell);
+        //spell.LinkedController = vrController;
+
         Spell spell = SpellManager.Instance.GetSpell(gestureName);
+        Instantiate(spell, vrController.transform);
         vrController.SetInteraction(spell);
         spell.LinkedController = vrController;
-        
 
-	}
+
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Spell spell = SpellManager.Instance.GetSpell("Circle");
+            Instantiate(spell, vrController.transform);
+            vrController.SetInteraction(spell);
+            spell.LinkedController = vrController;
+            currentSpell = spell;
+        }
+
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    Spell spell = SpellManager.Instance.GetSpell("Complex");
+        //    Instantiate(spell, vrController.transform);
+        //    vrController.SetInteraction(spell);
+        //    spell.LinkedController = vrController;
+        //}
+
+        //if (Input.GetKeyDown(KeyCode.V))
+        //{
+        //    Spell spell = SpellManager.Instance.GetSpell("Bolt");
+        //    Instantiate(spell, vrController.transform);
+        //    vrController.SetInteraction(spell);
+        //    spell.LinkedController = vrController;
+        //}
+    }
 }
