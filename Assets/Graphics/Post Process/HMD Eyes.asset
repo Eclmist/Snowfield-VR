@@ -31,7 +31,7 @@ MonoBehaviour:
   antialiasing:
     m_Enabled: 1
     m_Settings:
-      method: 1
+      method: 0
       fxaaSettings:
         preset: 4
       taaSettings:
@@ -40,7 +40,7 @@ MonoBehaviour:
         stationaryBlending: 0.99
         motionBlending: 0.746
   ambientOcclusion:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       intensity: 1
       radius: 0.3
@@ -69,7 +69,7 @@ MonoBehaviour:
       screenEdgeMask:
         intensity: 0.03
   depthOfField:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       focusDistance: 8.89
       aperture: 1.9
@@ -100,10 +100,10 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       bloom:
-        intensity: 9.98
-        threshold: 1.48
+        intensity: 0.18
+        threshold: 0.5
         softKnee: 1
-        radius: 4.41
+        radius: 3.99
         antiFlicker: 1
       lensDirt:
         texture: {fileID: 0}
@@ -124,19 +124,19 @@ MonoBehaviour:
         temperature: 27
         tint: 36.2
         hueShift: 0
-        saturation: 1.02
-        contrast: 1.448
+        saturation: 1.07
+        contrast: 1.065
       channelMixer:
         red: {x: 1, y: 0.14, z: 0}
         green: {x: 0, y: 1, z: 0}
         blue: {x: 0, y: 0, z: 1}
-        currentEditingChannel: 0
+        currentEditingChannel: 1
       colorWheels:
         mode: 1
         log:
           slope: {r: 0.95554775, g: 0.9726841, b: 1, a: 0}
           power: {r: 1, g: 1, b: 1, a: 0}
-          offset: {r: 1, g: 1, b: 1, a: 0}
+          offset: {r: 0.9212501, g: 0.9124392, b: 1, a: 0}
         linear:
           lift: {r: 1, g: 1, b: 1, a: 0}
           gamma: {r: 1, g: 1, b: 1, a: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
       size: 1
       luminanceContribution: 0.8
   vignette:
-    m_Enabled: 1
+    m_Enabled: 0
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
