@@ -255,18 +255,10 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 
-
-
-
-
     {
-
+        referenceCheck.Model.SetActive(true);
 
         base.OnTriggerRelease(referenceCheck);
-
-
-
-
 
         StartCoroutine(Throw(Player.Instance));
 
@@ -324,33 +316,16 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
                 target = null;
 
-
-
-
-
                 break;
 
-
             }
-
-
-
-
 
             yield return new WaitForEndOfFrame();
 
 
         }
 
-
-
-
-
         target = null;
-
-
-
-
 
         isFlying = false;
 
@@ -358,8 +333,11 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
     }
 
 
-
-
+    public override void OnTriggerPress(VR_Controller_Custom controller)
+    {
+        controller.Model.SetActive(false);
+        base.OnTriggerPress(controller);
+    }
 
     protected virtual void OnCollisionEnter(Collision col)
 
