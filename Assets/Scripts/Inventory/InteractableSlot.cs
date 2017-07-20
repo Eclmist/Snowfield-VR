@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class InteractableSlot : VR_Interactable_UI
 {
 
-    private Image image;
-    private Text stack;
+    [SerializeField]private Image image;
+    [SerializeField]private Text stack;
     private VR_Interactable_Object pendingItem;
     private StoragePanel storagePanel;
 
@@ -19,8 +19,8 @@ public class InteractableSlot : VR_Interactable_UI
 
         storagePanel = GetComponentInParent<StoragePanel>();
         GetComponent<BoxCollider>().isTrigger = true;
-        image = GetComponentInChildren<Image>();
-        stack = GetComponentInChildren<Text>();
+        //image = GetComponentInChildren<Image>();
+        //stack = GetComponentInChildren<Text>();
     }
 
     protected override void Update()
