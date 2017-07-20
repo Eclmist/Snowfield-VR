@@ -5,6 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(SteamVR_TrackedObject))]
 public class VR_Controller_Custom : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject model;
+
+    public GameObject Model
+    {
+        get
+        {
+            return model;
+        }
+    }
 
     public enum Controller_Handle
     {

@@ -51,7 +51,7 @@ public class ItemManager : MonoBehaviour {
             GenericItem gs = data.ObjectReference.GetComponent<GenericItem>();
             if(gs != null)
             {
-                gs.ItemData = data;
+                gs.ItemID = data.ItemID;
             }
 
 

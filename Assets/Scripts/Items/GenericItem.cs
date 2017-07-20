@@ -49,13 +49,14 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     #region itemData
 
-    private ItemData itemData;
+    [SerializeField]private int itemID;
 
-    public ItemData ItemData
+    public int ItemID
     {
-        get { return this.itemData; }
-        set { this.itemData = value; }
+        get { return this.itemID; }
+        set { this.itemID = value; }
     }
+
 
     #endregion itemData
 
@@ -254,18 +255,10 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 
-
-
-
-
     {
-
+        referenceCheck.Model.SetActive(true);
 
         base.OnTriggerRelease(referenceCheck);
-
-
-
-
 
         StartCoroutine(Throw(Player.Instance));
 
@@ -323,33 +316,16 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
                 target = null;
 
-
-
-
-
                 break;
 
-
             }
-
-
-
-
 
             yield return new WaitForEndOfFrame();
 
 
         }
 
-
-
-
-
         target = null;
-
-
-
-
 
         isFlying = false;
 
@@ -357,8 +333,11 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
     }
 
 
-
-
+    public override void OnTriggerPress(VR_Controller_Custom controller)
+    {
+        controller.Model.SetActive(false);
+        base.OnTriggerPress(controller);
+    }
 
     protected virtual void OnCollisionEnter(Collision col)
 
