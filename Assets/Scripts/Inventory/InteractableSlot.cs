@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractableSlot : VR_Interactable {
+public class InteractableSlot : VR_Interactable_UI {
 
     private Image image;
     private Sprite itemDisplayIcon;
@@ -65,6 +65,7 @@ public class InteractableSlot : VR_Interactable {
     }
 
 
+
     private void RemoveFromSlot(Transform t)
     {
         if(storagePanel.SafeToUse)
@@ -122,6 +123,20 @@ public class InteractableSlot : VR_Interactable {
 
     protected override void OnTriggerPress()
     {
+        if (currentInteractingController.UI == this)
+        {
+
+            GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
+
+            if (g != null)
+            {
+                
+            }
+
+
+            // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
+            // else call RemoveFromSlot()
+        }
         base.OnTriggerPress();
 
         // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
@@ -129,7 +144,19 @@ public class InteractableSlot : VR_Interactable {
         // else call RemoveFromSlot()
     }
 
+    protected override void OnControllerEnter()
+    {
+        base.OnControllerEnter();
+        if (currentInteractingController)
+            currentInteractingController.UI = this;
+    }
 
+    protected override void OnControllerExit()
+    {
+        if (currentInteractingController.UI == this)
+            currentInteractingController.UI = null;
+        base.OnControllerExit();
+    }
 
 
 

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class VR_Interactable : MonoBehaviour
+public abstract class VR_Interactable_UI : MonoBehaviour
 {
 	[SerializeField] public bool interactable = true;
 

@@ -17,8 +17,21 @@ public class VR_Controller_Custom : MonoBehaviour
     private SteamVR_TrackedObject trackedObject;
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable_Object interactableObject;
+    private VR_Interactable interactable;
 
+    private VR_Interactable_UI currentInteractingUI;
+
+    public VR_Interactable_UI UI
+    {
+        get
+        {
+            return currentInteractingUI;
+        }
+        set
+        {
+            currentInteractingUI = value;
+        }
+    }
 
     void Awake()
     {
@@ -34,61 +47,61 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private void Update()
     {
-        if (interactableObject != null)
+        if (interactable != null)
         {
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-                interactableObject.OnTriggerPress(this);
+                interactable.OnTriggerPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-                interactableObject.OnTriggerRelease(this);
+                interactable.OnTriggerRelease(this);
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-                interactableObject.OnGripPress(this);
+                interactable.OnGripPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-                interactableObject.OnGripRelease(this);
+                interactable.OnGripRelease(this);
         }
     }
 
     private void ControllerInput()
     {
-        if (interactableObject != null)
+        if (interactable != null)
         {
             
             
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
-                interactableObject.OnTriggerHold(this);
+                interactable.OnTriggerHold(this);
             
             
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
-                interactableObject.OnGripHold(this);
+                interactable.OnGripHold(this);
             
-            if (interactableObject.LinkedController == this)
-                interactableObject.OnInteracting(this);
+            if (interactable.LinkedController == this)
+                interactable.OnInteracting(this);
 
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        VR_Interactable_Object currentObject = collider.GetComponentInParent<VR_Interactable_Object>();
+        VR_Interactable currentObject = collider.GetComponentInParent<VR_Interactable>();
 
-        if (currentObject && (interactableObject == null || interactableObject.LinkedController != this))
+        if (currentObject && (interactable == null || interactable.LinkedController != this))
         {
-            interactableObject = currentObject;
-            interactableObject.OnControllerEnter(this);
+            interactable = currentObject;
+            interactable.OnControllerEnter(this);
         }
     }
 
     private void OnTriggerStay(Collider collider)
     {
-        if (interactableObject != null)
-            interactableObject.OnControllerStay(this);
+        if (interactable != null)
+            interactable.OnControllerStay(this);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (interactableObject != null && interactableObject.LinkedController != this)
+        if (interactable != null && interactable.LinkedController != this)
         {
-            interactableObject.OnControllerExit(this);
-            interactableObject = null;
+            interactable.OnControllerExit(this);
+            interactable = null;
 		}
 	}
 
@@ -112,9 +125,9 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
-    public void SetInteraction(VR_Interactable_Object _interacted)
+    public void SetInteraction(VR_Interactable _interacted)
     {
-        interactableObject = _interacted;
+        interactable = _interacted;
     }
 
     public SteamVR_Controller.Device Device
