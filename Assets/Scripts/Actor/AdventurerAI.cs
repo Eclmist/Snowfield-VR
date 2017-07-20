@@ -206,7 +206,6 @@ public class AdventurerAI : AI
         if (quest != null)
             totalDuration += quest.RemainingProgress;
         //Can add more time here when taking into consideration item get
-        Debug.Log(totalDuration);
         return totalDuration;
     }
 

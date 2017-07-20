@@ -38,6 +38,7 @@ public class CraftedItem : GenericItem
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
+            transform.parent = referenceCheck.transform;
         }
         else
         {
@@ -54,6 +55,7 @@ public class CraftedItem : GenericItem
             base.OnTriggerRelease(referenceCheck);
             itemCollider.isTrigger = false;
             rigidBody.useGravity = true;
+            transform.parent = null;
         }
     }
 

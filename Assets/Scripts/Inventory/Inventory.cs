@@ -7,8 +7,8 @@ public class Inventory : MonoBehaviour
 
 	public class InventorySlot
 	{
-		int currentStack;
-		IStorable storedItem;
+		private int currentStack;
+		private IStorable storedItem;
 
 		public InventorySlot(IStorable item,int quantity)
 		{
@@ -16,16 +16,10 @@ public class Inventory : MonoBehaviour
 			storedItem = item;
 		}
 
-		public InventorySlot(IStorable item)
-		{
-			currentStack = 1;
-			storedItem = item;
-		}
-
         // An empty slot
         public InventorySlot()
         {
-            currentStack = -1;
+            currentStack = 0;
         }
 
 		public int CurrentStack
@@ -42,7 +36,7 @@ public class Inventory : MonoBehaviour
 
         public void EmptySlot()
         {
-            currentStack = -1;
+            currentStack = 0;
             storedItem = null;
 
         }

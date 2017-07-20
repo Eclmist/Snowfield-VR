@@ -39,7 +39,6 @@ public class StoragePanel : Inventory {
 	void Update()
 	{
         safeToUse = numberOfHoveredSlots <= 1;
-        Debug.Log(numberOfHoveredSlots);
 	}
 
     

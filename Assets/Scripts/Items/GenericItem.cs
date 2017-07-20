@@ -49,13 +49,14 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     #region itemData
 
-    private ItemData itemData;
+    [SerializeField]private int itemID;
 
-    public ItemData ItemData
+    public int ItemID
     {
-        get { return this.itemData; }
-        set { this.itemData = value; }
+        get { return this.itemID; }
+        set { this.itemID = value; }
     }
+
 
     #endregion itemData
 
