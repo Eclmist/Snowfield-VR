@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance;
+    public AI ai;
 
     #region ClockRegion
     [SerializeField] [Range(1, 10000)] private int secondsPerDay;
@@ -64,7 +65,6 @@ public class GameManager : MonoBehaviour {
 
     protected void Update()
     {
-        RequestBoardUpdate();
         GameHandle();
     }
 
@@ -91,15 +91,7 @@ public class GameManager : MonoBehaviour {
         //WaveManager.Start
 
     }
-    private void RequestBoardUpdate()
-    {
-		if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
-		{
-			nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
-			if (!OrderBoard.Instance.IsMaxedOut)
-				OrderManager.Instance.NewRequest();
-		}
-	}
+
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);

@@ -12,7 +12,7 @@ public class AdventurerAI : AI
     protected AdventurerAIData data;
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-
+    private bool hasRequested = false;
 
     protected override void Awake()
     {
@@ -109,16 +109,16 @@ public class AdventurerAI : AI
         }
     }
 
-    public bool GotLobang()
+    public bool IsInteractionAvailable()
     {
 
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null)
+        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasRequested)
             return true;
 
         return false;
     }
 
-    public void GetLobang()
+    public bool StartInteraction()
     {
 
 
@@ -127,8 +127,8 @@ public class AdventurerAI : AI
         {
             OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-            StartCoroutine(StartInteraction(op));
-            return;
+            StartCoroutine(StartInteractionOP(op));
+            return true;
         }
 
         QuestEntryGroup<StoryQuest> startableQuest = data.QuestBook.GetStartableGroup();
@@ -138,13 +138,32 @@ public class AdventurerAI : AI
             OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
             op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-            StartCoroutine(StartInteraction(op));
-            return;
+            StartCoroutine(StartInteractionOP(op));
+            return true;
         }
+
+        if (!OrderBoard.Instance.IsMaxedOut)
+        {
+            hasRequested = true;
+            pendingOrder = OrderManager.Instance.GenerateOrder();
+            Debug.Log(pendingOrder);
+            if (pendingOrder != null)
+            {
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + pendingOrder.Name, transform.position, Player.Instance.transform, transform);
+                op.SetEvent(OptionPane.ButtonType.Yes, StartOrderYesDelegate);
+                op.SetEvent(OptionPane.ButtonType.No, StartOrderNoDelegate);
+                StartCoroutine(StartInteractionOP(op));
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
-    protected System.Collections.IEnumerator StartInteraction(OptionPane op)
+    private Order pendingOrder;
+
+    protected System.Collections.IEnumerator StartInteractionOP(OptionPane op)
     {
         isInteracting = true;
 
@@ -178,6 +197,18 @@ public class AdventurerAI : AI
         startableGroup.Quest.Checked = true;
     }
 
+    public void StartOrderYesDelegate()
+    {
+        OrderManager.Instance.StartRequest(this, pendingOrder);
+    }
+
+    public void StartOrderNoDelegate()
+    {
+        pendingOrder = null;
+    }
+
+
+
     public void CompleteQuestDelegate()
     {
         QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
@@ -196,6 +227,7 @@ public class AdventurerAI : AI
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
         data.QuestBook.ResetChecked();
+        hasRequested = false;
         ChangeState(ActorFSM.FSMState.IDLE);
     }
 

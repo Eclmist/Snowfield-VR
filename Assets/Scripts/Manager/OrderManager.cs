@@ -56,78 +56,93 @@ public class OrderManager : MonoBehaviour
     }
 
 
-    public void NewRequest()
-
-    {
-        int totalExperienceValue = 0;
-
-        foreach (Job job in Player.Instance.JobList)
-
-        {
-            totalExperienceValue += job.Experience;
-        }
-
-        int randomValue = Random.Range(0, totalExperienceValue);
-
-        totalExperienceValue = 0;
-
-        foreach (Job job in Player.Instance.JobList)
-
-        {
-            totalExperienceValue += job.Experience;
-
-            if (totalExperienceValue >= randomValue)
-
-            {
-                Order o = GenerateOrder(job);
-
-                if (o != null)
-
-                    OrderBoard.Instance.SpawnOnBoard(o);
-            }
-        }
+    public void StartRequest(AdventurerAI ai, Order order)
+    {
+        Debug.Log(order);
+        if (order != null)
+            OrderBoard.Instance.SpawnOnBoard(order, ai);
     }
 
-    private Order GenerateOrder(Job job)
-
-    {
+    public Order GenerateOrder()    {
         // TO DO
 
         Player currentPlayer = Player.Instance;
 
-        Order newOrder = null;
-
-        List<OrderTemplate> currentTemplateList = GetTemplatesForJobType(job.Type);
+        Order newOrder = null;
 
         // Get a random template
 
-        OrderTemplate currentTemplate = templateList[Random.Range(0, templateList.Count)];
-
-        // Generate order based on job type
-
-        switch (job.Type)
-
+        OrderTemplate currentTemplate = templateList[Random.Range(0, templateList.Count)];
+
+
+
+        // Generate order based on job type
+        int totalExperienceValue = 0;
+        foreach (Job job in Player.Instance.JobList)
         {
-            case JobType.ALCHEMY:
-
-                break;
-
-            case JobType.BLACKSMITH:
-
-                PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
-
-                newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
-
-            , ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
-
-            , job.Level * baseDurationMultiplier * currentTemplate.Duration
-
-            , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier);
-
-                break;
+            totalExperienceValue += job.Experience;
         }
-        
-        return newOrder;
+        int randomValue = Random.Range(0, totalExperienceValue);
+        totalExperienceValue = 0;
+
+        foreach (Job job in Player.Instance.JobList)
+        {
+            totalExperienceValue += job.Experience;
+            if (totalExperienceValue >= randomValue)
+            {
+
+
+                switch (job.Type)
+
+
+
+                {
+
+                    case JobType.ALCHEMY:
+
+
+
+                        break;
+
+
+
+                    case JobType.BLACKSMITH:
+
+
+
+                        PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
+
+
+
+                        newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
+
+
+
+                    , ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
+
+
+
+                    , job.Level * baseDurationMultiplier * currentTemplate.Duration
+
+
+
+                    , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier,
+
+
+                    currentTemplate.ReferenceItemID);
+
+
+
+                        break;
+
+                }
+
+
+
+                return newOrder;
+
+            }
+        }        return null;
     }
 
     public void CompletedOrder(bool success, int reward)

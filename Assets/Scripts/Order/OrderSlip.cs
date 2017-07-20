@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class OrderSlip : MonoBehaviour {
+public class OrderSlip : VR_Interactable_UI {
 
     private string o_name;
     private int reward;
@@ -12,6 +12,15 @@ public class OrderSlip : MonoBehaviour {
     private Sprite image;
     private Action<bool,OrderSlip> callback;
     private Text durationText;
+    private int compareID;
+    private Order order;
+    private AdventurerAI ai;
+
+    public AdventurerAI OrderedAI
+    {
+        get { return this.ai; }
+        set { this.ai = value; }
+    }
 
     GameObject slip;
 
@@ -25,9 +34,11 @@ public class OrderSlip : MonoBehaviour {
 	// Use this for initialization
 	public void StartOrder(Order o,Action<bool,OrderSlip> _callback)
     {
-        o_name = o.Name;
-        reward = o.GoldReward;
-        duration = o.Duration;
+        order = o;
+
+        o_name = order.Name;
+        reward = order.GoldReward;
+        duration = order.Duration;
         callback = _callback;
 
         slip = transform.Find("Slip").gameObject;
@@ -44,6 +55,8 @@ public class OrderSlip : MonoBehaviour {
         slip.gameObject.SetActive(true);
     }
 
+    
+
     private IEnumerator OrderCoroutine()
     {
         while (true)
@@ -58,13 +71,6 @@ public class OrderSlip : MonoBehaviour {
         }
     }
 
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.U))
-        //{
-        //    OrderEnd(true);
-        //}
-    }
 
 
     private void OrderEnd(bool success)
@@ -73,6 +79,59 @@ public class OrderSlip : MonoBehaviour {
         callback(success, this);
         OrderBoard.Instance.RemoveFromBoard(this);
     }
+
+    protected override void OnTriggerPress()
+    {
+        if (currentInteractingController.UI == this)
+        {
+
+            Weapon weapon = currentInteractingController.GetComponentInChildren<Weapon>();
+
+            if (weapon)
+            {
+                if (weapon.ItemID == order.ItemID)
+                {
+                    OrderEnd(true);
+                    Destroy(weapon.gameObject);
+                    currentInteractingController.Model.SetActive(true);
+                    Debug.Log("correcy");
+                }
+                    
+            }
+            else
+            {
+                Debug.Log("wrong?");
+            }
+
+
+        }
+
+    }
+
+    
+
+
+    protected override void OnControllerEnter()
+    {
+        base.OnControllerEnter();
+        if (currentInteractingController)
+        {
+            currentInteractingController.UI = this;
+            Debug.Log("interacring with an order");
+        }
+
+    }
+
+    protected override void OnControllerExit()
+    {
+        if (currentInteractingController.UI == this)
+            currentInteractingController.UI = null;
+        base.OnControllerExit();
+    }
+
+
+
+
 
 
 
