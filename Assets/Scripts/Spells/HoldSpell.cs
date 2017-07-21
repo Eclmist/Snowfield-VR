@@ -4,51 +4,52 @@ using UnityEngine;
 
 public class HoldSpell : Spell {
 
-    protected override void Start()
-    {
-        Debug.Log("Started");
-    }
-
     protected bool hasFlag = false;
+    protected bool casted = false;
 
     protected override void Hold()
     {
-        Debug.Log("Holding");
-
-        if (!hasFlag)
+        if (!casted)
         {
-            var em = indicator.GetComponent<ParticleSystem>().emission;
-            em.enabled = false;
+            if (!hasFlag)
+            {
+                spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
 
-            //Create a fire Charge here
+                hasFlag = true;
+            }
+            else
+            {
+                var em = spellGO.GetComponent<ParticleSystem>().emission;
 
-            spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+                var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
 
-            hasFlag = true;
-        }
-        else
-        {
-            var em = spellGO.GetComponent<ParticleSystem>().emission;
+                em.enabled = true;
+                emsmoke.enabled = true;
+            }
 
-            var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
-
-            em.enabled = true;
-            emsmoke.enabled = true;
+            casted = true;
         }
     }
 
     protected override void Release()
     {
-        Debug.Log("Released");
+        if (casted)
+        {
+            var em = spellGO.GetComponent<ParticleSystem>().emission;
 
-        var em = spellGO.GetComponent<ParticleSystem>().emission;
+            var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
 
-        var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+            var emindicator = indicator.GetComponent<ParticleSystem>().emission;
 
-        em.enabled = false;
-        emsmoke.enabled = false;
+            emindicator.enabled = false;
+            em.enabled = false;
+            emsmoke.enabled = false;
 
-        Destroy(indicator, 3);
-        Destroy(spellGO, 3);
+            Destroy(indicator, 1);
+            Destroy(spellGO, 1);
+
+            casted = false;
+        }
+        
     }
 }
