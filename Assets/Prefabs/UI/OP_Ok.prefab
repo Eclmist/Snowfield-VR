@@ -77,9 +77,9 @@ GameObject:
   - component: {fileID: 114325024390406876}
   - component: {fileID: 114719577680629542}
   - component: {fileID: 82739439026043170}
-  - component: {fileID: 82574026585125074}
   - component: {fileID: 114976006254043810}
   - component: {fileID: 114124245048505762}
+  - component: {fileID: 82749337516909114}
   m_Layer: 0
   m_Name: OP_Ok
   m_TagString: Untagged
@@ -179,7 +179,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &82574026585125074
+--- !u!82 &82739439026043170
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -190,9 +190,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 243241513758497740, guid: 0f2e7db0d0fb7114e93e56f061e15fbb,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: a07a15b885c412d498a1fecc7ff2202b, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
-  m_Pitch: 3
+  m_Pitch: 1.89
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -260,7 +260,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!82 &82739439026043170
+--- !u!82 &82749337516909114
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -350,7 +350,7 @@ Animator:
   m_GameObject: {fileID: 1389466688055432}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 35e27b8cdc5b67c408b3723c49fb2cba, type: 2}
+  m_Controller: {fileID: 9100000, guid: 351ddc41c3b4a3a45bb301d0602792af, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -778,7 +778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audio:
   - {fileID: 82739439026043170}
-  - {fileID: 82574026585125074}
+  - {fileID: 82749337516909114}
 --- !u!135 &135772105531425074
 SphereCollider:
   m_ObjectHideFlags: 1

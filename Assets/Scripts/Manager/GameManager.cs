@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
 
     public void AddToPlayerInventory(ItemData data)
     {
-        //YP ADD PLEASE
+        StoragePanel.Instance.StoreInAvailableSlot(data, 1);//default 1, to be implemented after ai inventory
     }
 
 

@@ -46,7 +46,7 @@ public class InGameUIActivation : MonoBehaviour
             {
                 if (InGameMenu != null && currentInteractingCtrl.UI == null)
                 {
-                   // Destroy(InGameMenu);
+                    Destroy(InGameMenu);
                 }
             }
 
