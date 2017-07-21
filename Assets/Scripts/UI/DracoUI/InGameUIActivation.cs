@@ -44,7 +44,7 @@ public class InGameUIActivation : MonoBehaviour
 
             else if (currentInteractingCtrl.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
             {
-                //if (InGameMenu != null && currentInteractingCtrl.UI == null)
+                if (InGameMenu != null && currentInteractingCtrl.UI == null)
                 {
                     Destroy(InGameMenu);
                 }
