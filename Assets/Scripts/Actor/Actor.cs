@@ -130,7 +130,10 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
     {
         get
         {
-            return base.transform;
+            if (gameObject)
+                return base.transform;
+            else
+                return null;
         }
         
     }

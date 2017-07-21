@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
 
     public static GameManager Instance;
-    public AI ai;
 
     #region ClockRegion
     [SerializeField] [Range(1, 10000)] public float secondsPerDay;
@@ -23,16 +21,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     [Range(0.5f, 1)]
-    private float nightTime = .75f, dayTime = .25f;
+    private float nightTime = .25f , dayTime = .75f;
     [SerializeField]
     [Range(0, 1)]
     private float startTime;
+
     #endregion
 
     #region RequestRegion
 
-    [SerializeField] [Range(1, 100)] private int requestConstant;
-    private float nextRequest = 0;
     public enum GameState
     {
         DAYMODE,
@@ -54,7 +51,7 @@ public class GameManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            gameClock = new GameClock(secondsPerDay, startTime);
+            gameClock = new GameClock(secondsPerDay,startTime);
         }
         else
         {
@@ -70,36 +67,37 @@ public class GameManager : MonoBehaviour
 
     private void GameHandle()
     {
-        if (gameClock.TimeOfDay > nightTime && currentState != GameState.NIGHTMODE)
+        if(currentState == GameState.DAYMODE)
         {
-            PrepareForNight();
-
-            Debug.Log("Night");
+            if (gameClock.TimeOfDay > nightTime || gameClock.TimeOfDay < dayTime)
+                PrepareForNight();
         }
-        else if (dayTime > gameClock.TimeOfDay && gameClock.TimeOfDay > dayTime && currentState != GameState.DAYMODE)
+        if (currentState == GameState.NIGHTMODE)
         {
+            if(gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
             currentState = GameState.DAYMODE;
-            Debug.Log("Day");
         }
+
+        Debug.Log(currentState);
     }
 
     private void PrepareForNight()
     {
         currentState = GameState.NIGHTMODE;
-        AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
+
         WaveManager.Instance.SpawnWave(gameClock.Day);
 
     }
-    //   private void RequestBoardUpdate()
-    //   {
-    //	if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
-    //	{
-    //		nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
-    //		if (!OrderBoard.Instance.IsMaxedOut)
-    //			OrderManager.Instance.NewRequest();
-    //	}
-    //}
-    public void AddPlayerGold(int value)
+ //   private void RequestBoardUpdate()
+ //   {
+	//	if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
+	//	{
+	//		nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
+	//		if (!OrderBoard.Instance.IsMaxedOut)
+	//			OrderManager.Instance.NewRequest();
+	//	}
+	//}
+	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
         //set lose
@@ -107,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     public void AddToPlayerInventory(ItemData data)
     {
-        StoragePanel.Instance.StoreInAvailableSlot(data, 1);//default 1, to be implemented after ai inventory
+        StoragePanel.Instance.StoreInAvailableSlot(data,1);
     }
 
 

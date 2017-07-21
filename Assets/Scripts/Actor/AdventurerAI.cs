@@ -299,6 +299,7 @@ public class AdventurerAI : AI
         QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
         if (quest != null)
             quest.QuestProgress();
+        GainExperience(1);
         //Can get misc items here
     }
 

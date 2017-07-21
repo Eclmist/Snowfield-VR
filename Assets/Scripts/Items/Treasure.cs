@@ -50,14 +50,17 @@ public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
         if (Health <= 0)
         {
             actor.TakeDamage(9999999, null);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 	public new Transform transform
     {
         get
         {
-            return base.transform;
+            if (gameObject)
+                return base.transform;
+            else
+                return null;
         }
     }
 }

@@ -20,6 +20,7 @@ public class Player : Actor
     [SerializeField]
     protected PlayerData data;
 
+    [SerializeField]
     protected bool inCombatZone = true;
     protected float currentGroundHeight = 1;
 

@@ -98,7 +98,7 @@ public class WaveManager : MonoBehaviour
 
         while (cost > 0)
         {
-            int randomGroupNumber = UnityEngine.Random.Range(0, maximumIndex);
+            int randomGroupNumber = UnityEngine.Random.Range(0, maximumIndex + 1);
             spawnGroups.Add(groups[randomGroupNumber]);
             cost -= groups[randomGroupNumber].cost;
         }

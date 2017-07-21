@@ -37,7 +37,7 @@ public class Monster : AI {
     public override void Despawn()
     {
         base.Despawn();
-        Destroy(gameObject, 3);
+        Destroy(gameObject, 10);
     }
 
 
