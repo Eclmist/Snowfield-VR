@@ -6,9 +6,9 @@ using UnityEngine;
 public class Ore : GenericItem
 {
     [SerializeField]
-    private TYPE type;
+    private PhysicalMaterial.Type type;
 
-    public TYPE Type
+    public PhysicalMaterial.Type Type
     {
         get { return this.type; }
 

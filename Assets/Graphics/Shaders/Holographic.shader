@@ -14,7 +14,7 @@
 	{
 		Tags { "RenderType"="Transparent" "Queue"="Transparent" }
 		LOD 100
-		Cull Off
+		//Cull Off
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass

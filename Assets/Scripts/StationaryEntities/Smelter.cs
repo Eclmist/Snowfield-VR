@@ -55,7 +55,7 @@ public class Smelter : MonoBehaviour {
                 {
                     canSmelt = true;
                     source.PlayOneShot(smeltSound);
-                    StartCoroutine(SmeltProcess(ingot.PhysicalMaterial.Type));
+                    StartCoroutine(SmeltProcess(ingot.PhysicalMaterial.type));
                     break;
                 }
             }
@@ -69,7 +69,7 @@ public class Smelter : MonoBehaviour {
     }
 
     // Spawns the resulting ingot after the smelting duration
-    private IEnumerator SmeltProcess(TYPE type)
+    private IEnumerator SmeltProcess(PhysicalMaterial.Type type)
     {
         yield return new WaitForSeconds(smeltDuration);
         source.PlayOneShot(doneCasting);
@@ -84,7 +84,7 @@ public class Smelter : MonoBehaviour {
 
         foreach(Ore ore in ores)
         {
-            if(ore.Type == ingot.PhysicalMaterial.Type)
+            if(ore.Type == ingot.PhysicalMaterial.type)
                 currentComp++;
         }
 
@@ -94,7 +94,7 @@ public class Smelter : MonoBehaviour {
     }
 
     // Counts the number of ores given a certain type
-    private int CountOresOfType(TYPE type)
+    private int CountOresOfType(PhysicalMaterial.Type type)
     {
         int count = 0;
 

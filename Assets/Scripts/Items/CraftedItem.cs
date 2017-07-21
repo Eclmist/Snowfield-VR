@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CraftedItem : GenericItem
 {
-    public GameObject fakeSelf;
+	[SerializeField] protected GameObject fakeSelf;
+	[SerializeField] protected PhysicalMaterial.Type materialType = PhysicalMaterial.Type.IRON;
+	[SerializeField] protected int weaponTier = 0;
 
     #region PlayerInteraction
     protected bool removable = true, toggled = false;
@@ -28,6 +30,21 @@ public class CraftedItem : GenericItem
         Debug.Log("You are using " + this.name);
     }
 
+
+	public GameObject GetFakeself()
+	{
+		return fakeSelf;
+	}
+
+	public PhysicalMaterial.Type GetPhysicalMaterial()
+	{
+		return materialType;
+	}
+
+	public int WeaponTier
+	{
+		get { return weaponTier; }
+	}
 
 
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)

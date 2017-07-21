@@ -11,10 +11,6 @@ public class SerializeManager
     public static void Save(string fileName, object obj)
     {
         fileName = "SerializedFiles/" + fileName;
-        SurrogateSelector surrogateSelector = new SurrogateSelector();
-        surrogateSelector.AddSurrogate(typeof(AudioClip), new StreamingContext(StreamingContextStates.All), new AudioClipSurrogate());
-        surrogateSelector.AddSurrogate(typeof(GameObject), new StreamingContext(StreamingContextStates.All), new GameobjectPathSurrogate(""));
-        binaryFormatter.SurrogateSelector = surrogateSelector;
 
         MemoryStream memoryStream = new MemoryStream();
         binaryFormatter.Serialize(memoryStream, obj);
