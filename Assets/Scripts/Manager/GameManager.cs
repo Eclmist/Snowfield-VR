@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     [Range(0.5f, 1)]
-    private float timeOfNight = .6f;
+    private float nightTime = .25f , dayTime = .75f;
     [SerializeField]
     [Range(0, 1)]
     private float startTime;
@@ -72,13 +72,13 @@ public class GameManager : MonoBehaviour {
 
     private void GameHandle()
     {
-        if (gameClock.TimeOfDay >= timeOfNight - preparationTime && currentState != GameState.NIGHTMODE)
+        if (gameClock.TimeOfDay >= nightTime - preparationTime && currentState != GameState.NIGHTMODE)
         {
             StartCoroutine(PrepareForNight());
             
             Debug.Log(GameClock.Day);
         }
-        else if (gameClock.TimeOfDay < timeOfNight - preparationTime && currentState != GameState.DAYMODE)
+        else if (gameClock.TimeOfDay > dayTime && gameClock.TimeOfDay < nightTime - preparationTime && currentState != GameState.DAYMODE)
         {
             currentState = GameState.DAYMODE;
             AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
     {
         currentState = GameState.NIGHTMODE;
         AIManager.Instance.SetAllAIState(ActorFSM.FSMState.IDLE);
-        while (gameClock.TimeOfDay < timeOfNight)
+        while (gameClock.TimeOfDay < nightTime)
             yield return new WaitForEndOfFrame();
         Debug.Log("StartNight");
         WaveManager.Instance.SpawnWave(gameClock.Day);

@@ -48,8 +48,8 @@ public abstract class AI : Actor
 
     public void ChangeState(ActorFSM.FSMState state)
     {
-        if(currentFSM)
-         currentFSM.ChangeState(state);
+        if (currentFSM)
+            currentFSM.ChangeState(state);
     }
 
     public override void TakeDamage(int damage, Actor attacker)
@@ -69,12 +69,22 @@ public abstract class AI : Actor
     public void UnEquipWeapons()
     {
         if (leftHand != null && leftHand.Item != null)
-            leftHand.Item.Unequip();
+        {
+            if (variable.GetCurrentHealth() > 0)
+                Destroy(leftHand.Item.gameObject);
+            else
+                leftHand.Item.Unequip();
+        }
         if (rightHand != null && rightHand.Item != null)
-            rightHand.Item.Unequip();
+        {
+            if (variable.GetCurrentHealth() > 0)
+                Destroy(rightHand.Item.gameObject);
+            else
+                rightHand.Item.Unequip();
+        }
     }
 
-    public virtual void LookAtObject(Transform target,float time,float angle)
+    public virtual void LookAtObject(Transform target, float time, float angle)
     {
         StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
     }
@@ -99,7 +109,7 @@ public abstract class AI : Actor
     {
         if (disablePS)
         {
-            Destroy(Instantiate(disablePS, transform.position, transform.rotation),3);
+            Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);
             gameObject.SetActive(true);
         }
     }
@@ -108,7 +118,7 @@ public abstract class AI : Actor
     {
         if (spawnPS)
         {
-            Destroy(Instantiate(spawnPS, transform.position, transform.rotation),3);
+            Destroy(Instantiate(spawnPS, transform.position, transform.rotation), 3);
             gameObject.SetActive(false);
         }
     }

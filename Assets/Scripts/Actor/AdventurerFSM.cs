@@ -125,12 +125,16 @@ public class AdventurerFSM : ActorFSM
     protected override void UpdatePetrolState()
     {
         base.UpdatePetrolState();
-        if (target is Monster && target.Health > 0)
+        if (target is Monster)
         {
-            if (Vector3.Distance(target.transform.position, transform.position) < detectionDistance)
+            if (target.Health > 0 && Vector3.Distance(target.transform.position, transform.position) < detectionDistance)
             {
                 ChangeState(FSMState.COMBAT);
             }
+        }
+        else if (WaveManager.Instance.HasMonster)
+        {
+            ChangeState(FSMState.IDLE);
         }
     }
     protected virtual void UpdateIdleStateDay()

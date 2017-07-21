@@ -43,6 +43,14 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    public bool HasMonster
+    {
+        get
+        {
+            return monstersInTheScene.Count > 0;
+        }
+    }
+
     protected void Start()
     {
         groups.Sort();
@@ -56,7 +64,7 @@ public class WaveManager : MonoBehaviour
     {
         float closestDistance = 999999;
         Monster monster = null;
-        foreach(Monster mob in monstersInTheScene)
+        foreach (Monster mob in monstersInTheScene)
         {
             float dist = Vector3.Distance(mob.transform.position, position);
             if (dist < closestDistance)
