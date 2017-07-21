@@ -48,7 +48,8 @@ public abstract class AI : Actor
 
     public void ChangeState(ActorFSM.FSMState state)
     {
-        currentFSM.ChangeState(state);
+        if(currentFSM)
+         currentFSM.ChangeState(state);
     }
 
     public override void TakeDamage(int damage, Actor attacker)

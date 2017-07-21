@@ -11,8 +11,7 @@ public class AdventurerAI : AI
     [SerializeField]
     protected AdventurerAIData data;
     [SerializeField]
-    private List<Equipment> inventory = new List<Equipment>();
-
+    private Inventory inventory;
 
     protected override void Awake()
     {
@@ -148,6 +147,7 @@ public class AdventurerAI : AI
             return;
         }
 
+        
     }
 
     protected System.Collections.IEnumerator StartInteraction(OptionPane op)

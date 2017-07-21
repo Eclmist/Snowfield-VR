@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour {
+public class ItemManager : MonoBehaviour
+{
 
 
     public static ItemManager Instance;
@@ -43,29 +44,38 @@ public class ItemManager : MonoBehaviour {
 
     void Start()
     {
-        foreach(ItemData data in itemDataList)
+        foreach (ItemData data in itemDataList)
         {
-            itemDictionary.Add(data.ItemID,data.ObjectReference);
-            itemDataDictionary.Add(data.ItemID,data);
+            itemDictionary.Add(data.ItemID, data.ObjectReference);
+            itemDataDictionary.Add(data.ItemID, data);
 
             GenericItem gs = data.ObjectReference.GetComponent<GenericItem>();
-            if(gs != null)
+            if (gs != null)
             {
                 gs.ItemID = data.ItemID;
             }
-
-
         }
-
-
-        
     }
 
-    public GameObject SpawnItem(int id,Transform trans)
+    public ItemData GetRandomUnlockedItem()
     {
-        if(id < itemDictionary.Count)
+        List<ItemData> tempData = new List<ItemData>();
+        tempData.AddRange(itemDataList);
+        tempData.RemoveAll(ItemData => ItemData.LevelUnlocked > Player.Instance.GetJob(ItemData.JobType).Level);
+        if (tempData.Count > 0)
         {
-            return Instantiate(itemDictionary[id],trans);
+            int randomVar = Random.Range(0, tempData.Count);
+            return tempData[randomVar];
+        }
+        else
+            return null;
+
+    }
+    public GameObject SpawnItem(int id, Transform trans)
+    {
+        if (id < itemDictionary.Count)
+        {
+            return Instantiate(itemDictionary[id], trans);
         }
         else
         {
@@ -85,7 +95,7 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
-    public ItemData GetItemData(int id )
+    public ItemData GetItemData(int id)
     {
         if (id < itemDataDictionary.Count)
         {
@@ -99,11 +109,11 @@ public class ItemManager : MonoBehaviour {
 
     public bool IsUnlocked(ItemData item)
     {
-        return (item.LevelUnlocked >= Player.Instance.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);   
+        return (item.LevelUnlocked >= Player.Instance.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);
     }
-    
-    
 
 
- 
+
+
+
 }
