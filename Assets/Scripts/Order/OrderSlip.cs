@@ -116,6 +116,7 @@ public class OrderSlip : VR_Interactable_UI
             if (interactingWeapon.ItemID == order.ItemID)
             {
                 OrderEnd(true);
+                GameManager.Instance.AddPlayerGold(reward);
                 Destroy(interactingWeapon.gameObject);
                 currentInteractingController.Model.SetActive(true);
                 Debug.Log("correcy");

@@ -782,7 +782,7 @@ GameObject:
   - component: {fileID: 4499820016490340}
   - component: {fileID: 114136839843194192}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SpellManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3858,16 +3858,17 @@ MonoBehaviour:
   vivePosition: {fileID: 0}
   data:
     baseStats:
-      baseHealth: 250
-      baseAttack: 5
+      baseHealth: 700
+      baseAttack: 10
       baseHealthRegeneration: 5
       baseMovementSpeed: 0
     combatJob:
       level: 0
-      damagePerLevel: 1
-      healthPerLevel: 1
-      healthRegenPerLevel: 0
+      damagePerLevel: 5
+      healthPerLevel: 20
+      healthRegenPerLevel: 1
     jobList: []
+    gold: 500
   inCombatZone: 0
 --- !u!114 &114289551214572104
 MonoBehaviour:
@@ -3899,7 +3900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalNodeEvent: 1
-  condition: 1
+  condition: 0
 --- !u!114 &114316995691647664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5680,7 +5681,7 @@ MonoBehaviour:
   - ID: 0
     prefab: {fileID: 1076468614313954, guid: 7d70d54d1b4f08645b2ca7cecba01904, type: 2}
     levelUnlocked: 1
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: 04dc892474f2b9c408c6824238b5609b, type: 3}
     maxStackSize: 64
     jobType: 0
   - ID: 1
@@ -5692,7 +5693,7 @@ MonoBehaviour:
   - ID: 2
     prefab: {fileID: 1909934928214322, guid: abf38aae2e8a38b4f874eb6f4281906e, type: 2}
     levelUnlocked: 3
-    icon: {fileID: 21300000, guid: 04dc892474f2b9c408c6824238b5609b, type: 3}
+    icon: {fileID: 21300000, guid: 22464120a6e2827409867e6d4ce70e07, type: 3}
     maxStackSize: 64
     jobType: 0
   - ID: 3

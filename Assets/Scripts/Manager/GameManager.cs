@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -63,6 +64,11 @@ public class GameManager : MonoBehaviour {
 	protected void Update()
     {
         GameHandle();
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
     }
 
     private void GameHandle()
@@ -100,7 +106,13 @@ public class GameManager : MonoBehaviour {
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
-        //set lose
+
+        // Set losing condition
+        if(Player.Instance.Gold <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+       
     }
 
     public void AddToPlayerInventory(ItemData data)

@@ -146,6 +146,7 @@ public class PlayerData : CombatActorData
     [SerializeField]
     protected List<Job> jobList = new List<Job>();
 
+    [SerializeField]
     protected int gold;
 
     public PlayerData(CombatJob _combatJob, Stats _stats, string _name, string _prefabPath = "") : base(_combatJob, _stats, _name, _prefabPath)
