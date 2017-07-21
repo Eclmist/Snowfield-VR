@@ -68,9 +68,9 @@ public class AdventurerFSM : ActorFSM
         }
         else
         {
-            Debug.Log((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied);
+            Debug.Log((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.IsInteractionAvailable())) && !targetShop.InteractionNode.Occupied);
             visitedShop.Add(targetShop);
-            if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied)
+            if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.IsInteractionAvailable())) && !targetShop.InteractionNode.Occupied)
             {
                 ChangePath(targetShop.InteractionNode);
                 ChangeState(FSMState.PETROL);
@@ -189,23 +189,23 @@ public class AdventurerFSM : ActorFSM
         target = actor;
         isHandlingAction = true;
         float waitTimer = 5;
-
-        while (isHandlingAction)
-        {
+        
+        while (isHandlingAction) { 
 
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
             {
                 Player player = target as Player;
-                if (currentAdventurerAI.GotLobang() || currentAdventurerAI.Interacting)
+                if (currentAdventurerAI.IsInteractionAvailable() || currentAdventurerAI.Interacting)
                 {
                     if (player.CheckConversingWith(currentAdventurerAI))
                     {
                         waitTimer = 5;
                         if (!currentAdventurerAI.Interacting)
                         {
-                            currentAdventurerAI.GetLobang();
+                            Debug.Log("hut");
+                            currentAdventurerAI.StartInteraction();
                         }
                     }
                     else

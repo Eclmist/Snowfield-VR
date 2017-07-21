@@ -9,13 +9,15 @@ public class Order {
     private Sprite sprite;
     private int duration;//i feel like having an actual time here would be better 
     private int goldReward;
+    private int id;
     
-    public Order(string _name, Sprite _sprite, int _duration, int _goldReward)
+    public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id)
     {
         name = _name;
         sprite = _sprite;
         duration = _duration;
         goldReward = _goldReward;
+        id = _id;
     }
 
     public string Name
@@ -37,6 +39,12 @@ public class Order {
     {
         get { return this.goldReward; }
     }
+
+    public int ItemID
+    {
+        get { return this.id; }
+    }
+
 
 
 }

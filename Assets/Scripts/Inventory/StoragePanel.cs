@@ -8,7 +8,6 @@ public class StoragePanel : Inventory {
 	[SerializeField]
 	private GameObject interactiveSlot;
 	[SerializeField]
-	private GameObject panel;	// The physical storage panel
 	private GameObject slotPanel;	// Contains the gridLayoutGroup
     private GridLayoutGroup glp;
 
@@ -30,7 +29,6 @@ public class StoragePanel : Inventory {
 	{
         base.Start();
 
-        slotPanel = panel.transform.Find("slotPanel").gameObject;
         glp = slotPanel.GetComponent<GridLayoutGroup>();
 		InitializeInteractableSlots ();
 	}

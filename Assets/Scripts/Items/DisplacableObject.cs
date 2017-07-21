@@ -45,13 +45,10 @@ public class DisplacableObject : VR_Interactable_Object
 
     public override void OnTriggerHold(VR_Controller_Custom controller)
     {
-        if (currentInteractingController != null)
-        {
-            controller.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
+        controller.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
-            Vector3 PositionDelta = (controller.transform.position - transform.position);
+        Vector3 PositionDelta = (controller.transform.position - transform.position);
 
-            rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
-        }
+        rigidBody.velocity = PositionDelta * 20 * rigidBody.mass;
     }
 }

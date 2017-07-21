@@ -20,6 +20,9 @@ public class TeleportVive : MonoBehaviour {
     [Tooltip("The player feels a haptic pulse in the controller when they raise / lower the controller by this many degrees.  Lower value = faster pulses.")]
     public float HapticClickAngleStep = 10;
 
+	[SerializeField]
+	public Transform target;
+
     /// BorderRenderer to render the chaperone bounds (when choosing a location to teleport to)
     private BorderRenderer RoomBorder;
 
@@ -163,20 +166,44 @@ public class TeleportVive : MonoBehaviour {
         {
             // Wait until half of the teleport time has passed before the next event (note: both the switch from fade
             // out to fade in and the switch from fade in to stop the animation is half of the fade duration)
-            if(Time.time - TeleportTimeMarker >= TeleportFadeDuration / 2)
+            if (Time.time - TeleportTimeMarker >= TeleportFadeDuration / 2)
             {
-                if(FadingIn)
+                if (FadingIn)
                 {
                     // We have finished fading in
                     CurrentTeleportState = TeleportState.None;
-                } else
-                {
-                    // We have finished fading out - time to teleport!
-                    Vector3 offset = OriginTransform.position - HeadTransform.position;
-                    offset.y = 0;
-                    OriginTransform.position = Pointer.SelectedPoint + offset;
                 }
+                else
+                {
+                    //Change origin transform to target transform (teleportation plane outside the shop)
+                    if ((Pointer.SelectedPoint.x <= target.position.x + 1 && Pointer.SelectedPoint.x >= target.position.x - 1)
+                        && (Pointer.SelectedPoint.y <= target.position.y + 1 && Pointer.SelectedPoint.y >= target.position.y - 1)
+                        && (Pointer.SelectedPoint.z <= target.position.z + 1 && Pointer.SelectedPoint.z >= target.position.z - 1))
+                    {
+                        if (((OriginTransform.position.x <= target.position.x + 1 && OriginTransform.position.x >= target.position.x - 1)
+                        && (OriginTransform.position.y <= target.position.y + 1 && OriginTransform.position.y >= target.position.y - 1)
+                        && (OriginTransform.position.z <= target.position.z + 1 && OriginTransform.position.z >= target.position.z - 1)))
+                        {
+                            FadingIn = !FadingIn;
+                            CurrentTeleportState = TeleportState.None;
+                        }
+                        else
+                        {
+                            OriginTransform.position = Pointer.SelectedPoint;
+                        }
 
+                        //Player.Instance.InCombatZone(true);
+                    }
+                    else // We have finished fading out - time to teleport!         
+                    {
+                        //Player.Instance.InCombatZone(false);
+                        OriginTransform.position = Pointer.SelectedPoint;
+
+                        Vector3 offset = OriginTransform.position - HeadTransform.position;
+                        offset.y = 0;
+                        OriginTransform.position = Pointer.SelectedPoint + offset;
+                    }
+                }
                 TeleportTimeMarker = Time.time;
                 FadingIn = !FadingIn;
             }

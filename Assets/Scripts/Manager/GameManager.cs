@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
+    public AI ai;
 
     #region ClockRegion
     [SerializeField] [Range(1, 10000)] public float secondsPerDay;
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    protected void Update()
+	protected void Update()
     {
         GameHandle();
     }
