@@ -67,7 +67,6 @@ public class SpellController : MonoBehaviour {
             Spell spellInstance = Instantiate(spell, vrController.transform).GetComponent<Spell>();
             vrController.SetInteraction(spellInstance);
             spellInstance.LinkedController = vrController;
-            
         }
     }
 
