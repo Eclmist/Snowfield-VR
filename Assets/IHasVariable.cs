@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public interface IHasVariable  {
 
     int MaxHealth

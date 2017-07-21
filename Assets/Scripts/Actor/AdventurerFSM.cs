@@ -81,8 +81,9 @@ public class AdventurerFSM : ActorFSM
         }
         else
         {
+            Debug.Log((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied);
             visitedShop.Add(targetShop);
-            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang() && !targetShop.InteractionNode.Occupied))
+            if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied)
             {
                 ChangePath(targetShop.InteractionNode);
                 ChangeState(FSMState.PETROL);

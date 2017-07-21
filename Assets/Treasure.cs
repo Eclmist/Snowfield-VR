@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CombatVariable))]
 public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
 
     protected CombatVariable variable;
@@ -41,7 +42,7 @@ public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
         variable.ReduceHealth(Damage);
         if (Health <= 0)
         {
-
+            actor.TakeDamage(9999999, null);
             Destroy(gameObject);
         }
     }

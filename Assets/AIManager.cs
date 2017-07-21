@@ -14,6 +14,9 @@ public class AIManager : MonoBehaviour
 
     public static AIManager Instance;
 
+    [SerializeField]
+    [Range(10,50)]
+    protected int timeBetweenAISpawn;
 
 
     protected void Awake()
@@ -57,16 +60,19 @@ public class AIManager : MonoBehaviour
             }
         }
 
+        int timePeriod = 0;
         foreach (AdventurerAIData data in listOfAIData)
         {
+            timePeriod += timeBetweenAISpawn;
             AI newActor = ((GameObject)Resources.Load(data.Path)).GetComponent<AI>();
             AI ai = Instantiate(newActor).GetComponent<AI>();
             ai.Data = data;
             allAIsInScene.Add(ai);
             ai.gameObject.SetActive(false);
-            StartCoroutine(SpawnCoroutine(ai, Random.Range(1, 20), TownManager.Instance.GetRandomSpawnPoint()));
+            StartCoroutine(SpawnCoroutine(ai, timePeriod, TownManager.Instance.GetRandomSpawnPoint()));
         }
     }
+
     protected AdventurerAIData CreateNewAdventurerAI()
     {
         AI newAI = GetRandomAIType();
