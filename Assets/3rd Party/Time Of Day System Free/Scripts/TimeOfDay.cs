@@ -459,14 +459,17 @@ namespace AC.TimeOfDaySystemFree
 
 			// Prevent the current time exceeds the day duration.
 			if (timeline > k_DayDuration) timeline = 0; 
-			if (timeline < 0)          timeline = k_DayDuration; 
+			if (timeline < 0)          timeline = k_DayDuration;
 
 			//timeline = Mathf.Repeat(timeline, k_DayDuration);
 			//---------------------------------------------------------------------------------
 
 			// Play time.
-			if (playTime && Application.isPlaying) 
-				timeline  += (Time.deltaTime / dayInSeconds) * k_DayDuration;
+			if (playTime && Application.isPlaying)
+			{
+				//timeline  += (Time.deltaTime / dayInSeconds) * k_DayDuration;
+				timeline = GameManager.Instance.GameClock.TimeOfDay * 24;
+			}
 			//---------------------------------------------------------------------------------
 
 			// Get hour and minutes.
