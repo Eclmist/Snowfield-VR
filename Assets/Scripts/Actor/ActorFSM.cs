@@ -34,7 +34,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected Animator animator;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
-
+    protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
 
 
@@ -76,6 +76,9 @@ public abstract class ActorFSM : MonoBehaviour
             case FSMState.DEATH:
                 animator.SetBool("Death", true);
                 break;
+            case FSMState.PETROL:
+                SetNodeOffset();
+                break;
             default:
                 break;
         }
@@ -98,6 +101,17 @@ public abstract class ActorFSM : MonoBehaviour
         set
         {
             target = value;
+        }
+    }
+
+    public void SetNodeOffset()
+    {
+        pathNodeOffset.Clear();
+        foreach(Node n in path)
+        {
+            Vector2 newVec2 = Random.insideUnitCircle * .5f;
+            Vector3 newVec3 = new Vector3(newVec2.x, 0, newVec2.y);
+            pathNodeOffset.Add(newVec2);
         }
     }
     // Use this for initialization
@@ -227,6 +241,7 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 path[0].Occupied = false;
                 path.RemoveAt(0);
+                pathNodeOffset.RemoveAt(0);
                 ChangeState(FSMState.PETROL);
                 return;
             }
@@ -248,7 +263,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
         else
         {
-            Vector3 targetPoint = path[0].Position;
+            Vector3 targetPoint = path[0].Position + pathNodeOffset[0];
             targetPoint.y = transform.position.y;
             if (path.Count == 1 && path[0].Occupied)
             {
@@ -273,7 +288,10 @@ public abstract class ActorFSM : MonoBehaviour
                         ChangeState(FSMState.EVENTHANDLING);
                     }
                     else
+                    {
                         path.RemoveAt(0);
+                        pathNodeOffset.RemoveAt(0);
+                    }
                 }
             }
         }

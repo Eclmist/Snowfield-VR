@@ -112,6 +112,7 @@ public class Node : MonoBehaviour, IBundle<Node>
     {
         get
         {
+            
             return worldPosition;
         }
     }
