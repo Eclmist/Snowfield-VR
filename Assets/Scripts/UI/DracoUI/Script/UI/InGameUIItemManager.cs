@@ -43,17 +43,5 @@ public class InGameUIItemManager : MonoBehaviour {
 		
 	}
 
-    public GameObject GetSpecificOption(string n)
-    {
-        Transform temp = null;
-        foreach (Transform t in options)
-        {
-            if (t.name == n)
-            {
-                temp = t;
-                
-            }
-        }
-        return temp.gameObject;
-    }
+    
 }

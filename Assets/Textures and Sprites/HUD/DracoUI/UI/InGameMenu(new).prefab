@@ -231,7 +231,6 @@ GameObject:
   - component: {fileID: 114150979176394936}
   - component: {fileID: 114550630905172328}
   - component: {fileID: 95893294267717584}
-  - component: {fileID: 65331759222974130}
   - component: {fileID: 114225795178251830}
   - component: {fileID: 222200256322283754}
   - component: {fileID: 114070470605490370}
@@ -905,18 +904,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 49.9, y: 18.58, z: 14.33}
   m_Center: {x: 0, y: 0, z: 3.8}
---- !u!65 &65331759222974130
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1224607668259974}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65361192123099600
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1333,6 +1320,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+        - m_Target: {fileID: 114225795178251830}
+          m_MethodName: QuitGame
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
     onTriggerHold:
@@ -1514,51 +1512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e54f2c35dde83243845f6f497e78522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
-  useTransitions: 1
-  targetGraphic: {fileID: 114070470605490370}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  hightlightedColor: {r: 1, g: 1, b: 1, a: 1}
-  pressedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  disabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  fadeDuration: 0.1
-  events:
-    onControllerEnter:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onControllerStay:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onControllerExit:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onTriggerPress:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onTriggerHold:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onTriggerRelease:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
   prefabs:
     characterScreen: {fileID: 1939217184152526}
     settingsScreen: {fileID: 1101945231352730}
+    quitPrompt: {fileID: 0}
 --- !u!114 &114242664440176662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,7 +1556,40 @@ MonoBehaviour:
         PublicKeyToken=null
     onTriggerPress:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 114225795178251830}
+          m_MethodName: QuitGame
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 114225795178251830}
+          m_MethodName: CharacterActivation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 114225795178251830}
+          m_MethodName: SettingsActivation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
     onTriggerHold:
@@ -2681,18 +2671,7 @@ MonoBehaviour:
   events:
     onControllerEnter:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 114225795178251830}
-          m_MethodName: CharactersHover
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
+        m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
     onControllerStay:
@@ -2732,6 +2711,17 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 114225795178251830}
           m_MethodName: SettingsActivation
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 114225795178251830}
+          m_MethodName: QuitGame
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
