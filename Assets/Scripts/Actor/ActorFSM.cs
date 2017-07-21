@@ -109,7 +109,7 @@ public abstract class ActorFSM : MonoBehaviour
         pathNodeOffset.Clear();
         foreach(Node n in path)
         {
-            Vector2 newVec2 = Random.insideUnitCircle * .5f;
+            Vector2 newVec2 = Random.insideUnitCircle * .25f;
             Vector3 newVec3 = new Vector3(newVec2.x, 0, newVec2.y);
             pathNodeOffset.Add(newVec2);
         }
@@ -144,6 +144,7 @@ public abstract class ActorFSM : MonoBehaviour
     {
         rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
         rigidBody.angularVelocity = Vector3.zero;
+        UpdateAnyState();
         switch (currentState)
         {
             case FSMState.EVENTHANDLING:
@@ -162,12 +163,13 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
+    protected virtual void UpdateAnyState() { }
     protected abstract void UpdateIdleState();
     private bool backing = false;
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null && target.CanBeAttacked)
+        if (target != null && target.CanBeAttacked && !requestedPath)
         {
             float tempAttackRange = attackRange;
             if (target is Player)

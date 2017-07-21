@@ -7,8 +7,8 @@ public class MultiActorUI : MonoBehaviour
 	[SerializeField] private Transform initiator;
 	[SerializeField] private Transform receiver;
 
-	[SerializeField] private float initiatorHeight = 1.5F;
-	[SerializeField] private float receiverHeight = 1.5F;
+    private float heightOffset = -0.25F;
+    [SerializeField] private float receiverHeight = 1.5F;
 
 	private float distanceFromActor = 0.5F;
 	private float rotationSpeed = 1;
@@ -43,7 +43,7 @@ public class MultiActorUI : MonoBehaviour
 		Vector3 targetPosition = initiator.transform.position +
 			(receiver.transform.position - initiator.transform.position).normalized * distanceFromActor;
 
-		targetPosition.y = initiatorHeight;
+		targetPosition.y = Player.Instance.CurrentGroundHeight + Player.Instance.height + heightOffset;
 		transform.position = targetPosition;
 
 		// Set starting rotation

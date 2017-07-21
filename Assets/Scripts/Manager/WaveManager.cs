@@ -55,10 +55,6 @@ public class WaveManager : MonoBehaviour
     protected void Start()
     {
         groups.Sort();
-        for(int i = 0;i < groups.Count; i++)
-        {
-            Debug.Log(groups[i].cost);
-        }
     }
     public void DestroyMonster(Monster monster)
     {

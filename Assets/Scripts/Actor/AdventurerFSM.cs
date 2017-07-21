@@ -54,19 +54,6 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
-    protected override void UpdateIdleState()
-    {
-        switch (GameManager.Instance.State)
-        {
-            case GameManager.GameState.DAYMODE:
-                UpdateIdleStateDay();
-                return;
-            case GameManager.GameState.NIGHTMODE:
-                UpdateIdleStateNight();
-                break;
-        }
-    }
-
     protected virtual void UpdateShoppingState()
     {
         float val = Random.value;
@@ -96,48 +83,22 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
-    protected virtual void UpdateIdleStateNight()
+    protected override void UpdateAnyState()
     {
-        if (pathFound)
-        {
-            ChangeState(FSMState.PETROL);
-        }
-        else if (!requestedPath)
+        base.UpdateAnyState();
+        if (WaveManager.Instance.HasMonster)
         {
             Monster mob = WaveManager.Instance.GetClosestMonster(transform.position);
-            nextState = FSMState.IDLE;
-            if (!mob)
+            if (mob != null && Vector3.Distance(transform.position, mob.transform.position) < detectionDistance)
             {
-                Node endPoint = TownManager.Instance.GetRandomSpawnPoint();
-                AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
-                requestedPath = true;
-
-            }
-            else
-            {
-                AStarManager.Instance.RequestPath(transform.position, mob.transform.position, ChangePath);
-                requestedPath = true;
+                ChangeState(FSMState.COMBAT);
                 target = mob;
             }
         }
     }
 
-    protected override void UpdatePetrolState()
-    {
-        base.UpdatePetrolState();
-        if (target is Monster)
-        {
-            if (target.Health > 0 && Vector3.Distance(target.transform.position, transform.position) < detectionDistance)
-            {
-                ChangeState(FSMState.COMBAT);
-            }
-        }
-        else if (WaveManager.Instance.HasMonster)
-        {
-            ChangeState(FSMState.IDLE);
-        }
-    }
-    protected virtual void UpdateIdleStateDay()
+    
+    protected override void UpdateIdleState()
     {
         if (pathFound)
         {
@@ -148,12 +109,6 @@ public class AdventurerFSM : ActorFSM
             Shop _targetShop = TownManager.Instance.GetRandomShop(visitedShop);
             if (_targetShop != null)//And check for anymore shop
             {
-                //if (_targetShop.Owner == Player.Instance && !(currentAI as AdventurerAI).GotLobang())
-                //{
-                //    if (TownManager.Instance.NumberOfShopsUnvisited(visitedShop) == 1)
-                //        visitedShop.Add(_targetShop);
-                //    return;
-                //}
                 targetShop = _targetShop;
                 AStarManager.Instance.RequestPath(transform.position, _targetShop.Location.Position, ChangePath);
                 requestedPath = true;

@@ -136,9 +136,13 @@ public class AdventurerAI : AI
 
 
         QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
+        //Vector3 tempPosition = new Vector3(transform.position.x, transform.position.y + Player.Instance.height *  200, transform.position.z);
+
         if (completableGroup != null)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK,
+                "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup),
+                transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
             StartCoroutine(StartInteraction(op));
             return;
@@ -148,7 +152,9 @@ public class AdventurerAI : AI
 
         if (startableQuest != null)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
+                "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
+                transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
             op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
             StartCoroutine(StartInteraction(op));
