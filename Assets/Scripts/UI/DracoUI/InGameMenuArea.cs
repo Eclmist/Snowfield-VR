@@ -19,16 +19,19 @@ public class InGameMenuArea : MonoBehaviour
    
     public void CharacterActivation(bool active)
     {
-        prefabs.characterScreen.SetActive(active);
+        if (prefabs.characterScreen != null)
+            prefabs.characterScreen.SetActive(active);
     }
 
     public void SettingsActivation(bool active)
     {
-        prefabs.settingsScreen.SetActive(active);
+        if (prefabs.settingsScreen != null)
+            prefabs.settingsScreen.SetActive(active);
     }
 
     public void QuitGame(bool active)
-    {
-        prefabs.quitPrompt.SetActive(active);
+    { 
+        if(prefabs.quitPrompt != null)
+            prefabs.quitPrompt.SetActive(active);
     }
 }
