@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 4128545148083050}
   - component: {fileID: 135655742198146616}
   - component: {fileID: 114226700775773248}
+  - component: {fileID: 114774027223022424}
   m_Layer: 9
   m_Name: Node(Clone)
   m_TagString: Untagged
@@ -472,6 +473,7 @@ GameObject:
   - component: {fileID: 4393352656344268}
   - component: {fileID: 135442597001762286}
   - component: {fileID: 114849018419987670}
+  - component: {fileID: 114612988950899186}
   m_Layer: 9
   m_Name: Node(Clone)
   m_TagString: Untagged
@@ -2296,7 +2298,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTown: {fileID: 0}
-  timer: 0
 --- !u!114 &114431724265684780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2367,7 +2368,25 @@ MonoBehaviour:
       costMultiplier: 0
       conductivity: 0
       Type: 0
-    referenceItemID: 0
+    referenceItemID: 6
+  - baseGold: 1000
+    duration: 20
+    jobType: 0
+    physicalMaterial:
+      m_name: 
+      costMultiplier: 0
+      conductivity: 0
+      Type: 0
+    referenceItemID: 7
+  - baseGold: 1000
+    duration: 20
+    jobType: 0
+    physicalMaterial:
+      m_name: 
+      costMultiplier: 0
+      conductivity: 0
+      Type: 0
+    referenceItemID: 8
 --- !u!114 &114473612578017656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2456,6 +2475,19 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+--- !u!114 &114612988950899186
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1523031952773764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a7d1ae5390af349b52e32d30092f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalNodeEvent: 1
+  condition: 1
 --- !u!114 &114637766349255086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2516,6 +2548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af54b2bb5bac5b44a9072b40a9dd2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ai: {fileID: 0}
   secondsPerDay: 3600
   timeOfNight: 0.75
   preparationTime: 0.027
@@ -2537,15 +2570,15 @@ MonoBehaviour:
   vivePosition: {fileID: 0}
   data:
     baseStats:
-      baseHealth: 0
-      baseAttack: 0
-      baseHealthRegeneration: 0
+      baseHealth: 250
+      baseAttack: 5
+      baseHealthRegeneration: 5
       baseMovementSpeed: 0
     combatJob:
       level: 0
-      damagePerLevel: 3
-      healthPerLevel: 3
-      healthRegenPerLevel: 3
+      damagePerLevel: 1
+      healthPerLevel: 1
+      healthRegenPerLevel: 0
     jobList: []
 --- !u!114 &114737127394102556
 MonoBehaviour:
@@ -3467,6 +3500,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114774027223022424
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1423404612263038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a7d1ae5390af349b52e32d30092f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalNodeEvent: 1
+  condition: 1
 --- !u!114 &114796398462570948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3579,6 +3625,24 @@ MonoBehaviour:
     prefab: {fileID: 1686096369669438, guid: 27ca51e1eef140e4d9753c791d7fc478, type: 2}
     levelUnlocked: 9
     icon: {fileID: 0}
+    maxStackSize: 64
+    jobType: 0
+  - ID: 6
+    prefab: {fileID: 108546, guid: f7b20b29a2f19314ca70d24392e49c2a, type: 2}
+    levelUnlocked: 0
+    icon: {fileID: 21300000, guid: bca0c6fee1a72c14c8009c380272af67, type: 3}
+    maxStackSize: 64
+    jobType: 0
+  - ID: 7
+    prefab: {fileID: 159586, guid: b1ae6b4b960b48944ab71ce123f07e01, type: 2}
+    levelUnlocked: 0
+    icon: {fileID: 21300000, guid: 1f6d7be35bca30d4dad2d4f9425aab83, type: 3}
+    maxStackSize: 64
+    jobType: 0
+  - ID: 8
+    prefab: {fileID: 111098, guid: 204b39ed42e76c04ba8cb7bccae68d29, type: 2}
+    levelUnlocked: 0
+    icon: {fileID: 21300000, guid: 25e64347ab3cfc84ebf39b751a75efe3, type: 3}
     maxStackSize: 64
     jobType: 0
 --- !u!114 &114849018419987670
