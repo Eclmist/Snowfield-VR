@@ -95,7 +95,8 @@ public class VR_Button : VR_Interactable_UI
 
 		if (useTransitions)
 		{
-			targetGraphic.CrossFadeColor(hightlightedColor, fadeDuration, true, true);
+            if(targetGraphic)
+			    targetGraphic.CrossFadeColor(hightlightedColor, fadeDuration, true, true);
 		}
 	}
 

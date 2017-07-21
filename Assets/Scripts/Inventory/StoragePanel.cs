@@ -5,7 +5,15 @@ using UnityEngine.UI;
 
 public class StoragePanel : Inventory {
 
-	[SerializeField]
+    public static StoragePanel Instance;
+
+    private void Awake()
+    {
+        Instance = this;   
+    }
+
+    private List<InventorySlot> slotReferenceList = new List<InventorySlot>();
+    [SerializeField]
 	private GameObject interactiveSlot;
 	[SerializeField]
 	private GameObject slotPanel;	// Contains the gridLayoutGroup
@@ -37,6 +45,11 @@ public class StoragePanel : Inventory {
 	void Update()
 	{
         safeToUse = numberOfHoveredSlots <= 1;
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log(StoreInAvailableSlot(ItemManager.Instance.GetItemData(6),2));
+        }
 	}
 
     
@@ -52,10 +65,29 @@ public class StoragePanel : Inventory {
             g.transform.localScale = Vector3.one;
 
             g.GetComponent<InteractableSlot>().Slot = slot;
+            slotReferenceList.Add(g.GetComponent<InteractableSlot>().Slot);
 
 		}
 
 	}
+
+    public bool StoreInAvailableSlot(IStorable item,int quantity)
+    {
+        foreach(InventorySlot slot in slotReferenceList)
+        {
+            if(slot.StoredItem == null)
+            {
+                slot.StoredItem = item;
+                slot.CurrentStack = quantity;
+                return true;
+
+            }
+        }
+
+        return false;
+    }
+
+
 
 
 
