@@ -167,11 +167,11 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null && target.Health > 0)
+        if (target != null && target.CanBeAttacked)
         {
             float tempAttackRange = attackRange;
             if (target is Player)
-                tempAttackRange += 3;
+                tempAttackRange += 1;
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -435,6 +435,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public void DamageTaken(Actor attacker)
     {
+        Debug.Log(attacker);
         if (!(target is Actor))
         {
             ChangeState(FSMState.COMBAT);

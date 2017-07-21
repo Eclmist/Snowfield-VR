@@ -23,6 +23,13 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
         set;
     }
 
+    public virtual bool CanBeAttacked
+    {
+        get
+        {
+            return gameObject.activeSelf && Health > 0;
+        }
+    }
     public int MaxHealth
     {
         get
@@ -35,6 +42,7 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
     {
         get
         {
+            Debug.Log(variable);
             return variable.GetCurrentHealth();
         }
     }

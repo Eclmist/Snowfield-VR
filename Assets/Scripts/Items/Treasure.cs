@@ -10,6 +10,13 @@ public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
     [SerializeField]
     protected int maxHealth, healthRegeneration;
 
+    public bool CanBeAttacked
+    {
+        get
+        {
+            return true;
+        }
+    }
     protected void Awake()
     {
         variable = GetComponent<CombatVariable>();

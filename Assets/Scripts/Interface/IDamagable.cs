@@ -12,6 +12,10 @@ public interface IDamagable
 
     void TakeDamage(int damage, Actor attacker);
 
+    bool CanBeAttacked
+    {
+        get;
+    }
     Transform transform
     {
         get;

@@ -10,7 +10,8 @@ public class WaveGroup : IComparable
     public int cost;
     public int CompareTo(object obj)
     {
-        return cost < ((WaveGroup)obj).cost ? 1 : -1;
+        WaveGroup other = (WaveGroup)obj;
+        return this.cost.CompareTo(other.cost);
     }
 }
 public class WaveManager : MonoBehaviour
@@ -54,6 +55,10 @@ public class WaveManager : MonoBehaviour
     protected void Start()
     {
         groups.Sort();
+        for(int i = 0;i < groups.Count; i++)
+        {
+            Debug.Log(groups[i].cost);
+        }
     }
     public void DestroyMonster(Monster monster)
     {

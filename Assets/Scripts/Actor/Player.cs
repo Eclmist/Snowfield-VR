@@ -18,6 +18,27 @@ public class Player : Actor
     [SerializeField]
     protected PlayerData data;
 
+    protected bool inCombatZone = true;
+
+    public bool InCombatZone
+    {
+        get
+        {
+            return inCombatZone;
+        }
+        set
+        {
+            inCombatZone = value;
+        }
+    }
+
+    public override bool CanBeAttacked
+    {
+        get
+        {
+            return base.CanBeAttacked && inCombatZone;
+        }
+    }
     public override ActorData Data
     {
         get
