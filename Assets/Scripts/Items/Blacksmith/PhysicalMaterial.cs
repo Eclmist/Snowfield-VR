@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TYPE
-{
-    IRON,
-    COPPER,
-    STEEL,
-    BRONZE,
-    ADAMANTITE,
-    PLATINUM
-};
-
 [System.Serializable]
 public class PhysicalMaterial {
 
-    [SerializeField]private string m_name;
+	public enum Type
+	{
+		IRON,
+		COPPER,
+		STEEL,
+		BRONZE,
+		ADAMANTITE,
+		PLATINUM
+	};
+
+	[SerializeField]private string m_name;
     [SerializeField]private int costMultiplier;
     
 
@@ -23,7 +23,7 @@ public class PhysicalMaterial {
     [Range(1, 100)]
     protected float conductivity; // Acts as a multiplier for the heating rate
 
-    public TYPE Type;
+    public PhysicalMaterial.Type type;
 
     public int CostMultiplier
     {

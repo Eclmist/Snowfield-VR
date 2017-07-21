@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [System.Serializable]
-public class ItemData : IStorable {
+public class ItemData : IStorable, IComparable {
 
     [SerializeField]
     private int ID;
@@ -52,6 +53,17 @@ public class ItemData : IStorable {
         get { return this.jobType; }
     }
 
+	public int CompareTo(object obj)
+	{
+		Weapon currentWeapon = ObjectReference.GetComponent<Weapon>();
 
+		if (!currentWeapon)
+			return ID.CompareTo(((ItemData)obj).ID);
+		else
+		{
+			Weapon otherWeapon = ((ItemData)obj).ObjectReference.GetComponent<Weapon>();
 
+			return currentWeapon.WeaponTier.CompareTo(otherWeapon.WeaponTier);
+		}
+	}
 }

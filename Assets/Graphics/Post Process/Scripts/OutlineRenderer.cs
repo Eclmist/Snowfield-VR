@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ImageEffectAllowedInSceneView]
 [RequireComponent(typeof(Camera))]
 public class OutlineRenderer : MonoBehaviour
 {
