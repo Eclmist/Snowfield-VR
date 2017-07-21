@@ -107,9 +107,13 @@ public class GameManager : MonoBehaviour {
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
+        //set lose
     }
 
-    
+    public void AddToPlayerInventory(ItemData data)
+    {
+        //YP ADD PLEASE
+    }
 
 
 

@@ -14,6 +14,7 @@ public class AdventurerAI : AI
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
 
+    private bool hasSold;
     protected override void Awake()
     {
         base.Awake();
@@ -124,7 +125,7 @@ public class AdventurerAI : AI
     public bool GotLobang()
     {
 
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null)
+        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasSold)
             return true;
 
         return false;
@@ -154,9 +155,25 @@ public class AdventurerAI : AI
             return;
         }
 
+        sellItemData = ItemManager.Instance.GetRandomUnlockedItem();
+        hasSold = true;
+        if(sellItemData != null)
+        {
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "SellItem", data.Name + "has sold you" + sellItemData.ObjectReference.name, transform.position, Player.Instance.transform, transform);
+            op.SetEvent(OptionPane.ButtonType.Ok, SellItemDelegate);
+            StartCoroutine(StartInteraction(op));
+        }
+        
 
     }
+    ItemData sellItemData = null;
 
+    protected void SellItemDelegate()
+    {
+        GameManager.Instance.AddPlayerGold(0);//fix this yp
+        GameManager.Instance.AddToPlayerInventory(sellItemData);
+
+    }
     protected System.Collections.IEnumerator StartInteraction(OptionPane op)
     {
         isInteracting = true;
@@ -221,6 +238,7 @@ public class AdventurerAI : AI
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
         data.QuestBook.ResetChecked();
+        hasSold = false;
         ChangeState(ActorFSM.FSMState.IDLE);
     }
 
