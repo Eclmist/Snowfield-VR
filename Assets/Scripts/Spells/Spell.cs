@@ -5,22 +5,58 @@ using UnityEngine;
 
 public class Spell : VR_Interactable
 {
+    [SerializeField]
+    protected GameObject spellPrefab;
+    [SerializeField]
+    protected GameObject indicator;
 
-    private GameObject spellPrefab;
-
+    protected GameObject spellGO;
+    //protected bool isCasted;
 
     public GameObject SpellPrefab
     {
         get { return this.spellPrefab; }
     }
 
-
+    public GameObject Indicator
+    {
+        get { return this.indicator; }
+    }
 
     protected virtual void Cast()
     {
-        Debug.Log("fire!fire!");
+        //if (!isCasted)
+        //{
+        //    var em = indicator.GetComponent<ParticleSystem>().emission;
+        //    em.enabled = false;
+
+        //    spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+
+        //    isCasted = true;
+        //}
+        //else
+        //{
+        //    var em = spellGO.GetComponent<ParticleSystem>().emission;
+            
+        //    var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+
+        //    em.enabled = false;
+        //    emsmoke.enabled = false;
+
+        //    Destroy(spellGO, 3);
+        //    Destroy(indicator, 3);
+        //}
     }
 
+    protected virtual void Hold()
+    {
+        Debug.Log("Holding");
+    }
+
+    protected virtual void Release()
+    {
+
+    }
 
     public override void OnInteracting(VR_Controller_Custom controller)
     {
@@ -33,9 +69,15 @@ public class Spell : VR_Interactable
         Cast();
     }
 
+   
+    public override void OnTriggerHold(VR_Controller_Custom controller)
+    {
+       
+        Hold();
+    }
 
-
-
-
-
+    public override void OnTriggerRelease(VR_Controller_Custom controller)
+    {
+        Release();
+    }
 }

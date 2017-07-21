@@ -43,6 +43,14 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
+    public Controller_Handle Handle
+    {
+        get
+        {
+            return handle;
+        }
+    }
+
     void Awake()
     {
         trackedObject = GetComponent<SteamVR_TrackedObject>();
