@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Events;
+
 public class AIManager : MonoBehaviour
 {
 
@@ -14,6 +14,9 @@ public class AIManager : MonoBehaviour
 
     public static AIManager Instance;
 
+    [SerializeField]
+    [Range(10,50)]
+    protected int timeBetweenAISpawn;
 
 
     protected void Awake()
@@ -57,21 +60,25 @@ public class AIManager : MonoBehaviour
             }
         }
 
+        int timePeriod = 0;
         foreach (AdventurerAIData data in listOfAIData)
         {
+            timePeriod += timeBetweenAISpawn;
             AI newActor = ((GameObject)Resources.Load(data.Path)).GetComponent<AI>();
             AI ai = Instantiate(newActor).GetComponent<AI>();
             ai.Data = data;
             allAIsInScene.Add(ai);
             ai.gameObject.SetActive(false);
-            StartCoroutine(SpawnCoroutine(ai, Random.Range(1, 20), TownManager.Instance.GetRandomSpawnPoint()));
+            StartCoroutine(SpawnCoroutine(ai, timePeriod, TownManager.Instance.GetRandomSpawnPoint()));
         }
     }
+
     protected AdventurerAIData CreateNewAdventurerAI()
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        AdventurerAIData newData = new AdventurerAIData(newAI.Data.Name,(newAI.Data as AdventurerAIData).CurrentJob.DPL, (newAI.Data as AdventurerAIData).CurrentJob.HPL, (newAI.Data as AdventurerAIData).CurrentJob.HRPL, newAI.MovementSpeed,myPath);//Random name gen
+        Stats newAIBaseStats = newAI.Data.BaseStats;
+        AdventurerAIData newData = new AdventurerAIData((newAI.Data as AdventurerAIData).CurrentJob, newAIBaseStats, newAI.Data.Name,myPath);//Random name gen
         return newData;
     }
 

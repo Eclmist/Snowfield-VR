@@ -52,7 +52,7 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
         ControllerInput();
-        
+
     }
 
     private void Update()
@@ -74,8 +74,8 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         if (interactable != null)
         {
-            
-            
+
+
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerHold(this);
             

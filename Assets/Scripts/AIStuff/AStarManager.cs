@@ -65,7 +65,6 @@ public class AStarManager : MonoBehaviour
         lock (requestQueue)
         {
             requestQueue.Add(newRequest);
-            requestQueue.Sort();
         }
         
     }
@@ -202,13 +201,4 @@ public struct PathRequest
         callBack = _callBack;
         //stepHeight = _steppableHeight;
     }
-
-    public int CompareTo(object obj)
-    {
-        PathRequest request = (PathRequest)obj;
-        if (Vector3.Distance(startPoint, endPoint) > Vector3.Distance(request.startPoint, request.endPoint))
-            return -1;
-        else return 1;
-    }
-
 }

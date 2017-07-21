@@ -1,48 +1,69 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AdventurerFSM : ActorFSM
 {
     private List<Shop> visitedShop = new List<Shop>();
 
+    private AdventurerAI currentAdventurerAI;
+
     private Shop targetShop;
 
     private bool inTown = true;
+
+    protected Weapon currentUseWeapon;
 
     public void NewVisitToTown()
     {
         visitedShop.Clear();
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        currentAdventurerAI = GetComponent<AdventurerAI>();
+    }
+    public override AI CurrentAI
+    {
+        get
+        {
+            return currentAdventurerAI;
+        }
+    }
 
     protected override void UpdateFSMState()
     {
         base.UpdateFSMState();
-        if (GameManager.Instance.State == GameManager.GameState.NIGHTMODE)
-        {
-            switch (currentState)
-            {
-                case FSMState.COMBAT:
-                    UpdateCombatState();
-                    break;
-                case FSMState.IDLE:
-                    UpdateIdleStateNight();
-                    break;
-            }
-        }
-        else if (GameManager.Instance.State == GameManager.GameState.DAYMODE)
-        {
-            switch (currentState)
-            {
-                case FSMState.IDLE:
-                    UpdateIdleStateDay();
-                    break;
 
-                case FSMState.SHOPPING:
-                    UpdateShoppingState();
-                    break;
-            }
+        switch (currentState)
+        {
+            case FSMState.SHOPPING:
+                UpdateShoppingState();
+                return;
+        }
+
+    }
+
+    public virtual void EndAttack()
+    {
+        if (currentUseWeapon != null)
+        {
+            Debug.Log("EndCharge");
+            currentUseWeapon.EndCharge();
+        }
+    }
+
+    protected override void UpdateIdleState()
+    {
+        switch (GameManager.Instance.State)
+        {
+            case GameManager.GameState.DAYMODE:
+                UpdateIdleStateDay();
+                return;
+            case GameManager.GameState.NIGHTMODE:
+                UpdateIdleStateNight();
+                break;
         }
     }
 
@@ -60,8 +81,9 @@ public class AdventurerFSM : ActorFSM
         }
         else
         {
+            Debug.Log((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied);
             visitedShop.Add(targetShop);
-            if (!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && (currentAI as AdventurerAI).GotLobang() && !targetShop.InteractionNode.Occupied))
+            if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.GotLobang())) && !targetShop.InteractionNode.Occupied)
             {
                 ChangePath(targetShop.InteractionNode);
                 ChangeState(FSMState.PETROL);
@@ -82,13 +104,35 @@ public class AdventurerFSM : ActorFSM
         }
         else if (!requestedPath)
         {
-            Node endPoint = TownManager.Instance.CurrentTown.WavePoint;
-            AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
-            requestedPath = true;
+            Monster mob = WaveManager.Instance.GetClosestMonster(transform.position);
             nextState = FSMState.IDLE;
+            if (!mob)
+            {
+                Node endPoint = TownManager.Instance.GetRandomSpawnPoint();
+                AStarManager.Instance.RequestPath(transform.position, endPoint.Position, ChangePath);
+                requestedPath = true;
+
+            }
+            else
+            {
+                AStarManager.Instance.RequestPath(transform.position, mob.transform.position, ChangePath);
+                requestedPath = true;
+                target = mob;
+            }
         }
     }
 
+    protected override void UpdatePetrolState()
+    {
+        base.UpdatePetrolState();
+        if (target is Monster && target.Health > 0)
+        {
+            if (Vector3.Distance(target.transform.position, transform.position) < detectionDistance)
+            {
+                ChangeState(FSMState.COMBAT);
+            }
+        }
+    }
     protected virtual void UpdateIdleStateDay()
     {
         if (pathFound)
@@ -126,7 +170,10 @@ public class AdventurerFSM : ActorFSM
     {
 
         FSMState previousState = currentState;
-        (currentAI as AdventurerAI).Interacting = false;
+        currentAdventurerAI.Interacting = false;
+        if (state != FSMState.COMBAT)
+            currentAdventurerAI.UnEquipWeapons();
+
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -134,69 +181,48 @@ public class AdventurerFSM : ActorFSM
             {
                 case FSMState.PETROL:
                     animator.SetFloat("Speed", 2);
-                    break;
+                    return;
 
                 case FSMState.COMBAT:
-                    (currentAI as AdventurerAI).EquipRandomWeapons();
+                    currentAdventurerAI.EquipRandomWeapons();
                     //animator.SetBool("KnockBack", true);//Wrong place
                     //timer = 5;
-                    break;
+                    return;
 
             }
         }
     }
 
-
-
     protected override void UpdateCombatState()
     {
-        if (/*timer > 0 &&*/ target != null)
-        {
+        animator.SetBool("Cast", false);
+        base.UpdateCombatState();
+    }
 
-            Vector3 temptarget = target.transform.position;
-            temptarget.y = transform.position.y;
-            Vector3 dir = temptarget - transform.position;
-            float distance = Vector3.Distance(temptarget, transform.position);
-            //dir.Normalize();
+    protected override void HandleCombatAction()
+    {
+        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
 
-            float angle = Vector3.Angle(transform.forward, dir);
+        animator.SetBool("Attacking", true);
 
-            //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance)
-            {
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol"))
-                {
-                    rigidBody.velocity = AvoidObstacles(target.transform.position);
-
-                    LookAtPlayer(target.transform.position);
-                }
-
-                bool isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") || animator.GetCurrentAnimatorStateInfo(0).IsName("Cast");
-
-                if (isAttacking)
-                    animator.SetBool("Attacking", true);
-
-                Weapon longestWeapon = currentAI.GetLongestWeapon();
-                if (longestWeapon != null && distance <= longestWeapon.Range && Mathf.Abs(angle) < 45)
-                {
-                    if (!isAttacking)
-                        animator.SetTrigger("Cast");
-                }
-                else
-                {
-                    animator.SetBool("Attacking", false);
-                    animator.SetFloat("Speed", 2);//HardCoded
-                }
-                //timer = 5f;//HardCoded
-            }
-            else
-            {
-                //timer -= Time.deltaTime;
-                animator.SetFloat("Speed", 0);
-            }
-        }
+        if (currentUseWeapon == null || !currentUseWeapon.Powered)
+            animator.SetBool("Cast", true);
         else
-            ChangeState(FSMState.IDLE);
+        {
+            animator.SetBool("Cast", false);
+        }
+
+    }
+
+    public void StartCharge()
+    {
+
+        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
+
+        if (currentUseWeapon != null)
+        {
+            currentUseWeapon.StartCharge();
+        }
     }
 
     public System.Collections.IEnumerator Interact(Actor actor)
@@ -205,23 +231,22 @@ public class AdventurerFSM : ActorFSM
         isHandlingAction = true;
         float waitTimer = 5;
 
-        while (isHandlingAction) { 
+        while (isHandlingAction)
+        {
 
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
             {
                 Player player = target as Player;
-                AdventurerAI currentAdventurer = currentAI as AdventurerAI;
-                if (currentAdventurer.GotLobang() || currentAdventurer.Interacting)
+                if (currentAdventurerAI.GotLobang() || currentAdventurerAI.Interacting)
                 {
-                    if (player.CheckConversingWith(currentAdventurer))
+                    if (player.CheckConversingWith(currentAdventurerAI))
                     {
                         waitTimer = 5;
-                        if (!currentAdventurer.Interacting)
+                        if (!currentAdventurerAI.Interacting)
                         {
-                            Debug.Log("hit");
-                            currentAdventurer.GetLobang();
+                            currentAdventurerAI.GetLobang();
                         }
                     }
                     else
@@ -229,25 +254,25 @@ public class AdventurerFSM : ActorFSM
                         waitTimer -= Time.deltaTime;
                         if (waitTimer <= 0)
                         {
-                            currentAI.Interacting = false;
+                            currentAdventurerAI.Interacting = false;
                             break;
                         }
                     }
                 }
                 else
                 {
-                    currentAI.Interacting = false;
+                    currentAdventurerAI.Interacting = false;
                     break;
                 }
             }
             else
             {
-                currentAI.Interacting = false;
+                currentAdventurerAI.Interacting = false;
                 break;
             }
             yield return new WaitForEndOfFrame();
 
-        } 
+        }
 
         isHandlingAction = false;
     }

@@ -20,17 +20,23 @@ public class AdventurerAI : AI
         GetSlots();
     }
 
-    public override CombatActorData Data
+    protected virtual void Start()
+    {
+        if (QuestBook.StoryQuests == null)
+            QuestBook.BeginQuestBook();
+    }
+
+    public override ActorData Data
     {
         get
         {
             return data;
         }
-
         set
         {
             data = (AdventurerAIData)value;
         }
+
     }
 
     public QuestBook QuestBook
@@ -178,6 +184,11 @@ public class AdventurerAI : AI
         startableGroup.Quest.Checked = true;
     }
 
+    protected void GainExperience(int value)
+    {
+        data.CurrentJob.GainExperience(value);
+    }
+
     public void CompleteQuestDelegate()
     {
         QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
@@ -215,5 +226,12 @@ public class AdventurerAI : AI
         if (quest != null)
             quest.QuestProgress();
         //Can get misc items here
+    }
+
+    public override void TakeDamage(int damage, Actor attacker)
+    {
+        base.TakeDamage(damage, attacker);
+        if (Health <= 0)
+            AIManager.Instance.Spawn(this, data.CurrentJob.Level * 20, TownManager.Instance.GetRandomSpawnPoint());
     }
 }

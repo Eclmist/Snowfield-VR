@@ -7,7 +7,7 @@ public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
     [SerializeField]
-    [Range(1, 30)]
+    [Range(0, 30)]
     [Tooltip("Max number of AI in town")]
     private int population = 1;
 
@@ -18,13 +18,16 @@ public class Town : MonoBehaviour
     private List<Node> spawnPoints = new List<Node>();
 
     [SerializeField]
-    private Node wavePoint,monsterPoint;
+    private Node monsterPoint;
 
-    public Node WavePoint
+    [SerializeField]
+    private Transform treasure;
+
+    public Transform Treasure
     {
         get
         {
-            return wavePoint;
+            return treasure;
         }
     }
 

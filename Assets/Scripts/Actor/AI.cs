@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public abstract class AI : CombatActor
+public abstract class AI : Actor
 {
 
     protected ActorFSM currentFSM;
@@ -32,9 +32,12 @@ public abstract class AI : CombatActor
         Interact(ai);
     }
 
-    public override bool CheckConversingWith(Actor target)
+    public override bool CheckConversingWith(Actor target)//switch to iinteractable
     {
-        return currentFSM.Target == target;
+        if (currentFSM.Target is Actor)
+            return (currentFSM.Target as Actor) == target;
+        else
+            return false;
     }
 
     protected override void Awake()
@@ -58,15 +61,15 @@ public abstract class AI : CombatActor
         }
         else
         {
-            //currentFSM.DamageTaken(attacker);
+            currentFSM.DamageTaken(attacker);
         }
     }
 
-    protected void UnEquipWeapons()
+    public void UnEquipWeapons()
     {
-        if (leftHand.Item != null)
+        if (leftHand != null && leftHand.Item != null)
             leftHand.Item.Unequip();
-        if (rightHand.Item != null)
+        if (rightHand != null && rightHand.Item != null)
             rightHand.Item.Unequip();
     }
 
@@ -75,6 +78,10 @@ public abstract class AI : CombatActor
         StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
     }
 
+    public void SetNode(Node n)
+    {
+        currentFSM.SetNode(n);
+    }
     public abstract void Interact(Actor actor);
 
     public virtual float GetOutOfTimeDuration()

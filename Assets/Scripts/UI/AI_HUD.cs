@@ -20,7 +20,8 @@ public class AI_HUD : MonoBehaviour {
 	[SerializeField] private Text playerName;
 	[SerializeField] private GameObject healthbarValueObj;
 	[SerializeField] private GameObject playerIndicatorObj;
-
+    [SerializeField]
+    private Text level;
 	[Space(10f)]
 	[SerializeField] private HUDColorSettings colorSettings;
 	[SerializeField] [Range(0,5)] private float lerpSpeed = 1;
@@ -90,7 +91,7 @@ public class AI_HUD : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			actor.TakeDamage(1, Player.Instance);
+			actor.TakeDamage(1000, Player.Instance);
 		}
 	}
 }

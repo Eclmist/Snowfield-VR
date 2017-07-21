@@ -6041,16 +6041,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
-  spawnPS: {fileID: 198889709728010164, guid: 2f3aa3ed109ed2d458175e27e73ee383, type: 2}
-  disablePS: {fileID: 198889709728010164, guid: 2f3aa3ed109ed2d458175e27e73ee383,
+  spawnPS: {fileID: 198150793232273606, guid: 2f3aa3ed109ed2d458175e27e73ee383, type: 2}
+  disablePS: {fileID: 198150793232273606, guid: 2f3aa3ed109ed2d458175e27e73ee383,
     type: 2}
   data:
+    baseStats:
+      baseHealth: 100
+      baseAttack: 25
+      baseHealthRegeneration: 5
+      baseMovementSpeed: 3
     combatJob:
       level: 0
       damagePerLevel: 3
       healthPerLevel: 3
       healthRegenPerLevel: 3
-      movementSpeed: 3
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
 --- !u!114 &114511284303964066
@@ -6396,7 +6400,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 4222228151508488}
-  detectionDistance: 10
+  detectionDistance: 50
+  attackRange: 2
   currentState: 0
   minimumDistToAvoid: 0.5
   avoidanceIgnoreMask:
@@ -6413,7 +6418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitSound: {fileID: 0}
+  currentHealth: 0
 --- !u!114 &114989686695341346
 MonoBehaviour:
   m_ObjectHideFlags: 1

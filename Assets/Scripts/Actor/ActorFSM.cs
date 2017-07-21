@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
+
 public abstract class ActorFSM : MonoBehaviour
 {
 
@@ -21,19 +22,22 @@ public abstract class ActorFSM : MonoBehaviour
     protected bool isHandlingAction = false;
     [SerializeField]
     protected Transform eye;
+
     [SerializeField]
-    protected float detectionDistance = 10;
-    protected AI currentAI;
+    protected float detectionDistance = 10, attackRange = 0;
+    protected Vector3 targetPoint = Vector3.zero;
     protected List<Node> path;
     protected bool requestedPath, pathFound;
     [SerializeField]
     protected FSMState currentState;
-    protected Actor target;
+    protected IDamagable target;
     protected Animator animator;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
-    protected Weapon currentUseWeapon;
+
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
+
+
     #region Avoidance
     [Header("Avoidance")]
     [SerializeField]
@@ -42,9 +46,13 @@ public abstract class ActorFSM : MonoBehaviour
     protected LayerMask avoidanceIgnoreMask;
     #endregion
 
+    public abstract AI CurrentAI
+    {
+        get;
+    }
     public virtual void ChangeState(FSMState state)
     {
-        currentAI.Interacting = false;
+        CurrentAI.Interacting = false;
         isHandlingAction = false;
         StopAllCoroutines();
         pathFound = false;
@@ -52,10 +60,11 @@ public abstract class ActorFSM : MonoBehaviour
         rigidBody.isKinematic = false;
         animator.speed = 1;
         animator.SetFloat("Speed", 0);
+        animator.SetBool("Attacking", false);
 
         if (state != FSMState.EVENTHANDLING)
         {
-            foreach(NodeEvent e in handledEvents)
+            foreach (NodeEvent e in handledEvents)
             {
                 e.CurrentNode.Occupied = false;
             }
@@ -78,10 +87,9 @@ public abstract class ActorFSM : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        currentAI = GetComponent<AI>();
         capsuleCollider = GetComponent<CapsuleCollider>();
     }
-    public Actor Target
+    public IDamagable Target
     {
         get
         {
@@ -111,24 +119,13 @@ public abstract class ActorFSM : MonoBehaviour
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
-            UpdateAnimatorState();
         }
         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death") && animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
-            currentAI.gameObject.SetActive(false);
+            CurrentAI.Despawn();
         }
     }
 
-    protected void UpdateAnimatorState()
-    {
-
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("KnockBack"))
-            animator.SetBool("KnockBack", false);
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
-        {
-            animator.SetBool("Attacking", false);
-        }
-    }
     protected virtual void UpdateFSMState()
     {
         rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
@@ -137,12 +134,89 @@ public abstract class ActorFSM : MonoBehaviour
         {
             case FSMState.EVENTHANDLING:
                 UpdateEventHandling();
-                break;
+                return;
             case FSMState.PETROL:
                 UpdatePetrolState();
-                break;
+                return;
+            case FSMState.COMBAT:
+                UpdateCombatState();
+                return;
+            case FSMState.IDLE:
+                UpdateIdleState();
+                return;
+
         }
     }
+
+    protected abstract void UpdateIdleState();
+    private bool backing = false;
+
+    protected virtual void UpdateCombatState()
+    {
+        if (target != null && target.Health > 0)
+        {
+            float tempAttackRange = attackRange;
+            if (target is Player)
+                tempAttackRange += 3;
+            Vector3 temptarget = target.transform.position;
+            temptarget.y = transform.position.y;
+            Vector3 dir = temptarget - transform.position;
+            float distance = Vector3.Distance(temptarget, transform.position);
+            float angle = Vector3.Angle(transform.forward, dir);
+
+
+            //Debug.DrawRay(head.transform.position - head.right, _direction);
+            if (distance < detectionDistance)
+            {
+                if (backing)
+                {
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = transform.position - dir;
+                    if (distance > tempAttackRange / 2.0)
+                        backing = false;
+                }
+                else if (!backing && distance < tempAttackRange / 5.0)
+                {
+                    animator.SetBool("Attacking", false);
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = transform.position - dir;
+                    backing = true;
+                }
+                else if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
+                {
+                    animator.SetBool("Attacking", false);
+                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    targetPoint = target.transform.position;
+                }
+                else
+                {
+                    animator.SetFloat("Speed", 0);
+                    HandleCombatAction();
+
+                }
+
+            }
+            else
+            {
+                ChangeState(FSMState.IDLE);
+                return;
+            }
+        }
+        else
+        {
+            ChangeState(FSMState.IDLE);
+            return;
+        }
+
+        if (CanMove())
+        {
+            rigidBody.velocity = AvoidObstacles(targetPoint);
+            LookAtPlayer(targetPoint);
+            return;
+        }
+    }
+
+    protected abstract void HandleCombatAction();
 
     protected virtual void UpdateEventHandling()
     {
@@ -160,8 +234,8 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 NodeEvent firstEvent = handledEvents[0];
                 handledEvents.RemoveAt(0);
-                if(firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
-                    firstEvent.HandleEvent(currentAI);
+                if (firstEvent.Activated && (!firstEvent.Final || (firstEvent.Final && path.Count == 1)))
+                    firstEvent.HandleEvent(CurrentAI);
             }
         }
     }
@@ -182,8 +256,8 @@ public abstract class ActorFSM : MonoBehaviour
             }
             else
             {
-                animator.SetFloat("Speed", 2);
-                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol"))
+                animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                if (CanMove())
                 {
                     rigidBody.velocity = AvoidObstacles(targetPoint);
                 }
@@ -205,8 +279,21 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    protected abstract void UpdateCombatState();
-
+    protected virtual bool CanMove()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol");
+    }
+    public void SetNode(Node n)
+    {
+        int index = -1;
+        for(int i = 0;i < path.Count; i++)
+        {
+            if (path[i] == n)
+                index = i;
+        }
+        if(index != 1)
+        path.RemoveRange(0, index);
+    }
 
     protected EquipSlot.EquipmentSlotType animUseSlot;
 
@@ -232,26 +319,32 @@ public abstract class ActorFSM : MonoBehaviour
         ChangePath(newPath);
     }
 
-    //public virtual void CheckHit()
-    //{
-    //    Vector3 dir = target.transform.position - transform.position;
-    //    dir.y = 0;
-    //    dir.Normalize();
-    //    float angle = Vector3.Angle(transform.forward, dir);
-    //    if (target != null)
-    //    {
+    public virtual void CheckHit()
+    {
+        float tempAttackRange = attackRange;
+        if (target is Player)
+            tempAttackRange += 3;
+        Vector3 dir = target.transform.position - transform.position;
+        dir.y = 0;
+        dir.Normalize();
+        float angle = Vector3.Angle(transform.forward, dir);
+        if (target != null)
+        {
+            Debug.Log("CheckedHit");
+            Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
+            Vector3 temptarget = target.transform.position;
+            temptarget.y = transform.position.y;
+            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
+            {
+                CurrentAI.Attack(currentUseWeapon, target);
+            }
+            else
+            {
+                CurrentAI.Attack(0, target);
+            }
+        }
+    }
 
-    //        if (currentUseWeapon != null)
-    //        {
-    //            Vector3 temptarget = target.transform.position;
-    //            temptarget.y = transform.position.y;
-    //            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < currentUseWeapon.Range)
-    //            {
-    //                currentAI.Attack(currentUseWeapon, target);
-    //            }
-    //        }
-    //    }
-    //}
 
     public virtual void SetAnimUseSlot(int i)
     {
@@ -267,33 +360,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    private void IfBlocked(IBlock block)
-    {
-        //if (block.Owner == target)
-        //{
-        animator.SetBool("KnockBack", true);
-        EndAttack();
-        //}
-    }
-    public virtual void StartAttack()
-    {
 
-        if (currentUseWeapon != null)
-        {
-            Debug.Log(currentUseWeapon);
-            currentUseWeapon.SetBlockable(IfBlocked);
-        }
-    }
-
-    public virtual void EndAttack()
-    {
-        if (currentUseWeapon != null)
-        {
-            Debug.Log("EndCharge");
-            currentUseWeapon.EndCharge();
-            currentUseWeapon.SetBlockable();
-        }
-    }
 
     protected bool CheckObstacles()
     {
@@ -327,7 +394,7 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward - transform.right * distanceExp * currentAI.MovementSpeed;
+            return transform.forward - transform.right * distanceExp * CurrentAI.MovementSpeed;
         }
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
@@ -336,20 +403,25 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward + transform.right * currentAI.MovementSpeed * distanceExp;
+            return transform.forward + transform.right * CurrentAI.MovementSpeed * distanceExp;
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir = dir * currentAI.MovementSpeed;
+            dir = dir * CurrentAI.MovementSpeed;
             dir.y = rigidBody.velocity.y;
-            return dir;        }
+            return dir;
+        }
     }
 
-    public void DamageTaken( Actor attacker)
+    public void DamageTaken(Actor attacker)
     {
-        ChangeState(FSMState.COMBAT);
+        if (!(target is Actor))
+        {
+            ChangeState(FSMState.COMBAT);
+            target = attacker;
+        }
     }
 
 
@@ -383,17 +455,6 @@ public abstract class ActorFSM : MonoBehaviour
     //    else
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
-
-    public void StartCharge()
-    {
-
-        currentUseWeapon = (Weapon)currentAI.returnEquipment(animUseSlot);
-
-        if (currentUseWeapon != null)
-        {
-            currentUseWeapon.StartCharge();
-        }
-    }
 
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {

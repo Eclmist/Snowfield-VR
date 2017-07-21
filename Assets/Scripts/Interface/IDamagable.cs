@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamagable {
+public interface IDamagable
+{
 
-    int Health {
+    int Health
+    {
         get;
     }
 
-    void TakeDamage(int damage,Actor attacker);
+    void TakeDamage(int damage, Actor attacker);
+
+    Transform transform
+    {
+        get;
+    }
 }
