@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ImageEffectAllowedInSceneView]
 [RequireComponent(typeof(Camera))]
 public class OutlineRenderer : MonoBehaviour
 {
@@ -45,14 +44,14 @@ public class OutlineRenderer : MonoBehaviour
 		tempSecondaryCamera.CopyFrom(camera);
 		tempSecondaryCamera.clearFlags = CameraClearFlags.Color;
 		tempSecondaryCamera.backgroundColor = Color.black;
-		tempSecondaryCamera.SetReplacementShader(replacement, "RenderType");
-
+		tempSecondaryCamera.cullingMask = LayerMask.GetMask("Interactable");
+		tempSecondaryCamera.useOcclusionCulling = false;
 		//make the temporary rendertexture
 
 		//set the camera's target texture when rendering
 		tempSecondaryCamera.targetTexture = TempRT;
 
-		tempSecondaryCamera.Render();
+		tempSecondaryCamera.RenderWithShader(replacement, "RenderType");
 
 		//for (int i = 0; i < blurIteration; i++)
 		//{ }

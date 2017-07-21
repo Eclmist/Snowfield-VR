@@ -65,17 +65,17 @@ public class BlacksmithManager : MonoBehaviour {
     }
 
     // Spawns the requested ingot in the game
-    public void SpawnIngot(TYPE type, Transform transform)
+    public void SpawnIngot(PhysicalMaterial.Type type, Transform transform)
     {
         foreach (GameObject i in availableIngots)
         {
-            if (type == i.GetComponent<Ingot>().PhysicalMaterial.Type)
+            if (type == i.GetComponent<Ingot>().PhysicalMaterial.type)
                 Instantiate(i, transform);
         }
     }
 
     // Spawns the requested ore in the game
-    public void SpawnOre(TYPE type, Transform transform)
+    public void SpawnOre(PhysicalMaterial.Type type, Transform transform)
     {
         foreach (GameObject i in availableOres)
         {
@@ -138,7 +138,7 @@ public class BlacksmithManager : MonoBehaviour {
 
         foreach(PhysicalMaterial pm in materialList)
         {
-            if(item.PhysicalMaterial.Type == pm.Type)
+            if(item.PhysicalMaterial.type == pm.type)
             {
                 alreadyExist = true;
                 break;

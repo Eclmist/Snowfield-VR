@@ -8,7 +8,8 @@ public class FakeItem : MonoBehaviour {
 
     public void RevealFinalForm()
     {
-        Instantiate(trueForm.ObjectReference,transform);
+		Debug.Log("real one");
+		Instantiate(trueForm.ObjectReference, transform.position, transform.rotation);
         Destroy(this.gameObject);
     }
 }

@@ -38,6 +38,9 @@ public class VR_Interactable_Object : VR_Interactable
 		rigidBody = GetComponent<Rigidbody> ();
 		childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
+
+		gameObject.layer = 8;
+
         foreach (Renderer r in childRenderers)
 		{
 			if (r.GetComponent<ParticleSystem>())

@@ -18,11 +18,17 @@ public class Ingot : BlacksmithItem {
     private bool heatSourceDetected;
     private float distFromHeat;
     private float quenchRate = 0.01f;
-    protected ForgedBlade morpher;
+    protected IngotDeformer ingotDeformer;
 
     private int currentMorphSteps;
     private int targetMorphSteps;
+	private int preNumberOfHits = 3;
 
+	public int PreNumberOfHits
+	{
+		get { return this.preNumberOfHits; }
+		set { this.preNumberOfHits = value; }
+	}
 
     public PhysicalMaterial PhysicalMaterial
     {
@@ -34,14 +40,16 @@ public class Ingot : BlacksmithItem {
     {
 		base.Start();
 
-        if (meshRenderer == null)
+		meshRenderer = GetComponent<MeshRenderer>();
+
+		if (meshRenderer == null)
         {
             Debug.Log("no meshrenderer in ingot, ingot will be destroyed");
             Destroy(this);
         }
         else
         {
-            morpher = GetComponentInChildren<ForgedBlade>();
+            ingotDeformer = GetComponentInChildren<IngotDeformer>();
 			initialMaterial = meshRenderer.material;
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
@@ -67,19 +75,28 @@ public class Ingot : BlacksmithItem {
     {
         if(currentMorphSteps == 0)
         {
-            // Generate morph chance
-            if(WeaponTierManager.Instance.WeaponClassList != null)
-                targetMorphSteps = Random.Range(0,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.Type));
+
+			preNumberOfHits = (int)Random.Range(2, 3);
+			// Generate morph chance
+			if (WeaponTierManager.Instance.WeaponClassList != null)
+				targetMorphSteps = Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits;
+				//targetMorphSteps = 1; // Random.Range(1,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type));
+			
         }
 
         currentMorphSteps++;
-        if(currentMorphSteps == targetMorphSteps)
+        if(currentMorphSteps >= targetMorphSteps)
         {
-            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.Type,currentMorphSteps);
+            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
             if(itemData != null)
             {
-                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().fakeSelf);
-                g.GetComponent<FakeItem>().trueForm = itemData;
+				FakeItem fakeItem = new FakeItem();
+				fakeItem.trueForm = itemData;
+
+                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
+				Debug.Log(g.name);
+				g.AddComponent<FakeItem>();
+				g.GetComponent<FakeItem>().trueForm = itemData;
                 Destroy(this.gameObject);       
             }
         }
@@ -98,9 +115,9 @@ public class Ingot : BlacksmithItem {
     protected void UpdateMorpher()
     {
         if (currentTemperature > .8)
-            morpher.enabled = true;
+            ingotDeformer.enabled = true;
         else
-            morpher.enabled = false;
+            ingotDeformer.enabled = false;
     }
 
 
