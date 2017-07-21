@@ -87,8 +87,6 @@ public class Ingot : BlacksmithItem {
         currentMorphSteps++;
         if(currentMorphSteps >= targetMorphSteps)
         {
-
-			Debug.Log("sdfsdfsf");
             ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
             if(itemData != null)
             {
