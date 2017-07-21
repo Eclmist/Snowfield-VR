@@ -126,8 +126,8 @@ public class AdventurerAI : AI
     public bool IsInteractionAvailable()
     {
 
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasSold)
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasRequested)
+        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasSold || !hasRequested)
+  
             return true;
 
         return false;
@@ -146,7 +146,7 @@ public class AdventurerAI : AI
                 "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup),
                 transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-            StartCoroutine(StartInteractionOP(op));
+            StartCoroutine(StartInteraction(op));
             return true;
         }
 
@@ -159,21 +159,23 @@ public class AdventurerAI : AI
                 transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
             op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-            StartCoroutine(StartInteractionOP(op));
+            StartCoroutine(StartInteraction(op));
             return true;
         }
 
         sellItemData = ItemManager.Instance.GetRandomUnlockedItem();
-        hasSold = true;
-        if(sellItemData != null)
+        
+        if(sellItemData != null && !hasSold)
         {
+            hasSold = true;
             OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "SellItem", data.Name + "has sold you" + sellItemData.ObjectReference.name, transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, SellItemDelegate);
             StartCoroutine(StartInteraction(op));
+            return true;
         }
         
 
-        if (!OrderBoard.Instance.IsMaxedOut)
+        if (!OrderBoard.Instance.IsMaxedOut && !hasRequested)
         {
             hasRequested = true;
             pendingOrder = OrderManager.Instance.GenerateOrder();
@@ -183,7 +185,7 @@ public class AdventurerAI : AI
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + pendingOrder.Name, transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartOrderYesDelegate);
                 op.SetEvent(OptionPane.ButtonType.No, StartOrderNoDelegate);
-                StartCoroutine(StartInteractionOP(op));
+                StartCoroutine(StartInteraction(op));
                 return true;
             }
         }

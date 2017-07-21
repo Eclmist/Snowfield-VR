@@ -42,7 +42,6 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
     {
         get
         {
-            Debug.Log(variable);
             return variable.GetCurrentHealth();
         }
     }
