@@ -56,9 +56,10 @@ public class WaveManager : MonoBehaviour
     {
         groups.Sort();
     }
-    public void DestroyMonster(Monster monster)
+
+    protected void Update()
     {
-        monstersInTheScene.Remove(monster);
+        monstersInTheScene.RemoveAll(Monster => Monster == null || !Monster.gameObject.activeSelf || Monster.Health <= 0);
     }
 
     public Monster GetClosestMonster(Vector3 position)
@@ -98,7 +99,7 @@ public class WaveManager : MonoBehaviour
 
         while (cost > 0)
         {
-            int randomGroupNumber = UnityEngine.Random.Range(0, maximumIndex);
+            int randomGroupNumber = UnityEngine.Random.Range(0, maximumIndex + 1);
             spawnGroups.Add(groups[randomGroupNumber]);
             cost -= groups[randomGroupNumber].cost;
         }

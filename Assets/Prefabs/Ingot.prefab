@@ -323,7 +323,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -358,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80af8e420c0dd0a4abc9f56dd4c87a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelObject: {fileID: 1269502889021506}
+  enableScaling: 0
   dotThreshold: 0.499
   squeezeAmount: 0.05
   sideExtensionAmount: 0.025
@@ -379,11 +379,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d096277935b0f4ab584800d07685d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: 1
+  triggerEnterVibration: 0.8
+  triggerExitVibration: 0.3
+  triggerPressVibration: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  itemID: 0
   damage: 0
   m_name: 
-  maxForceVolume: 0
+  maxVelocityDamageMultiplier: 5
+  maxSwingForce: 0
   physicalMaterial:
     m_name: 
     costMultiplier: 0
     conductivity: 0
-    Type: 0
+    type: 0
+  directionalMultiplier: 5
+  maxLerpForce: 10
+  collisionVibrationMagnitude: 0.8

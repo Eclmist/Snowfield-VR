@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CombatVariable))]
-public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
 
-    protected CombatVariable variable;
+public class Treasure : MonoBehaviour, IDamagable {
 
-    [SerializeField]
-    protected int maxHealth, healthRegeneration;
+
+
 
     public bool CanBeAttacked
     {
@@ -19,45 +17,33 @@ public class Treasure : MonoBehaviour, IDamagable,IHasVariable {
     }
     protected void Awake()
     {
-        variable = GetComponent<CombatVariable>();
+ 
     }
-    public int MaxHealth
-    {
-        get
-        {
-            return maxHealth;
-        }
-    }
+    
 
     public int Health
     {
         get
         {
-            return variable.GetCurrentHealth();
-        }
-    }
-    public int HealthRegeneration
-    {
-        get
-        {
-            return healthRegeneration;
+            return Player.Instance.Gold;
         }
     }
 
+
     public void TakeDamage(int Damage,Actor actor)
     {
-        variable.ReduceHealth(Damage);
-        if (Health <= 0)
-        {
-            actor.TakeDamage(9999999, null);
-            Destroy(gameObject);
-        }
+        actor.TakeDamage(99999, null);
+        GameManager.Instance.AddPlayerGold(-Damage - actor.Health);
+     
     }
 	public new Transform transform
     {
         get
         {
-            return base.transform;
+            if (gameObject)
+                return base.transform;
+            else
+                return null;
         }
     }
 }

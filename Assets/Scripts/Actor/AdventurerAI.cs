@@ -199,7 +199,7 @@ public class AdventurerAI : AI
 
     protected void SellItemDelegate()
     {
-        GameManager.Instance.AddPlayerGold(0);//fix this yp
+        GameManager.Instance.AddPlayerGold(25);
         GameManager.Instance.AddToPlayerInventory(sellItemData);
 
     }
@@ -286,7 +286,7 @@ public class AdventurerAI : AI
 
     public override float GetOutOfTimeDuration()
     {
-        float totalDuration = 0;
+        float totalDuration = 10;
         QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
         if (quest != null)
             totalDuration += quest.RemainingProgress;
@@ -299,6 +299,7 @@ public class AdventurerAI : AI
         QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
         if (quest != null)
             quest.QuestProgress();
+        GainExperience(1);
         //Can get misc items here
     }
 

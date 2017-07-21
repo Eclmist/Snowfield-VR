@@ -7,7 +7,7 @@ public class Town : MonoBehaviour
 {//Can be used to decide the type of adventurers/structures etc
 
     [SerializeField]
-    [Range(0, 30)]
+    [Range(1, 30)]
     [Tooltip("Max number of AI in town")]
     private int population = 1;
 

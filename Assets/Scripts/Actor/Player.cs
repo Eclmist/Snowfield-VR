@@ -20,6 +20,7 @@ public class Player : Actor
     [SerializeField]
     protected PlayerData data;
 
+    [SerializeField]
     protected bool inCombatZone = true;
     protected float currentGroundHeight = 1;
 
@@ -162,8 +163,6 @@ public class Player : Actor
     public void AddGold(int value)
     {
         data.Gold += value;
-        if (data.Gold < 0)
-            ;//lose
     }
 
 

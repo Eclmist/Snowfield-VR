@@ -48,7 +48,7 @@ public class StoragePanel : Inventory {
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(StoreInAvailableSlot(ItemManager.Instance.GetItemData(6),2));
+            Debug.Log(StoreInAvailableSlot(ItemManager.Instance.GetItemData(2),2));
         }
 	}
 

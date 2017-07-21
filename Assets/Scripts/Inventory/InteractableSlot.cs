@@ -133,10 +133,13 @@ public class InteractableSlot : VR_Interactable_UI
             if (g)
             {
                 ItemData d = ItemManager.Instance.GetItemData(g.ItemID);
-                currentInteractingController.Model.SetActive(true);
-                AddToSlot(d);
-                Destroy(g.gameObject);
-                
+                if(d != null)
+                {
+                    currentInteractingController.Model.SetActive(true);
+                    AddToSlot(d);
+                    Destroy(g.gameObject);
+                }
+                        
             }
             else
             {

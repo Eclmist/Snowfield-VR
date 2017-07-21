@@ -1401,15 +1401,15 @@ MonoBehaviour:
   disablePS: {fileID: 198992349735713472}
   data:
     baseStats:
-      baseHealth: 100
+      baseHealth: 150
       baseAttack: 10
       baseHealthRegeneration: 10
       baseMovementSpeed: 2
     combatJob:
       level: 0
-      damagePerLevel: 3
-      healthPerLevel: 3
-      healthRegenPerLevel: 3
+      damagePerLevel: 25
+      healthPerLevel: 30
+      healthRegenPerLevel: 10
 --- !u!114 &114490661456155222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1423,9 +1423,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eye: {fileID: 4911619524762326}
   detectionDistance: 10
-  attackRange: 1
+  attackRange: 2
   currentState: 0
-  minimumDistToAvoid: 0.1
+  minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048

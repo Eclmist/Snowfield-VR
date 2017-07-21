@@ -55,7 +55,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-    [SerializeField]private int itemID;
+    [SerializeField]private int itemID = -1;
 
 
 

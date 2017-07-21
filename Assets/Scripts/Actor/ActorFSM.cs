@@ -191,7 +191,7 @@ public abstract class ActorFSM : MonoBehaviour
                     if (distance > tempAttackRange / 2.0)
                         backing = false;
                 }
-                else if (!backing && distance < tempAttackRange / 5.0)
+                else if (!backing && distance < tempAttackRange / 8.0)
                 {
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", CurrentAI.MovementSpeed);

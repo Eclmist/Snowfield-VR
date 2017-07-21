@@ -8603,14 +8603,14 @@ MonoBehaviour:
     type: 2}
   data:
     baseStats:
-      baseHealth: 100
-      baseAttack: 100
-      baseHealthRegeneration: 5
+      baseHealth: 35
+      baseAttack: 2
+      baseHealthRegeneration: 2
       baseMovementSpeed: 3
     combatJob:
       level: 0
-      damagePerLevel: 3
-      healthPerLevel: 3
+      damagePerLevel: 10
+      healthPerLevel: 40
       healthRegenPerLevel: 3
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
@@ -9325,9 +9325,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eye: {fileID: 4421743545141992}
   detectionDistance: 5
-  attackRange: 2
+  attackRange: 3
   currentState: 0
-  minimumDistToAvoid: 0.5
+  minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
