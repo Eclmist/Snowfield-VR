@@ -7,7 +7,12 @@ namespace AC.TimeOfDaySystemFree
 	[ExecuteInEditMode]
 	public class TimeOfDayManager : TimeOfDay
 	{
-        
+		public static TimeOfDayManager Instance;
+
+		private void Awake()
+		{
+			Instance = this;
+		}
 
 		#region Resources.
 
