@@ -12,9 +12,9 @@ public class OrderSlip : VR_Interactable_UI {
     private Sprite image;
     private Action<bool,OrderSlip> callback;
     private Text durationText;
-    private int compareID;
     private Order order;
     private AdventurerAI ai;
+    [SerializeField] GameObject detailPane;
 
     public AdventurerAI OrderedAI
     {
@@ -80,7 +80,22 @@ public class OrderSlip : VR_Interactable_UI {
         OrderBoard.Instance.RemoveFromBoard(this);
     }
 
-    protected override void OnTriggerPress()
+    
+
+    private void DisplayOptions()
+    {
+        OptionPane op = UIManager.Instance.InstantiateOptions(transform.position,Player.Instance.transform,transform);
+        op.SetEvent(OptionPane.ButtonType.Yes,TryConfirmOrder);
+        op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
+        op.SetEvent(OptionPane.ButtonType.Cancel, CloseOptions);
+    }
+
+    private void CloseOptions()
+    {
+        Debug.Log("Closing option");
+    }
+
+    private void TryConfirmOrder()
     {
         if (currentInteractingController.UI == this)
         {
@@ -96,19 +111,34 @@ public class OrderSlip : VR_Interactable_UI {
                     currentInteractingController.Model.SetActive(true);
                     Debug.Log("correcy");
                 }
-                    
+
             }
             else
             {
                 Debug.Log("wrong?");
             }
+        }
+    }
+
+    private void SpawnDetailsPanel()
+    {
+
+        string desc = "Name: " + o_name;
+
+        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane,desc,reward.ToString(), transform.position, Player.Instance.transform, transform);
+        op.SetEvent(OptionPane.ButtonType.Ok,CloseOptions);
+    }
 
 
+
+    protected override void OnTriggerPress()
+    {
+        if (currentInteractingController.UI == this)
+        {
+            DisplayOptions();
         }
 
     }
-
-    
 
 
     protected override void OnControllerEnter()

@@ -8,7 +8,16 @@ public struct UIPrefabs
 {
 	public GameObject OP_Yes_No;
 	public GameObject OP_Ok;
+    public GameObject OP_Yes_No_Cancel;
 }
+
+public enum UIType
+{
+    OP_YES_NO,
+    OP_OK,
+    OP_YES_NO_CANCEL
+}
+
 
 public class UIManager : MonoBehaviour 
 {
@@ -24,10 +33,64 @@ public class UIManager : MonoBehaviour
 		else
 			Destroy(this);		
 	}
-	
-	public OptionPane Instantiate(UIType type, string title, string message, Vector3 position, Transform receiver,
+
+
+    public OptionPane InstantiateDetailPane(GameObject detailPane,string s,string s2, Vector3 position, Transform receiver,
+       Transform sender = null)
+    {
+
+        GameObject newUIobject = null;
+        OptionPane options = null;
+
+        newUIobject = Instantiate(detailPane);
+        options = newUIobject.GetComponent<OP_Ok>();
+
+        Vector3 toReceiver = receiver.transform.position - position;
+        newUIobject.transform.position = position + toReceiver.normalized * 0.2F;
+
+        Vector3 lookAt = receiver.transform.position;
+        lookAt.y = position.y;
+        newUIobject.transform.LookAt(lookAt);
+
+        options.SetContents(s,s2);
+
+        return options;
+    }
+
+
+    public OptionPane InstantiateOptions(Vector3 position, Transform receiver,
+       Transform sender = null)
+    {
+        GameObject newUIobject = null;
+        OptionPane options = null;
+
+        newUIobject = Instantiate(prefabs.OP_Yes_No_Cancel);
+        options = newUIobject.GetComponent<OP_YesNoCancel>();
+
+        Vector3 toReceiver = receiver.transform.position - position;
+        newUIobject.transform.position = position + toReceiver.normalized * 0.2F;
+
+        Vector3 lookAt = receiver.transform.position;
+        lookAt.y = position.y;
+        newUIobject.transform.LookAt(lookAt);
+
+
+        return options;
+    }
+
+
+
+
+
+    public OptionPane Instantiate(UIType type, string title, string message, Vector3 position, Transform receiver,
 		Transform sender = null)
 	{
+
+        if (type == UIType.OP_YES_NO_CANCEL)
+        {
+            return InstantiateOptions(position,receiver);
+        }
+
 		GameObject newUIobject = null;
 		OptionPane options = null;
 

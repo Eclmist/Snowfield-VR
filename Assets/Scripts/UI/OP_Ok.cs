@@ -8,11 +8,7 @@ public class OP_Ok : OptionPane
 {
     public override void SetEvent(ButtonType button, UnityAction func)
 	{
-		switch (button)
-		{
-			case ButtonType.Ok:
-				buttons[0].AddOnTriggerReleaseFunction(func);
-				break;
-		}
+
+        buttons[0].AddOnTriggerReleaseFunction(func);
 	}
 }
