@@ -4,12 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public enum UIType
-{
-	OP_YES_NO,
-	OP_OK
-}
-
 
 public abstract class OptionPane : MonoBehaviour
 {
@@ -24,7 +18,8 @@ public abstract class OptionPane : MonoBehaviour
 	{
 		Yes,
 		No,
-		Ok
+		Ok,
+        Cancel,
 	}
 
 	[SerializeField]
@@ -46,12 +41,14 @@ public abstract class OptionPane : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
+            if (buttons.Length > 0 && buttons[0])
             buttons[0].SendMessage("OnTriggerRelease");
         }else if (Input.GetKeyDown(KeyCode.N))
         {
             if(buttons.Length > 1)
             {
-                buttons[1].SendMessage("OnTriggerRelease");
+                if (buttons[1])
+                    buttons[1].SendMessage("OnTriggerRelease");
             }
         }
     }
@@ -64,17 +61,19 @@ public abstract class OptionPane : MonoBehaviour
 
         foreach (VR_Button button in buttons)
         {
-            
+            if (button)
             button.AddOnTriggerReleaseFunction(new UnityAction(ClosePane));
         }
 
         SetActiveButtons(0);
 	}
 
-	public void SetContents(string title, string message)
+	public virtual void SetContents(string title, string message)
 	{
-		paneElements.title.text = title;
-		paneElements.message.text = message;
+        if (paneElements.title)
+		    paneElements.title.text = title;
+        if (paneElements.message)
+            paneElements.message.text = message;
 		alreadySetContent = true;
 	}
 
@@ -84,12 +83,14 @@ public abstract class OptionPane : MonoBehaviour
     {
         foreach (VR_Button btn in buttons)
         {
+            if (btn)
             btn.interactable = active == 1 ? true : false;
         }
     }
 
     public virtual void ClosePane()
     {
+        if (anim)
         anim.SetTrigger("Close");
     }
 
