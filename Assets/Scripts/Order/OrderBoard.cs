@@ -85,18 +85,20 @@ public class OrderBoard : MonoBehaviour
 			{
 				Destroy(s.refOrder.gameObject);
 				s.isTaken = false;
-
+                Debug.Log("removed");
 				break;
 			}
 		}
 	}
 
-	public void SpawnOnBoard(Order o)
+
+	public void SpawnOnBoard(Order o, AdventurerAI ai)
 	{
 		if (orderList.Count < maxNumberOfOrders)
 		{
 			Slot acquiredSlot = GetAvailableSlot();
 			OrderSlip g = Instantiate(orderG, acquiredSlot.slotPosition + transform.forward * offsetZ, transform.rotation).GetComponentInChildren<OrderSlip>();
+            g.OrderedAI = ai;
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance;
+    public AI ai;
 
     #region ClockRegion
     [SerializeField] [Range(1, 10000)] private int secondsPerDay;

@@ -230,23 +230,24 @@ public class AdventurerFSM : ActorFSM
         target = actor;
         isHandlingAction = true;
         float waitTimer = 5;
-
-        while (isHandlingAction)
-        {
+        
+        while (isHandlingAction) { 
 
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
             {
                 Player player = target as Player;
-                if (currentAdventurerAI.GotLobang() || currentAdventurerAI.Interacting)
+                AdventurerAI currentAdventurer = currentAI as AdventurerAI;
+                if (currentAdventurer.IsInteractionAvailable() || currentAdventurer.Interacting)
                 {
                     if (player.CheckConversingWith(currentAdventurerAI))
                     {
                         waitTimer = 5;
                         if (!currentAdventurerAI.Interacting)
                         {
-                            currentAdventurerAI.GetLobang();
+                            Debug.Log("hut");
+                            currentAdventurer.StartInteraction();
                         }
                     }
                     else
