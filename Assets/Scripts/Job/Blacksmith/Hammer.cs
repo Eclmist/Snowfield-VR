@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hammer : BlacksmithItem {
+public class Hammer : BlacksmithItem
+{
+	private AudioSource source;
+
+	void Start()
+	{
+		source = GetComponent<AudioSource>();
+	}
 
 	protected override void OnCollisionEnter(Collision collision)
 	{
 		base.OnCollisionEnter(collision);
 
-		IngotDeformer ingotDeformer = collision.collider.GetComponentInParent<IngotDeformer>();
 
+		IngotDeformer ingotDeformer = collision.collider.GetComponentInParent<IngotDeformer>();
 		if (ingotDeformer != null)
 		{
 			foreach (ContactPoint contact in collision.contacts)
@@ -18,7 +25,13 @@ public class Hammer : BlacksmithItem {
 			}
 
 			collision.collider.GetComponent<Ingot>().IncrementMorphStep();
+
 		}
+
+		if (source)
+			source.PlayOneShot(source.clip, collision.relativeVelocity.magnitude / 3);
+
+
 
 	}
 
