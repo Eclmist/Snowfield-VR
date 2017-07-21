@@ -25,9 +25,9 @@ public class HoldSpell : Spell {
 
                 em.enabled = true;
                 emsmoke.enabled = true;
-            }
 
-            casted = true;
+                casted = true;
+            }
         }
     }
 

@@ -192,11 +192,11 @@ public class TeleportVive : MonoBehaviour {
                             OriginTransform.position = Pointer.SelectedPoint;
                         }
 
-                        Player.Instance.InCombatZone(true);
+                        //Player.Instance.InCombatZone(true);
                     }
                     else // We have finished fading out - time to teleport!         
                     {
-                        Player.Instance.InCombatZone(false);
+                        //Player.Instance.InCombatZone(false);
                         OriginTransform.position = Pointer.SelectedPoint;
 
                         Vector3 offset = OriginTransform.position - HeadTransform.position;
