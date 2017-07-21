@@ -34,7 +34,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected Animator animator;
     protected Rigidbody rigidBody;
     protected FSMState nextState;
-
+    protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
 
 
@@ -76,6 +76,9 @@ public abstract class ActorFSM : MonoBehaviour
             case FSMState.DEATH:
                 animator.SetBool("Death", true);
                 break;
+            case FSMState.PETROL:
+                SetNodeOffset();
+                break;
             default:
                 break;
         }
@@ -98,6 +101,17 @@ public abstract class ActorFSM : MonoBehaviour
         set
         {
             target = value;
+        }
+    }
+
+    public void SetNodeOffset()
+    {
+        pathNodeOffset.Clear();
+        foreach(Node n in path)
+        {
+            Vector2 newVec2 = Random.insideUnitCircle * .25f;
+            Vector3 newVec3 = new Vector3(newVec2.x, 0, newVec2.y);
+            pathNodeOffset.Add(newVec2);
         }
     }
     // Use this for initialization
@@ -130,6 +144,7 @@ public abstract class ActorFSM : MonoBehaviour
     {
         rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
         rigidBody.angularVelocity = Vector3.zero;
+        UpdateAnyState();
         switch (currentState)
         {
             case FSMState.EVENTHANDLING:
@@ -148,16 +163,17 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
+    protected virtual void UpdateAnyState() { }
     protected abstract void UpdateIdleState();
     private bool backing = false;
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null && target.Health > 0)
+        if (target != null && target.CanBeAttacked && !requestedPath)
         {
             float tempAttackRange = attackRange;
             if (target is Player)
-                tempAttackRange += 3;
+                tempAttackRange += 1;
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -227,6 +243,7 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 path[0].Occupied = false;
                 path.RemoveAt(0);
+                pathNodeOffset.RemoveAt(0);
                 ChangeState(FSMState.PETROL);
                 return;
             }
@@ -248,7 +265,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
         else
         {
-            Vector3 targetPoint = path[0].Position;
+            Vector3 targetPoint = path[0].Position + pathNodeOffset[0];
             targetPoint.y = transform.position.y;
             if (path.Count == 1 && path[0].Occupied)
             {
@@ -273,7 +290,10 @@ public abstract class ActorFSM : MonoBehaviour
                         ChangeState(FSMState.EVENTHANDLING);
                     }
                     else
+                    {
                         path.RemoveAt(0);
+                        pathNodeOffset.RemoveAt(0);
+                    }
                 }
             }
         }
@@ -417,6 +437,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public void DamageTaken(Actor attacker)
     {
+        Debug.Log(attacker);
         if (!(target is Actor))
         {
             ChangeState(FSMState.COMBAT);

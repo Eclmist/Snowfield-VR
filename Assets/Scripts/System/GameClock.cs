@@ -8,6 +8,8 @@ public class GameClock {
 
     private float totalSecondsPerDay;
 
+    private float clockOffset;
+
     public float SecondsPerDay
     {
         get
@@ -19,7 +21,7 @@ public class GameClock {
     {
         get
         {
-            return Time.time - startTimeInSecond;
+            return Time.time - startTimeInSecond + clockOffset;
         }
     }
 
@@ -27,7 +29,7 @@ public class GameClock {
     {
         get
         {
-            float currentTimeInSecond = Time.time - startTimeInSecond;
+            float currentTimeInSecond = SecondSinceStart;
             return (int)(currentTimeInSecond / totalSecondsPerDay) + 1;
         }
     }
@@ -36,15 +38,16 @@ public class GameClock {
     {
         get
         {
-            float currentTimeInSecond = Time.time - startTimeInSecond;
+            float currentTimeInSecond = SecondSinceStart;
             return (currentTimeInSecond % totalSecondsPerDay) / totalSecondsPerDay;
         }
     }
 
 
-	public GameClock(float secondsPerDay)
+	public GameClock(float secondsPerDay,float _startTime)
     {
         totalSecondsPerDay = secondsPerDay;
         startTimeInSecond = Time.time;
+        clockOffset = _startTime * totalSecondsPerDay;
     }
 }

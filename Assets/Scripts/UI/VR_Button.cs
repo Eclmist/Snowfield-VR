@@ -37,8 +37,14 @@ public class VR_Button : VR_Interactable_UI
 	{
 		base.OnInteractableChange();
 
-		targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
-	}
+        if (!targetGraphic)
+        {
+            targetGraphic = GetComponent<Image>();
+
+            if (targetGraphic)
+                targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
+        }
+    }
 
 	protected override void OnControllerEnter()
 	{

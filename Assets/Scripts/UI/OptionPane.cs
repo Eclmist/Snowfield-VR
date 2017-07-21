@@ -91,11 +91,14 @@ public abstract class OptionPane : MonoBehaviour
     public virtual void ClosePane()
     {
         if (anim)
-        anim.SetTrigger("Close");
+            anim.SetTrigger("Close");
+        else
+            Destroy();
     }
 
     public virtual void Destroy()
     {
         Destroy(gameObject);
     }
+
 }

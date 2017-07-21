@@ -10,10 +10,12 @@ public class AdventurerAI : AI
     //private List<Relation> actorRelations = new List<Relation>();
     [SerializeField]
     protected AdventurerAIData data;
+
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
     private bool hasRequested = false;
 
+    private bool hasSold;
     protected override void Awake()
     {
         base.Awake();
@@ -24,6 +26,7 @@ public class AdventurerAI : AI
     {
         if (QuestBook.StoryQuests == null)
             QuestBook.BeginQuestBook();
+
     }
 
     public override ActorData Data
@@ -46,13 +49,18 @@ public class AdventurerAI : AI
             return data.QuestBook;
         }
     }
-    public void EquipRandomWeapons()
+    public bool EquipRandomWeapons()
     {
         foreach (Equipment equip in inventory)
         {
-            if (equip.Slot == EquipSlot.EquipmentSlotType.LEFTHAND || equip.Slot == EquipSlot.EquipmentSlotType.RIGHTHAND)
+            
+            if (equip is Weapon)
+            {
                 ChangeWield(Instantiate(equip));
+                return true;
+            }
         }
+        return false;
     }
 
     protected void GetSlots()
@@ -118,7 +126,8 @@ public class AdventurerAI : AI
     public bool IsInteractionAvailable()
     {
 
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasRequested)
+        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasSold || !hasRequested)
+  
             return true;
 
         return false;
@@ -129,11 +138,15 @@ public class AdventurerAI : AI
 
 
         QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
+        //Vector3 tempPosition = new Vector3(transform.position.x, transform.position.y + Player.Instance.height *  200, transform.position.z);
+
         if (completableGroup != null)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup), transform.position, Player.Instance.transform, transform);
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK,
+                "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup),
+                transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-            StartCoroutine(StartInteractionOP(op));
+            StartCoroutine(StartInteraction(op));
             return true;
         }
 
@@ -141,14 +154,28 @@ public class AdventurerAI : AI
 
         if (startableQuest != null)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name, transform.position, Player.Instance.transform, transform);
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
+                "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
+                transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
             op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-            StartCoroutine(StartInteractionOP(op));
+            StartCoroutine(StartInteraction(op));
             return true;
         }
 
-        if (!OrderBoard.Instance.IsMaxedOut)
+        sellItemData = ItemManager.Instance.GetRandomUnlockedItem();
+        
+        if(sellItemData != null && !hasSold)
+        {
+            hasSold = true;
+            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "SellItem", data.Name + "has sold you" + sellItemData.ObjectReference.name, transform.position, Player.Instance.transform, transform);
+            op.SetEvent(OptionPane.ButtonType.Ok, SellItemDelegate);
+            StartCoroutine(StartInteraction(op));
+            return true;
+        }
+        
+
+        if (!OrderBoard.Instance.IsMaxedOut && !hasRequested)
         {
             hasRequested = true;
             pendingOrder = OrderManager.Instance.GenerateOrder();
@@ -158,7 +185,7 @@ public class AdventurerAI : AI
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + pendingOrder.Name, transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartOrderYesDelegate);
                 op.SetEvent(OptionPane.ButtonType.No, StartOrderNoDelegate);
-                StartCoroutine(StartInteractionOP(op));
+                StartCoroutine(StartInteraction(op));
                 return true;
             }
         }
@@ -166,10 +193,17 @@ public class AdventurerAI : AI
         return false;
 
     }
+    ItemData sellItemData = null;
 
     private Order pendingOrder;
 
-    protected System.Collections.IEnumerator StartInteractionOP(OptionPane op)
+    protected void SellItemDelegate()
+    {
+        GameManager.Instance.AddPlayerGold(0);//fix this yp
+        GameManager.Instance.AddToPlayerInventory(sellItemData);
+
+    }
+    protected System.Collections.IEnumerator StartInteraction(OptionPane op)
     {
         isInteracting = true;
 
@@ -189,6 +223,13 @@ public class AdventurerAI : AI
 
     }
 
+    public int Level
+    {
+        get
+        {
+            return data.CurrentJob.Level;
+        }
+    }
     public void StartQuestYESDelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
@@ -196,7 +237,7 @@ public class AdventurerAI : AI
         startableGroup.Quest.StartQuest();
     }
 
-    
+
     public void StartQuestNODelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
@@ -238,6 +279,7 @@ public class AdventurerAI : AI
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
         data.QuestBook.ResetChecked();
+        hasSold = false;
         hasRequested = false;
         ChangeState(ActorFSM.FSMState.IDLE);
     }

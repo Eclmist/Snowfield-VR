@@ -21,7 +21,7 @@ public class AI_HUD : MonoBehaviour {
 	[SerializeField] private GameObject healthbarValueObj;
 	[SerializeField] private GameObject playerIndicatorObj;
     [SerializeField]
-    private Text level;
+    private Text levelText;
 	[Space(10f)]
 	[SerializeField] private HUDColorSettings colorSettings;
 	[SerializeField] [Range(0,5)] private float lerpSpeed = 1;
@@ -61,6 +61,10 @@ public class AI_HUD : MonoBehaviour {
 	// Update is called once per frame
 	protected void Update ()
 	{
+        //Set level text
+
+        levelText.text = "Lv: " + actor.Level.ToString();
+
 		// Set healthbar color
 		float health01 = 1 - (float)actor.Health / actor.MaxHealth;
 

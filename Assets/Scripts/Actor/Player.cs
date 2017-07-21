@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public class Player : Actor
 {
 
+    public float height = 1.75f;//Default hardcoded player heigh
+
     [SerializeField]
     public AudioClip dink;
 
@@ -18,6 +20,37 @@ public class Player : Actor
     [SerializeField]
     protected PlayerData data;
 
+    protected bool inCombatZone = true;
+    protected float currentGroundHeight = 1;
+
+    public float CurrentGroundHeight
+    {
+        get {
+            return currentGroundHeight;
+        }
+        set {
+            currentGroundHeight = value;
+        }
+    }
+    public bool InCombatZone
+    {
+        get
+        {
+            return inCombatZone;
+        }
+        set
+        {
+            inCombatZone = value;
+        }
+    }
+
+    public override bool CanBeAttacked
+    {
+        get
+        {
+            return base.CanBeAttacked && inCombatZone;
+        }
+    }
     public override ActorData Data
     {
         get
@@ -63,6 +96,7 @@ public class Player : Actor
         }
     }
 
+
     public List<Job> JobList
     {
         get
@@ -75,7 +109,8 @@ public class Player : Actor
         Vector3 rotation1 = transform.forward;
         Vector3 rotation2 = target.transform.forward;
         rotation1.y = rotation2.y = 0;
-        return Mathf.Abs(Vector3.Angle(rotation1, rotation2) - 180) < 30;
+       
+        return (Mathf.Abs(Vector3.Angle(rotation1, rotation2) - 180) < 30) && Vector3.Distance(transform.position,target.transform.position) < 5;
     }
 
     protected override void Awake()
@@ -99,6 +134,11 @@ public class Player : Actor
         {
             Debug.Log("There should only be one instanc of Player.cs in the scene!");
             Destroy(this);
+        }
+        float h = PlayerPrefs.GetFloat("PlayerHeight", -1);
+        if (h != -1)
+        {
+            height = h;
         }
     }
 

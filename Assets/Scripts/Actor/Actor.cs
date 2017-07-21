@@ -23,6 +23,13 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
         set;
     }
 
+    public virtual bool CanBeAttacked
+    {
+        get
+        {
+            return gameObject.activeSelf && Health > 0;
+        }
+    }
     public int MaxHealth
     {
         get

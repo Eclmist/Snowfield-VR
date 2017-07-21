@@ -21,6 +21,19 @@ public class MonsterFSM : ActorFSM
     {
         animator.SetBool("Attacking", true);
     }
+
+    protected override void UpdatePetrolState()
+    {
+        base.UpdatePetrolState();
+        Vector3 playerPos = Player.Instance.transform.position;
+        playerPos.y = transform.position.y;
+        if(Vector3.Distance(transform.position,playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
+        {
+            target = Player.Instance;
+            ChangeState(FSMState.COMBAT);
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

@@ -11,6 +11,8 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 {
     [SerializeField] public bool interactable = true;
 
+
+
     [Header("Vibrations")]
     [SerializeField]
     [Range(0, 10)]
@@ -21,12 +23,22 @@ public abstract class VR_Interactable_UI : MonoBehaviour
     protected virtual void OnControllerEnter()
     {
         currentInteractingController.Vibrate(triggerEnterVibration);
+        if (currentInteractingController)
+        {
+            currentInteractingController.UI = this;
+            Debug.Log("interacring with an order");
+        }
+
     }
     protected virtual void OnControllerStay() { }
     protected virtual void OnControllerExit()
     {
+        if (currentInteractingController.UI == this)
+            currentInteractingController.UI = null;
+
         currentInteractingController.Vibrate(triggerExitVibration);
         currentInteractingController = null;
+
     }
 
     protected virtual void OnTriggerPress()

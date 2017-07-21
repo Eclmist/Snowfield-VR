@@ -119,7 +119,7 @@ public class Weapon : Equipment
         if (LinkedController != null)
         {
             IDamagable target = collision.GetComponent<IDamagable>();
-            
+            Debug.Log(target);
             if (target != null && target is Monster)
             {
                 target.TakeDamage(Damage, Player.Instance);
