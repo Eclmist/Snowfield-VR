@@ -106,12 +106,6 @@ public class GameManager : MonoBehaviour {
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
-
-        // Set losing condition
-        if(Player.Instance.Gold <= 0)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
        
     }
 

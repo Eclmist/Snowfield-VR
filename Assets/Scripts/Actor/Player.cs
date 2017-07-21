@@ -163,8 +163,6 @@ public class Player : Actor
     public void AddGold(int value)
     {
         data.Gold += value;
-        if (data.Gold < 0)
-            ;//lose
     }
 
 

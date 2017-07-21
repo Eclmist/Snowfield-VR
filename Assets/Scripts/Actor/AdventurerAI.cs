@@ -199,7 +199,7 @@ public class AdventurerAI : AI
 
     protected void SellItemDelegate()
     {
-        GameManager.Instance.AddPlayerGold(0);//fix this yp
+        GameManager.Instance.AddPlayerGold(25);
         GameManager.Instance.AddToPlayerInventory(sellItemData);
 
     }
