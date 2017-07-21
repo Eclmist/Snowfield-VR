@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
 public class MorphingTable : MonoBehaviour {
 
     public Transform lockTransform;
@@ -12,7 +11,6 @@ public class MorphingTable : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<SphereCollider>().isTrigger = true;    
     }
 
 
