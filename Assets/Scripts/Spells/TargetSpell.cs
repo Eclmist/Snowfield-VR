@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class TargetSpell : Spell {
 
-
-
-
     private int castCount;
 
     protected override void Start()
@@ -21,13 +18,13 @@ public class TargetSpell : Spell {
     {
         if (castCount > 0)
         {
-
-            Debug.Log("Hello");
             Instantiate(spellPrefab);
         }
         else
         {
-            //Stop Charge
+            var em = Indicator.GetComponent<ParticleSystem>().emission;
+            em.enabled = false;
+            Destroy(Indicator, 3);
         }
     }
 

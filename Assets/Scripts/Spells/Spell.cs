@@ -10,9 +10,8 @@ public class Spell : VR_Interactable
     [SerializeField]
     protected GameObject indicator;
 
-    protected bool isHolding = false;
-    protected bool isReleased = false;
     protected GameObject spellGO;
+    //protected bool isCasted;
 
     public GameObject SpellPrefab
     {
@@ -26,12 +25,41 @@ public class Spell : VR_Interactable
 
     protected virtual void Cast()
     {
-        spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+        //if (!isCasted)
+        //{
+        //    var em = indicator.GetComponent<ParticleSystem>().emission;
+        //    em.enabled = false;
+
+        //    spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+
+        //    isCasted = true;
+        //}
+        //else
+        //{
+        //    var em = spellGO.GetComponent<ParticleSystem>().emission;
+            
+        //    var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+
+        //    em.enabled = false;
+        //    emsmoke.enabled = false;
+
+        //    Destroy(spellGO, 3);
+        //    Destroy(indicator, 3);
+        //}
+    }
+
+    protected virtual void Hold()
+    {
+        Debug.Log("Holding");
+    }
+
+    protected virtual void Release()
+    {
+
     }
 
     public override void OnInteracting(VR_Controller_Custom controller)
     {
-        Debug.Log("hitttt");
         transform.position = LinkedController.transform.position;
         transform.rotation = LinkedController.transform.rotation;
     }
@@ -39,31 +67,17 @@ public class Spell : VR_Interactable
     public override void OnTriggerPress(VR_Controller_Custom controller)
     {
         Cast();
-    }   
+    }
 
+   
     public override void OnTriggerHold(VR_Controller_Custom controller)
     {
-        var em = spellGO.GetComponent<ParticleSystem>().emission;
-        em.enabled = true;
+       
+        Hold();
     }
 
     public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
-        var em = spellGO.GetComponent<ParticleSystem>().emission;
-        em.enabled = false;
-    }
-
-    protected void Update()
-    {
-        //if (Input.Get(KeyCode.C))
-        //{
-        //    LongCast();
-        //}
-
-        //if (Input.GetKeyUp(KeyCode.C))
-        //{
-        //    isReleased = true;
-        //    LongCast();
-        //}
+        Release();
     }
 }

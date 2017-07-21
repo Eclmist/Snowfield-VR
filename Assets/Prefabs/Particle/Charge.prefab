@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4530599170595798}
   - component: {fileID: 198497486082309802}
   - component: {fileID: 199515175595706262}
-  - component: {fileID: 114463084625454600}
+  - component: {fileID: 114691320494796142}
   m_Layer: 0
   m_Name: Charge
   m_TagString: Untagged
@@ -42,7 +42,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114463084625454600
+--- !u!114 &114691320494796142
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1466320776756058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f6a705c17630214b8518e6eb8f9a491, type: 3}
+  m_Script: {fileID: 11500000, guid: c2312a16dfb99e545ab14b5bae6cef24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spellPrefab: {fileID: 1872019811428252, guid: 8c8d7e0c07705334e83a6b7147017d6d,
@@ -113,7 +113,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -510368532
+  randomSeed: -446508179
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -265,8 +265,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 0.2
+      scalar: 1
+      minScalar: 0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
