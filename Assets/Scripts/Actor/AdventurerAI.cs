@@ -170,6 +170,13 @@ public class AdventurerAI : AI
 
     }
 
+    public int Level
+    {
+        get
+        {
+            return data.CurrentJob.Level;
+        }
+    }
     public void StartQuestYESDelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
