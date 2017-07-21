@@ -108,31 +108,4 @@ public class OrderSlip : VR_Interactable_UI {
 
     }
 
-    
-
-
-    protected override void OnControllerEnter()
-    {
-        base.OnControllerEnter();
-        if (currentInteractingController)
-        {
-            currentInteractingController.UI = this;
-            Debug.Log("interacring with an order");
-        }
-
-    }
-
-    protected override void OnControllerExit()
-    {
-        if (currentInteractingController.UI == this)
-            currentInteractingController.UI = null;
-        base.OnControllerExit();
-    }
-
-
-
-
-
-
-
 }
