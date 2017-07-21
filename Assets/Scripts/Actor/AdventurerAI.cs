@@ -10,8 +10,9 @@ public class AdventurerAI : AI
     //private List<Relation> actorRelations = new List<Relation>();
     [SerializeField]
     protected AdventurerAIData data;
+
     [SerializeField]
-    private Inventory inventory;
+    private List<Equipment> inventory = new List<Equipment>();
 
     protected override void Awake()
     {
@@ -23,6 +24,7 @@ public class AdventurerAI : AI
     {
         if (QuestBook.StoryQuests == null)
             QuestBook.BeginQuestBook();
+
     }
 
     public override ActorData Data
@@ -45,13 +47,18 @@ public class AdventurerAI : AI
             return data.QuestBook;
         }
     }
-    public void EquipRandomWeapons()
+    public bool EquipRandomWeapons()
     {
         foreach (Equipment equip in inventory)
         {
-            if (equip.Slot == EquipSlot.EquipmentSlotType.LEFTHAND || equip.Slot == EquipSlot.EquipmentSlotType.RIGHTHAND)
+            
+            if (equip is Weapon)
+            {
                 ChangeWield(Instantiate(equip));
+                return true;
+            }
         }
+        return false;
     }
 
     protected void GetSlots()
@@ -147,7 +154,7 @@ public class AdventurerAI : AI
             return;
         }
 
-        
+
     }
 
     protected System.Collections.IEnumerator StartInteraction(OptionPane op)
@@ -184,7 +191,7 @@ public class AdventurerAI : AI
         startableGroup.Quest.StartQuest();
     }
 
-    
+
     public void StartQuestNODelegate()
     {
         QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();

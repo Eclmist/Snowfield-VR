@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-
+    [System.Serializable]
 	public class InventorySlot
 	{
 		private int currentStack;
+
 		private IStorable storedItem;
 
 		public InventorySlot(IStorable item,int quantity)
