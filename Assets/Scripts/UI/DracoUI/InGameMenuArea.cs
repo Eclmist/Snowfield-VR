@@ -29,9 +29,15 @@ public class InGameMenuArea : MonoBehaviour
             prefabs.settingsScreen.SetActive(active);
     }
 
-    public void QuitGame(bool active)
+    public void QuitGamePrompt(bool active)
     { 
         if(prefabs.quitPrompt != null)
             prefabs.quitPrompt.SetActive(active);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    
 }
