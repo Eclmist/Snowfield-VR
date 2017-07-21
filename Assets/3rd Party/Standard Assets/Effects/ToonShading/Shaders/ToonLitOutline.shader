@@ -6,6 +6,7 @@ Shader "Toon/Lit Outline" {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_Ramp ("Toon Ramp (RGB)", 2D) = "gray" {} 
 		_Stencil("Stencil", Int) = 60
+			_bOff("Brightness Offset", Range(0,5)) = 0
 	}
 
 	SubShader {
