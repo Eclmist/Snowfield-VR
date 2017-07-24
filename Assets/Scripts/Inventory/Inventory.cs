@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory
 {
     [System.Serializable]
 	public class InventorySlot
@@ -44,26 +44,22 @@ public class Inventory : MonoBehaviour
 
 	}
 
-	[SerializeField]
-	private int maxSlots;
-	private InventorySlot[] inventoryItems ;
+	private List<InventorySlot> inventoryItems = new List<InventorySlot>();
 
-    protected virtual void Start()
-	{
-		inventoryItems = new InventorySlot[maxSlots];
-        InitializeEmptySlots();
-	}
-		
- 
     
-	public InventorySlot[] InventoryItems
+    public List<InventorySlot> InventoryItems
     {
         get { return this.inventoryItems; }
+
+    }
+
+    public InventorySlot this[int index]  
+    {
+        get { return this.inventoryItems[index]; }
     }
 
 
-
-	public void AddToInventory(IStorable item)
+    public void AddToInventory(IStorable item)
     {
 
         bool added = false;
@@ -82,34 +78,22 @@ public class Inventory : MonoBehaviour
         // Add item to an empty slot
         if(!added)
         {
-            foreach(InventorySlot slot in inventoryItems)
-            {
-                if(slot.StoredItem == null)
-                {
-                    slot.StoredItem = item;
-                }
-            }
+            InventorySlot slot = new InventorySlot(item, 1);
+            inventoryItems.Add(slot);
         }
 
     }
 
-	public GameObject RetrieveItem(int index)
+   
+
+
+    public GameObject RetrieveItem(int index)
     {
-        if (index < inventoryItems.Length)
+        if (index < inventoryItems.Count)
             return inventoryItems[index].StoredItem.ObjectReference;
         else
             return null;
     }
-
-
-    private void InitializeEmptySlots()
-    {
-        for (int i = 0; i < inventoryItems.Length; i++)
-            inventoryItems[i] = new InventorySlot();
-    }
-
-
-
 
 
 
