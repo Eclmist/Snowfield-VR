@@ -84,7 +84,43 @@ public class Inventory
 
     }
 
-   
+    public void AddToInventory(IStorable item, int quantity)
+    {
+
+        bool added = false;
+        int amountToAdd;
+
+        foreach (InventorySlot slot in inventoryItems)
+        {
+            if (slot.CurrentStack == slot.StoredItem.MaxStackSize)
+                continue;
+
+            if (item.ItemID == slot.StoredItem.ItemID)
+            {
+                slot.CurrentStack++;
+                
+                // Account for overflowing
+                if(slot.CurrentStack > slot.StoredItem.MaxStackSize)
+                {
+                    int extra = slot.CurrentStack - slot.StoredItem.MaxStackSize;
+                    slot.CurrentStack = slot.StoredItem.MaxStackSize;
+                    inventoryItems.Add(new InventorySlot(item,extra));
+                    added = true;
+                }
+            }
+        }
+
+        // Add item to an empty slot
+        if (!added)
+        {
+            InventorySlot slot = new InventorySlot(item, quantity);
+            inventoryItems.Add(slot);
+        }
+
+    }
+
+    
+
 
 
     public GameObject RetrieveItem(int index)
@@ -95,6 +131,8 @@ public class Inventory
             return null;
     }
 
+ 
+ 
 
 
 }
