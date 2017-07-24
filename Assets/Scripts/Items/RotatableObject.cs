@@ -21,6 +21,7 @@ public class RotatableObject : VR_Interactable_Object
     // Use this for initialization
     protected override void Awake()
     {
+        base.Awake();
         joint = GetComponent<HingeJoint>();
     }
 

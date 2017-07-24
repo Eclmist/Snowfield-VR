@@ -104,6 +104,8 @@ public class VR_Controller_Custom : MonoBehaviour
 
         if (currentObject && (interactable == null || interactable.LinkedController != this))
         {
+            if (interactable != null)
+                interactable.OnControllerExit(this);
             interactable = currentObject;
             interactable.OnControllerEnter(this);
         }

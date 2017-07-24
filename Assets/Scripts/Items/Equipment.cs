@@ -15,7 +15,7 @@ public class Equipment : CraftedItem {
         }
     }
 
-    public void Equip(Transform parent)
+    public virtual void Equip(Transform parent)
     {
         rigidBody.isKinematic = true;
         itemCollider.isTrigger = true;

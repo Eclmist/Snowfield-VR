@@ -15,11 +15,6 @@ public class Treasure : MonoBehaviour, IDamagable {
             return true;
         }
     }
-    protected void Awake()
-    {
- 
-    }
-    
 
     public int Health
     {

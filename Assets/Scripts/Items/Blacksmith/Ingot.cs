@@ -57,9 +57,9 @@ public class Ingot : BlacksmithItem {
         currentMorphSteps = 0;
     }
 
-    public void Update()
+    protected override void Update()
     {
-
+        base.Update();
         if (Input.GetKeyDown(KeyCode.E))
             quenchRate = 10;
 

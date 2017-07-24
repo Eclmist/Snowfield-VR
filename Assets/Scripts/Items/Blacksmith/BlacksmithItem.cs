@@ -29,6 +29,7 @@ public class BlacksmithItem : GenericItem
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)
     {
         rigidBody.useGravity = false;
+        rigidBody.isKinematic = false;
         base.OnTriggerPress(referenceCheck);
     }
 

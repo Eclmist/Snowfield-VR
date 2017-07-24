@@ -16,14 +16,21 @@ public class CraftedItem : GenericItem
 
     protected Vector3 offsetPosition;
     protected Quaternion offsetRotation;
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         if (!pivot)
-            pivot = transform;
-        offsetPosition = transform.position - pivot.position;
-        offsetRotation = pivot.rotation;
+        {
+            offsetPosition = Vector3.zero;
+            offsetRotation = Quaternion.identity;
+        }
+        else
+        {
 
+            offsetPosition = pivot.localPosition;
+            offsetRotation = pivot.localRotation;
+        }
+        
     }
     protected virtual void UseItem()
     {
