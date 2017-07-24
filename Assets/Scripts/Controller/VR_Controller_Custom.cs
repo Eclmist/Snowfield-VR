@@ -29,18 +29,28 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private VR_Interactable interactable;
 
-    private VR_Interactable_UI currentInteractingUI;
+    private List<VR_Interactable_UI> listOfInteractingUI = new List<VR_Interactable_UI>();
 
     public VR_Interactable_UI UI
     {
         get
         {
-            return currentInteractingUI;
+
+            float closestDist = 10000f;
+            VR_Interactable_UI returnUI = null;
+            foreach (VR_Interactable_UI ui in listOfInteractingUI)
+            {
+                float dist = Vector3.Distance(transform.position, ui.transform.position);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    returnUI = ui;
+                }
+            }
+
+                return returnUI;
         }
-        set
-        {
-            currentInteractingUI = value;
-        }
+
     }
 
     public Controller_Handle Handle
@@ -77,21 +87,22 @@ public class VR_Controller_Custom : MonoBehaviour
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripRelease(this);
         }
+
+        listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null);
     }
+
 
     private void ControllerInput()
     {
         if (interactable != null)
         {
-
-
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerHold(this);
-            
-            
+
+
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripHold(this);
-            
+
             if (interactable.LinkedController == this)
                 interactable.OnInteracting(this);
 
@@ -107,6 +118,10 @@ public class VR_Controller_Custom : MonoBehaviour
             interactable = currentObject;
             interactable.OnControllerEnter(this);
         }
+
+        VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
+        if (interactableUI)
+            listOfInteractingUI.Add(interactableUI);
     }
 
     private void OnTriggerStay(Collider collider)
@@ -121,8 +136,12 @@ public class VR_Controller_Custom : MonoBehaviour
         {
             interactable.OnControllerExit(this);
             interactable = null;
-		}
-	}
+        }
+
+        VR_Interactable_UI interactableUI = other.GetComponent<VR_Interactable_UI>();
+        if (interactableUI)
+            listOfInteractingUI.Remove(interactableUI);
+    }
 
     public Vector3 Velocity
     {
