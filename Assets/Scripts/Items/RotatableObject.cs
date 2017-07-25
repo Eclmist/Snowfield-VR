@@ -25,8 +25,9 @@ public class RotatableObject : VR_Interactable_Object
         joint = GetComponent<HingeJoint>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         joint.useLimits = true;
         JointLimits limit = joint.limits;
         limit.max = maxRotationValue;

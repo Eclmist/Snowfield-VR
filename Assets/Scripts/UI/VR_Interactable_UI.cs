@@ -52,6 +52,13 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 
     protected VR_Controller_Custom currentInteractingController;
 
+    public VR_Controller_Custom LinkedController
+    {
+        get
+        {
+            return currentInteractingController;
+        }
+    }
     protected void OnTriggerEnter(Collider other)
     {
         if (interactable)

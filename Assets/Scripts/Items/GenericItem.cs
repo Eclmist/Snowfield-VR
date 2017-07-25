@@ -287,16 +287,10 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     {
         base.OnTriggerRelease(referenceCheck);
-
+        transform.parent = null;
         referenceCheck.Model.SetActive(true);
-
-
         gameObject.layer = LayerMask.NameToLayer("Default");
-
-
         StartCoroutine(Throw(Player.Instance));
-
-
     }
 
 
@@ -305,60 +299,26 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     public virtual IEnumerator Throw(Actor thrower)
 
-
-
-
-
     {
-
 
         isFlying = true;
 
-
-
-
-
         while (rigidBody.velocity.magnitude > 0.1)
-
-
-
-
 
         {
 
-
             if (target != null)
-
-
-
-
 
             {
 
 
                 thrower.Attack(this, target);
 
-
-
-
-
                 target = null;
-
-
-
-
 
                 break;
 
-
-
-
-
             }
-
-
-
-
 
             yield return new WaitForFixedUpdate();
 
@@ -392,7 +352,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     {
 
-
+        transform.parent = controller.transform;
         controller.Model.SetActive(false);
 
         gameObject.layer = LayerMask.NameToLayer("Player");

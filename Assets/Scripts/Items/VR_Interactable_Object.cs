@@ -78,24 +78,17 @@ public class VR_Interactable_Object : VR_Interactable
     {
 		SetOutline(false);
 
-		if (currentInteractingController != null)
-            currentInteractingController.SetInteraction(null);
 
         currentInteractingController = controller;
-
-        currentInteractingController.SetInteraction(this);
+        controller.SetInteraction(this);
     }
 		
 
 	public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
         currentInteractingController = null;
-        controller.SetInteraction(null);
-        
         rigidBody.velocity = currentReleaseVelocity;
         rigidBody.angularVelocity = currentReleaseAngularVelocity;
-        Debug.Log("CurrentReleaseVelocity:" + rigidBody.velocity);
-        Debug.Log(rigidBody.angularVelocity);
     }
 		
 
@@ -124,4 +117,16 @@ public class VR_Interactable_Object : VR_Interactable
 			m.SetColor("_OutlineColor", color);
 		}
 	}
+
+    protected virtual void OnTriggerEnter(Collider col)
+    {
+        if (currentInteractingController)
+            currentInteractingController.OnTriggerEnter(col);
+    }
+
+    protected virtual void OnTriggerExit(Collider col)
+    {
+        if (currentInteractingController)
+            currentInteractingController.OnTriggerExit(col);
+    }
 }

@@ -81,7 +81,8 @@ public class InteractableSlot : VR_Interactable_UI
             temp.CurrentStack--;
 
                 VR_Interactable instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<VR_Interactable>();
-                currentInteractingController.SetInteraction(instanceInteractable);
+               
+                instanceInteractable.OnTriggerPress(currentInteractingController);
                 if (temp.CurrentStack < 1)
                 {
                     temp.EmptySlot();
@@ -144,14 +145,16 @@ public class InteractableSlot : VR_Interactable_UI
 
     protected override void OnTriggerRelease()
     {
+       
         if (currentInteractingController.UI == this)
         {
-
+            
             GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
-
+            Debug.Log(g);
             if (g)
             {
                 ItemData d = ItemManager.Instance.GetItemData(g.ItemID);
+                Debug.Log(d);   
                 if (d != null)
                 {
                     currentInteractingController.Model.SetActive(true);

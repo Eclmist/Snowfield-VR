@@ -86,7 +86,7 @@ public class StoragePanel : MonoBehaviour {
 
     public void DisplayNextPage()
     {
-        if (currentPageNumber < numberOfPages)
+        if (currentPageNumber < numberOfPages-1)
             currentPageNumber++;
     }
 

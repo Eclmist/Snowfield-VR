@@ -47,8 +47,8 @@ public class VR_Controller_Custom : MonoBehaviour
                     returnUI = ui;
                 }
             }
-
-                return returnUI;
+            Debug.Log(listOfInteractingUI.Count);
+            return returnUI;
         }
 
     }
@@ -71,28 +71,31 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
         ControllerInput();
-
     }
 
     private void Update()
     {
-        if (interactable != null)
-        {
-            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerPress(this);
-            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerRelease(this);
-            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripPress(this);
-            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripRelease(this);
-            if (interactable.LinkedController == this)
-                interactable.OnInteracting(this);
-        }
-
-        listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null);
+        HandleUpdateInput();
     }
 
+    private void HandleUpdateInput()
+    {
+
+        if (listOfInteractingUI.Count == 0)
+        {
+            if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+                interactable.OnTriggerPress(this);
+            if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+                interactable.OnTriggerRelease(this);
+            if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+                interactable.OnGripPress(this);
+            if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
+                interactable.OnGripRelease(this);
+        }
+        if (interactable != null && interactable.LinkedController == this)
+            interactable.OnInteracting(this);
+        listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null || VR_Interactable_UI.LinkedController != this);
+    }
 
     private void ControllerInput()
     {
@@ -100,18 +103,14 @@ public class VR_Controller_Custom : MonoBehaviour
         {
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerHold(this);
-
-
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripHold(this);
-
-            
-
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Triggered");
         VR_Interactable currentObject = collider.GetComponentInParent<VR_Interactable>();
 
         if (currentObject && (interactable == null || interactable.LinkedController != this))
@@ -123,6 +122,7 @@ public class VR_Controller_Custom : MonoBehaviour
         }
 
         VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
+
         if (interactableUI)
             listOfInteractingUI.Add(interactableUI);
     }
@@ -133,7 +133,7 @@ public class VR_Controller_Custom : MonoBehaviour
             interactable.OnControllerStay(this);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (interactable != null && interactable.LinkedController != this)
         {
@@ -142,6 +142,7 @@ public class VR_Controller_Custom : MonoBehaviour
         }
 
         VR_Interactable_UI interactableUI = other.GetComponent<VR_Interactable_UI>();
+
         if (interactableUI)
             listOfInteractingUI.Remove(interactableUI);
     }

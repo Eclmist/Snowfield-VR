@@ -62,7 +62,6 @@ public class CraftedItem : GenericItem
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
-            transform.parent = referenceCheck.transform;
         }
         else
         {
@@ -79,7 +78,6 @@ public class CraftedItem : GenericItem
             base.OnTriggerRelease(referenceCheck);
             itemCollider.isTrigger = false;
             rigidBody.useGravity = true;
-            transform.parent = null;
         }
     }
 
@@ -91,8 +89,9 @@ public class CraftedItem : GenericItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
-    protected virtual void OnTriggerEnter(Collider collision)
+    protected override void OnTriggerEnter(Collider collision)
     {
+        base.OnTriggerEnter(collision);
         if (currentInteractingController != null)
         {
             PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
@@ -116,8 +115,9 @@ public class CraftedItem : GenericItem
         }
     }
 
-    protected virtual void OnTriggerExit(Collider collision)
+    protected override void OnTriggerExit(Collider collision)
     {
+        base.OnTriggerExit(collision);
         if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
         {
             removable = true;
