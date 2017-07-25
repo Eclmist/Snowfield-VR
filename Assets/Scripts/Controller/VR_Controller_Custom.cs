@@ -86,6 +86,8 @@ public class VR_Controller_Custom : MonoBehaviour
                 interactable.OnGripPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripRelease(this);
+            if (interactable.LinkedController == this)
+                interactable.OnInteracting(this);
         }
 
         listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null);
@@ -103,8 +105,7 @@ public class VR_Controller_Custom : MonoBehaviour
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripHold(this);
 
-            if (interactable.LinkedController == this)
-                interactable.OnInteracting(this);
+            
 
         }
     }
