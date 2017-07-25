@@ -319,8 +319,8 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
                 break;
 
             }
- 
-            yield return new WaitForFixedUpdate();
+
+            yield return new WaitForEndOfFrame();
 
 
         }

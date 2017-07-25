@@ -22,8 +22,6 @@ public class BlacksmithItem : GenericItem
     {
         base.OnTriggerRelease(referenceCheck);
         rigidBody.useGravity = true;
-        rigidBody.velocity = referenceCheck.Velocity;
-        rigidBody.angularVelocity = referenceCheck.AngularVelocity;
     }
 
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)
