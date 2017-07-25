@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class InteractableSlot : VR_Interactable_UI
 {
 
-    [SerializeField]private Image image;
-    [SerializeField]private Text stack;
+    [SerializeField] private Image image;
+    [SerializeField] private Text stack;
     private int index;
     private VR_Interactable_Object pendingItem;
 
@@ -52,7 +52,7 @@ public class InteractableSlot : VR_Interactable_UI
             stack.color = new Color(0, 0, 0, 0);
         }
 
-        
+
 
     }
 
@@ -61,7 +61,7 @@ public class InteractableSlot : VR_Interactable_UI
     private Inventory.InventorySlot GetReferredSlot()
     {
         int referencedIndex = (StoragePanel.Instance.CurrentPageNumber) * (StoragePanel.Instance.NumberOfSlotsPerPage) + index;
-           // - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
+        // - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
 
         return StoragePanel.Instance._Inventory.InventoryItemsArr[referencedIndex];
 
@@ -76,19 +76,19 @@ public class InteractableSlot : VR_Interactable_UI
 
         Inventory.InventorySlot temp = GetReferredSlot();
 
-            if (temp.StoredItem != null)
-            {
+        if (temp.StoredItem != null)
+        {
             temp.CurrentStack--;
 
-                VR_Interactable instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<VR_Interactable>();
-               
-                instanceInteractable.OnTriggerPress(currentInteractingController);
-                if (temp.CurrentStack < 1)
-                {
-                    temp.EmptySlot();
-                }
+            VR_Interactable instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<VR_Interactable>();
+
+            instanceInteractable.OnTriggerPress(currentInteractingController);
+            if (temp.CurrentStack < 1)
+            {
+                temp.EmptySlot();
             }
-        
+        }
+
 
     }
 
@@ -98,26 +98,26 @@ public class InteractableSlot : VR_Interactable_UI
         Inventory.InventorySlot temp = GetReferredSlot();
 
         if (temp.StoredItem == null)
-            {
+        {
 
             temp.StoredItem = item;
             temp.CurrentStack++;
             currentInteractingController = null;
 
-            }
-            else if (temp.StoredItem.ItemID == item.ItemID)
+        }
+        else if (temp.StoredItem.ItemID == item.ItemID)
+        {
+            if (temp.CurrentStack < temp.StoredItem.MaxStackSize)
             {
-                if (temp.CurrentStack < temp.StoredItem.MaxStackSize)
-                {
 
                 temp.CurrentStack++;
-                }
-                else
-                {
-                    //show red outline
-                }
             }
-        
+            else
+            {
+                //show red outline
+            }
+        }
+
 
 
     }
@@ -136,7 +136,7 @@ public class InteractableSlot : VR_Interactable_UI
 
     protected override void OnTriggerPress()
     {
-        if (currentInteractingController.UI == this)
+        if (currentInteractingController.UI == this && !currentInteractingController.HasObject)
         {
 
             RemoveFromSlot();
@@ -145,17 +145,17 @@ public class InteractableSlot : VR_Interactable_UI
 
     protected override void OnTriggerRelease()
     {
-       
+
         if (currentInteractingController.UI == this)
         {
-            
+
             GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
             Debug.Log(g);
             if (g)
             {
                 ItemData d = ItemManager.Instance.GetItemData(g.ItemID);
-                Debug.Log(d);   
-                if (d != null)
+                
+                if (d != null && (GetReferredSlot().StoredItem == null || GetReferredSlot().StoredItem.ItemID == d.ItemID))
                 {
                     currentInteractingController.Model.SetActive(true);
                     AddToSlot(d);
@@ -163,7 +163,7 @@ public class InteractableSlot : VR_Interactable_UI
                 }
 
             }
-         
+
         }
     }
 

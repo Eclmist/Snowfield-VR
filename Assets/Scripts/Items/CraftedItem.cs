@@ -92,10 +92,11 @@ public class CraftedItem : GenericItem
     protected override void OnTriggerEnter(Collider collision)
     {
         base.OnTriggerEnter(collision);
-        if (currentInteractingController != null)
+        VR_Interactable_UI UI = GetComponent<VR_Interactable_UI>();
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject && UI == null)
         {
             PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
-
+            removable = false;
         }
     }
 
@@ -118,7 +119,8 @@ public class CraftedItem : GenericItem
     protected override void OnTriggerExit(Collider collision)
     {
         base.OnTriggerExit(collision);
-        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
+        VR_Interactable_UI UI = GetComponent<VR_Interactable_UI>();
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject && UI == null)
         {
             removable = true;
         }

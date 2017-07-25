@@ -53,6 +53,13 @@ public class VR_Controller_Custom : MonoBehaviour
 
     }
 
+    public bool HasObject
+    {
+        get
+        {
+            return interactable != null;
+        }
+    }
     public Controller_Handle Handle
     {
         get
@@ -81,17 +88,15 @@ public class VR_Controller_Custom : MonoBehaviour
     private void HandleUpdateInput()
     {
 
-        if (listOfInteractingUI.Count == 0)
-        {
-            if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerPress(this);
-            if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerRelease(this);
-            if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripPress(this);
-            if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripRelease(this);
-        }
+
+        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+            interactable.OnTriggerPress(this);
+        if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+            interactable.OnTriggerRelease(this);
+        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+            interactable.OnGripPress(this);
+        if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
+            interactable.OnGripRelease(this);
         if (interactable != null && interactable.LinkedController == this)
             interactable.OnInteracting(this);
         listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null || VR_Interactable_UI.LinkedController != this);
