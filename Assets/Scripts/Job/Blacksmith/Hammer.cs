@@ -19,13 +19,15 @@ public class Hammer : BlacksmithItem
 		IngotDeformer ingotDeformer = collision.collider.GetComponentInParent<IngotDeformer>();
 		if (ingotDeformer != null)
 		{
-			foreach (ContactPoint contact in collision.contacts)
-			{
-				ingotDeformer.Impact(collision.relativeVelocity, contact.point);
-			}
+            if (ingotDeformer.enabled)
+            {
+                foreach (ContactPoint contact in collision.contacts)
+                {
+                    ingotDeformer.Impact(collision.relativeVelocity, contact.point);
+                }
 
-			collision.collider.GetComponent<Ingot>().IncrementMorphStep();
-
+                collision.collider.GetComponent<Ingot>().IncrementMorphStep();
+            }
 		}
 
 		if (source)

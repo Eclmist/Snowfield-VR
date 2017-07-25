@@ -89,7 +89,7 @@ public class VR_Controller_Custom : MonoBehaviour
     {
 
 
-        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
             interactable.OnTriggerPress(this);
         if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
             interactable.OnTriggerRelease(this);

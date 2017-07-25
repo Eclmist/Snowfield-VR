@@ -78,7 +78,7 @@ public class AIManager : MonoBehaviour
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
         Stats newAIBaseStats = newAI.Data.BaseStats;
-        AdventurerAIData newData = new AdventurerAIData((newAI.Data as AdventurerAIData).CurrentJob, newAIBaseStats, newAI.Data.Name,myPath);//Random name gen
+        AdventurerAIData newData = new AdventurerAIData((newAI.Data as AdventurerAIData).CurrentJob, newAIBaseStats, newAI.name,myPath);//Random name gen
         return newData;
     }
 

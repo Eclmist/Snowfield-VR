@@ -43,7 +43,7 @@ public class AI_HUD : MonoBehaviour {
 			return;
 		}
 
-		playerName.text = actor.name;
+		playerName.text = actor.Data.Name;
 
 		if (healthbarValueObj && playerIndicatorObj)
 		{
