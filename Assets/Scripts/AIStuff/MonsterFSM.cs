@@ -55,11 +55,7 @@ public class MonsterFSM : ActorFSM
                 requestedPath = true;
                 nextState = FSMState.COMBAT;
             }
-            else
-            {
-                currentMonster.TakeDamage(999999, null);
-            }
-            
+
         }
     }
 

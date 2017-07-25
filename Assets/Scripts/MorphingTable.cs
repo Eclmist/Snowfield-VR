@@ -31,18 +31,30 @@ public class MorphingTable : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        if (ingotReference == null){
+            Ingot ingot = other.gameObject.GetComponent<Ingot>();
 
-        Ingot ingot = other.gameObject.GetComponent<Ingot>();
+            if (ingot != null && ingot.LinkedController == null)
+            {
+                ingotReference = ingot;
+                ingot.GetComponent<Rigidbody>().isKinematic = true;
+                LockIntoPosition(ingot.transform);
+            }
+        }
+    }
 
-        if (ingotReference == null && ingot != null)
+    private void OnTriggerStay(Collider other)
+    {
+        if (ingotReference == null)
         {
-            ingotReference = ingot;
+            Ingot ingot = other.gameObject.GetComponent<Ingot>();
 
-            if (ingot.LinkedController != null)
-                ingot.OnControllerExit(ingot.LinkedController);
-
-            ingot.GetComponent<Rigidbody>().isKinematic = true;
-            LockIntoPosition(ingot.transform);
+            if (ingot != null && ingot.LinkedController == null)
+            {
+                ingotReference = ingot;
+                ingot.GetComponent<Rigidbody>().isKinematic = true;
+                LockIntoPosition(ingot.transform);
+            }
         }
     }
 

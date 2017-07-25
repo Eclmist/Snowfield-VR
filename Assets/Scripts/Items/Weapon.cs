@@ -107,11 +107,12 @@ public class Weapon : Equipment
         }
     }
 
-    protected override void UseItem()
-    {
-        base.UseItem();
-    }
 
+    public override void Equip(Transform parent)
+    {
+        base.Equip(parent);
+        charge = false;
+    }
     protected override void OnTriggerEnter(Collider collision)
     {
         base.OnTriggerEnter(collision);

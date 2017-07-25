@@ -55,7 +55,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-    [SerializeField]private int itemID = -1;
+    [SerializeField] private int itemID = -1;
 
 
 
@@ -285,23 +285,13 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 
-
-
-
-
     {
-
+        base.OnTriggerRelease(referenceCheck);
 
         referenceCheck.Model.SetActive(true);
 
 
-
-
-
-        base.OnTriggerRelease(referenceCheck);
-
-
-
+        gameObject.layer = LayerMask.NameToLayer("Default");
 
 
         StartCoroutine(Throw(Player.Instance));
@@ -370,7 +360,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
 
 
         }
@@ -405,7 +395,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
         controller.Model.SetActive(false);
 
-
+        gameObject.layer = LayerMask.NameToLayer("Player");
         base.OnTriggerPress(controller);
 
 
@@ -433,7 +423,7 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
         {
 
 
-            target = col.transform.GetComponent<IDamagable>();
+            target = col.transform.GetComponent<Monster>();
 
 
         }

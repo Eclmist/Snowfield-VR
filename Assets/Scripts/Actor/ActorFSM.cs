@@ -169,7 +169,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null && target.CanBeAttacked && !requestedPath)
+        if (target != null && target.CanBeAttacked)
         {
             float tempAttackRange = attackRange;
             if (target is Player)
@@ -350,18 +350,19 @@ public abstract class ActorFSM : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dir);
         if (target != null)
         {
-            Debug.Log("CheckedHit");
             Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
-            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
-            {
-                CurrentAI.Attack(currentUseWeapon, target);
-            }
-            else
-            {
-                CurrentAI.Attack(0, target);
-            }
+            
+                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
+                {
+                    CurrentAI.Attack(currentUseWeapon, target);
+                }
+                else if(target is Actor)
+                {
+                    CurrentAI.Attack(0, target);
+                }
+            
         }
     }
 
