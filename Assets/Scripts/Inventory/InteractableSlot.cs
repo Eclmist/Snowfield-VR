@@ -60,10 +60,11 @@ public class InteractableSlot : VR_Interactable_UI
     // we take the (page number) * (number of slots per page) - (number of slots  - current index) - 1
     private Inventory.InventorySlot GetReferredSlot()
     {
-        int referencedIndex = (StoragePanel.Instance.CurrentPageNumber) * (StoragePanel.Instance.NumberOfSlotsPerPage)
-            - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
+        int referencedIndex = (StoragePanel.Instance.CurrentPageNumber) * (StoragePanel.Instance.NumberOfSlotsPerPage) + index;
+           // - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
 
-        return StoragePanel.Instance._Inventory[referencedIndex];
+        return StoragePanel.Instance._Inventory.InventoryItemsArr[referencedIndex];
+
 
 
     }
@@ -137,29 +138,30 @@ public class InteractableSlot : VR_Interactable_UI
         if (currentInteractingController.UI == this)
         {
 
+            RemoveFromSlot();
+        }
+    }
+
+    protected override void OnTriggerRelease()
+    {
+        if (currentInteractingController.UI == this)
+        {
+
             GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
 
             if (g)
             {
                 ItemData d = ItemManager.Instance.GetItemData(g.ItemID);
-                if(d != null)
+                if (d != null)
                 {
                     currentInteractingController.Model.SetActive(true);
                     AddToSlot(d);
                     Destroy(g.gameObject);
                 }
-                        
-            }
-            else
-            {
-                RemoveFromSlot();
-            }
 
-
-            // if controller is holding an item, call AddToSlot() *pass in the item it is holding*
-            // else call RemoveFromSlot()
+            }
+         
         }
-
     }
 
     protected override void OnControllerEnter()

@@ -17,7 +17,7 @@ public class Inventory
 			storedItem = item;
 		}
 
-        // An empty slot
+        // Create an empty slot by default
         public InventorySlot()
         {
             currentStack = 0;
@@ -44,89 +44,84 @@ public class Inventory
 
 	}
 
-	private List<InventorySlot> inventoryItems = new List<InventorySlot>();
+    private InventorySlot[] inventoryItemsArr;
+    private const int maxNumberOfSlots = 100;
 
-    
-    public List<InventorySlot> InventoryItems
+    public Inventory()
     {
-        get { return this.inventoryItems; }
+
+        inventoryItemsArr = new InventorySlot[maxNumberOfSlots];
+
+        for(int i = 0;i < maxNumberOfSlots; i++)
+        {
+            inventoryItemsArr[i] = new InventorySlot() ;
+        }
+    }
+
+   
+
+
+    public InventorySlot[] InventoryItemsArr
+    {
+        get { return this.inventoryItemsArr; }
 
     }
 
-    public InventorySlot this[int index]  
-    {
-        get { return this.inventoryItems[index]; }
-    }
+    //public InventorySlot this[int index]  
+    //{
+    //    get { return this.inventoryItems[index]; }
+    //}
 
 
     public void AddToInventory(IStorable item)
     {
-
+        Debug.Log(inventoryItemsArr.Length);
+        Debug.Log(inventoryItemsArr[0] == null);
         bool added = false;
-
-        foreach (InventorySlot slot in inventoryItems)
+        for(int i = 0 ; i < inventoryItemsArr.Length; i++)
         {
-            if (slot.CurrentStack == slot.StoredItem.MaxStackSize)
-                continue;
+            InventorySlot tempSlot = inventoryItemsArr[i];
 
-            if(item.ItemID == slot.StoredItem.ItemID)
+            if (tempSlot.StoredItem != null)
+                if(tempSlot.CurrentStack >= tempSlot.StoredItem.MaxStackSize)
+                    continue;
+
+
+            if(tempSlot.StoredItem != null)
             {
-                slot.CurrentStack++;
+                if (item.ItemID == tempSlot.StoredItem.ItemID)
+                {
+                    tempSlot.CurrentStack++;
+                    added = true;
+                }
             }
+            
         }
 
         // Add item to an empty slot
         if(!added)
-        {
-            InventorySlot slot = new InventorySlot(item, 1);
-            inventoryItems.Add(slot);
-        }
-
-    }
-
-    public void AddToInventory(IStorable item, int quantity)
-    {
-
-        bool added = false;
-        int amountToAdd;
-
-        foreach (InventorySlot slot in inventoryItems)
-        {
-            if (slot.CurrentStack == slot.StoredItem.MaxStackSize)
-                continue;
-
-            if (item.ItemID == slot.StoredItem.ItemID)
+        {   
+            foreach(InventorySlot s in inventoryItemsArr)
             {
-                slot.CurrentStack++;
-                
-                // Account for overflowing
-                if(slot.CurrentStack > slot.StoredItem.MaxStackSize)
+                if(s.StoredItem == null)
                 {
-                    int extra = slot.CurrentStack - slot.StoredItem.MaxStackSize;
-                    slot.CurrentStack = slot.StoredItem.MaxStackSize;
-                    inventoryItems.Add(new InventorySlot(item,extra));
-                    added = true;
+                    s.StoredItem = item;
+                    s.CurrentStack++;
+                    break;
                 }
             }
-        }
 
-        // Add item to an empty slot
-        if (!added)
-        {
-            InventorySlot slot = new InventorySlot(item, quantity);
-            inventoryItems.Add(slot);
+            
         }
 
     }
 
-    
-
-
+   
 
     public GameObject RetrieveItem(int index)
     {
-        if (index < inventoryItems.Count)
-            return inventoryItems[index].StoredItem.ObjectReference;
+        if (index < inventoryItemsArr.Length)
+            return inventoryItemsArr[index].StoredItem.ObjectReference;
         else
             return null;
     }

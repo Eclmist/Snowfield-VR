@@ -48,8 +48,7 @@ public class StoragePanel : MonoBehaviour {
 
     private void Start()
 	{
-  
-
+        inventory = new Inventory();
         glp = slotPanel.GetComponent<GridLayoutGroup>();
 		InitializeInteractableSlots ();
 	}
@@ -65,7 +64,7 @@ public class StoragePanel : MonoBehaviour {
 
     
 
-
+    // Create the intereactable slots
 	private void InitializeInteractableSlots()
 	{
 		for(int i = 0;i<numberOfSlots; i++)
