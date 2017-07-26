@@ -286,8 +286,9 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 
     {
-        base.OnTriggerRelease(referenceCheck);
         transform.parent = null;
+
+        base.OnTriggerRelease(referenceCheck);
         referenceCheck.Model.SetActive(true);
         gameObject.layer = LayerMask.NameToLayer("Default");
         StartCoroutine(Throw(Player.Instance));

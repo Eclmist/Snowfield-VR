@@ -20,8 +20,9 @@ public class BlacksmithItem : GenericItem
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
-        base.OnTriggerRelease(referenceCheck);
         rigidBody.useGravity = true;
+        base.OnTriggerRelease(referenceCheck);
+        
     }
 
     public override void OnTriggerPress(VR_Controller_Custom referenceCheck)

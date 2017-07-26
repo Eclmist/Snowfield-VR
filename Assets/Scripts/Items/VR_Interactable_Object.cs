@@ -22,7 +22,7 @@ public class VR_Interactable_Object : VR_Interactable
     [Range(0, 10)]
     protected float triggerPressVibration = 0;
 
-    private Vector3 currentReleaseVelocity = Vector3.zero, currentReleaseAngularVelocity = Vector3.zero;
+
 
     // Outline Rendering
     [SerializeField]
@@ -82,29 +82,29 @@ public class VR_Interactable_Object : VR_Interactable
 
         currentInteractingController = controller;
         controller.SetInteraction(this);
+        lastPosition = transform.position;
+        currentReleaseVelocity = Vector3.zero;
     }
 
-
+    private Vector3 currentReleaseVelocity = Vector3.zero;
     public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
         currentInteractingController = null;
-        currentReleaseVelocity = transform.rotation * currentReleaseVelocity;
-        rigidBody.velocity = currentReleaseVelocity;
-        rigidBody.angularVelocity = currentReleaseAngularVelocity;
+
+        rigidBody.AddForce(currentReleaseVelocity, ForceMode.Impulse);
+        rigidBody.angularVelocity = controller.AngularVelocity;
     }
 
+    protected Vector3 lastPosition = Vector3.zero;
 
     public override void OnInteracting(VR_Controller_Custom controller)
     {
-
-        if (currentReleaseVelocity.magnitude > controller.Velocity.magnitude)
-            currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, controller.Velocity, Time.deltaTime * 5);
+        Vector3 flatVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        lastPosition = transform.position;
+        if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
+            currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, flatVelocity, Time.deltaTime);
         else
-            currentReleaseVelocity = controller.Velocity;
-        if (currentReleaseAngularVelocity.magnitude > controller.AngularVelocity.magnitude)
-            currentReleaseAngularVelocity = Vector3.Lerp(currentReleaseAngularVelocity, controller.AngularVelocity, Time.deltaTime * 5);
-        else
-            currentReleaseAngularVelocity = controller.AngularVelocity;
+            currentReleaseVelocity = flatVelocity;
 
     }
 
