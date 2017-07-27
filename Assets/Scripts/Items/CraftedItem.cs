@@ -47,7 +47,9 @@ public class CraftedItem : GenericItem
 	{
 		return materialType;
 	}
-
+	public override void OnFixedUpdateInteraction (VR_Controller_Custom referenceCheck)
+	{
+			}
 	public int WeaponTier
 	{
 		get { return weaponTier; }
@@ -96,13 +98,14 @@ public class CraftedItem : GenericItem
         if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject && UI == null)
         {
             PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
+			currentInteractingController.Vibrate (currentInteractingController.Velocity.magnitude > maxSwingForce ? 10 : (currentInteractingController.Velocity.magnitude / maxSwingForce) * 10);
             removable = false;
         }
     }
 
-    public override void OnInteracting(VR_Controller_Custom controller)
+    public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
-        base.OnInteracting(controller);
+        base.OnUpdateInteraction(controller);
         transform.rotation = controller.transform.rotation * offsetRotation;
         transform.position = controller.transform.position + transform.rotation * offsetPosition;
 

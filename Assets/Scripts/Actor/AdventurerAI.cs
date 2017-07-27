@@ -282,6 +282,8 @@ public class AdventurerAI : AI
         hasSold = false;
         hasRequested = false;
         ChangeState(ActorFSM.FSMState.IDLE);
+		if(variable)
+		variable.ResetHealth ();
     }
 
     public override float GetOutOfTimeDuration()

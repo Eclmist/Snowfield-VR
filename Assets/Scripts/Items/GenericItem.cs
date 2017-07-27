@@ -13,14 +13,15 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 
 
-public abstract class GenericItem : VR_Interactable_Object, IDamage
+public class GenericItem : VR_Interactable_Object, IDamage
 
 
 {
 
+	protected bool isColliding = false;
 
-
-
+	[SerializeField] protected float directionalMultiplier = 5f, maxLerpForce = 10f;
+	[SerializeField] protected float collisionVibrationMagnitude = 0.8F;
 
     protected JobType jobType;
 
@@ -284,13 +285,12 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
-
     {
         transform.parent = null;
-
         base.OnTriggerRelease(referenceCheck);
         referenceCheck.Model.SetActive(true);
         gameObject.layer = LayerMask.NameToLayer("Default");
+		rigidBody.useGravity = true;
         StartCoroutine(Throw(Player.Instance));
     }
 
@@ -343,6 +343,44 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
 
 
+	public override void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
+	{
+		base.OnFixedUpdateInteraction(referenceCheck);
+
+		Vector3 PositionDelta = (referenceCheck.transform.position - transform.position);
+
+		if (!isColliding)
+		{
+			rigidBody.MovePosition(referenceCheck.transform.position);
+			rigidBody.MoveRotation(referenceCheck.transform.rotation);
+		}
+		else
+		{
+			float currentForce = maxLerpForce;
+
+			rigidBody.velocity =
+				PositionDelta.magnitude * directionalMultiplier > currentForce ?
+				(PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+
+			rigidBody.velocity =
+				PositionDelta.magnitude * directionalMultiplier > currentForce ?
+				(PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+
+			// Rotation ----------------------------------------------
+			Quaternion RotationDelta = referenceCheck.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+			float angle;
+			Vector3 axis;
+			RotationDelta.ToAngleAxis(out angle, out axis);
+
+			if (angle > 180)
+				angle -= 360;
+
+			float angularVelocityNumber = .2f;
+
+			// -------------------------------------------------------
+			rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
+		}
+	}
 
 
 
@@ -355,7 +393,8 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
         transform.parent = controller.transform;
         controller.Model.SetActive(false);
-
+		rigidBody.useGravity = false;
+		rigidBody.isKinematic = false;
         gameObject.layer = LayerMask.NameToLayer("Player");
         base.OnTriggerPress(controller);
 
@@ -389,28 +428,41 @@ public abstract class GenericItem : VR_Interactable_Object, IDamage
 
         }
 
+		isColliding = true;
 
+		if (currentInteractingController != null)
+		{
+			float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
+			currentInteractingController.Vibrate(value / 10);
 
+		}
 
-
-        //if (col.gameObject.GetComponent<Rigidbody>() == null)
-
-
-
-
-
-        //    PlaySound(rigidBody.velocity.magnitude > maxForceVolume ? 1 : rigidBody.velocity.magnitude / maxForceVolume);
-
-
-
-
-
-        //Sound Needs fixing
+	
 
 
     }
 
 
+
+	protected virtual void OnCollisionStay(Collision collision)
+	{
+		isColliding = true;
+		if (currentInteractingController != null)
+		{
+			float value = Vector3.Distance(transform.rotation.eulerAngles, currentInteractingController.transform.rotation.eulerAngles);
+
+			value = value <= 720 ? value : 720;
+
+			currentInteractingController.Vibrate(value / 720 * collisionVibrationMagnitude);
+
+
+		}
+	}
+
+	protected virtual void OnCollisionExit(Collision collision)
+	{
+		isColliding = false;
+	}
 
 
 

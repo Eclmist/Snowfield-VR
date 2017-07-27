@@ -78,7 +78,8 @@ public class VR_Interactable_Object : VR_Interactable
     public override void OnTriggerPress(VR_Controller_Custom controller)
     {
         SetOutline(false);
-
+        if (currentInteractingController)
+            currentInteractingController.Release();
 
         currentInteractingController = controller;
         controller.SetInteraction(this);
@@ -89,22 +90,23 @@ public class VR_Interactable_Object : VR_Interactable
     private Vector3 currentReleaseVelocity = Vector3.zero;
     public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
-        currentInteractingController = null;
 
+        currentInteractingController = null;
         rigidBody.AddForce(currentReleaseVelocity, ForceMode.Impulse);
         rigidBody.angularVelocity = controller.AngularVelocity;
+
     }
 
     protected Vector3 lastPosition = Vector3.zero;
 
-    public override void OnInteracting(VR_Controller_Custom controller)
+    public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
-        Vector3 flatVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        currentReleaseVelocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
-        if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
-            currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, flatVelocity, Time.deltaTime);
-        else
-            currentReleaseVelocity = flatVelocity;
+        //if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
+        //    currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, flatVelocity, Time.deltaTime * 10);
+        //else
+        //    currentReleaseVelocity = flatVelocity;
 
     }
 

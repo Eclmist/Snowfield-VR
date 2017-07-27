@@ -77,7 +77,7 @@ public class VR_Controller_Custom : MonoBehaviour
     private void FixedUpdate()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
-        ControllerInput();
+        HandleFixedUpdateInput();
     }
 
     private void Update()
@@ -91,25 +91,29 @@ public class VR_Controller_Custom : MonoBehaviour
 
         if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
             interactable.OnTriggerPress(this);
-        if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-            interactable.OnTriggerRelease(this);
-        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-            interactable.OnGripPress(this);
-        if (interactable != null && device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-            interactable.OnGripRelease(this);
         if (interactable != null && interactable.LinkedController == this)
-            interactable.OnInteracting(this);
+        {
+            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+                interactable.OnTriggerRelease(this);
+            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+                interactable.OnGripPress(this);
+            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
+                interactable.OnGripRelease(this);
+
+            interactable.OnUpdateInteraction(this);
+        }
         listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null || VR_Interactable_UI.LinkedController != this);
     }
 
-    private void ControllerInput()
+    private void HandleFixedUpdateInput()
     {
-        if (interactable != null)
+        if (interactable != null && interactable.LinkedController == this)
         {
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerHold(this);
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripHold(this);
+            interactable.OnFixedUpdateInteraction(this);
         }
     }
 
@@ -175,6 +179,12 @@ public class VR_Controller_Custom : MonoBehaviour
     public void SetInteraction(VR_Interactable _interacted)
     {
         interactable = _interacted;
+    }
+
+    public void Release()
+    {
+        interactable = null;
+        model.SetActive(true);
     }
 
     public SteamVR_Controller.Device Device

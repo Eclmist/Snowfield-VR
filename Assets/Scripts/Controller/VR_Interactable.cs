@@ -48,8 +48,9 @@ public class VR_Interactable : MonoBehaviour {
 
 	public virtual void OnGripRelease(VR_Controller_Custom controller) { }
 
-	public virtual void OnInteracting(VR_Controller_Custom controller) {
+    public virtual void OnUpdateInteraction(VR_Controller_Custom controller) { }
 
-		
-	}
+
+    public virtual void OnFixedUpdateInteraction(VR_Controller_Custom controller) { }
+	
 }

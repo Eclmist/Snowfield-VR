@@ -130,6 +130,8 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void Update()
     {
+		rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
+		rigidBody.angularVelocity = Vector3.zero;
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
@@ -142,8 +144,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateFSMState()
     {
-        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
-        rigidBody.angularVelocity = Vector3.zero;
+        
         UpdateAnyState();
         switch (currentState)
         {
