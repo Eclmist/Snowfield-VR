@@ -9,23 +9,10 @@ public abstract class AI : Actor
 
     protected ActorFSM currentFSM;
 
-    protected bool isInteracting = false;
 
     [SerializeField]
     protected ParticleSystem spawnPS, disablePS;
 
-
-    public bool Interacting
-    {
-        get
-        {
-            return isInteracting;
-        }
-        set
-        {
-            isInteracting = value;
-        }
-    }
 
     public override void Notify(AI ai)
     {

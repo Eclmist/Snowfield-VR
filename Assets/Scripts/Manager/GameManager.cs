@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour {
             currentState = GameState.DAYMODE;
         }
 
+        //Debug.Log(currentState);
     }
 
     private void PrepareForNight()

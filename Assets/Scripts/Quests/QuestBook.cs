@@ -38,7 +38,7 @@ public class QuestBook
         {
             if (group.Completed)
                 continue;
-            else if ((group.Quest.Completed) && !group.Quest.Checked)
+            else if (group.Quest.Completed)
             {
                 return group;
             }
@@ -54,7 +54,7 @@ public class QuestBook
         {
             if (group.Completed)
                 continue;
-            else if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group) && !group.Quest.Checked)
+            else if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group))
                 return group;
         }
 
@@ -106,13 +106,5 @@ public class QuestBook
         return fastestQuest;
     }
 
-    public void ResetChecked()
-    {
-        if (storyQuest != null)
-            foreach (QuestEntryGroup<StoryQuest> line in storyQuest)
-            {
-                line.Quest.Checked = false;
-            }
-    }
-
+  
 }
