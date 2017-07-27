@@ -52,7 +52,7 @@ public class VR_Button : VR_Interactable_UI
 
 		events.onControllerEnter.Invoke();
 
-		if (useTransitions)
+		if (useTransitions && targetGraphic)
 		{
 			targetGraphic.CrossFadeColor(hightlightedColor, fadeDuration, true, true);
 		}

@@ -11,7 +11,7 @@ public class Shield : Equipment,IBlock {
     {
         base.Awake();
         ward = GetComponent<Ward>();
-        ward.SetWardActive(true);
+
         isBlocking = true;
     }
     public bool IsBlocking

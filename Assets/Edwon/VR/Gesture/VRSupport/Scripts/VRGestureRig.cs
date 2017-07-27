@@ -17,7 +17,7 @@ namespace Edwon.VR
         public InputOptions.Button menuButton = InputOptions.Button.Trigger1;
         public VRGestureUIState uiState = VRGestureUIState.Idle;
         public VRGestureUIState uiStateLast;
-        public bool displayGestureTrail = true;
+        public bool displayGestureTrail = false;
         public int playerID = 0;
 
         VRGestureSettings gestureSettings;
@@ -47,7 +47,7 @@ namespace Edwon.VR
         GameObject rightController;
 
         [SerializeField]
-        public bool spawnControllerModels = true;
+        public bool spawnControllerModels = false;
         [SerializeField]
         public bool useCustomControllerModels = false;
 
@@ -346,7 +346,7 @@ namespace Edwon.VR
 
             if (spawnControllerModels)
             {
-                SpawnControllerModels();
+                //SpawnControllerModels();
             }
         }
 

@@ -31,7 +31,9 @@ public class SpellCollider : MonoBehaviour {
 
         if (seconds >= 0.5f)
         {
-            other.GetComponent<Monster>().TakeDamage(DPS / 2, Player.Instance);
+            Monster mob = other.GetComponent<Monster>();
+            if(mob)
+                mob.TakeDamage(DPS / 2, Player.Instance);
 
             seconds = 0;
         }

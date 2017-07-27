@@ -17,7 +17,7 @@ public class Node : MonoBehaviour, IBundle<Node>
     protected LayerMask actorMask;
     
     private List<NodeEvent> nodeEvents = new List<NodeEvent>();
-
+    [SerializeField]
     protected bool isOccupied;
     public List<NodeEvent> Events
     {

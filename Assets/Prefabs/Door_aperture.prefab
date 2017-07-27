@@ -38,8 +38,8 @@ GameObject:
   - component: {fileID: 4302083679154156}
   - component: {fileID: 54410575755399658}
   - component: {fileID: 59167646219955666}
-  - component: {fileID: 114939438513889210}
   - component: {fileID: 135707067104675278}
+  - component: {fileID: 114212265607528788}
   m_Layer: 8
   m_Name: Door1Knot
   m_TagString: Untagged
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 135842556836848002}
   - component: {fileID: 54361207383234532}
   - component: {fileID: 59135791879705538}
-  - component: {fileID: 114408190474948358}
+  - component: {fileID: 114157468930375866}
   m_Layer: 8
   m_Name: Door2Knot
   m_TagString: Untagged
@@ -384,7 +384,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 1.017, y: 1.2301531, z: 1.8540001}
+  m_ConnectedAnchor: {x: 3.8539999, y: 2.230153, z: -3.0170007}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -416,7 +416,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 1.053, y: 1.2301531, z: 1.8540001}
+  m_ConnectedAnchor: {x: 3.8539999, y: 2.230153, z: -3.0530007}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -438,7 +438,7 @@ HingeJoint:
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
---- !u!114 &114408190474948358
+--- !u!114 &114157468930375866
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -446,17 +446,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1281074033535720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4b7d3fab21122e4a9646bafd45931af, type: 3}
+  m_Script: {fileID: 11500000, guid: 0748708fb4045be4983b27ad0cf8bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: 
-  sound: {fileID: 0}
-  audioSource: {fileID: 0}
-  minRotationalValue: -50
-  maxRotationValue: 50
+  interactable: 1
+  triggerEnterVibration: 0.8
+  triggerExitVibration: 0.3
+  triggerPressVibration: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  maxRotationValue: 90
+  minRotationalValue: -90
   pivot: {fileID: 4053605193937726}
-  force: 100
---- !u!114 &114939438513889210
+  force: 0
+--- !u!114 &114212265607528788
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -464,16 +466,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1196474920502350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4b7d3fab21122e4a9646bafd45931af, type: 3}
+  m_Script: {fileID: 11500000, guid: 0748708fb4045be4983b27ad0cf8bf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: 
-  sound: {fileID: 0}
-  audioSource: {fileID: 0}
-  minRotationalValue: -90
+  interactable: 1
+  triggerEnterVibration: 0.8
+  triggerExitVibration: 0.3
+  triggerPressVibration: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   maxRotationValue: 90
+  minRotationalValue: -90
   pivot: {fileID: 4205506532274168}
-  force: 100
+  force: 0
 --- !u!135 &135707067104675278
 SphereCollider:
   m_ObjectHideFlags: 1
