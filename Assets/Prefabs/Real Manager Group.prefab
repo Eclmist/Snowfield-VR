@@ -765,6 +765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4692865625819646}
   - component: {fileID: 215254735667308444}
+  - component: {fileID: 114024445243770116}
   m_Layer: 0
   m_Name: Sky_Reflection
   m_TagString: Untagged
@@ -1651,6 +1652,7 @@ Transform:
   m_Children:
   - {fileID: 4667378633175570}
   - {fileID: 4692865625819646}
+  - {fileID: 4204150862978366}
   m_Father: {fileID: 4721422464862536}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1713,12 +1715,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1190698244727876}
-  m_LocalRotation: {x: -1, y: -0.00000004371139, z: 0.00000004371139, w: 1.9106855e-15}
+  m_LocalRotation: {x: -0.20690137, y: 0.78589785, z: -0.46756014, w: -0.34776992}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000089, y: 1.0001167, z: 1.0001142}
+  m_LocalScale: {x: 1.0000911, y: 1.0001179, z: 1.0001153}
   m_Children: []
-  m_Father: {fileID: 4667378633175570}
-  m_RootOrder: 1
+  m_Father: {fileID: 4156858407083204}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 68.94, y: -103.00001, z: 0}
 --- !u!4 &4207041009283394
 Transform:
@@ -2103,12 +2105,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1500827265097542}
-  m_LocalRotation: {x: 0.44018432, y: 0.5533875, z: 0.5533875, w: -0.44018432}
+  m_LocalRotation: {x: 0.20690139, y: -0.78589785, z: 0.46756014, w: 0.34776992}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4893022377296210}
-  - {fileID: 4204150862978366}
   m_Father: {fileID: 4156858407083204}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3347,17 +3348,17 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 0.33969507, g: 0.4808347, b: 0.75735295, a: 1}
-  m_Intensity: 0.65844995
+  m_Color: {r: 1, g: 0.83856094, b: 0.6982821, a: 1}
+  m_Intensity: 1.4999999
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: 3
+    m_Resolution: 0
     m_CustomResolution: -1
-    m_Strength: 0.885
-    m_Bias: 0
+    m_Strength: 0.8
+    m_Bias: 0.01
     m_NormalBias: 0.4
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}
@@ -3369,7 +3370,7 @@ Light:
     m_Bits: 4294967295
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 2
+  m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -3391,6 +3392,19 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
+--- !u!114 &114024445243770116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1447747034000650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05cd265141c520d4b83652eff705848d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  refreshEveryNSeconds: 10
 --- !u!114 &114050614538442800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3462,6 +3476,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114083158126661264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3479,6 +3494,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114103043796445694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3649,6 +3665,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114126908460994996
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3666,6 +3683,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114136839843194192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3773,6 +3791,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114260626402445996
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3815,7 +3834,7 @@ MonoBehaviour:
   baseDurationMultiplier: 10
   templateList:
   - baseGold: 1000
-    duration: 20
+    duration: 300
     jobType: 0
     physicalMaterial:
       m_name: 
@@ -3823,6 +3842,15 @@ MonoBehaviour:
       conductivity: 0
       type: 0
     referenceItemID: 6
+  - baseGold: 1500
+    duration: 300
+    jobType: 0
+    physicalMaterial:
+      m_name: 
+      costMultiplier: 0
+      conductivity: 0
+      type: 0
+    referenceItemID: 7
 --- !u!114 &114286257310652300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3840,6 +3868,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114288905207430016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3868,7 +3897,7 @@ MonoBehaviour:
       healthPerLevel: 20
       healthRegenPerLevel: 1
     jobList: []
-    gold: 500
+    gold: 2000
   inCombatZone: 0
 --- !u!114 &114289551214572104
 MonoBehaviour:
@@ -3888,6 +3917,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114315356974204898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3985,6 +4015,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114353691387602518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4002,6 +4033,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114356231749988978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4046,6 +4078,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114358799970829534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4074,6 +4107,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114394231849994732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4089,7 +4123,7 @@ MonoBehaviour:
   m_SunTransform: {fileID: 4667378633175570}
   m_MoonTransform: {fileID: 4893022377296210}
   playTime: 1
-  m_WorldLongitude: -103
+  m_WorldLongitude: -132.26
   useWorldLongitudeCurve: 0
   worldLongitudeCurve:
     serializedVersion: 2
@@ -4110,8 +4144,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   dayInSeconds: 100
-  timeline: 24
-  m_SunColor: {r: 1, g: 0.7647059, b: 0.6627451, a: 1}
+  timeline: 10.1
+  m_SunColor: {r: 1, g: 0.83856094, b: 0.6982821, a: 1}
   useSunColorGradient: 1
   sunColorGradient:
     serializedVersion: 2
@@ -4142,7 +4176,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
-  m_SunLightIntensity: 0
+  m_SunLightIntensity: 1.4999999
   useSunLightIntensityCurve: 1
   sunLightIntensityCurve:
     serializedVersion: 2
@@ -4260,7 +4294,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   useMoonLightIntensityCurve: 1
-  m_MoonLightIntensity: 0.65844995
+  m_MoonLightIntensity: 0
   moonLightIntensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -4305,7 +4339,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   m_AmbientMode: 2
   useAmbientSkyColorGradient: 1
-  m_AmbientSkyColor: {r: 0, g: 0.18823528, b: 0.3254902, a: 1}
+  m_AmbientSkyColor: {r: 0.4627451, g: 0.5764706, b: 0.76862746, a: 1}
   ambientSkyColorGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.1882353, b: 0.3254902, a: 1}
@@ -4336,7 +4370,7 @@ MonoBehaviour:
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   useAmbientEquatorColorGradient: 1
-  m_AmbientEquatorColor: {r: 0, g: 0.19607842, b: 0.34117648, a: 1}
+  m_AmbientEquatorColor: {r: 0.69803923, g: 0.84313726, b: 1, a: 1}
   ambientEquatorColorGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.19607843, b: 0.34117648, a: 1}
@@ -4367,7 +4401,7 @@ MonoBehaviour:
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   useAmbientGroundColorGradient: 1
-  m_AmbientGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_AmbientGroundColor: {r: 0.46666667, g: 0.43529412, b: 0.41568628, a: 1}
   ambientGroundColorGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0, b: 0, a: 1}
@@ -4481,22 +4515,22 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useFogColorGradient: 1
-  m_FogColor: {r: 0.0039215684, g: 0.09803921, b: 0.23921569, a: 1}
+  m_FogColor: {r: 0.90588236, g: 0.72156864, b: 0.3764706, a: 1}
   fogColorGradient:
     serializedVersion: 2
     key0: {r: 0.003921569, g: 0.09803922, b: 0.23921569, a: 1}
     key1: {r: 0.90588236, g: 0.72156864, b: 0.3764706, a: 1}
-    key2: {r: 0.5764706, g: 0.7058824, b: 0.8784314, a: 0}
-    key3: {r: 0.5764706, g: 0.7058824, b: 0.8784314, a: 0}
-    key4: {r: 0.90588236, g: 0.72156864, b: 0.3764706, a: 0}
+    key2: {r: 0.90588236, g: 0.72156864, b: 0.3764706, a: 0}
+    key3: {r: 0.003921569, g: 0.09803922, b: 0.23921569, a: 0}
+    key4: {r: 0.003921569, g: 0.09803922, b: 0.23921569, a: 0}
     key5: {r: 0.003921569, g: 0.09803922, b: 0.23921569, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 14418
     ctime1: 16384
-    ctime2: 30455
-    ctime3: 45875
-    ctime4: 49151
+    ctime2: 49151
+    ctime3: 51117
+    ctime4: 51117
     ctime5: 51117
     ctime6: 0
     ctime7: 0
@@ -4509,7 +4543,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 6
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   m_AutoAssignSky: 1
   skyMaterial: {fileID: 2100000, guid: aeda7ac675715a848bb1d07b7fbaa714, type: 2}
@@ -4548,7 +4582,7 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   useAtmosphereThicknessCurve: 1
-  m_AtmosphereThickness: 1.61875
+  m_AtmosphereThickness: 1.1311892
   atmosphereThicknessCurve:
     serializedVersion: 2
     m_Curve:
@@ -4680,7 +4714,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   useMoonIntensityCurve: 1
-  m_MoonIntensity: 2.14375
+  m_MoonIntensity: 0
   moonIntensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -4796,7 +4830,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useMoonHaloIntensityCurve: 1
-  m_MoonHaloIntensity: 1
+  m_MoonHaloIntensity: 0
   moonHaloIntensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -4874,7 +4908,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   useStarsIntensityCurve: 1
-  m_StarsIntensity: 1
+  m_StarsIntensity: 0
   starsIntensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -4994,6 +5028,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114409634462708640
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5160,6 +5195,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114547050198363638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5192,6 +5228,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114579320533259132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5209,6 +5246,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114584818690706234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5225,6 +5263,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114589773924376686
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5254,6 +5293,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114594910888074582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5340,6 +5380,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114638391634448344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5357,6 +5398,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114643297137133116
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5389,6 +5431,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114651434307264456
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5405,6 +5448,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114653488630394396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5449,6 +5493,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114686473553295882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5624,6 +5669,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114840540462938638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5715,13 +5761,13 @@ MonoBehaviour:
     maxStackSize: 64
     jobType: 0
   - ID: 6
-    prefab: {fileID: 1249424407007966, guid: 7458ca3f24ef4cc4e8324639381c1dd9, type: 2}
+    prefab: {fileID: 108546, guid: f7b20b29a2f19314ca70d24392e49c2a, type: 2}
     levelUnlocked: 7
     icon: {fileID: 21300000, guid: bca0c6fee1a72c14c8009c380272af67, type: 3}
     maxStackSize: 64
     jobType: 0
   - ID: 7
-    prefab: {fileID: 1828534775533718, guid: 26f31dbd8fbfabe4292d6488a2553e7d, type: 2}
+    prefab: {fileID: 159586, guid: b1ae6b4b960b48944ab71ce123f07e01, type: 2}
     levelUnlocked: 8
     icon: {fileID: 21300000, guid: 1f6d7be35bca30d4dad2d4f9425aab83, type: 3}
     maxStackSize: 64
@@ -5747,6 +5793,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114865090643179264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5831,6 +5878,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114902852974510466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5848,6 +5896,7 @@ MonoBehaviour:
   actorMask:
     serializedVersion: 2
     m_Bits: 8192
+  isOccupied: 0
 --- !u!114 &114995470212662012
 MonoBehaviour:
   m_ObjectHideFlags: 1
