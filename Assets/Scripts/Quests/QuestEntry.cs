@@ -5,28 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class QuestEntry<T> where T : Quest
 {
-	private bool hasStarted,isCompleted,checkedInVisit;
+	private bool hasStarted,isCompleted;
 	private float timeToComplete;
 
 	public QuestEntry(float _timeToComplete)
 	{
 		hasStarted = false;
 		isCompleted = false;
-        checkedInVisit = false;
         timeToComplete = _timeToComplete;
 	}
-
-    public bool Checked
-    {
-        get
-        {
-            return checkedInVisit;
-        }
-        set
-        {
-            checkedInVisit = value;
-        }
-    }
 
     public float RemainingProgress
     {

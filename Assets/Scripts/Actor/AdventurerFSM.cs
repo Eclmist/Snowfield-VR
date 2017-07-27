@@ -68,7 +68,6 @@ public class AdventurerFSM : ActorFSM
         }
         else
         {
-            Debug.Log((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.IsInteractionAvailable())) && !targetShop.InteractionNode.Occupied);
             visitedShop.Add(targetShop);
             if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentAdventurerAI.IsInteractionAvailable())) && !targetShop.InteractionNode.Occupied)
             {
@@ -129,7 +128,7 @@ public class AdventurerFSM : ActorFSM
     {
 
         FSMState previousState = currentState;
-        currentAdventurerAI.Interacting = false;
+        currentAdventurerAI.StopAllInteractions();
         if (state != FSMState.COMBAT)
             currentAdventurerAI.UnEquipWeapons();
 
@@ -213,20 +212,20 @@ public class AdventurerFSM : ActorFSM
                         waitTimer -= Time.deltaTime;
                         if (waitTimer <= 0)
                         {
-                            currentAdventurerAI.Interacting = false;
+                            currentAdventurerAI.StopAllInteractions();
                             break;
                         }
                     }
                 }
                 else
                 {
-                    currentAdventurerAI.Interacting = false;
+                    currentAdventurerAI.StopAllInteractions();
                     break;
                 }
             }
             else
             {
-                currentAdventurerAI.Interacting = false;
+                currentAdventurerAI.StopAllInteractions();
                 break;
             }
             yield return new WaitForEndOfFrame();
