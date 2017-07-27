@@ -56,8 +56,9 @@ public class RotatableObject : VR_Interactable_Object
 
  
 
-    public override void OnTriggerHold(VR_Controller_Custom controller)
+    public override void OnFixedUpdateInteraction (VR_Controller_Custom controller)
     {
+        base.OnFixedUpdateInteraction(controller);
         controller.Vibrate(rigidBody.velocity.magnitude);
         Vector3 PositionDelta = (controller.transform.position - transform.position);
         Vector3 velocity = PositionDelta * 20 * rigidBody.mass;
