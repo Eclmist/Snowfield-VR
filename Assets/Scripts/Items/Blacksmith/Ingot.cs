@@ -57,11 +57,11 @@ public class Ingot : BlacksmithItem {
         currentMorphSteps = 0;
     }
 
-    public void Update()
+    public void LateUpdate()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
-            quenchRate = 10;
+        //if (Input.GetKeyDown(KeyCode.E))
+        //    quenchRate = 10;
 
         RespondToHeat();
         ControlledHeatingProcess();
