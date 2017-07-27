@@ -49,7 +49,6 @@ public class AdventurerFSM : ActorFSM
     {
         if (currentUseWeapon != null)
         {
-            Debug.Log("EndCharge");
             currentUseWeapon.EndCharge();
         }
     }
@@ -203,7 +202,6 @@ public class AdventurerFSM : ActorFSM
                         waitTimer = 5;
                         if (!currentAdventurerAI.Interacting)
                         {
-                            Debug.Log("hut");
                             currentAdventurerAI.StartInteraction();
                         }
                     }

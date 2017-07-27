@@ -30,9 +30,10 @@ public class GridManagerEditor : Editor
             {
                 foreach(Node node in Instance.selectedNode1.Neighbours)
                 {
+					if(node)
                     node.Neighbours.Remove(Instance.selectedNode1);
                 }
-                Instance.worldNodes.Remove(Instance.selectedNode1);
+
                 DestroyImmediate(Instance.selectedNode1.gameObject);
             }
             if (Instance.selectedNode2 != null)
@@ -41,7 +42,7 @@ public class GridManagerEditor : Editor
                 {
                     node.Neighbours.Remove(Instance.selectedNode2);
                 }
-                Instance.worldNodes.Remove(Instance.selectedNode2);
+
                 DestroyImmediate(Instance.selectedNode2.gameObject);
             }
         }
@@ -140,7 +141,6 @@ public class GridManagerEditor : Editor
                                     }
                                 }
                             }
-                            Instance.AddNode(newNode);
                         }
                     }
                 }

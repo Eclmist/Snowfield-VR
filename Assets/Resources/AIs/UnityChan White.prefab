@@ -3302,6 +3302,10 @@ GameObject:
   - component: {fileID: 114637017769914016}
   - component: {fileID: 136767684491069712}
   - component: {fileID: 114687067659681994}
+  - component: {fileID: 114900516604671478}
+  - component: {fileID: 114292763703479904}
+  - component: {fileID: 114973613043938206}
+  - component: {fileID: 114063959534245970}
   m_Layer: 13
   m_Name: UnityChan White
   m_TagString: Untagged
@@ -7107,6 +7111,17 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1.4
   m_Text: "Assign new quest to \n\u30E6\u30CB\u30C6\u30A3\u3061\u3083\u3093\n"
+--- !u!114 &114063959534245970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6928c1ec45c4242b66d81adb4c5d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114067731566802658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7604,6 +7619,17 @@ MonoBehaviour:
   - {fileID: 114826084185258692}
   debug: 1
   threshold: 0.01
+--- !u!114 &114292763703479904
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7245e9b78ecbe3742a827bb1e054b53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114293450848590802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9324,7 +9350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 4421743545141992}
-  detectionDistance: 5
+  detectionDistance: 7.5
   attackRange: 3
   currentState: 0
   minimumDistToAvoid: 0
@@ -9440,6 +9466,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.07
+--- !u!114 &114900516604671478
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 794ae36296cce354f855ca0f22fdd664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114912202916635864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9601,6 +9638,17 @@ MonoBehaviour:
   - {fileID: 114434397635439556}
   debug: 1
   threshold: 0.01
+--- !u!114 &114973613043938206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c45756d35435145a4769f01b77dd41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135391757434473736
 SphereCollider:
   m_ObjectHideFlags: 1

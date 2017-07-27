@@ -123,7 +123,12 @@ public class Node : MonoBehaviour, IBundle<Node>
         GetComponent<SphereCollider>().enabled = false;
         worldPosition = transform.position;
         nodeEvents.AddRange(GetComponents<NodeEvent>());
+
     }
+
+	protected void Start(){
+		GridManager.instance.AddNode (this);
+	}
 
     public int CompareTo(object _node)
     {

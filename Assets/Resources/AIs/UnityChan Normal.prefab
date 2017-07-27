@@ -743,6 +743,10 @@ GameObject:
   - component: {fileID: 114506468233825394}
   - component: {fileID: 114757944036083460}
   - component: {fileID: 114975722780683674}
+  - component: {fileID: 114422876692313954}
+  - component: {fileID: 114554074451455962}
+  - component: {fileID: 114657687292189872}
+  - component: {fileID: 114313937571029454}
   m_Layer: 13
   m_Name: UnityChan Normal
   m_TagString: Untagged
@@ -6205,6 +6209,17 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1000
+--- !u!114 &114313937571029454
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248315538865536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6928c1ec45c4242b66d81adb4c5d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114324418796934982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6479,6 +6494,17 @@ MonoBehaviour:
   - {fileID: 114734457783877476}
   debug: 1
   threshold: 0.01
+--- !u!114 &114422876692313954
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248315538865536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 794ae36296cce354f855ca0f22fdd664, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114449496025465244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6670,6 +6696,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Quest
+--- !u!114 &114554074451455962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248315538865536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7245e9b78ecbe3742a827bb1e054b53c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114578983564568224
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6755,6 +6792,17 @@ MonoBehaviour:
     fullHealth: {r: 0.064602956, g: 0.382, b: 0.32727644, a: 0.197}
     lowHealth: {r: 1.188, g: 0.27037242, b: 0, a: 0.183}
   lerpSpeed: 1
+--- !u!114 &114657687292189872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248315538865536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c45756d35435145a4769f01b77dd41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114688771646209960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7164,7 +7212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 4222228151508488}
-  detectionDistance: 5
+  detectionDistance: 7.5
   attackRange: 3
   currentState: 0
   minimumDistToAvoid: 0

@@ -59,7 +59,7 @@ public class WaveManager : MonoBehaviour
 
     protected void Update()
     {
-        monstersInTheScene.RemoveAll(Monster => Monster == null || !Monster.gameObject.activeSelf || Monster.Health <= 0);
+        monstersInTheScene.RemoveAll(Monster => Monster == null || !Monster.gameObject.activeSelf);
     }
 
     public Monster GetClosestMonster(Vector3 position)
@@ -119,6 +119,7 @@ public class WaveManager : MonoBehaviour
             for (int j = 0; j < groups[i].monsters.Length; j++)
             {
                 Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
+				Debug.Log ("added");
                 monstersInTheScene.Add(monster);
                 (monster.Data as CombatActorData).CurrentJob.SetLevel(level);
                 yield return new WaitForSecondsRealtime(timeBetweenEachMonsterSpawn);

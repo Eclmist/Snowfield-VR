@@ -14,7 +14,6 @@ public class QuestManager : MonoBehaviour
 
     public List<QuestEntryGroup<StoryQuest>> CreateNewStoryLines()
     {
-        Debug.Log("hit");
         List<QuestEntryGroup<StoryQuest>> newStoryLine = new List<QuestEntryGroup<StoryQuest>>();
         foreach (StoryLine line in storylines)
         {

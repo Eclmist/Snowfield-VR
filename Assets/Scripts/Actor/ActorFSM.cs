@@ -438,7 +438,6 @@ public abstract class ActorFSM : MonoBehaviour
 
     public void DamageTaken(Actor attacker)
     {
-        Debug.Log(attacker);
         if (!(target is Actor))
         {
             ChangeState(FSMState.COMBAT);

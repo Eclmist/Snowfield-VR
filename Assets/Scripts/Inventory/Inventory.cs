@@ -75,8 +75,6 @@ public class Inventory
 
     public void AddToInventory(IStorable item)
     {
-        Debug.Log(inventoryItemsArr.Length);
-        Debug.Log(inventoryItemsArr[0] == null);
         bool added = false;
         for(int i = 0 ; i < inventoryItemsArr.Length; i++)
         {
