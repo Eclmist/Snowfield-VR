@@ -52,7 +52,6 @@ public abstract class ActorFSM : MonoBehaviour
     }
     public virtual void ChangeState(FSMState state)
     {
-        CurrentAI.Interacting = false;
         isHandlingAction = false;
         StopAllCoroutines();
         pathFound = false;

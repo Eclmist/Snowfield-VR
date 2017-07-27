@@ -1,8 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI
@@ -13,22 +10,41 @@ public class AdventurerAI : AI
 
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
-    private bool hasRequested = false;
 
-    private bool hasSold;
+    private List<InteractionsWithPlayer> interactionsWithPlayer = new List<InteractionsWithPlayer>();
+
     protected override void Awake()
     {
         base.Awake();
         GetSlots();
     }
 
+    public void StopAllInteractions()
+    {
+        foreach(InteractionsWithPlayer interaction in interactionsWithPlayer)
+        {
+            interaction.StopInteraction();
+        }
+    }
     protected virtual void Start()
     {
+        interactionsWithPlayer.AddRange(GetComponents<InteractionsWithPlayer>());
         if (QuestBook.StoryQuests == null)
             QuestBook.BeginQuestBook();
-
     }
 
+    public bool Interacting
+    {
+        get
+        {
+            foreach(InteractionsWithPlayer interaction in interactionsWithPlayer)
+            {
+                if (interaction.IsInteracting)
+                    return true;
+            }
+            return false;
+        }
+    }
     public override ActorData Data
     {
         get
@@ -39,7 +55,6 @@ public class AdventurerAI : AI
         {
             data = (AdventurerAIData)value;
         }
-
     }
 
     public QuestBook QuestBook
@@ -49,11 +64,11 @@ public class AdventurerAI : AI
             return data.QuestBook;
         }
     }
+
     public bool EquipRandomWeapons()
     {
         foreach (Equipment equip in inventory)
         {
-            
             if (equip is Weapon)
             {
                 ChangeWield(Instantiate(equip));
@@ -73,6 +88,7 @@ public class AdventurerAI : AI
                 case EquipSlot.EquipmentSlotType.LEFTHAND:
                     leftHand = slot;
                     break;
+
                 case EquipSlot.EquipmentSlotType.RIGHTHAND:
                     rightHand = slot;
                     break;
@@ -99,7 +115,6 @@ public class AdventurerAI : AI
     //    //    }
     //    //}
 
-
     //}
 
     public override void ChangeWield(Equipment item)
@@ -125,103 +140,48 @@ public class AdventurerAI : AI
 
     public bool IsInteractionAvailable()
     {
-
-        if (data.QuestBook.GetCompletableGroup() != null || data.QuestBook.GetStartableGroup() != null || !hasSold || !hasRequested)
-  
-            return true;
+        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
+        {
+            if (!interaction.Interacted)
+                return true;
+        }
 
         return false;
     }
 
     public bool StartInteraction()
     {
-
-
-        QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
-        //Vector3 tempPosition = new Vector3(transform.position.x, transform.position.y + Player.Instance.height *  200, transform.position.z);
-
-        if (completableGroup != null)
+        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK,
-                "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup),
-                transform.position, Player.Instance.transform, transform);
-            op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
-            StartCoroutine(StartInteraction(op));
-            return true;
-        }
-
-        QuestEntryGroup<StoryQuest> startableQuest = data.QuestBook.GetStartableGroup();
-
-        if (startableQuest != null)
-        {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
-                "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
-                transform.position, Player.Instance.transform, transform);
-            op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
-            op.SetEvent(OptionPane.ButtonType.No, StartQuestNODelegate);
-            StartCoroutine(StartInteraction(op));
-            return true;
-        }
-
-        sellItemData = ItemManager.Instance.GetRandomUnlockedItem();
-        
-        if(sellItemData != null && !hasSold)
-        {
-            hasSold = true;
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "SellItem", data.Name + "has sold you" + sellItemData.ObjectReference.name, transform.position, Player.Instance.transform, transform);
-            op.SetEvent(OptionPane.ButtonType.Ok, SellItemDelegate);
-            StartCoroutine(StartInteraction(op));
-            return true;
-        }
-        
-
-        if (!OrderBoard.Instance.IsMaxedOut && !hasRequested)
-        {
-            hasRequested = true;
-            pendingOrder = OrderManager.Instance.GenerateOrder();
-            Debug.Log(pendingOrder);
-            if (pendingOrder != null)
+            if (!interaction.Interacted)
             {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + pendingOrder.Name, transform.position, Player.Instance.transform, transform);
-                op.SetEvent(OptionPane.ButtonType.Yes, StartOrderYesDelegate);
-                op.SetEvent(OptionPane.ButtonType.No, StartOrderNoDelegate);
-                StartCoroutine(StartInteraction(op));
+                interaction.StartInteraction();
                 return true;
             }
         }
 
         return false;
-
     }
-    ItemData sellItemData = null;
 
-    private Order pendingOrder;
+    //protected System.Collections.IEnumerator StartInteraction(OptionPane op)
+    //{
+    //    isInteracting = true;
 
-    protected void SellItemDelegate()
-    {
-        GameManager.Instance.AddPlayerGold(25);
-        GameManager.Instance.AddToPlayerInventory(sellItemData);
+    //    while (true)
+    //    {
+    //        if (!isInteracting || !op)
+    //        {
+    //            if (op)
+    //                op.ClosePane();
+    //            break;
+    //        }
 
-    }
-    protected System.Collections.IEnumerator StartInteraction(OptionPane op)
-    {
-        isInteracting = true;
+    //        yield return new WaitForEndOfFrame();
+    //    }
 
-        while (true)
-        {
-            if (!isInteracting || !op)
-            {
-                if (op)
-                    op.ClosePane();
-                break;
-            }
+    //    isInteracting = false;
 
-            yield return new WaitForEndOfFrame();
-        }
-
-        isInteracting = false;
-
-    }
+    //}
 
     public int Level
     {
@@ -230,43 +190,10 @@ public class AdventurerAI : AI
             return data.CurrentJob.Level;
         }
     }
-    public void StartQuestYESDelegate()
-    {
-        QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
-        StoryQuest quest = QuestManager.Instance.GetQuest(startableGroup);
-        startableGroup.Quest.StartQuest();
-    }
 
-
-    public void StartQuestNODelegate()
-    {
-        QuestEntryGroup<StoryQuest> startableGroup = data.QuestBook.GetStartableGroup();
-        startableGroup.Quest.Checked = true;
-    }
-
-    public void StartOrderYesDelegate()
-    {
-        OrderManager.Instance.StartRequest(this, pendingOrder);
-    }
-
-    public void StartOrderNoDelegate()
-    {
-        pendingOrder = null;
-    }
-
-
-
-    protected void GainExperience(int value)
+    public void GainExperience(int value)
     {
         data.CurrentJob.GainExperience(value);
-    }
-
-    public void CompleteQuestDelegate()
-    {
-        QuestEntryGroup<StoryQuest> completableGroup = data.QuestBook.GetCompletableGroup();
-        StoryQuest quest = QuestManager.Instance.GetQuest(completableGroup);
-        GainExperience(quest.Experience);
-        QuestBook.RequestNextQuest(completableGroup);
     }
 
     public override void Interact(Actor actor)
@@ -278,15 +205,12 @@ public class AdventurerAI : AI
     {
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
-        data.QuestBook.ResetChecked();
-        hasSold = false;
-        hasRequested = false;
         ChangeState(ActorFSM.FSMState.IDLE);
     }
 
     public override float GetOutOfTimeDuration()
     {
-        float totalDuration = 10;
+        float totalDuration = 25f;
         QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
         if (quest != null)
             totalDuration += quest.RemainingProgress;
