@@ -14,7 +14,9 @@ public class InGameUIActivation : MonoBehaviour
 
     private VR_Controller_Custom currentInteractingCtrl;
 
-    private static GameObject InGameMenu;
+    //private static GameObject InGameMenu;
+
+    private bool visibility = false;
 
     // Use this for initialization
     protected void Start()
@@ -28,9 +30,10 @@ public class InGameUIActivation : MonoBehaviour
         {
             if (currentInteractingCtrl.Device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
             {
-                if (InGameMenu != null)
+                if (visibility != true)
                 {
-                    Destroy(InGameMenu);
+                    visibility = true;
+                    menu.SetActive(visibility);
                 }
 
                 Vector3 localOffset = Vector3.zero;
@@ -38,15 +41,17 @@ public class InGameUIActivation : MonoBehaviour
                 localOffset += transform.up * offset.y;
                 localOffset += transform.forward * offset.z;
 
-                InGameMenu = Instantiate(menu, currentInteractingCtrl.transform.position + localOffset,
-                    Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y, Quaternion.identity.z));
+                menu.transform.position = currentInteractingCtrl.transform.position + localOffset;
+                menu.transform.rotation = Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y, Quaternion.identity.z);
+                
             }
 
             else if (currentInteractingCtrl.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
             {
-                if (InGameMenu != null && currentInteractingCtrl.UI == null)
+                if (visibility != false && currentInteractingCtrl.UI == null)
                 {
-                    Destroy(InGameMenu);
+                    visibility = false;
+                    menu.SetActive(!visibility);
                 }
             }
 
