@@ -8,6 +8,7 @@ public struct InGameMenuPrefabs
     public GameObject characterScreen;
     public GameObject settingsScreen;
     public GameObject quitPrompt;
+    public GameObject messageBox;
 }
 
 
@@ -33,6 +34,12 @@ public class InGameMenuArea : MonoBehaviour
     { 
         if(prefabs.quitPrompt != null)
             prefabs.quitPrompt.SetActive(active);
+    }
+
+    public void MessageBoxActivation(bool active)
+    {
+        if (prefabs.messageBox != null)
+            prefabs.messageBox.SetActive(active);
     }
 
     public void QuitGame()
