@@ -10,6 +10,8 @@ public class OutlineRenderer : MonoBehaviour
 	[SerializeField] private Shader replacement;
 	//[SerializeField] private Shader blur;
 
+	[SerializeField] private int downsample = 2;
+
 
 	//[SerializeField] [Range(0,4)] private int blurIteration = 4;
 	//[SerializeField] [Range(1, 4)] private int downSample = 2;
@@ -33,7 +35,7 @@ public class OutlineRenderer : MonoBehaviour
 		//blurMat = new Material(blur);
 		//Debug.Assert(blurMat);
 
-		TempRT = new RenderTexture(camera.pixelWidth, camera.pixelHeight, 0);
+		TempRT = new RenderTexture(camera.pixelWidth / downsample, camera.pixelHeight / downsample, 0);
 
 	}
 

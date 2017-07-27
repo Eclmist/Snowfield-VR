@@ -42,7 +42,7 @@ public class WeaponTierManager : MonoBehaviour {
 
 	private void Start()
 	{
-		Debug.Log("Stras");
+		//Debug.Log("Stras");
 
 		List<ItemData> itemDataList = ItemManager.Instance.ItemDataList;
 
