@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StoragePanel : Inventory {
+public class StoragePanel : MonoBehaviour {
 
     public static StoragePanel Instance;
 
@@ -12,31 +12,43 @@ public class StoragePanel : Inventory {
         Instance = this;   
     }
 
-    private List<InventorySlot> slotReferenceList = new List<InventorySlot>();
+
+    [SerializeField]
+    private int numberOfSlots;
+    [SerializeField]
+    private int numberOfPages;
+    private Inventory inventory;
+    private int currentPageNumber = 0;
+    //private List<InventorySlot> slotReferenceList = new List<InventorySlot>();
     [SerializeField]
 	private GameObject interactiveSlot;
 	[SerializeField]
 	private GameObject slotPanel;	// Contains the gridLayoutGroup
     private GridLayoutGroup glp;
 
-    private int numberOfHoveredSlots;
-    private bool safeToUse;
-
-    public int NumberOfHoveredSlots
+    public int NumberOfSlotsPerPage
     {
-        get { return this.numberOfHoveredSlots; }
-        set { this.numberOfHoveredSlots = value; }
+        get { return this.numberOfSlots; }
     }
 
-    public bool SafeToUse
+    public int NumberOfPages
     {
-        get { return this.safeToUse; }
+        get { return this.numberOfPages; }
     }
 
-	protected override void Start()
+    public int CurrentPageNumber
+    {
+        get { return this.currentPageNumber; }
+    }
+
+    public Inventory _Inventory
+    {
+        get { return this.inventory; }
+    }
+
+    private void Start()
 	{
-        base.Start();
-
+        inventory = new Inventory();
         glp = slotPanel.GetComponent<GridLayoutGroup>();
 		InitializeInteractableSlots ();
 	}
@@ -44,60 +56,49 @@ public class StoragePanel : Inventory {
 
 	void Update()
 	{
-        safeToUse = numberOfHoveredSlots <= 1;
-
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(StoreInAvailableSlot(ItemManager.Instance.GetItemData(2),2));
+            inventory.AddToInventory(ItemManager.Instance.GetItemData(2));
         }
 	}
 
     
 
-
+    // Create the intereactable slots
 	private void InitializeInteractableSlots()
 	{
-		foreach (InventorySlot slot in InventoryItems)
+		for(int i = 0;i<numberOfSlots; i++)
 		{
 			GameObject g = Instantiate (interactiveSlot);
             g.transform.SetParent(glp.transform,false);
             g.transform.localPosition = Vector3.zero;
             g.transform.localScale = Vector3.one;
 
-            g.GetComponent<InteractableSlot>().Slot = slot;
-            slotReferenceList.Add(g.GetComponent<InteractableSlot>().Slot);
+            g.GetComponent<InteractableSlot>().Index = i;
 
-		}
+            //g.GetComponent<InteractableSlot>().Slot = slot;
+            //slotReferenceList.Add(g.GetComponent<InteractableSlot>().Slot);
+
+        }
 
 	}
 
-    public bool StoreInAvailableSlot(IStorable item,int quantity)
+
+    public void DisplayNextPage()
     {
-        foreach(InventorySlot slot in slotReferenceList)
-        {
-            if(slot.StoredItem == null)
-            {
-                slot.StoredItem = item;
-                slot.CurrentStack = quantity;
-                return true;
-
-            }
-        }
-
-        return false;
+        if (currentPageNumber < numberOfPages-1)
+            currentPageNumber++;
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    public void DisplayPrevPage()
+    {
+        if(currentPageNumber > 0 )
+        {
+            currentPageNumber--;
+        }
+    }
+    
+    
 
 
 }

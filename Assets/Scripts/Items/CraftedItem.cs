@@ -47,7 +47,9 @@ public class CraftedItem : GenericItem
 	{
 		return materialType;
 	}
-
+	public override void OnFixedUpdateInteraction (VR_Controller_Custom referenceCheck)
+	{
+			}
 	public int WeaponTier
 	{
 		get { return weaponTier; }
@@ -62,7 +64,6 @@ public class CraftedItem : GenericItem
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
-            transform.parent = referenceCheck.transform;
         }
         else
         {
@@ -79,7 +80,6 @@ public class CraftedItem : GenericItem
             base.OnTriggerRelease(referenceCheck);
             itemCollider.isTrigger = false;
             rigidBody.useGravity = true;
-            transform.parent = null;
         }
     }
 
@@ -91,18 +91,21 @@ public class CraftedItem : GenericItem
     //    transform.rotation = linkedController.transform.rotation;
     //}
 
-    protected virtual void OnTriggerEnter(Collider collision)
+    protected override void OnTriggerEnter(Collider collision)
     {
-        if (currentInteractingController != null)
+        base.OnTriggerEnter(collision);
+        VR_Interactable_UI UI = collision.GetComponent<VR_Interactable_UI>();
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject && UI == null)
         {
             PlaySound(currentInteractingController.Velocity.magnitude > maxSwingForce ? 1 : currentInteractingController.Velocity.magnitude / maxSwingForce);
-
+			currentInteractingController.Vibrate (currentInteractingController.Velocity.magnitude > maxSwingForce ? 10 : (currentInteractingController.Velocity.magnitude / maxSwingForce) * 10);
+            removable = false;
         }
     }
 
-    public override void OnInteracting(VR_Controller_Custom controller)
+    public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
-        base.OnInteracting(controller);
+        base.OnUpdateInteraction(controller);
         transform.rotation = controller.transform.rotation * offsetRotation;
         transform.position = controller.transform.position + transform.rotation * offsetPosition;
 
@@ -116,9 +119,11 @@ public class CraftedItem : GenericItem
         }
     }
 
-    protected virtual void OnTriggerExit(Collider collision)
+    protected override void OnTriggerExit(Collider collision)
     {
-        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject)
+        base.OnTriggerExit(collision);
+        VR_Interactable_UI UI = collision.GetComponent<VR_Interactable_UI>();
+        if (currentInteractingController != null && collision.gameObject != currentInteractingController.gameObject && UI == null)
         {
             removable = true;
         }

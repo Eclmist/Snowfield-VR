@@ -47,12 +47,19 @@ public class VR_Controller_Custom : MonoBehaviour
                     returnUI = ui;
                 }
             }
-
-                return returnUI;
+            Debug.Log(listOfInteractingUI.Count);
+            return returnUI;
         }
 
     }
 
+    public bool HasObject
+    {
+        get
+        {
+            return interactable != null;
+        }
+    }
     public Controller_Handle Handle
     {
         get
@@ -70,48 +77,49 @@ public class VR_Controller_Custom : MonoBehaviour
     private void FixedUpdate()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);
-        ControllerInput();
-
+        HandleFixedUpdateInput();
     }
 
     private void Update()
     {
-        if (interactable != null)
+        HandleUpdateInput();
+    }
+
+    private void HandleUpdateInput()
+    {
+
+
+        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
+            interactable.OnTriggerPress(this);
+        if (interactable != null && interactable.LinkedController == this)
         {
-            if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerRelease(this);
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripRelease(this);
-            if (interactable.LinkedController == this)
-                interactable.OnInteracting(this);
-        }
 
-        listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null);
+            interactable.OnUpdateInteraction(this);
+        }
+        listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null || VR_Interactable_UI.LinkedController != this);
     }
 
-
-    private void ControllerInput()
+    private void HandleFixedUpdateInput()
     {
-        if (interactable != null)
+        if (interactable != null && interactable.LinkedController == this)
         {
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
                 interactable.OnTriggerHold(this);
-
-
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripHold(this);
-
-            
-
+            interactable.OnFixedUpdateInteraction(this);
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Triggered");
         VR_Interactable currentObject = collider.GetComponentInParent<VR_Interactable>();
 
         if (currentObject && (interactable == null || interactable.LinkedController != this))
@@ -123,6 +131,7 @@ public class VR_Controller_Custom : MonoBehaviour
         }
 
         VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
+
         if (interactableUI)
             listOfInteractingUI.Add(interactableUI);
     }
@@ -133,7 +142,7 @@ public class VR_Controller_Custom : MonoBehaviour
             interactable.OnControllerStay(this);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         if (interactable != null && interactable.LinkedController != this)
         {
@@ -142,6 +151,7 @@ public class VR_Controller_Custom : MonoBehaviour
         }
 
         VR_Interactable_UI interactableUI = other.GetComponent<VR_Interactable_UI>();
+
         if (interactableUI)
             listOfInteractingUI.Remove(interactableUI);
     }
@@ -169,6 +179,12 @@ public class VR_Controller_Custom : MonoBehaviour
     public void SetInteraction(VR_Interactable _interacted)
     {
         interactable = _interacted;
+    }
+
+    public void Release()
+    {
+        interactable = null;
+        model.SetActive(true);
     }
 
     public SteamVR_Controller.Device Device

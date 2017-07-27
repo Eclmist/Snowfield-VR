@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory
 {
     [System.Serializable]
 	public class InventorySlot
@@ -17,7 +17,7 @@ public class Inventory : MonoBehaviour
 			storedItem = item;
 		}
 
-        // An empty slot
+        // Create an empty slot by default
         public InventorySlot()
         {
             currentStack = 0;
@@ -44,73 +44,90 @@ public class Inventory : MonoBehaviour
 
 	}
 
-	[SerializeField]
-	private int maxSlots;
-	private InventorySlot[] inventoryItems ;
+    private InventorySlot[] inventoryItemsArr;
+    private const int maxNumberOfSlots = 100;
 
-    protected virtual void Start()
-	{
-		inventoryItems = new InventorySlot[maxSlots];
-        InitializeEmptySlots();
-	}
-		
- 
-    
-	public InventorySlot[] InventoryItems
+    public Inventory()
     {
-        get { return this.inventoryItems; }
+
+        inventoryItemsArr = new InventorySlot[maxNumberOfSlots];
+
+        for(int i = 0;i < maxNumberOfSlots; i++)
+        {
+            inventoryItemsArr[i] = new InventorySlot() ;
+        }
     }
 
+   
 
 
-	public void AddToInventory(IStorable item)
+    public InventorySlot[] InventoryItemsArr
     {
+        get { return this.inventoryItemsArr; }
 
+    }
+
+    //public InventorySlot this[int index]  
+    //{
+    //    get { return this.inventoryItems[index]; }
+    //}
+
+
+    public void AddToInventory(IStorable item)
+    {
+        Debug.Log(inventoryItemsArr.Length);
+        Debug.Log(inventoryItemsArr[0] == null);
         bool added = false;
-
-        foreach (InventorySlot slot in inventoryItems)
+        for(int i = 0 ; i < inventoryItemsArr.Length; i++)
         {
-            if (slot.CurrentStack == slot.StoredItem.MaxStackSize)
-                continue;
+            InventorySlot tempSlot = inventoryItemsArr[i];
 
-            if(item.ItemID == slot.StoredItem.ItemID)
+            if (tempSlot.StoredItem != null)
+                if(tempSlot.CurrentStack >= tempSlot.StoredItem.MaxStackSize)
+                    continue;
+
+
+            if(tempSlot.StoredItem != null)
             {
-                slot.CurrentStack++;
+                if (item.ItemID == tempSlot.StoredItem.ItemID)
+                {
+                    tempSlot.CurrentStack++;
+                    added = true;
+                }
             }
+            
         }
 
         // Add item to an empty slot
         if(!added)
-        {
-            foreach(InventorySlot slot in inventoryItems)
+        {   
+            foreach(InventorySlot s in inventoryItemsArr)
             {
-                if(slot.StoredItem == null)
+                if(s.StoredItem == null)
                 {
-                    slot.StoredItem = item;
+                    s.StoredItem = item;
+                    s.CurrentStack++;
+                    break;
                 }
             }
+
+            
         }
 
     }
 
-	public GameObject RetrieveItem(int index)
+   
+
+    public GameObject RetrieveItem(int index)
     {
-        if (index < inventoryItems.Length)
-            return inventoryItems[index].StoredItem.ObjectReference;
+        if (index < inventoryItemsArr.Length)
+            return inventoryItemsArr[index].StoredItem.ObjectReference;
         else
             return null;
     }
 
-
-    private void InitializeEmptySlots()
-    {
-        for (int i = 0; i < inventoryItems.Length; i++)
-            inventoryItems[i] = new InventorySlot();
-    }
-
-
-
-
+ 
+ 
 
 
 }

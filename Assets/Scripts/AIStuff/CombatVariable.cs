@@ -13,7 +13,11 @@ public class CombatVariable : MonoBehaviour
     void Start()
     {
         iHasVariable = GetComponent<IHasVariable>();
-        currentHealth = iHasVariable.MaxHealth;
+		if (iHasVariable == null) {
+			Debug.Log ("No actor");
+			Destroy (this);
+		}
+		ResetHealth ();
         timeSinceLastDamageTaken = 0;
     }
 
@@ -48,4 +52,8 @@ public class CombatVariable : MonoBehaviour
         return currentHealth;
     }
 
+	public void ResetHealth(){
+		if(iHasVariable != null)
+		currentHealth = iHasVariable.MaxHealth;
+	}
 }

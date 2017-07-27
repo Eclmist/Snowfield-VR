@@ -86,7 +86,11 @@ public class OrderSlip : VR_Interactable_UI
 
     private void DisplayOptions()
     {
+        if (currentOP)
+            currentOP.Destroy();
+
         OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
+        op.transform.LookAt(Player.Instance.transform);
         interactingWeapon = currentInteractingController.GetComponentInChildren<Weapon>();
         currentOP = op;
         op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
@@ -119,7 +123,8 @@ public class OrderSlip : VR_Interactable_UI
                 GameManager.Instance.AddPlayerGold(reward);
                 Destroy(interactingWeapon.gameObject);
                 currentInteractingController.Model.SetActive(true);
-                Debug.Log("correcy");
+                currentOP.ClosePane();
+                Debug.Log("correct");
             }
 
         }
@@ -135,8 +140,11 @@ public class OrderSlip : VR_Interactable_UI
         Debug.Log("spawn detail");
         string desc = "Name: " + o_name;
 
+        if (currentOP)
+            currentOP.Destroy();
 
         OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
+        op.transform.LookAt(Player.Instance.transform);
         op.SetEvent(OptionPane.ButtonType.Ok, CloseOptions);
 
         currentOP.ClosePane();

@@ -45,8 +45,8 @@ public class HoldSpell : Spell {
             em.enabled = false;
             emsmoke.enabled = false;
 
-            Destroy(indicator, 1);
-            Destroy(spellGO, 1);
+            Destroy(indicator, 0.1f);
+            Destroy(spellGO, 0.5f);
 
             casted = false;
         }

@@ -22,106 +22,116 @@ public class VR_Interactable_Object : VR_Interactable
     [Range(0, 10)]
     protected float triggerPressVibration = 0;
 
-	private Vector3 currentReleaseVelocity = Vector3.zero, currentReleaseAngularVelocity = Vector3.zero;
-
-	// Outline Rendering
-	[SerializeField]
-	private Color outlineColor = Color.yellow;
-
-	private Renderer[] childRenderers;
-	private List<Material> childMaterials = new List<Material>();
 
 
+    // Outline Rendering
+    [SerializeField]
+    private Color outlineColor = Color.yellow;
 
-	protected override void Awake()
-	{
-		rigidBody = GetComponent<Rigidbody> ();
-		childRenderers = GetComponentsInChildren<Renderer>();
+    private Renderer[] childRenderers;
+    private List<Material> childMaterials = new List<Material>();
+
+
+
+    protected override void Awake()
+    {
+        rigidBody = GetComponent<Rigidbody>();
+        childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
 
-		gameObject.layer = 8;
+        gameObject.layer = 8;
 
         foreach (Renderer r in childRenderers)
-		{
-			if (r.GetComponent<ParticleSystem>())
-				continue;
+        {
+            if (r.GetComponent<ParticleSystem>())
+                continue;
 
-			foreach (Material m in r.materials)
-			{
-				if (m)
-				{
-					m.SetOverrideTag("RenderType", "Outline");
-					m.SetColor("_OutlineColor", Color.black);
-					childMaterials.Add(m);
-				}
-			}
-		}
-	}
-		
-
-	protected virtual void Update()
-	{
-	}
-
-	public override void OnControllerEnter(VR_Controller_Custom controller) {
-        controller.Vibrate(triggerEnterVibration);
-		SetOutline(true);
+            foreach (Material m in r.materials)
+            {
+                if (m)
+                {
+                    m.SetOverrideTag("RenderType", "Outline");
+                    m.SetColor("_OutlineColor", Color.black);
+                    childMaterials.Add(m);
+                }
+            }
+        }
     }
-		
 
-	public override void OnControllerExit(VR_Controller_Custom controller)
-	{
-		SetOutline(false);
-	}
 
-	public override void OnTriggerPress(VR_Controller_Custom controller)
+    protected virtual void Update()
     {
-		SetOutline(false);
+    }
 
-		if (currentInteractingController != null)
-            currentInteractingController.SetInteraction(null);
+    public override void OnControllerEnter(VR_Controller_Custom controller)
+    {
+        controller.Vibrate(triggerEnterVibration);
+        SetOutline(true);
+    }
+
+
+    public override void OnControllerExit(VR_Controller_Custom controller)
+    {
+        SetOutline(false);
+    }
+
+    public override void OnTriggerPress(VR_Controller_Custom controller)
+    {
+        SetOutline(false);
+        if (currentInteractingController)
+            currentInteractingController.Release();
 
         currentInteractingController = controller;
-
-        currentInteractingController.SetInteraction(this);
+        controller.SetInteraction(this);
+        lastPosition = transform.position;
+        currentReleaseVelocity = Vector3.zero;
     }
-		
 
-	public override void OnTriggerRelease(VR_Controller_Custom controller)
+    private Vector3 currentReleaseVelocity = Vector3.zero;
+    public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
+
         currentInteractingController = null;
-        controller.SetInteraction(null);
-        
-        rigidBody.velocity = currentReleaseVelocity;
-        rigidBody.angularVelocity = currentReleaseAngularVelocity;
-        Debug.Log("CurrentReleaseVelocity:" + rigidBody.velocity);
-        Debug.Log(rigidBody.angularVelocity);
-    }
-		
-
-	public override void OnInteracting(VR_Controller_Custom controller) {
-
-        if (currentReleaseVelocity.magnitude > controller.Velocity.magnitude)
-            currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, controller.Velocity, Time.deltaTime * 5);
-        else
-            currentReleaseVelocity = controller.Velocity;
-        if(currentReleaseAngularVelocity.magnitude > controller.AngularVelocity.magnitude)
-        currentReleaseAngularVelocity = Vector3.Lerp(currentReleaseAngularVelocity, controller.AngularVelocity, Time.deltaTime * 5);
-        else
-            currentReleaseAngularVelocity = controller.AngularVelocity;
+        rigidBody.AddForce(currentReleaseVelocity, ForceMode.Impulse);
+        rigidBody.angularVelocity = controller.AngularVelocity;
 
     }
 
-	public void SetOutline(bool enabled)
-	{
-		SetOutlineColor(enabled ? outlineColor : Color.black);
-	}
+    protected Vector3 lastPosition = Vector3.zero;
 
-	private void SetOutlineColor(Color color)
-	{
-		foreach (Material m in childMaterials)
-		{
-			m.SetColor("_OutlineColor", color);
-		}
-	}
+    public override void OnUpdateInteraction(VR_Controller_Custom controller)
+    {
+        currentReleaseVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        lastPosition = transform.position;
+        //if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
+        //    currentReleaseVelocity = Vector3.Lerp(currentReleaseVelocity, flatVelocity, Time.deltaTime * 10);
+        //else
+        //    currentReleaseVelocity = flatVelocity;
+
+    }
+
+    public void SetOutline(bool enabled)
+    {
+        SetOutlineColor(enabled ? outlineColor : Color.black);
+    }
+
+    private void SetOutlineColor(Color color)
+    {
+        foreach (Material m in childMaterials)
+        {
+            m.SetColor("_OutlineColor", color);
+        }
+    }
+
+    protected virtual void OnTriggerEnter(Collider col)
+    {
+        if (currentInteractingController)
+            currentInteractingController.OnTriggerEnter(col);
+    }
+
+    protected virtual void OnTriggerExit(Collider col)
+    {
+        if (currentInteractingController)
+            currentInteractingController.OnTriggerExit(col);
+    }
 }

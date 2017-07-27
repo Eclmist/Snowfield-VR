@@ -206,6 +206,8 @@ public class AdventurerAI : AI
         base.Spawn();
         (currentFSM as AdventurerFSM).NewVisitToTown();
         ChangeState(ActorFSM.FSMState.IDLE);
+		if(variable)
+		variable.ResetHealth ();
     }
 
     public override float GetOutOfTimeDuration()

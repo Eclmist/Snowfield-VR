@@ -49,8 +49,8 @@ public class Ingot : BlacksmithItem {
         }
         else
         {
-            ingotDeformer = GetComponentInChildren<IngotDeformer>();
-			initialMaterial = meshRenderer.material;
+            ingotDeformer = GetComponent<IngotDeformer>();
+			initialMaterial = Instantiate(meshRenderer.material);
             currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
 
@@ -67,8 +67,7 @@ public class Ingot : BlacksmithItem {
         ControlledHeatingProcess();
 
         UpdateMorpher();
-        //Debug.Log(heatSourceDetected);
-        //Debug.Log(currentTemperature);
+
     }
 
     public void IncrementMorphStep()
@@ -85,7 +84,7 @@ public class Ingot : BlacksmithItem {
         }
 
         currentMorphSteps++;
-        if(currentMorphSteps >= targetMorphSteps)
+        if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
         {
             ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
             if(itemData != null)

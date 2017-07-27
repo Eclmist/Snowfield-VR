@@ -58,7 +58,7 @@ public class Spell : VR_Interactable
 
     }
 
-    public override void OnInteracting(VR_Controller_Custom controller)
+    public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
         transform.position = LinkedController.transform.position;
         transform.rotation = LinkedController.transform.rotation;

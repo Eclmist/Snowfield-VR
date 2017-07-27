@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour {
 
     public void AddToPlayerInventory(ItemData data)
     {
-        StoragePanel.Instance.StoreInAvailableSlot(data,1);
+        StoragePanel.Instance._Inventory.AddToInventory(data);
     }
 
 
