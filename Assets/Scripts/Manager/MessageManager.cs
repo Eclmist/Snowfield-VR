@@ -12,15 +12,23 @@ public class MessageManager : MonoBehaviour
     [System.Serializable]
     public class Mail
     {
-        [SerializeField] private string message;
-        [SerializeField] private AudioClip clip;
-        [SerializeField] private bool isRead;
+        private string title;
+        private string message;
+        private AudioClip clip;
+        private bool isRead;
 
-        public Mail(string message, AudioClip clip)
+        public Mail(string title, string message, AudioClip clip)
         {
+            this.title = title;
             this.message = message;
             this.clip = clip;
             this.isRead = false;
+        }
+
+        public string Title
+        {
+            get { return this.title; }
+            set { this.title = value; }
         }
 
 
@@ -49,6 +57,9 @@ public class MessageManager : MonoBehaviour
     public static MessageManager Instance;
 
     
+    [SerializeField] private GridLayoutGroup glp;
+    [SerializeField] private Text messageTitle;
+    [SerializeField] private Text messageBody;
     [SerializeField] private GameObject interactableMesssage;
     [SerializeField] private List<Mail> inbox = new List<Mail>();
     [SerializeField] private int totalUnreadMails;
@@ -81,7 +92,7 @@ public class MessageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SendMail("This is a test mail", null);
+            SendMail("The adventure begins","Welcome to Snowfield!", null);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -95,11 +106,12 @@ public class MessageManager : MonoBehaviour
     }
   
     // Send a message to the player's inbox
-    public void SendMail(string message, AudioClip clip)
+    public void SendMail(string title, string message, AudioClip clip)
     {
-        Mail temp = new Mail(message, clip);
+        Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
-        GameObject g = Instantiate(interactableMesssage);
+        GameObject g = Instantiate(interactableMesssage,glp.transform,false);
+
         InteractableMessage interactableMessage = g.GetComponent<InteractableMessage>();
 
         if (interactableMessage)
@@ -131,7 +143,8 @@ public class MessageManager : MonoBehaviour
     // Select the mail and display it on the main message view
     public void DisplayMail(Mail mail)
     {
-        
+        messageBody.text = mail.Message;
+        messageTitle.text = mail.Title;
     }
 
     public void DisplayInbox()
