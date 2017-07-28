@@ -73,7 +73,7 @@ public abstract class AI : Actor
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {
-        StartCoroutine(currentFSM.LookAtTransform(target, time, angle));
+		currentFSM.StartLookAtRoutine (target, time, angle);
     }
 
     public void SetNode(Node n)

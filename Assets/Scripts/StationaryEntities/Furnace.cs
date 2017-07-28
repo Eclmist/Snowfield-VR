@@ -6,15 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class Furnace : MonoBehaviour {
 
-    public AudioClip clip;
-    public AudioSource audioSource;
-    private SphereCollider sphereCollider;
+    //public AudioClip clip;
+    //public AudioSource audioSource;
+    //private SphereCollider sphereCollider;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        sphereCollider = GetComponent<SphereCollider>();
-        sphereCollider.isTrigger = true;
+        //audioSource = GetComponent<AudioSource>();
+        //sphereCollider = GetComponent<SphereCollider>();
+        //sphereCollider.isTrigger = true;
     }
 
 
@@ -23,7 +23,7 @@ public class Furnace : MonoBehaviour {
         Ingot bsItem = other.GetComponentInParent<Ingot>();
         if (bsItem != null)
         {
-            bsItem.SetHeatingEnvironment((sphereCollider.radius - (Vector3.Distance(other.transform.position,transform.TransformPoint(sphereCollider.center)))) * 1);
+            bsItem.SetHeatingEnvironment(1);
         }
     }
 

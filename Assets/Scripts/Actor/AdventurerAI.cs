@@ -198,14 +198,13 @@ public class AdventurerAI : AI
 
     public override void Interact(Actor actor)
     {
-        StartCoroutine((currentFSM as AdventurerFSM).Interact(actor));
+		(currentFSM as AdventurerFSM).StartInteractRoutine (actor);
     }
 
     public override void Spawn()
     {
         base.Spawn();
-        (currentFSM as AdventurerFSM).NewVisitToTown();
-        ChangeState(ActorFSM.FSMState.IDLE);
+		(currentFSM as AdventurerFSM).NewSpawn ();
 		if(variable)
 		variable.ResetHealth ();
     }

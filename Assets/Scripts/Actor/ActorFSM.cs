@@ -83,7 +83,12 @@ public abstract class ActorFSM : MonoBehaviour
         }
 
     }
-
+	public virtual void NewSpawn()
+	{
+		nextState = FSMState.IDLE;
+		ChangeState (FSMState.IDLE);
+	
+	}
 
     protected virtual void Awake()
     {
@@ -236,7 +241,6 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateEventHandling()
     {
-
         if (!isHandlingAction)
         {
             if (handledEvents.Count <= 0)
@@ -244,7 +248,7 @@ public abstract class ActorFSM : MonoBehaviour
                 path[0].Occupied = false;
                 path.RemoveAt(0);
                 pathNodeOffset.RemoveAt(0);
-                ChangeState(FSMState.PETROL);
+				ChangeState(FSMState.PETROL);
                 return;
             }
             else
@@ -476,11 +480,14 @@ public abstract class ActorFSM : MonoBehaviour
     //    else
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
-
+	public void StartLookAtRoutine(Transform targetTransform, float seconds, float angle){
+		StartCoroutine (LookAtTransform(targetTransform, seconds, angle));
+	}
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {
         while (seconds >= 0)
         {
+			
             isHandlingAction = true;
 
             Vector3 dir = targetTransform.position - transform.position;
@@ -489,7 +496,9 @@ public abstract class ActorFSM : MonoBehaviour
                 Quaternion.LookRotation(dir, Vector3.up),
                 5 * Time.deltaTime);//hardcorded 10
             yield return new WaitForEndOfFrame();
+			Debug.Log (seconds);
             seconds -= Time.deltaTime;
+
         }
         isHandlingAction = false;
 

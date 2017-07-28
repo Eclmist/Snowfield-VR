@@ -14,10 +14,11 @@ public class AdventurerFSM : ActorFSM
 
     protected Weapon currentUseWeapon;
 
-    public void NewVisitToTown()
-    {
-        visitedShop.Clear();
-    }
+	public override void NewSpawn ()
+	{
+		base.NewSpawn ();
+		visitedShop.Clear();
+	}
 
     protected override void Awake()
     {
@@ -130,7 +131,6 @@ public class AdventurerFSM : ActorFSM
         currentAdventurerAI.StopAllInteractions();
         if (state != FSMState.COMBAT)
             currentAdventurerAI.UnEquipWeapons();
-
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -150,6 +150,9 @@ public class AdventurerFSM : ActorFSM
         }
     }
 
+	public void StartInteractRoutine(Actor actor){
+		StartCoroutine(Interact(actor));
+	}
     protected override void UpdateCombatState()
     {
         animator.SetBool("Cast", false);
@@ -189,17 +192,19 @@ public class AdventurerFSM : ActorFSM
         float waitTimer = 5;
         
         while (isHandlingAction) { 
-
+			Debug.Log ("broke1");
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
             {
+				Debug.Log ("broke2");
                 Player player = target as Player;
                 if (currentAdventurerAI.IsInteractionAvailable() || currentAdventurerAI.Interacting)
                 {
                     if (player.CheckConversingWith(currentAdventurerAI))
                     {
                         waitTimer = 5;
+
                         if (!currentAdventurerAI.Interacting)
                         {
                             currentAdventurerAI.StartInteraction();
@@ -207,12 +212,12 @@ public class AdventurerFSM : ActorFSM
                     }
                     else
                     {
-                        waitTimer -= Time.deltaTime;
-                        if (waitTimer <= 0)
-                        {
-                            currentAdventurerAI.StopAllInteractions();
-                            break;
-                        }
+						waitTimer -= Time.deltaTime;
+						if (waitTimer <= 0) {
+							currentAdventurerAI.StopAllInteractions ();
+							break;
+						}
+                        
                     }
                 }
                 else
@@ -223,13 +228,14 @@ public class AdventurerFSM : ActorFSM
             }
             else
             {
+				Debug.Log ("broke3");
                 currentAdventurerAI.StopAllInteractions();
                 break;
             }
             yield return new WaitForEndOfFrame();
 
         }
-
+		Debug.Log ("broke4");
         isHandlingAction = false;
     }
 }
