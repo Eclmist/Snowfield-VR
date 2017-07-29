@@ -49,6 +49,10 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
     public virtual void TakeDamage(int value, Actor attacker)
     {
         variable.ReduceHealth(value);
+
+        if(attacker)
+            TextSpawnerManager.Instance.SpawnText(value.ToString(),Color.white,attacker.transform,2f);
+        
     }
 
     public virtual void Attack(IDamage item, IDamagable target)

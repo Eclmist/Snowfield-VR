@@ -192,12 +192,10 @@ public class AdventurerFSM : ActorFSM
         float waitTimer = 5;
         
         while (isHandlingAction) { 
-			Debug.Log ("broke1");
             LookAtPlayer(actor.transform.position);
 
             if (target is Player)
             {
-				Debug.Log ("broke2");
                 Player player = target as Player;
                 if (currentAdventurerAI.IsInteractionAvailable() || currentAdventurerAI.Interacting)
                 {
@@ -228,14 +226,13 @@ public class AdventurerFSM : ActorFSM
             }
             else
             {
-				Debug.Log ("broke3");
                 currentAdventurerAI.StopAllInteractions();
                 break;
             }
             yield return new WaitForEndOfFrame();
 
         }
-		Debug.Log ("broke4");
+
         isHandlingAction = false;
     }
 }

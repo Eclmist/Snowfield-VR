@@ -193,7 +193,11 @@ public class AdventurerAI : AI
 
     public void GainExperience(int value)
     {
+        int tempCurrentLevel = data.CurrentJob.Level;
         data.CurrentJob.GainExperience(value);
+        if (data.CurrentJob.Level > tempCurrentLevel)
+            TextSpawnerManager.Instance.SpawnText("Level Up!",Color.green,transform,4);
+        
     }
 
     public override void Interact(Actor actor)
@@ -234,4 +238,6 @@ public class AdventurerAI : AI
         if (Health <= 0)
             AIManager.Instance.Spawn(this, data.CurrentJob.Level * 20, TownManager.Instance.GetRandomSpawnPoint());
     }
+
+
 }

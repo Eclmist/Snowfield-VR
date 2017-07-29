@@ -496,7 +496,6 @@ public abstract class ActorFSM : MonoBehaviour
                 Quaternion.LookRotation(dir, Vector3.up),
                 5 * Time.deltaTime);//hardcorded 10
             yield return new WaitForEndOfFrame();
-			Debug.Log (seconds);
             seconds -= Time.deltaTime;
 
         }

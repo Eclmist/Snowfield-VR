@@ -18,26 +18,36 @@ public class TextSpawnerManager : MonoBehaviour {
         Instance = this;
     }
 	
-    public void SpawnText(string text, Color color, Transform t, Collider c)
+    public void SpawnText(string text, Color color, Transform t)
     {
-        Debug.Log("spawned");
-        SpawnedText st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
-        Debug.Log(c.bounds.extents.y);
+        Collider c = t.GetComponent<Collider>();
+        SpawnedText st;
+
+        if(c)
+            st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
+        else
+            st = Instantiate(textPrefab, (t.position + t.up * + offset.y), t.rotation);
+     
+
         st.SetText(text);
         st.SetColor(color);
     }
 
-    public void SpawnText(string text, Color color, Transform t, Collider c, int scale)
+
+    public void SpawnText(string text, Color color, Transform t, float scale)
     {
-        Debug.Log("spawned");
-        SpawnedText st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
+        Collider c = t.GetComponent<Collider>();
+        SpawnedText st;
+
+        if (c)
+            st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
+        else
+            st = Instantiate(textPrefab, (t.position + t.up * +offset.y), t.rotation);
+
         st.transform.localScale *= scale;
-        Debug.Log(c.bounds.extents.y);
         st.SetText(text);
         st.SetColor(color);
     }
-
-
 
 
 
