@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour {
         if (currentState == GameState.NIGHTMODE)
         {
             if(gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
-            currentState = GameState.DAYMODE;
+            	currentState = GameState.DAYMODE;
         }
 
         //Debug.Log(currentState);
@@ -90,7 +90,6 @@ public class GameManager : MonoBehaviour {
     private void PrepareForNight()
     {
         currentState = GameState.NIGHTMODE;
-
         WaveManager.Instance.SpawnWave(gameClock.Day);
 
     }
