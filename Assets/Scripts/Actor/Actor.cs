@@ -51,7 +51,7 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
         variable.ReduceHealth(value);
 
         if(attacker)
-            TextSpawnerManager.Instance.SpawnText(value.ToString(),Color.white,attacker.transform,2f);
+            TextSpawnerManager.Instance.SpawnText(value.ToString(),Color.white,transform,2f);
         
     }
 
