@@ -1,6 +1,6 @@
 ﻿// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Unlit/AlphaBlendedMask" {
+Shader "Unlit/AlphaBlendedMasked" {
 	Properties{
 
 		[HDR]_TintColor("Tint Color", Color) = (0.5,0.5,0.5,0.5)
@@ -19,9 +19,8 @@ Shader "Unlit/AlphaBlendedMask" {
 		Stencil 
 		{
 			Ref[_Stencil]
-			Pass Replace
-			Comp Always
-		
+			Pass Keep
+			Comp NotEqual
 		}
 
 		SubShader{
@@ -95,8 +94,6 @@ Shader "Unlit/AlphaBlendedMask" {
 	fixed4 col = 2.0f * i.color *tex2D(_MainTex, i.texcoord);
 	col.rgb *= 20;
 	col.a *= tex2D(_MaskTex, i.maskuv).a;
-
-	 if (col.a <= 0.01) discard;
 
 	UNITY_APPLY_FOG(i.fogCoord, col);
 	return col;
