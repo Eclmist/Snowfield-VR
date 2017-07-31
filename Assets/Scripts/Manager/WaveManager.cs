@@ -122,10 +122,10 @@ public class WaveManager : MonoBehaviour
 				Debug.Log ("added");
                 monstersInTheScene.Add(monster);
                 (monster.Data as CombatActorData).CurrentJob.SetLevel(level);
-                yield return new WaitForSecondsRealtime(timeBetweenEachMonsterSpawn);
+				yield return new WaitForSeconds(timeBetweenEachMonsterSpawn);
             }
 
-            yield return new WaitForSecondsRealtime(timeBetweenEachGroupSpawn);
+            yield return new WaitForSeconds(timeBetweenEachGroupSpawn);
         }
         isSpawning = false;
 

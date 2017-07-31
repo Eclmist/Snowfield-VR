@@ -456,7 +456,7 @@ namespace AC.TimeOfDaySystemFree
 
 		protected void UpdateTime()
 		{
-
+			
 			// Prevent the current time exceeds the day duration.
 			if (timeline > k_DayDuration) timeline = 0; 
 			if (timeline < 0)          timeline = k_DayDuration;
@@ -467,10 +467,15 @@ namespace AC.TimeOfDaySystemFree
 			// Play time.
 			if (playTime && Application.isPlaying)
 			{
-				//timeline  += (Time.deltaTime / dayInSeconds) * k_DayDuration;
-				timeline = GameManager.Instance.GameClock.TimeOfDay * 24;
+				if (GameManager.Instance)
+					timeline = GameManager.Instance.GameClock.TimeOfDay * 24;
+				else {
+					timeline  += (Time.deltaTime / dayInSeconds) * k_DayDuration;
+
+				}
 			}
 			//---------------------------------------------------------------------------------
+
 
 			// Get hour and minutes.
 			Hour   = Mathf.Floor (timeline);
@@ -489,7 +494,7 @@ namespace AC.TimeOfDaySystemFree
 			// Get world rotation.
 			if(useWorldLongitudeCurve) 
 				WorldLongitude = worldLongitudeCurve.Evaluate(CGTime) - k_RightAngle;
-
+			
 			WorldRotation = new Vector3 () 
 			{
 				x =	timeline * (360 / k_DayDuration) - k_RightAngle,

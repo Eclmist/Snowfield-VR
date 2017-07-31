@@ -12,6 +12,8 @@ namespace AC.TimeOfDaySystemFree
 		private void Awake()
 		{
 			Instance = this;
+
+
 		}
 
 		#region Resources.
@@ -419,38 +421,37 @@ namespace AC.TimeOfDaySystemFree
 		void Update()
 		{
 
-			if (skyMaterial == null) return;
+			if (skyMaterial == null)
+				return;
 
 
-			if (m_DirectionalLightTransform == null)
-			{
-				Init(); 
-			}
 			//timeline = Mathf.Clamp (timeline, 0 - .0001f, k_DayDuration + .0001f);
-		
-
 			UpdateTime ();
 
-			Atmosphere ();
-
-			Sun ();
-
-			Moon ();
+			if (m_DirectionalLightTransform == null) {
+				Init (); 
+			}
 
 			DirLight ();
 
-			UpdateAmbient();
-	
+			Sun ();
+
+
+			Atmosphere ();
+
+			Moon ();
+
+
+			UpdateAmbient ();
+
 			Stars ();
 
 			// Exposure.
-			if (useExposureCurve) Exposure = exposureCurve.Evaluate (CGTime);
+			if (useExposureCurve)
+				Exposure = exposureCurve.Evaluate (CGTime);
 			skyMaterial.SetFloat ("_Exposure", Exposure);
-		
 
 		}
-
-
 
 		protected override void Init()
 		{
@@ -467,8 +468,6 @@ namespace AC.TimeOfDaySystemFree
 
 		void Atmosphere()
 		{
-
-
 			// Atmosphere.
 
 			// Evaluate sky tint curves and gradients.
