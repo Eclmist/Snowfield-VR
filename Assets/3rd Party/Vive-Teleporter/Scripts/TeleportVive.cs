@@ -21,7 +21,9 @@ public class TeleportVive : MonoBehaviour {
     public float HapticClickAngleStep = 10;
 
 	[SerializeField]
-	public Transform target;
+	public Transform[] targets;
+
+    protected Transform realTarget;
 
     /// BorderRenderer to render the chaperone bounds (when choosing a location to teleport to)
     private BorderRenderer RoomBorder;
@@ -159,11 +161,31 @@ public class TeleportVive : MonoBehaviour {
         }
     }
 
-	void Update ()
+
+    protected Transform CheckTarget()
+    {
+        Transform target = null;
+
+        for(int i = 0; i < targets.Length; i++)
+        {
+            if ((Pointer.SelectedPoint.x <= targets[i].position.x + 1 && Pointer.SelectedPoint.x >= targets[i].position.x - 1)
+               && (Pointer.SelectedPoint.y <= targets[i].position.y + 1 && Pointer.SelectedPoint.y >= targets[i].position.y - 1)
+               && (Pointer.SelectedPoint.z <= targets[i].position.z + 1 && Pointer.SelectedPoint.z >= targets[i].position.z - 1))
+            {
+                target = targets[i];
+            }
+        }
+
+        return target;
+    }
+
+    void Update ()
     {
         // If we are currently teleporting (ie handling the fade in/out transition)...
         if(CurrentTeleportState == TeleportState.Teleporting)
         {
+            realTarget = CheckTarget();
+
             // Wait until half of the teleport time has passed before the next event (note: both the switch from fade
             // out to fade in and the switch from fade in to stop the animation is half of the fade duration)
             if (Time.time - TeleportTimeMarker >= TeleportFadeDuration / 2)
@@ -176,13 +198,12 @@ public class TeleportVive : MonoBehaviour {
                 else
                 {
                     //Change origin transform to target transform (teleportation plane outside the shop)
-                    if ((Pointer.SelectedPoint.x <= target.position.x + 1 && Pointer.SelectedPoint.x >= target.position.x - 1)
-                        && (Pointer.SelectedPoint.y <= target.position.y + 1 && Pointer.SelectedPoint.y >= target.position.y - 1)
-                        && (Pointer.SelectedPoint.z <= target.position.z + 1 && Pointer.SelectedPoint.z >= target.position.z - 1))
+                    if (realTarget != null)
                     {
-                        if (((OriginTransform.position.x <= target.position.x + 1 && OriginTransform.position.x >= target.position.x - 1)
-                        && (OriginTransform.position.y <= target.position.y + 1 && OriginTransform.position.y >= target.position.y - 1)
-                        && (OriginTransform.position.z <= target.position.z + 1 && OriginTransform.position.z >= target.position.z - 1)))
+
+                        if (((OriginTransform.position.x <= realTarget.position.x + 1 && OriginTransform.position.x >= realTarget.position.x - 1)
+                        && (OriginTransform.position.y <= realTarget.position.y + 1 && OriginTransform.position.y >= realTarget.position.y - 1)
+                        && (OriginTransform.position.z <= realTarget.position.z + 1 && OriginTransform.position.z >= realTarget.position.z - 1)))
                         {
                             FadingIn = !FadingIn;
                             CurrentTeleportState = TeleportState.None;
@@ -194,10 +215,10 @@ public class TeleportVive : MonoBehaviour {
 
                         Player.Instance.InCombatZone = true;
                     }
-                    else // We have finished fading out - time to teleport!         
+                    else
                     {
-                        Player.Instance.InCombatZone = false;
-                        OriginTransform.position = Pointer.SelectedPoint;
+                    Player.Instance.InCombatZone = false;
+                    OriginTransform.position = Pointer.SelectedPoint;
 
                         Vector3 offset = OriginTransform.position - HeadTransform.position;
                         offset.y = 0;
