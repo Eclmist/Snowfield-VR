@@ -31,6 +31,26 @@ public class ItemManagerEditor : Editor {
             PrefabRect.x = 93;
             EditorGUI.LabelField(PrefabRect, "Prefab");
 
+            Rect SpriteRect = rect;
+            SpriteRect.width = 150;
+            SpriteRect.x = 260;
+            EditorGUI.LabelField(SpriteRect,"Sprite");
+
+            Rect StackRect = rect;
+            StackRect.width = 150;
+            StackRect.x = 430;
+            EditorGUI.LabelField(StackRect, "StackSize");
+
+            Rect JobRect = rect;
+            JobRect.width = 150;
+            JobRect.x = 500;
+            EditorGUI.LabelField(JobRect, "JobType");
+
+            Rect CostRect = rect;
+            CostRect.width = 150;
+            CostRect.x = 680;
+            EditorGUI.LabelField(CostRect, "Cost");
+
             Rect UnlockedRect = rect;
             UnlockedRect.width = 80;
             UnlockedRect.x = rect.x + rect.width - 70 ;
@@ -67,6 +87,10 @@ public class ItemManagerEditor : Editor {
         EditorGUI.PropertyField(
            new Rect(rect.x + 470, rect.y, 150, EditorGUIUtility.singleLineHeight),
            element.FindPropertyRelative("jobType"), GUIContent.none);
+
+        EditorGUI.PropertyField(
+           new Rect(rect.x + 650, rect.y, 60, EditorGUIUtility.singleLineHeight),
+           element.FindPropertyRelative("cost"), GUIContent.none);
 
 
         EditorGUI.PropertyField(

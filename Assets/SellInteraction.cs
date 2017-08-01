@@ -25,7 +25,7 @@ public class SellInteraction : InteractionsWithPlayer {
     protected void SellItemDelegate()
     {
         GameManager.Instance.AddPlayerGold(25);
-        GameManager.Instance.AddToPlayerInventory(sellItemData);
+        StoragePanel.Instance._Inventory.AddToInventory(sellItemData);
 
     }
 }

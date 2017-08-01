@@ -5,17 +5,17 @@ using UnityEngine;
 public class Inventory
 {
     [System.Serializable]
-	public class InventorySlot
-	{
-		private int currentStack;
+    public class InventorySlot
+    {
+        private int currentStack;
 
-		private IStorable storedItem;
+        private IStorable storedItem;
 
-		public InventorySlot(IStorable item,int quantity)
-		{
-			currentStack = quantity;
-			storedItem = item;
-		}
+        public InventorySlot(IStorable item, int quantity)
+        {
+            currentStack = quantity;
+            storedItem = item;
+        }
 
         // Create an empty slot by default
         public InventorySlot()
@@ -23,17 +23,17 @@ public class Inventory
             currentStack = 0;
         }
 
-		public int CurrentStack
-		{
-			get { return this.currentStack; }
-			set { this.currentStack = value; }
-		}
+        public int CurrentStack
+        {
+            get { return this.currentStack; }
+            set { this.currentStack = value; }
+        }
 
-		public IStorable StoredItem
-		{
-			get { return this.storedItem; }
-			set { this.storedItem = value; }
-		}
+        public IStorable StoredItem
+        {
+            get { return this.storedItem; }
+            set { this.storedItem = value; }
+        }
 
         public void EmptySlot()
         {
@@ -42,7 +42,7 @@ public class Inventory
 
         }
 
-	}
+    }
 
     private InventorySlot[] inventoryItemsArr;
     private const int maxNumberOfSlots = 100;
@@ -52,13 +52,13 @@ public class Inventory
 
         inventoryItemsArr = new InventorySlot[maxNumberOfSlots];
 
-        for(int i = 0;i < maxNumberOfSlots; i++)
+        for (int i = 0; i < maxNumberOfSlots; i++)
         {
-            inventoryItemsArr[i] = new InventorySlot() ;
+            inventoryItemsArr[i] = new InventorySlot();
         }
     }
 
-   
+
 
 
     public InventorySlot[] InventoryItemsArr
@@ -72,49 +72,44 @@ public class Inventory
     //    get { return this.inventoryItems[index]; }
     //}
 
-
-    public void AddToInventory(IStorable item)
+    public void AddToInventory(IStorable item, int quantity = 1)
     {
-        bool added = false;
-        for(int i = 0 ; i < inventoryItemsArr.Length; i++)
+        for (int i = 0; i < inventoryItemsArr.Length; i++)
         {
             InventorySlot tempSlot = inventoryItemsArr[i];
 
-            if (tempSlot.StoredItem != null)
-                if(tempSlot.CurrentStack >= tempSlot.StoredItem.MaxStackSize)
-                    continue;
 
-
-            if(tempSlot.StoredItem != null)
+            //fill up the slot with the existing item
+            if (tempSlot.StoredItem == null || item.ItemID == tempSlot.StoredItem.ItemID)
             {
-                if (item.ItemID == tempSlot.StoredItem.ItemID)
-                {
-                    tempSlot.CurrentStack++;
-                    added = true;
-                }
-            }
-            
-        }
+                if (tempSlot.StoredItem == null)
+                    tempSlot.StoredItem = item;
 
-        // Add item to an empty slot
-        if(!added)
-        {   
-            foreach(InventorySlot s in inventoryItemsArr)
-            {
-                if(s.StoredItem == null)
+                int currentVal = tempSlot.CurrentStack + quantity;
+                if (currentVal <= tempSlot.StoredItem.MaxStackSize)
                 {
-                    s.StoredItem = item;
-                    s.CurrentStack++;
+                    tempSlot.CurrentStack = currentVal;
                     break;
                 }
+                else
+                {
+                    quantity = currentVal - tempSlot.StoredItem.MaxStackSize;
+                    Debug.Log(quantity);
+                    tempSlot.CurrentStack = tempSlot.StoredItem.MaxStackSize;
+                    continue;
+
+                }
+
             }
 
-            
+
+
+
         }
 
     }
 
-   
+
 
     public GameObject RetrieveItem(int index)
     {
@@ -124,8 +119,8 @@ public class Inventory
             return null;
     }
 
- 
- 
+
+
 
 
 }
