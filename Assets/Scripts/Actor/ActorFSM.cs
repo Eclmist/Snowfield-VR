@@ -37,6 +37,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
     [SerializeField]
+    [Range(0.5f,5)]
     protected float movementSpeed = 1;
 
     #region Avoidance
@@ -175,6 +176,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateCombatState()
     {
+        Debug.Log(target);
         if (target != null && target.CanBeAttacked)
         {
             float tempAttackRange = attackRange;
@@ -264,8 +266,10 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdatePetrolState()
     {
+        Debug.Log(path.Count);
         if (path.Count == 0)
         {
+            
             ChangeState(nextState);
         }
         else

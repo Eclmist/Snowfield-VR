@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 4956753486798834}
   - component: {fileID: 114288905207430016}
   - component: {fileID: 82575036360225192}
-  - component: {fileID: 114358799970829534}
+  - component: {fileID: 114890481862850640}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3831,17 +3831,15 @@ MonoBehaviour:
   dink: {fileID: 0}
   vivePosition: {fileID: 0}
   data:
-    baseStats:
-      baseHealth: 700
-      baseAttack: 10
-      baseHealthRegeneration: 5
-      baseMovementSpeed: 0
-    combatJob:
-      level: 0
-      damagePerLevel: 5
-      healthPerLevel: 20
-      healthRegenPerLevel: 1
-    jobList: []
+    jobList:
+    - currentJobType: 2
+      additionalStatsPerLevel:
+      - value: 10
+        statsType: 0
+      - value: 1
+        statsType: 1
+      - value: 0.1
+        statsType: 2
     gold: 2000
   inCombatZone: 0
 --- !u!114 &114289551214572104
@@ -3942,7 +3940,7 @@ MonoBehaviour:
   secondsPerDay: 300
   nightTime: 0.75
   dayTime: 0.25
-  startTime: 0.316
+  startTime: 0.795
 --- !u!114 &114343490417086442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4024,18 +4022,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   isOccupied: 0
---- !u!114 &114358799970829534
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1278228859004030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
 --- !u!114 &114369352369135332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4824,48 +4810,56 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: a2e79b7c905ded24aa73c60d70ec1b06, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 1
     prefab: {fileID: 1940380544830368, guid: db4225d1757824243b1bcdfb755e0a2f, type: 2}
     levelUnlocked: 2
     icon: {fileID: 21300000, guid: 6d800a324384dc04eb33e7c0690edaaf, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 2
     prefab: {fileID: 1909934928214322, guid: abf38aae2e8a38b4f874eb6f4281906e, type: 2}
     levelUnlocked: 3
     icon: {fileID: 21300000, guid: 2143b99e091fe194d911b7fcc11a2740, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 3
     prefab: {fileID: 1668011802753318, guid: cb0e20587745302459149466fb320ca2, type: 2}
     levelUnlocked: 4
     icon: {fileID: 21300000, guid: ffea454af77835548bd2c63186479fdb, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 4
     prefab: {fileID: 1542399956369312, guid: 519644e81420f6249930d676000eeeb9, type: 2}
     levelUnlocked: 5
     icon: {fileID: 21300000, guid: 9f7e6fb8e571b3c439ea9b141b11a5eb, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 5
     prefab: {fileID: 1469478897470098, guid: 68451ca3c72ce004ebc1a70f468dcaf2, type: 2}
     levelUnlocked: 6
     icon: {fileID: 21300000, guid: a5b1eb75052951647b8232ef9abf99d1, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 6
     prefab: {fileID: 108546, guid: f7b20b29a2f19314ca70d24392e49c2a, type: 2}
     levelUnlocked: 7
     icon: {fileID: 21300000, guid: bca0c6fee1a72c14c8009c380272af67, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
   - ID: 7
     prefab: {fileID: 159586, guid: b1ae6b4b960b48944ab71ce123f07e01, type: 2}
     levelUnlocked: 8
     icon: {fileID: 21300000, guid: 1f6d7be35bca30d4dad2d4f9425aab83, type: 3}
     maxStackSize: 64
     jobType: 0
+    cost: 0
 --- !u!114 &114852010624526960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4928,6 +4922,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   offset: {x: 0, y: 0.1, z: 0.3}
+--- !u!114 &114890481862850640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1278228859004030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats:
+  - value: 2000
+    statsType: 0
+  - value: 20
+    statsType: 1
+  - value: 100
+    statsType: 2
+  allStats: []
 --- !u!114 &114894589747460882
 MonoBehaviour:
   m_ObjectHideFlags: 1
