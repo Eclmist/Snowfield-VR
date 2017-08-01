@@ -12,16 +12,35 @@ public class InteractableBuy : MonoBehaviour {
 
     private ItemData itemData;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+            BuyItem();
+    }
+
     public void Initialize(ItemData itemData)
     {
         this.itemData = itemData;
-    }
-    
+        image.sprite = itemData.Icon;
+        text.text = itemData.Cost.ToString() + " g";
 
-    public void SelectItem()
-    {
-        Merchant.Instance.BuyItem(itemData);
     }
-	
-	
+
+
+    public void BuyItem()
+    {
+        if (Player.Instance.Gold <= itemData.Cost)
+        {
+            TextSpawnerManager.Instance.SpawnText("Not enough gold", Color.red, transform);
+        }
+        else
+        {
+            GameManager.Instance.AddPlayerGold(-itemData.Cost);
+            TextSpawnerManager.Instance.SpawnText("-" + itemData.Cost.ToString() + "g", Color.red, transform);
+            StoragePanel.Instance._Inventory.AddToInventory(itemData);
+        }
+
+    }
+
+
 }
