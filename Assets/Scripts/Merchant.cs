@@ -8,7 +8,7 @@ public class Merchant : MonoBehaviour
     public static Merchant Instance;
 
     [SerializeField]
-    private GameObject interactableBuy;
+    private InteractableBuy interactableBuy;
     [SerializeField]
     private GridLayoutGroup layoutGroup;
     
@@ -26,9 +26,15 @@ public class Merchant : MonoBehaviour
     {
         buyableItemData = new List<ItemData>();
         PopulateBuyableItemDataList();
-        CreateCatalog();
+        //CreateCatalog();
 	}
-	
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.B))
+            BuyItem(buyableItemData[0]);
+    }
+
 
     private void PopulateBuyableItemDataList()
     {
@@ -43,16 +49,26 @@ public class Merchant : MonoBehaviour
     
     private void CreateCatalog()
     {
-        foreach(GenericItem g in buyableGenericItems)
-            Instantiate(interactableBuy, layoutGroup.transform, false);
+        foreach(ItemData data in buyableItemData)
+            Instantiate(interactableBuy, layoutGroup.transform, false).Initialize(data);
     }
 
     public void BuyItem(ItemData data)
     {
-       GameManager.Instance.AddPlayerGold(-data.Cost);
-       TextSpawnerManager.Instance.SpawnText("-" + data.Cost.ToString(),Color.red,transform);
-        StoragePanel.Instance._Inventory.AddToInventory(data);
+        if(Player.Instance.Gold <= data.Cost)
+        {
+            TextSpawnerManager.Instance.SpawnText("Not enough gold", Color.red, transform);
+        }
+        else
+        {
+            GameManager.Instance.AddPlayerGold(-data.Cost);
+            TextSpawnerManager.Instance.SpawnText("-" + data.Cost.ToString() + "g", Color.red, transform);
+            StoragePanel.Instance._Inventory.AddToInventory(data);
+        }
+        
     }
+
+    
 
 
 }

@@ -1,16 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractableBuy : MonoBehaviour {
 
+    [SerializeField]
+    private Image image;
+    [SerializeField]
+    private Text text;
+
     private ItemData itemData;
 
-    public ItemData _ItemData
+    public void Initialize(ItemData itemData)
     {
-        get { return this.itemData; }
-        set { this.itemData = value; }
+        this.itemData = itemData;
     }
+    
 
     public void SelectItem()
     {
