@@ -37,7 +37,7 @@ public class InteractableBuy : MonoBehaviour {
         {
             GameManager.Instance.AddPlayerGold(-itemData.Cost);
             TextSpawnerManager.Instance.SpawnText("-" + itemData.Cost.ToString() + "g", Color.red, transform);
-            StoragePanel.Instance._Inventory.AddToInventory(itemData);
+            StoragePanel.Instance._Inventory.AddToInventory(itemData,1);
         }
 
     }

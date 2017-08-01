@@ -53,12 +53,12 @@ public class StoragePanel : MonoBehaviour {
 		InitializeInteractableSlots ();
 	}
 
-
+    
 	void Update()
 	{
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            inventory.AddToInventory(ItemManager.Instance.GetItemData(2));
+            inventory.AddToInventory(ItemManager.Instance.GetItemData(2), 1);
         }
 	}
 

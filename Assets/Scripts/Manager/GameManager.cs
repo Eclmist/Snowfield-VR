@@ -108,10 +108,6 @@ public class GameManager : MonoBehaviour {
        
     }
 
-    public void AddToPlayerInventory(ItemData data)
-    {
-        StoragePanel.Instance._Inventory.AddToInventory(data);
-    }
 
 
 
