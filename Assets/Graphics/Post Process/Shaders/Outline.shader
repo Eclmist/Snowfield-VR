@@ -45,17 +45,24 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 outline = tex2D(_OutlineBufferTex, i.uv);
+				fixed4 blur = tex2D(_OutlineBufferTexBlurred, i.uv);
 
-				fixed4 offset = tex2D(_OutlineBufferTex, i.uv - fixed2(0.01, 0.01) * _offset);
-				offset += tex2D(_OutlineBufferTex, i.uv - fixed2(-0.01, 0.01) * _offset);
-				offset += tex2D(_OutlineBufferTex, i.uv - fixed2(0.01, -0.01) * _offset);
-				offset += tex2D(_OutlineBufferTex, i.uv - fixed2(-0.01, -0.01) * _offset);
+				//fixed4 offset = tex2D(_OutlineBufferTex, i.uv - fixed2(0.01, 0.01) * _offset);
+				//offset += tex2D(_OutlineBufferTex, i.uv - fixed2(-0.01, 0.01) * _offset);
+				//offset += tex2D(_OutlineBufferTex, i.uv - fixed2(0.01, -0.01) * _offset);
+				//offset += tex2D(_OutlineBufferTex, i.uv - fixed2(-0.01, -0.01) * _offset);
 
-				offset -= outline * 4;
-				offset = max(0, offset);
+				//offset -= outline * 4;
+				//offset = max(0, offset);
+
+				blur -= outline;
+
+				blur = max(0, blur);
+
 
 				fixed4 col = tex2D(_MainTex, i.uv);
-				return offset + col;
+
+				return col + blur;
 			}
 			ENDCG
 		}

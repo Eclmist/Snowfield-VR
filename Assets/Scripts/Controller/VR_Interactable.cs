@@ -1,8 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class VR_Interactable : MonoBehaviour {
+
+	[SerializeField] public bool interactable = true;
+
+	[Header("Vibrations")]
+	[SerializeField] [Range(0, 10)] protected float triggerEnterVibration = 1;
+	[SerializeField] [Range(0, 10)] protected float triggerExitVibration = 1;
+	[SerializeField] [Range(0, 10)] protected float triggerPressVibration =0.75f;
 
 	protected VR_Controller_Custom currentInteractingController;
 
@@ -22,35 +30,52 @@ public class VR_Interactable : MonoBehaviour {
 		}
 	}
 
-	public virtual void OnControllerEnter(VR_Controller_Custom controller) {
+	protected virtual void OnControllerEnter()
+	{
+			if (currentInteractingController)
+			currentInteractingController.Vibrate(triggerEnterVibration);
+
 	}
 
-	public virtual void OnControllerStay(VR_Controller_Custom controller) { }
 
-	public virtual void OnControllerExit(VR_Controller_Custom controller)
-	{ }
+	protected virtual void OnControllerStay() { }
 
-	public virtual void OnTriggerPress(VR_Controller_Custom controller)
+	protected virtual void OnControllerExit()
+	{
+		if (currentInteractingController)
+			currentInteractingController.Vibrate(triggerExitVibration);
+	}
+
+	protected virtual void OnTriggerPress()
+	{
+		if (currentInteractingController)
+			currentInteractingController.Vibrate(triggerPressVibration);
+	}
+
+
+	protected virtual void OnTriggerHold() { }
+
+	protected virtual void OnTriggerRelease()
 	{
 		
 	}
 
-	public virtual void OnTriggerHold(VR_Controller_Custom controller) { }
+	protected virtual void OnGripPress() { }
 
-	public virtual void OnTriggerRelease(VR_Controller_Custom controller)
-	{
-		
+	protected virtual void OnGripHold() { }
+
+	protected virtual void OnGripRelease() { }
+
+	protected virtual void OnFixedUpdateInteraction() { }
+
+	protected virtual void OnInteractableChange() {
 	}
 
-	public virtual void OnGripPress(VR_Controller_Custom controller) { }
-
-	public virtual void OnGripHold(VR_Controller_Custom controller) { }
-
-	public virtual void OnGripRelease(VR_Controller_Custom controller) { }
-
-    public virtual void OnUpdateInteraction(VR_Controller_Custom controller) { }
 
 
-    public virtual void OnFixedUpdateInteraction(VR_Controller_Custom controller) { }
-	
+	// UNITY FUNCTIONS
+
+
+
+
 }

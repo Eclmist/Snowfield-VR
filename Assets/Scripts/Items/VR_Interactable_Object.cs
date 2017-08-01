@@ -8,22 +8,6 @@ public class VR_Interactable_Object : VR_Interactable
 
     protected Rigidbody rigidBody;
 
-    [SerializeField]
-    public bool interactable = true;
-
-    [Header("Vibrations")]
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerEnterVibration = 0.8F;
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerExitVibration = 0.3F;
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerPressVibration = 0;
-
-
-
     // Outline Rendering
     [SerializeField]
     private Color outlineColor = Color.yellow;
@@ -31,7 +15,10 @@ public class VR_Interactable_Object : VR_Interactable
     private Renderer[] childRenderers;
     private List<Material> childMaterials = new List<Material>();
 
+	protected GameObject targetPositionPoint;
 
+	[SerializeField]
+	protected AudioSource interactSound;
 
     protected override void Awake()
     {
@@ -59,25 +46,50 @@ public class VR_Interactable_Object : VR_Interactable
     }
 
 
-    protected virtual void Update()
+	protected override void Start()
+	{
+		base.Start();
+
+		if (!interactSound)
+		{
+			interactSound = gameObject.AddComponent<AudioSource>();
+
+			interactSound.spatialBlend = 1;
+			interactSound.clip = Resources.Load<AudioClip>("click5");
+		}
+	}
+
+
+
+	public virtual void OnControllerEnter(VR_Controller_Custom controller)
     {
+		controller.Vibrate (triggerEnterVibration);
+		OnControllerEnter ();
+		SetOutline(true);
     }
 
-    public override void OnControllerEnter(VR_Controller_Custom controller)
-    {
-        controller.Vibrate(triggerEnterVibration);
-        SetOutline(true);
-    }
 
-
-    public override void OnControllerExit(VR_Controller_Custom controller)
+	public virtual void OnControllerExit(VR_Controller_Custom controller)
     {
+		OnControllerExit ();	
         SetOutline(false);
     }
 
-    public override void OnTriggerPress(VR_Controller_Custom controller)
+	public virtual void OnTriggerPress(VR_Controller_Custom controller)
     {
+		if (interactSound)
+			interactSound.Play();
+
+		OnTriggerPress ();
+
+		targetPositionPoint = new GameObject (name + "'s pivot point");
+		targetPositionPoint.transform.position = transform.position;
+		targetPositionPoint.transform.rotation = transform.rotation;
+
+		targetPositionPoint.transform.parent = controller.transform;
+
         SetOutline(false);
+
         if (currentInteractingController)
             currentInteractingController.Release();
 
@@ -87,20 +99,42 @@ public class VR_Interactable_Object : VR_Interactable
         currentReleaseVelocity = Vector3.zero;
     }
 
-    private Vector3 currentReleaseVelocity = Vector3.zero;
-    public override void OnTriggerRelease(VR_Controller_Custom controller)
+    protected Vector3 currentReleaseVelocity = Vector3.zero;
+
+	public virtual void OnTriggerRelease(VR_Controller_Custom controller)
     {
+		OnTriggerRelease ();
+	
+        //rigidBody.angularVelocity = controller.AngularVelocity;
 
-        currentInteractingController = null;
-        rigidBody.AddForce(currentReleaseVelocity, ForceMode.Impulse);
-        rigidBody.angularVelocity = controller.AngularVelocity;
 
+		targetPositionPoint.transform.parent = null;
+		Destroy (targetPositionPoint);
+		currentInteractingController = null;
+		controller.SetInteraction (null);
     }
+
+	public virtual void OnGripRelease(VR_Controller_Custom controller) {
+		OnGripRelease ();
+	}
+
+	public virtual void OnGripPress(VR_Controller_Custom controller) {
+		OnGripPress ();
+	}
+
+	public virtual void OnGripHold(VR_Controller_Custom controller) {
+		OnGripHold ();
+	}
+
+	public virtual void OnTriggerHold(VR_Controller_Custom controller) {
+		OnTriggerHold ();
+	}
 
     protected Vector3 lastPosition = Vector3.zero;
 
-    public override void OnUpdateInteraction(VR_Controller_Custom controller)
+	public virtual void OnUpdateInteraction(VR_Controller_Custom controller)
     {
+
         currentReleaseVelocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
         //if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
@@ -109,6 +143,12 @@ public class VR_Interactable_Object : VR_Interactable
         //    currentReleaseVelocity = flatVelocity;
 
     }
+
+	public virtual void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
+	{
+		
+	}
+
 
     public void SetOutline(bool enabled)
     {
@@ -123,14 +163,19 @@ public class VR_Interactable_Object : VR_Interactable
         }
     }
 
-    protected virtual void OnTriggerEnter(Collider col)
+	protected virtual void OnTriggerEnter(Collider col)
     {
-        if (currentInteractingController)
-            currentInteractingController.OnTriggerEnter(col);
+
+		if (currentInteractingController) {
+			currentInteractingController.OnTriggerEnter (col);
+		}
     }
 
-    protected virtual void OnTriggerExit(Collider col)
+
+
+	protected virtual void OnTriggerExit(Collider col)
     {
+
         if (currentInteractingController)
             currentInteractingController.OnTriggerExit(col);
     }

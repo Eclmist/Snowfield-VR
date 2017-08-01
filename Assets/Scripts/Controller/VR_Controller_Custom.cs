@@ -2,19 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SteamVR_TrackedObject))]
 public class VR_Controller_Custom : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject model;
-
-    public GameObject Model
-    {
-        get
-        {
-            return model;
-        }
-    }
 
     public enum Controller_Handle
     {
@@ -24,19 +13,34 @@ public class VR_Controller_Custom : MonoBehaviour
 
     [SerializeField]
     private Controller_Handle handle;
-    private SteamVR_TrackedObject trackedObject;
+	private Valve.VR.InteractionSystem.Hand hand;
+
+	public Valve.VR.InteractionSystem.Hand Hand{
+		get { return hand; }
+	}
+
+	public void SetModelActive(bool active)
+	{
+		foreach (SteamVR_RenderModel model in GetComponentsInChildren<SteamVR_RenderModel>()) {
+
+			foreach (Renderer ren in model.GetComponentsInChildren<Renderer>()) 
+				ren.enabled = active;
+		}
+	}
+
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable interactable;
+    private VR_Interactable_Object interactable;
 
     private List<VR_Interactable_UI> listOfInteractingUI = new List<VR_Interactable_UI>();
+	private List<VR_Interactable_Object> overlappedObjects = new List<VR_Interactable_Object>();
 
     public VR_Interactable_UI UI
     {
         get
         {
 
-            float closestDist = 10000f;
+			float closestDist = float.MaxValue;
             VR_Interactable_UI returnUI = null;
             foreach (VR_Interactable_UI ui in listOfInteractingUI)
             {
@@ -68,22 +72,38 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
+//	public VR_Interactable_Object GetClosestInteractableObject()
+//	{
+//		float distance = float.MaxValue;
+//		VR_Interactable_Object closestObj = null;
+//
+//		foreach (VR_Interactable_Object o in overlappedObjects) {
+//			float distanceToCtrl = Vector3.Distance (transform.position, o.transform.position);
+//
+//			if (distanceToCtrl < distance) {
+//				distance = distanceToCtrl;
+//				closestObj = o;
+//			}
+//		}
+//
+//		return closestObj;
+//	}
+
     void Awake()
     {
-        trackedObject = GetComponent<SteamVR_TrackedObject>();
-        model = transform.Find("Model").gameObject;
+		hand = GetComponent<Valve.VR.InteractionSystem.Hand>();
     }
 
     private void FixedUpdate()
     {
-        device = SteamVR_Controller.Input((int)trackedObject.index);
+		device = hand.controller;
         HandleFixedUpdateInput();
     }
 
     private void Update()
     {
         HandleUpdateInput();
-    }
+	}
 
     private void HandleUpdateInput()
     {
@@ -91,10 +111,10 @@ public class VR_Controller_Custom : MonoBehaviour
 
         if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
             interactable.OnTriggerPress(this);
+		if (interactable != null && interactable.LinkedController == this && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+			interactable.OnTriggerRelease(this);
         if (interactable != null && interactable.LinkedController == this)
         {
-            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerRelease(this);
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
                 interactable.OnGripPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
@@ -119,8 +139,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Triggered");
-        VR_Interactable currentObject = collider.GetComponentInParent<VR_Interactable>();
+		VR_Interactable_Object currentObject = collider.GetComponentInParent<VR_Interactable_Object>();
 
         if (currentObject && (interactable == null || interactable.LinkedController != this))
         {
@@ -132,21 +151,31 @@ public class VR_Controller_Custom : MonoBehaviour
 
         VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
 
-        if (interactableUI)
-            listOfInteractingUI.Add(interactableUI);
-    }
+		if (interactableUI)
+			listOfInteractingUI.Add (interactableUI);
+	
+		// Object list
+		VR_Interactable_Object collided = collider.GetComponent<VR_Interactable_Object>();
 
-    private void OnTriggerStay(Collider collider)
-    {
-        if (interactable != null)
-            interactable.OnControllerStay(this);
-    }
+		if (collided)
+			overlappedObjects.Add (collided);
+	}
+
+//    private void OnTriggerStay(Collider collider)
+//    {
+//        if (interactable != null)
+//			interactable.OnControllerStay(this);
+//
+//		VR_Interactable_Object closerObj = GetClosestInteractableObject ();
+
+		//interactable = (closerObj.LinkedController == null) ? closerObj : interactable;
+//    }
 
     public void OnTriggerExit(Collider other)
     {
         if (interactable != null && interactable.LinkedController != this)
         {
-            interactable.OnControllerExit(this);
+			interactable.OnControllerExit(this);
             interactable = null;
         }
 
@@ -154,6 +183,11 @@ public class VR_Controller_Custom : MonoBehaviour
 
         if (interactableUI)
             listOfInteractingUI.Remove(interactableUI);
+
+		VR_Interactable_Object collided = GetComponent<Collider>().GetComponent<VR_Interactable_Object>();
+
+		if (collided)
+			overlappedObjects.Remove (collided);
     }
 
     public Vector3 Velocity
@@ -176,15 +210,17 @@ public class VR_Controller_Custom : MonoBehaviour
         }
     }
 
-    public void SetInteraction(VR_Interactable _interacted)
+    public void SetInteraction(VR_Interactable_Object _interacted)
     {
         interactable = _interacted;
+		if (interactable == null)
+			SetModelActive (true);
     }
 
     public void Release()
     {
         interactable = null;
-        model.SetActive(true);
+		SetModelActive (true);
     }
 
     public SteamVR_Controller.Device Device

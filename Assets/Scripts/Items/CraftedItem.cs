@@ -49,7 +49,8 @@ public class CraftedItem : GenericItem
 	}
 	public override void OnFixedUpdateInteraction (VR_Controller_Custom referenceCheck)
 	{
-			}
+
+	}
 	public int WeaponTier
 	{
 		get { return weaponTier; }
@@ -64,6 +65,8 @@ public class CraftedItem : GenericItem
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
+			targetPositionPoint.transform.position = referenceCheck.transform.position + transform.rotation * offsetPosition;;
+			targetPositionPoint.transform.rotation = referenceCheck.transform.rotation * offsetRotation;
         }
         else
         {
@@ -74,9 +77,8 @@ public class CraftedItem : GenericItem
 
     public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
     {
-
         if (removable && !toggled)
-        {
+			{
             base.OnTriggerRelease(referenceCheck);
             itemCollider.isTrigger = false;
             rigidBody.useGravity = true;

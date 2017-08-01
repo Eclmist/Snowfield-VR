@@ -13,8 +13,9 @@ public class InteractableSlot : VR_Interactable_UI
 
 
     // Use this for initialization
-    void Start()
+	protected override  void  Start()
     {
+		base.Start();
         GetComponent<BoxCollider>().isTrigger = true;
 
     }
@@ -80,7 +81,7 @@ public class InteractableSlot : VR_Interactable_UI
         {
             temp.CurrentStack--;
 
-            VR_Interactable instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<VR_Interactable>();
+			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<GenericItem>();
 
             instanceInteractable.OnTriggerPress(currentInteractingController);
             if (temp.CurrentStack < 1)
@@ -157,7 +158,7 @@ public class InteractableSlot : VR_Interactable_UI
                 
                 if (d != null && (GetReferredSlot().StoredItem == null || GetReferredSlot().StoredItem.ItemID == d.ItemID))
                 {
-                    currentInteractingController.Model.SetActive(true);
+                    currentInteractingController.SetModelActive(true);
                     AddToSlot(d);
                     Destroy(g.gameObject);
                 }

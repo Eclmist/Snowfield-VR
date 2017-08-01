@@ -122,7 +122,7 @@ public class OrderSlip : VR_Interactable_UI
                 OrderEnd(true);
                 GameManager.Instance.AddPlayerGold(reward);
                 Destroy(interactingWeapon.gameObject);
-                currentInteractingController.Model.SetActive(true);
+				currentInteractingController.SetModelActive(true);
                 currentOP.ClosePane();
                 Debug.Log("correct");
             }
