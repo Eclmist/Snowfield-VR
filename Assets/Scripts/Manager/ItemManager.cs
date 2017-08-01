@@ -107,11 +107,6 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public ItemData GetItemData(GameObject prefabReference)
-    {
-
-    }
-
     public bool IsUnlocked(ItemData item)
     {
         return (item.LevelUnlocked >= Player.Instance.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);
