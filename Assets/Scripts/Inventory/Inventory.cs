@@ -94,7 +94,6 @@ public class Inventory
                 else
                 {
                     quantity = currentVal - tempSlot.StoredItem.MaxStackSize;
-                    Debug.Log(quantity);
                     tempSlot.CurrentStack = tempSlot.StoredItem.MaxStackSize;
                     continue;
 
