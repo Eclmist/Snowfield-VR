@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamage
+public interface IHaveStats
 {
-    float Damage
+    StatsContainer StatContainer
     {
         get;
     }

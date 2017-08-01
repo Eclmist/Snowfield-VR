@@ -77,8 +77,7 @@ public class AIManager : MonoBehaviour
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        Stats newAIBaseStats = newAI.Data.BaseStats;
-        AdventurerAIData newData = new AdventurerAIData((newAI.Data as AdventurerAIData).CurrentJob, newAIBaseStats, newAI.name,myPath);//Random name gen
+        AdventurerAIData newData = new AdventurerAIData(newAI.Data, newAI.name,myPath);//Random name gen
         return newData;
     }
 
@@ -110,7 +109,7 @@ public class AIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        SerializeManager.Save("AIData", listOfAIData);
+        //SerializeManager.Save("AIData", listOfAIData);
     }
 
     public void SetAllAIState(ActorFSM.FSMState state)

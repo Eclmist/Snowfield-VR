@@ -72,11 +72,28 @@ public class Inventory
     //    get { return this.inventoryItems[index]; }
     //}
 
+
+
+
+    public GameObject RetrieveItem(int index)
+    {
+        if (index < inventoryItemsArr.Length)
+            return inventoryItemsArr[index].StoredItem.ObjectReference;
+        else
+            return null;
+    }
+
+
+    //public InventorySlot this[int index]  
+    //{
+    //    get { return this.inventoryItems[index]; }
+    //}
+
     public void AddToInventory(IStorable item, int quantity = 1)
     {
-        for (int i = 0; i < inventoryItemsArr.Length; i++)
+        foreach (InventorySlot slot in InventoryItemsArr)
         {
-            InventorySlot tempSlot = inventoryItemsArr[i];
+            InventorySlot tempSlot = slot;
 
 
             //fill up the slot with the existing item
@@ -100,26 +117,22 @@ public class Inventory
                 }
 
             }
-
-
-
-
         }
-
     }
-
-
-
-    public GameObject RetrieveItem(int index)
-    {
-        if (index < inventoryItemsArr.Length)
-            return inventoryItemsArr[index].StoredItem.ObjectReference;
-        else
-            return null;
-    }
-
 
 
 
 
 }
+
+
+
+    
+
+
+    
+
+
+
+
+

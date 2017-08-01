@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-[RequireComponent(typeof(CombatVariable))]
-public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
+[RequireComponent(typeof(StatsContainer))]
+public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 {
 
     [SerializeField]
@@ -11,12 +11,39 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
 
     public abstract bool CheckConversingWith(Actor target);
 
-    protected CombatVariable variable;
+    protected StatsContainer variable;
 
     protected virtual void Awake()
     {
-        variable = GetComponent<CombatVariable>();
+        variable = GetComponent<StatsContainer>();
     }
+
+    public virtual StatsContainer StatContainer
+    {
+        get
+        {
+            return variable;
+        }
+    }
+
+    public float GetBonusStatValueFromJob(Stats.StatsType s)
+    {
+        float bonusValue = 0;
+        foreach (Job job in Data.ListOfJobs)
+        {
+            
+            foreach (Stats bonusStat in job.BonusStats)
+            {
+                if (bonusStat.Type == s)
+                {
+                    bonusValue += bonusStat.Max * job.Level;
+                }
+            }
+        }
+
+        return bonusValue;
+    }
+
     public abstract ActorData Data
     {
         get;
@@ -27,74 +54,31 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
     {
         get
         {
-            return gameObject.activeSelf && Health > 0;
-        }
-    }
-    public int MaxHealth
-    {
-        get
-        {
-            return Data.Health;
+            return gameObject.activeSelf && variable.GetStat(Stats.StatsType.HEALTH).Current > 0;
         }
     }
 
-    public int Health
-    {
-        get
-        {
-            return variable.GetCurrentHealth();
-        }
-    }
-
-    public virtual void TakeDamage(int value, Actor attacker)
+    public virtual void TakeDamage(float value, Actor attacker)
     {
         variable.ReduceHealth(value);
-
-        if(attacker)
-            TextSpawnerManager.Instance.SpawnText(value.ToString(),Color.white,transform,2f);
-        
     }
 
     public virtual void Attack(IDamage item, IDamagable target)
     {
-        int damage = item != null ? item.Damage : 0;
-        if(target != null)
-            target.TakeDamage(damage + AttackDamage, this);
+        float damage = item != null ? item.Damage : 0;
+        if (target != null)
+            target.TakeDamage(damage + variable.GetStat(Stats.StatsType.ATTACK).Current, this);
     }
 
-    public virtual void Attack(int damage,IDamagable target)
+    public virtual void Attack(float damage, IDamagable target)
     {
         target.TakeDamage(damage, this);
     }
 
-    
-    public int AttackDamage
-    {
-        get
-        {
-            return Data.Attack;
-        }
-    }
-
-    public int HealthRegeneration
-    {
-        get
-        {
-            return Data.HealthRegeneration;
-        }
-    }
-
-    public int MovementSpeed
-    {
-        get
-        {
-            return Data.MovementSpeed;
-        }
-    }
 
     public abstract void Notify(AI ai);
 
-  
+
 
     public virtual void ChangeWield(Equipment item)
     {
@@ -124,7 +108,7 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
                 if (rightHand != null)
                     return rightHand.Item;
                 break;
-            
+
         }
         return null;
     }
@@ -139,7 +123,31 @@ public abstract class Actor : MonoBehaviour, IDamagable, IHasVariable
             else
                 return null;
         }
-        
+
+    }
+
+    
+   
+
+    public virtual void GainExperience(JobType jobType, int value)
+    {
+        foreach (Job currentJob in Data.ListOfJobs)
+        {
+            if (currentJob.Type == jobType)
+            {
+                currentJob.GainExperience(value);
+                break;
+            }
+        }
+    }
+
+
+    public List<Job> JobList
+    {
+        get
+        {
+            return Data.ListOfJobs;
+        }
     }
 
 }

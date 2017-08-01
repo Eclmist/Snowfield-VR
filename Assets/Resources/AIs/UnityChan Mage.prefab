@@ -2349,11 +2349,11 @@ GameObject:
   - component: {fileID: 114511048026204918}
   - component: {fileID: 114055723710975712}
   - component: {fileID: 114655623230621984}
-  - component: {fileID: 114388917827075292}
   - component: {fileID: 114114643069322488}
   - component: {fileID: 114625656583967002}
   - component: {fileID: 114107375531497438}
   - component: {fileID: 114804549505127040}
+  - component: {fileID: 114175067046859320}
   m_Layer: 13
   m_Name: UnityChan Mage
   m_TagString: Untagged
@@ -7114,19 +7114,18 @@ MonoBehaviour:
   spawnPS: {fileID: 198150793232273606, guid: 2f3aa3ed109ed2d458175e27e73ee383, type: 2}
   disablePS: {fileID: 198150793232273606, guid: 2f3aa3ed109ed2d458175e27e73ee383,
     type: 2}
-  data:
-    baseStats:
-      baseHealth: 35
-      baseAttack: 2
-      baseHealthRegeneration: 2
-      baseMovementSpeed: 3
-    combatJob:
-      level: 0
-      damagePerLevel: 10
-      healthPerLevel: 40
-      healthRegenPerLevel: 3
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
+  data:
+    jobList:
+    - currentJobType: 2
+      additionalStatsPerLevel:
+      - value: 10
+        statsType: 0
+      - value: 1
+        statsType: 1
+      - value: 5
+        statsType: 2
 --- !u!114 &114103034325250404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7231,6 +7230,24 @@ MonoBehaviour:
     fullHealth: {r: 0.064602956, g: 0.382, b: 0.32727644, a: 0.197}
     lowHealth: {r: 1.188, g: 0.27037242, b: 0, a: 0.183}
   lerpSpeed: 1
+--- !u!114 &114175067046859320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1614371202211268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats:
+  - value: 100
+    statsType: 0
+  - value: 2
+    statsType: 1
+  - value: 15
+    statsType: 2
 --- !u!114 &114213524245367126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7469,18 +7486,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114388917827075292
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614371202211268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
 --- !u!114 &114421628565580582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7698,6 +7703,7 @@ MonoBehaviour:
   detectionDistance: 7.5
   attackRange: 3
   currentState: 0
+  movementSpeed: 1
   minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2

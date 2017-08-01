@@ -2,64 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [System.Serializable]
-public class Stats {
-
-    [SerializeField]
-    private int baseHealth;
-    [SerializeField]
-    private int baseAttack;
-    [SerializeField]
-    private int baseHealthRegeneration;
-    [SerializeField]
-    private int baseMovementSpeed;
-
-    public Stats(int _health = 0, int _attack = 0, int _healthRegeneration = 0, int _movementSpeed = 0)
+public class Stats
+{
+    public enum StatsType
     {
-        baseAttack = _attack;
-        baseHealthRegeneration = _healthRegeneration;
-        baseHealth = _health;
-        baseMovementSpeed = _movementSpeed;
+        HEALTH,
+        HEALTHREGENERATION,
+        ATTACK,
+        MANA,
+        MANAREGENERATION,
+        MAGIC
     }
 
-    public Stats(Stats copy)
-    {
-        baseHealth = copy.Health;
-        baseAttack = copy.Attack;
-        baseHealthRegeneration = copy.HealthRegeneration;
-        baseMovementSpeed = copy.MovementSpeed;
-    }
+    [SerializeField]
+    protected float value;
 
-    public int Health
+    [SerializeField]
+    protected StatsType statsType;
+    public float Max
     {
         get
         {
-            return baseHealth;
+            return value;
+        }
+        set
+        {
+            this.value = value;
         }
     }
 
-    public int Attack
+    public StatsType Type
     {
         get
         {
-            return baseAttack;
+            return statsType;
         }
     }
 
-    public int HealthRegeneration
+    public Stats(StatsType _type, float _maxValue)
+    {
+        value = _maxValue;
+        statsType = _type;
+    }
+
+    public Stats(Stats copyObject)
+    {
+        value = copyObject.Max;
+        statsType = copyObject.Type;
+    }
+    
+}
+
+[System.Serializable]
+public class ActiveStats : Stats
+{
+    [SerializeField]
+    protected float currentValue;
+
+    public float Current
     {
         get
         {
-            return baseHealthRegeneration;
+            return currentValue;
+        }
+        set
+        {
+            currentValue = value;
         }
     }
 
-    public int MovementSpeed
-    {
-        get
-        {
-            return baseMovementSpeed;
-        }
-    }
+    public ActiveStats(StatsType _type, float _maxValue) : base(_type, _maxValue) { }
 
 }

@@ -39,10 +39,10 @@ public abstract class AI : Actor
             currentFSM.ChangeState(state);
     }
 
-    public override void TakeDamage(int damage, Actor attacker)
+    public override void TakeDamage(float damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (variable.GetCurrentHealth() <= 0)
+        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
             UnEquipWeapons();
@@ -57,14 +57,14 @@ public abstract class AI : Actor
     {
         if (leftHand != null && leftHand.Item != null)
         {
-            if (variable.GetCurrentHealth() > 0)
+            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(leftHand.Item.gameObject);
             else
                 leftHand.Item.Unequip();
         }
         if (rightHand != null && rightHand.Item != null)
         {
-            if (variable.GetCurrentHealth() > 0)
+            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(rightHand.Item.gameObject);
             else
                 rightHand.Item.Unequip();

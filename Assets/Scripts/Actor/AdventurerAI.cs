@@ -1,18 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AdventurerFSM))]
 public class AdventurerAI : AI
 {
     //private List<Relation> actorRelations = new List<Relation>();
-    [SerializeField]
-    protected AdventurerAIData data;
 
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
 
     private List<InteractionsWithPlayer> interactionsWithPlayer = new List<InteractionsWithPlayer>();
 
+    [SerializeField]
+    protected AdventurerAIData data;
+
+    public override ActorData Data
+    {
+        get
+        {
+            return data;
+        }
+
+        set
+        {
+            data = (AdventurerAIData)value;
+        }
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -21,7 +35,7 @@ public class AdventurerAI : AI
 
     public void StopAllInteractions()
     {
-        foreach(InteractionsWithPlayer interaction in interactionsWithPlayer)
+        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
         {
             interaction.StopInteraction();
         }
@@ -37,23 +51,12 @@ public class AdventurerAI : AI
     {
         get
         {
-            foreach(InteractionsWithPlayer interaction in interactionsWithPlayer)
+            foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
             {
                 if (interaction.IsInteracting)
                     return true;
             }
             return false;
-        }
-    }
-    public override ActorData Data
-    {
-        get
-        {
-            return data;
-        }
-        set
-        {
-            data = (AdventurerAIData)value;
         }
     }
 
@@ -183,40 +186,42 @@ public class AdventurerAI : AI
 
     //}
 
-    public int Level
-    {
-        get
-        {
-            return data.CurrentJob.Level;
-        }
-    }
 
-    public void GainExperience(int value)
+    public override void GainExperience(JobType jobType, int value)
     {
-        int tempCurrentLevel = data.CurrentJob.Level;
-        data.CurrentJob.GainExperience(value);
-        if (data.CurrentJob.Level > tempCurrentLevel)
-            TextSpawnerManager.Instance.SpawnText("Level Up!",Color.green,transform,4);
-        
+        Job currentJob = data.GetJob(jobType);
+        if (currentJob != null)
+        {
+            int tempCurrentLevel = currentJob.Level;
+            base.GainExperience(jobType, value);
+            if (currentJob.Level > tempCurrentLevel && gameObject.activeSelf == true)
+                TextSpawnerManager.Instance.SpawnText("Level Up!", Color.green, transform, 4);
+        }
+
+
+
     }
 
     public override void Interact(Actor actor)
     {
-		(currentFSM as AdventurerFSM).StartInteractRoutine (actor);
+        (currentFSM as AdventurerFSM).StartInteractRoutine(actor);
     }
 
     public override void Spawn()
     {
         base.Spawn();
-		(currentFSM as AdventurerFSM).NewSpawn ();
-		if(variable)
-		variable.ResetHealth ();
+        (currentFSM as AdventurerFSM).NewSpawn();
+        if (variable)
+        {
+            variable.ResetCurrentVariables();
+            variable.UpdateVariables();
+        }
     }
 
     public override float GetOutOfTimeDuration()
     {
         float totalDuration = 25f;
-        QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
+        QuestEntry<StoryQuest> quest = QuestBook.GetFastestQuest();
         if (quest != null)
             totalDuration += quest.RemainingProgress;
         //Can add more time here when taking into consideration item get
@@ -225,18 +230,18 @@ public class AdventurerAI : AI
 
     public override void OutOfTownProgress()//This method is ran by the aimanager every "tick out of town"
     {
-        QuestEntry<StoryQuest> quest = data.QuestBook.GetFastestQuest();
+        QuestEntry<StoryQuest> quest = QuestBook.GetFastestQuest();
         if (quest != null)
             quest.QuestProgress();
-        GainExperience(1);
+        GainExperience(JobType.COMBAT, 1);
         //Can get misc items here
     }
 
-    public override void TakeDamage(int damage, Actor attacker)
+    public override void TakeDamage(float damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (Health <= 0)
-            AIManager.Instance.Spawn(this, data.CurrentJob.Level * 20, TownManager.Instance.GetRandomSpawnPoint());
+        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+            AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 20, TownManager.Instance.GetRandomSpawnPoint());
     }
 
 

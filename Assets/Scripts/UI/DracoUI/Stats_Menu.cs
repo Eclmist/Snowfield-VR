@@ -23,8 +23,15 @@ public class Stats_Menu : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        statTxt.health.text = Player.Instance.Health + "/" + Player.Instance.MaxHealth;
+        ActiveStats health = Player.Instance.StatContainer.GetStat(Stats.StatsType.HEALTH);
+        ActiveStats attack = Player.Instance.StatContainer.GetStat(Stats.StatsType.ATTACK);
+        if (health != null)
+        {
+            statTxt.health.text = health.Current + "/" + health.Max;
+        }
         statTxt.mana.text = "/";
-        statTxt.damage.text = Player.Instance.AttackDamage.ToString();
+
+        if(attack != null)
+        statTxt.damage.text = attack.ToString();
 	}
 }
