@@ -69,11 +69,11 @@ public class AI_HUD : MonoBehaviour {
 	protected void Update ()
 	{
         //Set level text
+        levelText.text = "Lv: " + actor.Data.GetJob(JobType.COMBAT).Level;
 
-        levelText.text = "Lv: " + actor.Level.ToString();
-
-		// Set healthbar color
-		float health01 = 1 - (float)actor.Health / actor.MaxHealth;
+        // Set healthbar color
+        float health01 = 1 - (float)actor.StatContainer.GetStat(Stats.StatsType.HEALTH).Current /
+            actor.StatContainer.GetStat(Stats.StatsType.HEALTH).Max;
 
 		Color currentHealthbarColor = damagebarMatInstance.GetColor("_TintColor");
 
@@ -103,7 +103,7 @@ public class AI_HUD : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			actor.TakeDamage(1000, Player.Instance);
+			actor.TakeDamage(50, null);
 		}
 	}
 }

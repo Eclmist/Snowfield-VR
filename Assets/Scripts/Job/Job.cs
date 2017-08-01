@@ -9,52 +9,16 @@ public enum JobType
     ALCHEMY,
     COMBAT
 }
-[System.Serializable]
-public class CombatJob : Job
-{
-    [SerializeField]
-    protected int damagePerLevel, healthPerLevel, healthRegenPerLevel;
 
-    public int DPL
-    {
-        get
-        {
-            return damagePerLevel;
-        }
-    }
-
-    public int HPL
-    {
-        get
-        {
-            return healthPerLevel;
-        }
-    }
-
-    public int HRPL
-    {
-        get
-        {
-            return healthRegenPerLevel;
-        }
-    }
-
-    public CombatJob(JobType currentJob, CombatJob copyJob) : base(currentJob)
-    {
-        currentJob = JobType.COMBAT;
-        damagePerLevel = copyJob.DPL;
-        healthPerLevel = copyJob.HPL;
-        healthRegenPerLevel = copyJob.HRPL;
-       
-    }
-}
 [System.Serializable]
 public class Job {
 
-    protected JobType currentJobType;
     [SerializeField]
+    protected JobType currentJobType;
     protected int level;
     protected int maxExperience, currentExperience;
+    [SerializeField]
+    protected List<Stats> additionalStatsPerLevel = new List<Stats>();
     
     public JobType Type
     {
@@ -89,6 +53,11 @@ public class Job {
         currentExperience = 0;
     }
 
+    public void AddStats(Stats s)
+    {
+        additionalStatsPerLevel.Add(s);
+    }
+
     public void GainExperience(int experienceValue)
     {
         currentExperience += experienceValue;
@@ -104,6 +73,14 @@ public class Job {
         level = _level;
         currentExperience = (int)Mathf.Pow((level - 1) / GameConstants.Instance.ExpConstant, 2);
         maxExperience = (int)Mathf.Pow(level / GameConstants.Instance.ExpConstant, 2);
+    }
+
+    public List<Stats> BonusStats
+    {
+        get
+        {
+            return additionalStatsPerLevel;
+        }
     }
 }
 

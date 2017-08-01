@@ -11,13 +11,13 @@ public class ActorData
     protected string name;
 
     [SerializeField]
-    protected Stats baseStats;
+    protected List<Job> jobList = new List<Job>();
 
-    public Stats BaseStats
+    public List<Job> ListOfJobs
     {
         get
         {
-            return baseStats;
+            return jobList;
         }
     }
 
@@ -37,96 +37,50 @@ public class ActorData
         }
     }
 
-    public ActorData(Stats _baseStats, string _name, string _prefabPath = "")
+    public ActorData(ActorData copyData, string _name, string _prefabPath = "")
     {
-        baseStats = _baseStats;
         prefabPath = _prefabPath;
         name = _name;
-    }
 
-    public virtual int Attack
-    {
-        get
+        foreach(Job job in copyData.jobList)
         {
-            return baseStats.Attack;
+            Job newJob = new Job(job.Type);
+            foreach(Stats stat in job.BonusStats)
+            {
+                Stats s = new Stats(stat);
+                newJob.AddStats(s);
+            }
+            jobList.Add(newJob);
         }
     }
 
-    public virtual int Health
+    public Job GetJob(JobType j)
     {
-        get
+        foreach(Job job in ListOfJobs)
         {
-            return baseStats.Health;
+            if (job.Type == j)
+                return job;
         }
+        return null;
     }
 
-    public virtual int HealthRegeneration
+    public Job AddJob(JobType newJobType)
     {
-        get
-        {
-            return baseStats.HealthRegeneration;
-        }
+        Job newJob = new Job(newJobType);
+        ListOfJobs.Add(newJob);
+        return newJob;
     }
 
-    public virtual int MovementSpeed
-    {
-        get
-        {
-            return baseStats.MovementSpeed;
-        }
-    }
 }
 
-[System.Serializable]
-public class CombatActorData : ActorData
-{
-    [SerializeField]
-    protected CombatJob combatJob;
-    public CombatActorData(CombatJob _combatJob, Stats _stats, string _name, string _prefabPath = "") : base(_stats, _name, _prefabPath)
-    {
-        combatJob = new CombatJob(JobType.COMBAT, _combatJob);
-    }
-
-    public CombatJob CurrentJob
-    {
-        get
-        {
-            return combatJob;
-        }
-    }
-
-    public override int Attack
-    {
-        get
-        {
-            return base.Attack + combatJob.DPL * combatJob.Level;
-        }
-    }
-
-    public override int Health
-    {
-        get
-        {
-            return base.Health + combatJob.HPL * combatJob.Level;
-        }
-    }
-
-    public override int HealthRegeneration
-    {
-        get
-        {
-            return base.HealthRegeneration + combatJob.HRPL * combatJob.Level;
-        }
-    }
-}
 
 [System.Serializable]
-public class AdventurerAIData : CombatActorData
+public class AdventurerAIData : ActorData
 {
 
     private QuestBook questBook;
 
-    public AdventurerAIData(CombatJob _combatJob, Stats _stats, string _name, string _prefabPath = "") : base(_combatJob, _stats, _name, _prefabPath)
+    public AdventurerAIData(ActorData data,string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         questBook = new QuestBook();
     }
@@ -141,25 +95,14 @@ public class AdventurerAIData : CombatActorData
 }
 
 [System.Serializable]
-public class PlayerData : CombatActorData
-{
-    [SerializeField]
-    protected List<Job> jobList = new List<Job>();
-
+public class PlayerData : ActorData
+{ 
     [SerializeField]
     protected int gold;
 
-    public PlayerData(CombatJob _combatJob, Stats _stats, string _name, string _prefabPath = "") : base(_combatJob, _stats, _name, _prefabPath)
+    public PlayerData(ActorData data, string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         gold = 0;
-    }
-
-    public List<Job> JobList
-    {
-        get
-        {
-            return jobList;
-        }
     }
 
     public int Gold

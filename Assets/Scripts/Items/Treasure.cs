@@ -25,10 +25,10 @@ public class Treasure : MonoBehaviour, IDamagable {
     }
 
 
-    public void TakeDamage(int Damage,Actor actor)
+    public void TakeDamage(float Damage,Actor actor)
     {
         actor.TakeDamage(99999, null);
-        GameManager.Instance.AddPlayerGold(-Damage - actor.Health);
+        GameManager.Instance.AddPlayerGold((int)-Damage);
      
     }
 	public new Transform transform
