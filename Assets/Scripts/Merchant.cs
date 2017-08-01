@@ -19,10 +19,18 @@ public class Merchant : MonoBehaviour {
         PopulateBuyableItemDataList();
 
 	}
-	
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            SpawnMerchantPanel();
+        }
+    }
+
     public void SpawnMerchantPanel()
     {
-        Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant, transform.rotation).InitializeAndDisplayCatalog(buyableItemData);    
+        Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant , merchantPanel.transform.rotation).InitializeAndDisplayCatalog(buyableItemData);    
     }
 
 
