@@ -42,6 +42,13 @@ public abstract class AI : Actor
     public override void TakeDamage(float damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
+        if (damage == 0)
+            TextSpawnerManager.Instance.SpawnText("Miss!", Color.red, transform);
+        else if (Mathf.Sign(damage) == 1)
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform);
+        else
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform);
+
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
@@ -73,7 +80,7 @@ public abstract class AI : Actor
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {
-		currentFSM.StartLookAtRoutine (target, time, angle);
+        currentFSM.StartLookAtRoutine(target, time, angle);
     }
 
     public void SetNode(Node n)
