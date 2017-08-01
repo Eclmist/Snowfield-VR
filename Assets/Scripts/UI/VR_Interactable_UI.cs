@@ -9,25 +9,7 @@ using UnityEngine;
 
 public abstract class VR_Interactable_UI : VR_Interactable
 {
-	protected virtual void OnTriggerExit(Collider other)
-	{
-		if (interactable)
-		{
 
-			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
-
-			if (vrController && currentInteractingController == vrController)
-			{
-				OnControllerExit();
-			}
-		}
-	}
-
-	protected override void OnControllerExit ()
-	{
-		base.OnControllerExit ();
-		currentInteractingController = null;
-	}
 	private bool lastInteractable;
 
 	protected virtual void Update()
@@ -80,6 +62,41 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 			}
 		}
+	}
+
+	protected virtual void OnTriggerExit(Collider other)
+	{
+		if (interactable)
+		{
+
+			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
+
+			if (vrController && currentInteractingController == vrController)
+			{
+				OnControllerExit();
+			}
+		}
+	}
+
+	protected override void OnControllerEnter()
+	{
+		base.OnControllerEnter();
+
+		if (currentInteractingController)
+			currentInteractingController.Vibrate(triggerEnterVibration);
+
+	}
+
+	protected override void OnControllerExit()
+	{
+		base.OnControllerExit();
+
+		if (currentInteractingController)
+			currentInteractingController.Vibrate(triggerExitVibration);
+
+		currentInteractingController = null;
+
+
 	}
 }
 

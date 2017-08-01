@@ -21,7 +21,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	protected bool isColliding = false;
 
 	[SerializeField] protected float directionalMultiplier = 5f, maxLerpForce = 10f;
-	[SerializeField] protected float collisionVibrationMagnitude = 0.8F;
+	protected float collisionVibrationMagnitude = 0.002F;
 
     protected JobType jobType;
 
@@ -313,7 +313,8 @@ public class GenericItem : VR_Interactable_Object, IDamage
 		}
 		else
 		{
-			
+			referenceCheck.Vibrate(collisionVibrationMagnitude);
+
 			float currentForce = maxLerpForce;
 
 			rigidBody.velocity =
@@ -361,59 +362,23 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
     protected virtual void OnCollisionEnter(Collision col)
-
-
-
-
-
     {
-
-
         if (isFlying)
-
-
-
-
-
         {
-
-
             target = col.transform.GetComponent<Monster>();
-
-
         }
 
 		isColliding = true;
 
-		//Debug.Log(col.gameObject.name);
-
 		if (currentInteractingController != null)
 		{
-			float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
-			currentInteractingController.Vibrate(value / 10);
-
+			// float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
+			currentInteractingController.Vibrate(triggerEnterVibration);
 		}
-
-	
-
-
     }
-
-
 
 	protected virtual void OnCollisionStay(Collision collision)
 	{
-		isColliding = true;
-		if (currentInteractingController != null)
-		{
-			float value = Vector3.Distance(transform.rotation.eulerAngles, currentInteractingController.transform.rotation.eulerAngles);
-
-			value = value <= 720 ? value : 720;
-
-			currentInteractingController.Vibrate(value / 720 * collisionVibrationMagnitude);
-
-
-		}
 	}
 
 	protected virtual void OnCollisionExit(Collision collision)

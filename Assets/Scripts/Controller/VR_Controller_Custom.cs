@@ -30,10 +30,9 @@ public class VR_Controller_Custom : MonoBehaviour
 
     private SteamVR_Controller.Device device;
 
-    private VR_Interactable_Object interactable;
+    private VR_Interactable_Object overlappedInteractableObject;
 
     private List<VR_Interactable_UI> listOfInteractingUI = new List<VR_Interactable_UI>();
-	private List<VR_Interactable_Object> overlappedObjects = new List<VR_Interactable_Object>();
 
     public VR_Interactable_UI UI
     {
@@ -51,7 +50,6 @@ public class VR_Controller_Custom : MonoBehaviour
                     returnUI = ui;
                 }
             }
-            Debug.Log(listOfInteractingUI.Count);
             return returnUI;
         }
 
@@ -61,7 +59,7 @@ public class VR_Controller_Custom : MonoBehaviour
     {
         get
         {
-            return interactable != null;
+            return overlappedInteractableObject != null;
         }
     }
     public Controller_Handle Handle
@@ -103,91 +101,106 @@ public class VR_Controller_Custom : MonoBehaviour
     private void Update()
     {
         HandleUpdateInput();
+
+		if (overlappedInteractableObject == null || overlappedInteractableObject.LinkedController != this) //if controller not already held on to some object
+		{ 
+			Collider[] overlappedColliders = Physics.OverlapSphere(hand.hoverSphereTransform.position, hand.hoverSphereRadius, LayerMask.GetMask("Interactable", "Player"));
+
+			if (overlappedColliders.Length > 0)
+			{
+				float closestObjDist = float.MaxValue;
+				VR_Interactable_Object obj = null;
+
+				foreach (Collider c in overlappedColliders)
+				{
+					VR_Interactable_Object o = c.GetComponentInParent<VR_Interactable_Object>();
+
+					if (o)
+					{
+						float distance = Vector3.Distance(hand.hoverSphereTransform.position, c.transform.position);
+						if (distance < closestObjDist)
+						{
+							closestObjDist = distance;
+							obj = o;
+						}
+					}
+				}
+
+				if (obj && obj != overlappedInteractableObject)
+				{
+					if (overlappedInteractableObject)
+						overlappedInteractableObject.OnControllerExit(this);
+
+					overlappedInteractableObject = obj;
+					overlappedInteractableObject.OnControllerEnter(this);
+				}
+			}
+			else
+			{
+				if (overlappedInteractableObject)
+				{
+					overlappedInteractableObject.OnControllerExit(this);
+					overlappedInteractableObject = null;
+				}
+			}
+		}
 	}
 
-    private void HandleUpdateInput()
+	private void HandleUpdateInput()
     {
 
 
-        if (interactable != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
-            interactable.OnTriggerPress(this);
-		if (interactable != null && interactable.LinkedController == this && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-			interactable.OnTriggerRelease(this);
-        if (interactable != null && interactable.LinkedController == this)
+        if (overlappedInteractableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
+            overlappedInteractableObject.OnTriggerPress(this);
+		if (overlappedInteractableObject != null && overlappedInteractableObject.LinkedController == this && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+			overlappedInteractableObject.OnTriggerRelease(this);
+        if (overlappedInteractableObject != null && overlappedInteractableObject.LinkedController == this)
         {
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripPress(this);
+                overlappedInteractableObject.OnGripPress(this);
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripRelease(this);
+                overlappedInteractableObject.OnGripRelease(this);
 
-            interactable.OnUpdateInteraction(this);
+            overlappedInteractableObject.OnUpdateInteraction(this);
         }
         listOfInteractingUI.RemoveAll(VR_Interactable_UI => VR_Interactable_UI == null || VR_Interactable_UI.LinkedController != this);
     }
 
     private void HandleFixedUpdateInput()
     {
-        if (interactable != null && interactable.LinkedController == this)
+        if (overlappedInteractableObject != null && overlappedInteractableObject.LinkedController == this)
         {
             if (device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
-                interactable.OnTriggerHold(this);
+                overlappedInteractableObject.OnTriggerHold(this);
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
-                interactable.OnGripHold(this);
-            interactable.OnFixedUpdateInteraction(this);
+                overlappedInteractableObject.OnGripHold(this);
+            overlappedInteractableObject.OnFixedUpdateInteraction(this);
         }
     }
 
     public void OnTriggerEnter(Collider collider)
     {
-		VR_Interactable_Object currentObject = collider.GetComponentInParent<VR_Interactable_Object>();
-
-        if (currentObject && (interactable == null || interactable.LinkedController != this))
-        {
-            if (interactable != null)
-                interactable.OnControllerExit(this);
-            interactable = currentObject;
-            interactable.OnControllerEnter(this);
-        }
 
         VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
 
 		if (interactableUI)
 			listOfInteractingUI.Add (interactableUI);
 	
-		// Object list
-		VR_Interactable_Object collided = collider.GetComponent<VR_Interactable_Object>();
-
-		if (collided)
-			overlappedObjects.Add (collided);
 	}
 
-//    private void OnTriggerStay(Collider collider)
-//    {
-//        if (interactable != null)
-//			interactable.OnControllerStay(this);
-//
-//		VR_Interactable_Object closerObj = GetClosestInteractableObject ();
-
-		//interactable = (closerObj.LinkedController == null) ? closerObj : interactable;
-//    }
 
     public void OnTriggerExit(Collider other)
     {
-        if (interactable != null && interactable.LinkedController != this)
+        if (overlappedInteractableObject != null && overlappedInteractableObject.LinkedController != this)
         {
-			interactable.OnControllerExit(this);
-            interactable = null;
+			overlappedInteractableObject.OnControllerExit(this);
+            overlappedInteractableObject = null;
         }
 
         VR_Interactable_UI interactableUI = other.GetComponent<VR_Interactable_UI>();
 
         if (interactableUI)
             listOfInteractingUI.Remove(interactableUI);
-
-		VR_Interactable_Object collided = GetComponent<Collider>().GetComponent<VR_Interactable_Object>();
-
-		if (collided)
-			overlappedObjects.Remove (collided);
     }
 
     public Vector3 Velocity
@@ -200,26 +213,30 @@ public class VR_Controller_Custom : MonoBehaviour
         get { return device.angularVelocity; }
     }
 
-    public void Vibrate(float val)//pass in 1 - 10
+    public void Vibrate(float val = 1)
     {
-        if (val > 0 && val <= 10)
+		float normalizedValue = val;
+		val *= 10; //Normalizing to 0-10
+
+		val = Mathf.Max(val, 0);
+		val = Mathf.Min(val, 1);
+
+		if (val > 0)
         {
-            ushort passVal = (ushort)(val / 10 * 3999);
-            if (passVal > 0)
-                device.TriggerHapticPulse(passVal);
-        }
-    }
+			device.TriggerHapticPulse((ushort)(val * 3999));
+		}
+	}
 
     public void SetInteraction(VR_Interactable_Object _interacted)
     {
-        interactable = _interacted;
-		if (interactable == null)
+        overlappedInteractableObject = _interacted;
+		if (overlappedInteractableObject == null)
 			SetModelActive (true);
     }
 
     public void Release()
     {
-        interactable = null;
+        overlappedInteractableObject = null;
 		SetModelActive (true);
     }
 

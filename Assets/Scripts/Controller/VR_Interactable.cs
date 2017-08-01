@@ -8,9 +8,9 @@ public class VR_Interactable : MonoBehaviour {
 	[SerializeField] public bool interactable = true;
 
 	[Header("Vibrations")]
-	[SerializeField] [Range(0, 10)] protected float triggerEnterVibration = 1;
-	[SerializeField] [Range(0, 10)] protected float triggerExitVibration = 1;
-	[SerializeField] [Range(0, 10)] protected float triggerPressVibration =0.75f;
+	[Range(0, 1)] protected float triggerEnterVibration = 0.4F;
+	[Range(0, 1)] protected float triggerExitVibration = 0;
+	[Range(0, 1)] protected float triggerPressVibration = 0.6F;
 
 	protected VR_Controller_Custom currentInteractingController;
 
@@ -31,25 +31,19 @@ public class VR_Interactable : MonoBehaviour {
 	}
 
 	protected virtual void OnControllerEnter()
-	{
-			if (currentInteractingController)
-			currentInteractingController.Vibrate(triggerEnterVibration);
-
-	}
-
+	{}
 
 	protected virtual void OnControllerStay() { }
 
 	protected virtual void OnControllerExit()
-	{
-		if (currentInteractingController)
-			currentInteractingController.Vibrate(triggerExitVibration);
-	}
+	{}
 
 	protected virtual void OnTriggerPress()
 	{
 		if (currentInteractingController)
+		{
 			currentInteractingController.Vibrate(triggerPressVibration);
+		}
 	}
 
 

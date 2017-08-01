@@ -11,16 +11,35 @@ namespace Opening_Room
 
 		private Vector3 positionalOffset;
 
+		private float maxVol;
+		private float maxPitch;
+
 		protected override void Start()
 		{
 			base.Start();
+
+			maxVol = rollingSound.volume;
+			maxPitch = rollingSound.pitch;
 
 		}
 
 		protected void Update()
 		{
-			rollingSound.pitch = Mathf.Lerp(0.7F, 1, rigidBody.velocity.magnitude);
-			rollingSound.volume = Mathf.Lerp(0, 1, rigidBody.velocity.magnitude);
+			Vector3 v = rigidBody.velocity;
+			v.y = 0;
+
+			rollingSound.pitch = Mathf.Lerp(0.7F, maxPitch, v.magnitude);
+			rollingSound.volume = Mathf.Lerp(0, maxVol, v.magnitude);
+
+			v.Scale(new Vector3(0.01F, 0.01F, 0.01F));
+
+			if (v.magnitude > 0)
+			{
+				if (currentInteractingController)
+				{
+					currentInteractingController.Vibrate(Mathf.Min(v.magnitude, 0.01F));
+				}
+			}
 
 		}
 

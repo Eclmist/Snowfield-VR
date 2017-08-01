@@ -20,13 +20,21 @@ public class VR_Interactable_Object : VR_Interactable
 	[SerializeField]
 	protected AudioSource interactSound;
 
+	private static readonly int interactableLayerIndex = 8;
+	private CollisionDetectionMode defaultCollisionMode;
+
     protected override void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
 
-        gameObject.layer = 8;
+        gameObject.layer = interactableLayerIndex;   //Set layer to 8 (interactable)
+
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			(transform.GetChild(i)).gameObject.layer = interactableLayerIndex;
+		}
 
         foreach (Renderer r in childRenderers)
         {
@@ -50,6 +58,8 @@ public class VR_Interactable_Object : VR_Interactable
 	{
 		base.Start();
 
+		defaultCollisionMode = rigidBody.collisionDetectionMode;
+
 		if (!interactSound)
 		{
 			interactSound = gameObject.AddComponent<AudioSource>();
@@ -71,7 +81,9 @@ public class VR_Interactable_Object : VR_Interactable
 
 	public virtual void OnControllerExit(VR_Controller_Custom controller)
     {
-		OnControllerExit ();	
+		controller.Vibrate(triggerExitVibration);
+
+		OnControllerExit();	
         SetOutline(false);
     }
 
@@ -81,6 +93,9 @@ public class VR_Interactable_Object : VR_Interactable
 			interactSound.Play();
 
 		OnTriggerPress ();
+
+		controller.Vibrate(triggerPressVibration);
+
 
 		targetPositionPoint = new GameObject (name + "'s pivot point");
 		targetPositionPoint.transform.position = transform.position;
@@ -97,6 +112,9 @@ public class VR_Interactable_Object : VR_Interactable
         controller.SetInteraction(this);
         lastPosition = transform.position;
         currentReleaseVelocity = Vector3.zero;
+
+		//Set CCD
+		rigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
 
     protected Vector3 currentReleaseVelocity = Vector3.zero;
@@ -112,7 +130,10 @@ public class VR_Interactable_Object : VR_Interactable
 		Destroy (targetPositionPoint);
 		currentInteractingController = null;
 		controller.SetInteraction (null);
-    }
+
+		//Set CCD
+		rigidBody.collisionDetectionMode = defaultCollisionMode;
+	}
 
 	public virtual void OnGripRelease(VR_Controller_Custom controller) {
 		OnGripRelease ();
