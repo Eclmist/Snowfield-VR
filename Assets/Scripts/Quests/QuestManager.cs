@@ -82,7 +82,7 @@ public class QuestManager : MonoBehaviour
     public bool CanStartQuest(QuestEntryGroup<StoryQuest> questEntry)
     {
         StoryQuest quest = GetQuest(questEntry);
-        if (Player.Instance.GetJob(quest.JobType).Level >= quest.RequiredLevel)
+        if (Player.Instance.Data.GetJob(quest.JobType).Level >= quest.RequiredLevel)
             return true;
         else
             return false;

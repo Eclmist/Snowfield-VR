@@ -26,7 +26,7 @@ public class CompleteQuestInteraction : QuestInteraction
     public void CompleteQuestDelegate()
     {
         StoryQuest quest = QuestManager.Instance.GetQuest(currentQuestGroup);
-        currentAI.GainExperience(quest.Experience);
+        currentAI.GainExperience(JobType.COMBAT,quest.Experience);
         currentAI.QuestBook.RequestNextQuest(currentQuestGroup);
     }
 

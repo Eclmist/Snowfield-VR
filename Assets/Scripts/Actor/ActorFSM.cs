@@ -36,7 +36,8 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState nextState;
     protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
-
+    [SerializeField]
+    protected float movementSpeed = 1;
 
     #region Avoidance
     [Header("Avoidance")]
@@ -191,7 +192,7 @@ public abstract class ActorFSM : MonoBehaviour
             {
                 if (backing)
                 {
-                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    animator.SetFloat("Speed", movementSpeed);
                     targetPoint = transform.position - dir;
                     if (distance > tempAttackRange / 2.0)
                         backing = false;
@@ -199,14 +200,14 @@ public abstract class ActorFSM : MonoBehaviour
                 else if (!backing && distance < tempAttackRange / 8.0)
                 {
                     animator.SetBool("Attacking", false);
-                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    animator.SetFloat("Speed", movementSpeed);
                     targetPoint = transform.position - dir;
                     backing = true;
                 }
                 else if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
                 {
                     animator.SetBool("Attacking", false);
-                    animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                    animator.SetFloat("Speed", movementSpeed);
                     targetPoint = target.transform.position;
                 }
                 else
@@ -277,7 +278,7 @@ public abstract class ActorFSM : MonoBehaviour
             }
             else
             {
-                animator.SetFloat("Speed", CurrentAI.MovementSpeed);
+                animator.SetFloat("Speed", movementSpeed);
                 if (CanMove())
                 {
                     rigidBody.velocity = AvoidObstacles(targetPoint);
@@ -419,7 +420,7 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward - transform.right * distanceExp * CurrentAI.MovementSpeed;
+            return transform.forward - transform.right * distanceExp * movementSpeed;
         }
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
@@ -428,13 +429,13 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward + transform.right * CurrentAI.MovementSpeed * distanceExp;
+            return transform.forward + transform.right * movementSpeed * distanceExp;
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir = dir * CurrentAI.MovementSpeed;
+            dir = dir * movementSpeed;
             dir.y = rigidBody.velocity.y;
             return dir;
         }

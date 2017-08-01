@@ -61,7 +61,7 @@ public class ItemManager : MonoBehaviour
     {
         List<ItemData> tempData = new List<ItemData>();
         tempData.AddRange(itemDataList);
-        tempData.RemoveAll(ItemData => ItemData.LevelUnlocked > Player.Instance.GetJob(ItemData.JobType).Level);
+        tempData.RemoveAll(ItemData => ItemData.LevelUnlocked > Player.Instance.Data.GetJob(ItemData.JobType).Level);
         if (tempData.Count > 0)
         {
             int randomVar = Random.Range(0, tempData.Count);
@@ -109,7 +109,7 @@ public class ItemManager : MonoBehaviour
 
     public bool IsUnlocked(ItemData item)
     {
-        return (item.LevelUnlocked >= Player.Instance.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);
+        return (item.LevelUnlocked >= Player.Instance.Data.GetJob(item.ObjectReference.GetComponent<GenericItem>().JobType).Level);
     }
 
 
