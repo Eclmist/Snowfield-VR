@@ -266,7 +266,6 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdatePetrolState()
     {
-        Debug.Log(path.Count);
         if (path.Count == 0)
         {
             

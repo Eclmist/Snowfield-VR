@@ -83,9 +83,8 @@ public class OrderManager : MonoBehaviour
 
     public Order GenerateOrder()
     {
-        // TO DO
-
-        Player currentPlayer = Player.Instance;
+		// TO DO
+		Player currentPlayer = Player.Instance;
 
         Order newOrder = null;
 
@@ -107,10 +106,11 @@ public class OrderManager : MonoBehaviour
 
         totalExperienceValue = 0;
 
-        foreach (Job job in Player.Instance.JobList)
+		foreach (Job job in Player.Instance.JobList)
 
         {
-            totalExperienceValue += job.Experience;
+
+			totalExperienceValue += job.Experience;
 
             if (totalExperienceValue >= randomValue)
 
@@ -118,39 +118,46 @@ public class OrderManager : MonoBehaviour
                 switch (job.Type)
 
                 {
-                    case JobType.ALCHEMY:
+					case JobType.ALCHEMY:
+	
+						break;
 
-                        break;
-
-                    case JobType.BLACKSMITH:
-
+					case JobType.BLACKSMITH:
+	
 						ItemData refData = ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID);
 						PhysicalMaterial currentMaterial = null;
 						CraftedItem tempCraftedItem = refData.ObjectReference.GetComponent<CraftedItem>();
 
-						if(tempCraftedItem)
+						if (tempCraftedItem)
 							currentMaterial = BlacksmithManager.Instance.GetPhysicalMaterialInfo(tempCraftedItem.GetPhysicalMaterial());
 
-                        newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
+						newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
 
-                    , ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
+					, ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
 
-                    , job.Level * baseDurationMultiplier * currentTemplate.Duration
+					, job.Level * baseDurationMultiplier * currentTemplate.Duration
 
-                    , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier,
+					, job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier,
 
-                    currentTemplate.ReferenceItemID,
+					currentTemplate.ReferenceItemID,
 					currentMaterial.type);
 
-                        break;
-                }
+						break;
 
-                return newOrder;
+					case JobType.COMBAT:
+
+						break;
+					
+
+				}
+
+
+				
             }
         }
 
-        return null;
-    }
+		return newOrder;
+	}
 
 
     // Filter templateList by JobTpye
