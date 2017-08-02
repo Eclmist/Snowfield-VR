@@ -112,8 +112,6 @@ public class Player : Actor
 				Job j = Data.AddJob(JobType.BLACKSMITH);
                 Stats s = new Stats(Stats.StatsType.ATTACK, 2);
                 j.AddStats(s);
-				j.SetLevel(1);
-				
             }
         }
         else
