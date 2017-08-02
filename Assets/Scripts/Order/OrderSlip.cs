@@ -123,13 +123,13 @@ public class OrderSlip : VR_Interactable_UI
 				CloseOptions();
 				GameManager.Instance.AddPlayerGold(reward);
 				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
+				interactingWeapon.LinkedController.SetModelActive(true);
 				Destroy(interactingWeapon.gameObject);
 
-				Debug.Log("model is null ?" + currentInteractingController.Model == null);
-				if (!currentInteractingController.Model.activeInHierarchy)
-					currentInteractingController.Model.SetActive(true);
 				
-                Debug.Log("correct");
+
+
+				Debug.Log("correct");
             }
 
         }

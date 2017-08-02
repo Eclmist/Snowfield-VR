@@ -1,8 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class VR_Interactable : MonoBehaviour {
+
+	[SerializeField] public bool interactable = true;
+
+	[Header("Vibrations")]
+	[Range(0, 1)] protected float triggerEnterVibration = 0.4F;
+	[Range(0, 1)] protected float triggerExitVibration = 0;
+	[Range(0, 1)] protected float triggerPressVibration = 0.6F;
 
 	protected VR_Controller_Custom currentInteractingController;
 
@@ -22,35 +30,53 @@ public class VR_Interactable : MonoBehaviour {
 		}
 	}
 
-	public virtual void OnControllerEnter(VR_Controller_Custom controller) {
+	protected virtual void OnControllerEnter()
+	{}
+
+	protected virtual void OnControllerStay() { }
+
+	protected virtual void OnControllerExit()
+	{}
+
+	protected virtual void OnTriggerPress()
+	{
+		Debug.Log("sdfsdsdfpresed");
+		if (currentInteractingController)
+		{
+			
+			currentInteractingController.Vibrate(triggerPressVibration);
+		}
 	}
 
-	public virtual void OnControllerStay(VR_Controller_Custom controller) { }
 
-	public virtual void OnControllerExit(VR_Controller_Custom controller)
-	{ }
+	protected virtual void OnTriggerHold() { }
 
-	public virtual void OnTriggerPress(VR_Controller_Custom controller)
+	protected virtual void OnTriggerRelease()
 	{
 		
 	}
 
-	public virtual void OnTriggerHold(VR_Controller_Custom controller) { }
-
-	public virtual void OnTriggerRelease(VR_Controller_Custom controller)
+	protected virtual void Update()
 	{
-		
+
 	}
 
-	public virtual void OnGripPress(VR_Controller_Custom controller) { }
+	protected virtual void OnGripPress() { }
 
-	public virtual void OnGripHold(VR_Controller_Custom controller) { }
+	protected virtual void OnGripHold() { }
 
-	public virtual void OnGripRelease(VR_Controller_Custom controller) { }
+	protected virtual void OnGripRelease() { }
 
-    public virtual void OnUpdateInteraction(VR_Controller_Custom controller) { }
+	protected virtual void OnFixedUpdateInteraction() { }
+
+	protected virtual void OnInteractableChange() {
+	}
 
 
-    public virtual void OnFixedUpdateInteraction(VR_Controller_Custom controller) { }
-	
+
+	// UNITY FUNCTIONS
+
+
+
+
 }

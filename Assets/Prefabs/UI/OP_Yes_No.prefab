@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222747194706971968}
   - component: {fileID: 114010401099358430}
   - component: {fileID: 114144865586615216}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: MainText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 82601030045053610}
   - component: {fileID: 82478340801505028}
   - component: {fileID: 114774826367157988}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: OP_Yes_No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 224018927721144320}
   - component: {fileID: 222952932460597832}
   - component: {fileID: 114132040288075882}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 222074052213476238}
   - component: {fileID: 114701029868671492}
   - component: {fileID: 114524626099687908}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 222743026369813242}
   - component: {fileID: 114408864225448750}
   - component: {fileID: 114778222574858678}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 222908394686147508}
   - component: {fileID: 114080498134362602}
   - component: {fileID: 114630077691835412}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 224998030766659608}
   - component: {fileID: 222882789481235832}
   - component: {fileID: 225241787880987794}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 222744422737082362}
   - component: {fileID: 114803406688792928}
   - component: {fileID: 114075711894115890}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 114751993929235312}
   - component: {fileID: 135328477602360662}
   - component: {fileID: 114230790668357532}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Yes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 114533114082961594}
   - component: {fileID: 135272802655462108}
   - component: {fileID: 114211461241880430}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: No
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,9 +656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114156226605420102}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -725,6 +722,8 @@ MonoBehaviour:
   paneElements:
     title: {fileID: 114080498134362602}
     message: {fileID: 114010401099358430}
+    message2: {fileID: 0}
+    image: {fileID: 0}
   buttons:
   - {fileID: 114751993929235312}
   - {fileID: 114533114082961594}
@@ -805,9 +804,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114190525219877134}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}
@@ -1123,7 +1119,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1057148640738740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5.9612927}
+  m_LocalPosition: {x: 0, y: 0, z: 1.554}
   m_LocalScale: {x: 0.004, y: 0.004, z: 0.004}
   m_Children:
   - {fileID: 224998030766659608}
@@ -1132,7 +1128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 8.576117, y: 0.74}
+  m_AnchoredPosition: {x: 0.746, y: 1.776}
   m_SizeDelta: {x: 100.8586, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224636264233658290

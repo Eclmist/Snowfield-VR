@@ -58,7 +58,7 @@ public class StoragePanel : MonoBehaviour {
 	{
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            inventory.AddToInventory(ItemManager.Instance.GetItemData(2), 1);
+            inventory.AddToInventory(ItemManager.Instance.GetItemData(6), 1);
         }
 	}
 

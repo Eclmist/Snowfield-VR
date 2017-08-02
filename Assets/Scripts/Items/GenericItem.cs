@@ -6,238 +6,251 @@ using UnityEngine;
 public class GenericItem : VR_Interactable_Object, IDamage
 
 {
-    protected bool isColliding = false;
+	protected bool isColliding = false;
 
-    [SerializeField]
-    protected float directionalMultiplier = 5f, maxLerpForce = 10f;
+	[SerializeField]
+	protected float directionalMultiplier = 5f, maxLerpForce = 10f;
 
-    [SerializeField]
-    protected float collisionVibrationMagnitude = 0.8F;
+	protected float collisionVibrationMagnitude = 0.002F;
 
-    protected JobType jobType;
+	protected JobType jobType;
 
-    public JobType JobType
 
-    {
-        get { return this.jobType; }
-    }
+	public JobType JobType
+	{
+		get { return this.jobType; }
+	}
 
-    protected Collider itemCollider;
+	protected Collider itemCollider;
 
-    #region itemData
+	//protected Vector3 positionOffset;
+	//protected Quaternion rotationOffset;
 
-    [SerializeField]
-    private int itemID = -1;
+	#region itemData
 
-    public int ItemID
+	[SerializeField] private int itemID = -1;
 
-    {
-        get { return this.itemID; }
+	public int ItemID
 
-        set { this.itemID = value; }
-    }
+	{
+		get { return this.itemID; }
+		set { this.itemID = value; }
+	}
 
-    #endregion itemData
+	#endregion itemData
 
-    #region GenericItem
 
-    [SerializeField]
-    protected float damage;
+	#region GenericItem
+	[SerializeField]
+	protected float damage;
 
-    [SerializeField]
-    protected string m_name;
+	[SerializeField]
+	protected string m_name;
 
-    protected AudioSource audioSource;
+	protected AudioSource audioSource;
 
-    #endregion GenericItem
+	#endregion GenericItem
 
-    #region IInteractable
+	#region IInteractable
 
-    private bool isFlying;
+	private bool isFlying;
 
-    private IDamagable target;
+	private IDamagable target;
 
-    [SerializeField]
-    private int maxVelocityDamageMultiplier = 5;
+	[SerializeField]
+	private int maxVelocityDamageMultiplier = 5;
 
-    #endregion IInteractable
+	#endregion IInteractable
 
-    #region
+	#region
 
-    [SerializeField]
-    protected float maxSwingForce;
+	[SerializeField]
+	protected float maxSwingForce;
 
-    #endregion
+	#endregion
 
-    protected override void Awake()
+	protected override void Awake()
 
-    {
-        itemCollider = GetComponentInChildren<Collider>();
+	{
+		itemCollider = GetComponentInChildren<Collider>();
 
-        audioSource = GetComponent<AudioSource>();
+		audioSource = GetComponent<AudioSource>();
 
-        base.Awake();
-    }
+		base.Awake();
+	}
 
-    public float Damage
+	public float Damage
 
-    {
-        get
+	{
+		get
 
-        {
-            if (currentInteractingController != null)
+		{
+			if (currentInteractingController != null)
 
-                return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? currentInteractingController.Velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
-            else if (isFlying)
+				return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? currentInteractingController.Velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
+			else if (isFlying)
 
-                return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? rigidBody.velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
-            else
+				return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? rigidBody.velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
+			else
 
-                return damage;
-        }
-    }
+				return damage;
+		}
+	}
 
-    public string Name
+	public string Name
 
-    {
-        get { return this.m_name; }
+	{
+		get { return this.m_name; }
 
-        set { this.m_name = value; }
-    }
+		set { this.m_name = value; }
 
-    public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
-    {
-        transform.parent = null;
-        base.OnTriggerRelease(referenceCheck);
-        referenceCheck.Model.SetActive(true);
-        gameObject.layer = LayerMask.NameToLayer("Default");
-        rigidBody.useGravity = true;
-        StartCoroutine(Throw(Player.Instance));
-    }
 
-    public virtual IEnumerator Throw(Actor thrower)
+	}
 
-    {
-        isFlying = true;
 
-        while (rigidBody.velocity.magnitude > 0.1)
 
-        {
-            if (target != null)
 
-            {
-                thrower.Attack(this, target);
 
-                target = null;
+	public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
+	{
+		transform.parent = null;
+		base.OnTriggerRelease(referenceCheck);
 
-                break;
-            }
+		rigidBody.velocity = Vector3.zero;
+		rigidBody.angularVelocity = Vector3.zero;
+		rigidBody.AddForceAtPosition(currentReleaseVelocity, targetPositionPoint.transform.position, ForceMode.Impulse);
+		
+		gameObject.layer = LayerMask.NameToLayer("Interactable");
+		rigidBody.useGravity = true;
+		StartCoroutine(Throw(Player.Instance));
+	}
 
-            yield return new WaitForEndOfFrame();
-        }
+	public virtual IEnumerator Throw(Actor thrower)
 
-        target = null;
+	{
+		isFlying = true;
 
-        isFlying = false;
-    }
+		while (rigidBody.velocity.magnitude > 0.1)
 
-    public override void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
-    {
-        base.OnFixedUpdateInteraction(referenceCheck);
+		{
+			if (target != null)
 
-        Vector3 PositionDelta = (referenceCheck.transform.position - transform.position);
+			{
+				thrower.Attack(this, target);
 
-        if (!isColliding)
-        {
-            rigidBody.MovePosition(referenceCheck.transform.position);
-            rigidBody.MoveRotation(referenceCheck.transform.rotation);
-        }
-        else
-        {
-            float currentForce = maxLerpForce;
+				target = null;
 
-            rigidBody.velocity =
-                PositionDelta.magnitude * directionalMultiplier > currentForce ?
-                (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+				break;
+			}
 
-            rigidBody.velocity =
-                PositionDelta.magnitude * directionalMultiplier > currentForce ?
-                (PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+			yield return new WaitForEndOfFrame();
+		}
 
-            // Rotation ----------------------------------------------
-            Quaternion RotationDelta = referenceCheck.transform.rotation * Quaternion.Inverse(this.transform.rotation);
-            float angle;
-            Vector3 axis;
-            RotationDelta.ToAngleAxis(out angle, out axis);
+		target = null;
 
-            if (angle > 180)
-                angle -= 360;
+		isFlying = false;
+	}
 
-            float angularVelocityNumber = .2f;
 
-            // -------------------------------------------------------
-            rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
-        }
-    }
+	public override void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
+	{
+		base.OnFixedUpdateInteraction();
 
-    public override void OnTriggerPress(VR_Controller_Custom controller)
+		Vector3 PositionDelta = targetPositionPoint.transform.position - transform.position;
 
-    {
-        transform.parent = controller.transform;
-        controller.Model.SetActive(false);
-        rigidBody.useGravity = false;
-        rigidBody.isKinematic = false;
-        gameObject.layer = LayerMask.NameToLayer("Player");
-        base.OnTriggerPress(controller);
-    }
+		if (!isColliding)
+		{
+			rigidBody.MovePosition(targetPositionPoint.transform.position);
+			rigidBody.MoveRotation(targetPositionPoint.transform.rotation);
+		}
+		else
+		{
+			referenceCheck.Vibrate(collisionVibrationMagnitude);
 
-    protected virtual void OnCollisionEnter(Collision col)
+			float currentForce = maxLerpForce;
 
-    {
-        if (isFlying)
+			rigidBody.velocity =
+				PositionDelta.magnitude * directionalMultiplier > currentForce ?
+				(PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
 
-        {
-            target = col.transform.GetComponent<Monster>();
-        }
 
-        isColliding = true;
+			// Rotation ----------------------------------------------
 
-        if (currentInteractingController != null)
-        {
-            float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
-            currentInteractingController.Vibrate(value / 10);
-        }
-    }
+			//Quaternion targetRotation = referenceCheck.transform.rotation * rotationOffset;
 
-    protected virtual void OnCollisionStay(Collision collision)
-    {
-        isColliding = true;
-        if (currentInteractingController != null)
-        {
-            float value = Vector3.Distance(transform.rotation.eulerAngles, currentInteractingController.transform.rotation.eulerAngles);
+			Quaternion RotationDelta = targetPositionPoint.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+			float angle;
+			Vector3 axis;
+			RotationDelta.ToAngleAxis(out angle, out axis);
 
-            value = value <= 720 ? value : 720;
+			if (angle > 180)
+				angle -= 360;
 
-            currentInteractingController.Vibrate(value / 720 * collisionVibrationMagnitude);
-        }
-    }
+			float angularVelocityNumber = .2f;
 
-    protected virtual void OnCollisionExit(Collision collision)
-    {
-        isColliding = false;
-    }
+			// -------------------------------------------------------
+			rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
+		}
+	}
 
-    protected void PlaySound(float volume)
 
-    {
-        if (audioSource != null)
 
-        {
-            audioSource.volume = volume;
 
-            audioSource.Play();
-        }
-    }
 
-    //public abstract void UpdatePosition();
+
+	public override void OnTriggerPress(VR_Controller_Custom controller)
+	{
+
+		controller.SetModelActive(false);
+		rigidBody.useGravity = false;
+		rigidBody.isKinematic = false;
+		gameObject.layer = LayerMask.NameToLayer("Player");
+		
+		base.OnTriggerPress(controller);
+		transform.parent = controller.transform;
+	}
+
+	protected virtual void OnCollisionEnter(Collision col)
+	{
+		isColliding = true;
+		if (isFlying)
+		{
+			target = col.transform.GetComponent<Monster>();
+		}
+	}
+
+	//protected virtual void OnCollisionStay(Collision collision)
+	//{
+		
+	//	if (currentInteractingController != null)
+	//	{
+	//		float value = Vector3.Distance(transform.rotation.eulerAngles, currentInteractingController.transform.rotation.eulerAngles);
+
+
+	//		// float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
+	//		currentInteractingController.Vibrate(triggerEnterVibration);
+
+	//	}
+	//}
+
+	protected virtual void OnCollisionExit(Collision collision)
+	{
+		isColliding = false;
+	}
+
+
+
+	protected void PlaySound(float volume)
+
+	{
+		if (audioSource != null)
+
+		{
+			audioSource.volume = volume;
+
+			audioSource.Play();
+		}
+	}
+
+	//public abstract void UpdatePosition();
 }
