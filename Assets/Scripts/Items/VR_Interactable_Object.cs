@@ -23,7 +23,31 @@ public class VR_Interactable_Object : VR_Interactable
 	private static readonly int interactableLayerIndex = 8;
 	private CollisionDetectionMode defaultCollisionMode;
 
-    protected override void Awake()
+
+	public void HintObject()
+	{
+		if (!isHinting)
+		{
+			StartCoroutine(Hint());
+		}
+	}
+
+	private bool isHinting;
+
+	private IEnumerator Hint()
+	{
+		isHinting = true;
+
+		while (isHinting)
+		{
+			Color col = Color.Lerp(outlineColor, Color.black, (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
+			SetOutlineColor(col);
+
+			yield return new WaitForFixedUpdate();
+		}
+	}
+
+	protected override void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         childRenderers = GetComponentsInChildren<Renderer>();
@@ -46,8 +70,9 @@ public class VR_Interactable_Object : VR_Interactable
                 if (m)
                 {
                     m.SetOverrideTag("RenderType", "Outline");
-                    m.SetColor("_OutlineColor", Color.black);
-                    childMaterials.Add(m);
+	                m.SetColor("_OutlineColor", Color.black);
+
+					childMaterials.Add(m);
                 }
             }
         }
@@ -67,6 +92,8 @@ public class VR_Interactable_Object : VR_Interactable
 			interactSound.spatialBlend = 1;
 			interactSound.clip = Resources.Load<AudioClip>("click5");
 		}
+
+		
 	}
 
 
@@ -76,8 +103,15 @@ public class VR_Interactable_Object : VR_Interactable
 		controller.Vibrate (triggerEnterVibration);
 		OnControllerEnter ();
 		SetOutline(true);
-    }
+	}
 
+	public virtual void OnControllerStay(VR_Controller_Custom controller)
+	{
+		if (isHinting)
+		{
+			SetOutline(true);	// force override hint
+		}
+	}
 
 	public virtual void OnControllerExit(VR_Controller_Custom controller)
     {
@@ -91,6 +125,8 @@ public class VR_Interactable_Object : VR_Interactable
     {
 		if (interactSound)
 			interactSound.Play();
+
+	    isHinting = false;
 
 		OnTriggerPress ();
 

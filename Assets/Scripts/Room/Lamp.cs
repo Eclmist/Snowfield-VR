@@ -17,33 +17,52 @@ namespace Opening_Room
 
 		[SerializeField] private Light light;
 
-		private bool isTurnedOn = false;
+		public bool isTurnedOn = false;	// TODO: Make private
+
+		public bool GetTurnedOn(/* ͜ʖ ͡*/)
+		{
+			return isTurnedOn;
+		}
 
 		protected override void OnTriggerPress()
 		{
 			base.OnTriggerPress();
 
+			isTurnedOn = !isTurnedOn;
 
+			UpdateLamp();
+		}
+
+		//TODO: Remove this loop
+		protected void Update()
+		{
+			UpdateLamp();
+		}
+
+		public void TurnOn(bool on)
+		{
+			isTurnedOn = on;
+		}
+
+		protected void UpdateLamp()
+		{
 			if (isTurnedOn)
-			{
-				light.intensity = 0;
-				topCover.material.SetColor("_EmissionColor", Color.black);
-				bulb.material.SetColor("_EmissionColor", Color.black);
-
-			}
-			else
 			{
 				light.intensity = 1;
 				topCover.material.SetColor("_EmissionColor", topCoverColor);
 				bulb.material.SetColor("_EmissionColor", bulbColor);
 
 			}
+			else
+			{
+				light.intensity = 0;
+				topCover.material.SetColor("_EmissionColor", Color.black);
+				bulb.material.SetColor("_EmissionColor", Color.black);
+
+			}
 
 			bulb.UpdateGIMaterials();
 			topCover.UpdateGIMaterials();
-
-			isTurnedOn = !isTurnedOn;
 		}
-
 	}
 }

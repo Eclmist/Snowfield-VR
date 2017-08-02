@@ -182,7 +182,7 @@ namespace Valve.VR.InteractionSystem
 
 			CheckForSpawnPoint();
 
-			//Invoke( "ShowTeleportHint", 5.0f );
+			Invoke( "ShowTeleportHint", 5.0f );
 		}
 
 
@@ -805,6 +805,8 @@ namespace Valve.VR.InteractionSystem
 		}
 
 
+
+
 		//-------------------------------------------------
 		private void TryTeleportPlayer()
 		{
@@ -984,7 +986,7 @@ namespace Valve.VR.InteractionSystem
 					{
 						if ( !isShowingHint )
 						{
-							ControllerButtonHints.ShowTextHint( hand, EVRButtonId.k_EButton_SteamVR_Touchpad, "Teleport" );
+							ControllerButtonHints.ShowTextHint( hand, EVRButtonId.k_EButton_SteamVR_Touchpad, "Move Around" );
 							prevBreakTime = Time.time;
 							prevHapticPulseTime = Time.time;
 						}
