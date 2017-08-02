@@ -12,12 +12,6 @@ public class InteractableBuy : MonoBehaviour {
 
     private ItemData itemData;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.B))
-            BuyItem();
-    }
-
     public void Initialize(ItemData itemData)
     {
         this.itemData = itemData;

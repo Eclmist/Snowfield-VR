@@ -12,26 +12,33 @@ public class Merchant : MonoBehaviour {
     private float offsetFromMerchant;
     private List<ItemData> buyableItemData = new List<ItemData>();
 
+	private MerchantPanel panelInstance = null;
+
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+	{
 
         PopulateBuyableItemDataList();
 
 	}
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnMerchantPanel();
-        }
-    }
 
     public void SpawnMerchantPanel()
     {
-        Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant , merchantPanel.transform.rotation).InitializeAndDisplayCatalog(buyableItemData);    
+		if(!panelInstance)
+		{
+			panelInstance = Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant, merchantPanel.transform.rotation);
+			panelInstance.InitializeAndDisplayCatalog(buyableItemData);
+		}
+			
     }
+
+	public void CloseMerchantPanel()
+	{
+		if(panelInstance)
+			Destroy(panelInstance.gameObject);
+	}
 
 
     // Retrieve the itemData for all buyable items
