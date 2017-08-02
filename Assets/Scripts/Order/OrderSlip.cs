@@ -125,11 +125,10 @@ public class OrderSlip : VR_Interactable_UI
 				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
 				Destroy(interactingWeapon.gameObject);
 
-				Debug.Log("model is null ?" + currentInteractingController.Model == null);
-				if (!currentInteractingController.Model.activeInHierarchy)
-					currentInteractingController.Model.SetActive(true);
-				
-                Debug.Log("correct");
+				currentInteractingController.SetModelActive(true);
+
+
+				Debug.Log("correct");
             }
 
         }
