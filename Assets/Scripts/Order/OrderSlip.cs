@@ -138,12 +138,14 @@ public class OrderSlip : VR_Interactable_UI
     private void SpawnDetailsPanel()
     {
         Debug.Log("spawn detail");
-        string desc = "Name: " + o_name;
+        string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
+		
+
 
         if (currentOP)
             currentOP.Destroy();
 
-        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
+        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite,desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
         op.transform.LookAt(Player.Instance.transform);
         op.SetEvent(OptionPane.ButtonType.Ok, CloseOptions);
 

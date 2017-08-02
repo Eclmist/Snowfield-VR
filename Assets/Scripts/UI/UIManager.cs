@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct UIPrefabs
@@ -35,7 +36,7 @@ public class UIManager : MonoBehaviour
 	}
 
 
-    public OptionPane InstantiateDetailPane(GameObject detailPane,string s,string s2, Vector3 position, Transform receiver,
+    public OptionPane InstantiateDetailPane(GameObject detailPane,Sprite icon,string s,string s2, Vector3 position, Transform receiver,
        Transform sender = null)
     {
 
@@ -52,7 +53,7 @@ public class UIManager : MonoBehaviour
         lookAt.y = position.y;
         newUIobject.transform.LookAt(lookAt);
 
-        options.SetContents(s,s2);
+        options.SetContents(s,s2,null,icon);
 
         return options;
     }

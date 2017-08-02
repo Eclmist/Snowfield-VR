@@ -47,9 +47,8 @@ public class OrderManager : MonoBehaviour
     }
 
     private void Start()
-
     {
-        //Debug.Log(availableTemplatesForCurrentLevel.Count);
+
     }
 
 
@@ -125,7 +124,12 @@ public class OrderManager : MonoBehaviour
 
                     case JobType.BLACKSMITH:
 
-                        PhysicalMaterial currentMaterial = BlacksmithManager.Instance.MaterialList[Random.Range(0, BlacksmithManager.Instance.MaterialList.Count)];
+						ItemData refData = ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID);
+						PhysicalMaterial currentMaterial = null;
+						CraftedItem tempCraftedItem = refData.ObjectReference.GetComponent<CraftedItem>();
+
+						if(tempCraftedItem)
+							currentMaterial = BlacksmithManager.Instance.GetPhysicalMaterialInfo(tempCraftedItem.GetPhysicalMaterial());
 
                         newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
 
@@ -135,7 +139,8 @@ public class OrderManager : MonoBehaviour
 
                     , job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier,
 
-                    currentTemplate.ReferenceItemID);
+                    currentTemplate.ReferenceItemID,
+					currentMaterial.type);
 
                         break;
                 }
