@@ -12,7 +12,7 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 	private bool lastInteractable;
 
-	protected virtual void Update()
+	protected override void Update()
 	{
 	
 		if (lastInteractable != interactable)

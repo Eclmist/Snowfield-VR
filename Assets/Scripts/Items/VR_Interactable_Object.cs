@@ -200,4 +200,9 @@ public class VR_Interactable_Object : VR_Interactable
         if (currentInteractingController)
             currentInteractingController.OnTriggerExit(col);
     }
+
+	protected virtual void OnTriggerStay(Collider col)
+	{
+
+	}
 }

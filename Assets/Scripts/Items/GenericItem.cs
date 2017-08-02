@@ -113,12 +113,13 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 	{
+		transform.parent = null;
 		base.OnTriggerRelease(referenceCheck);
 
 		rigidBody.velocity = Vector3.zero;
 		rigidBody.angularVelocity = Vector3.zero;
 		rigidBody.AddForceAtPosition(currentReleaseVelocity, targetPositionPoint.transform.position, ForceMode.Impulse);
-
+		
 		gameObject.layer = LayerMask.NameToLayer("Interactable");
 		rigidBody.useGravity = true;
 		StartCoroutine(Throw(Player.Instance));
@@ -168,16 +169,24 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 			float currentForce = maxLerpForce;
 
+			rigidBody.velocity =
+				PositionDelta.magnitude * directionalMultiplier > currentForce ?
+				(PositionDelta).normalized * currentForce : PositionDelta * directionalMultiplier;
+
+
 			// Rotation ----------------------------------------------
+
+			//Quaternion targetRotation = referenceCheck.transform.rotation * rotationOffset;
+
 			Quaternion RotationDelta = targetPositionPoint.transform.rotation * Quaternion.Inverse(this.transform.rotation);
 			float angle;
 			Vector3 axis;
 			RotationDelta.ToAngleAxis(out angle, out axis);
 
-			float angularVelocityNumber = .2f;
-			// Rotation ----------------------------------------------
+			if (angle > 180)
+				angle -= 360;
 
-			//Quaternion targetRotation = referenceCheck.transform.rotation * rotationOffset;
+			float angularVelocityNumber = .2f;
 
 			// -------------------------------------------------------
 			rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
@@ -196,8 +205,9 @@ public class GenericItem : VR_Interactable_Object, IDamage
 		rigidBody.useGravity = false;
 		rigidBody.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("Player");
+		
 		base.OnTriggerPress(controller);
-
+		transform.parent = controller.transform;
 	}
 
 	protected virtual void OnCollisionEnter(Collision col)

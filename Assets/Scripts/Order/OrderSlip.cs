@@ -123,9 +123,10 @@ public class OrderSlip : VR_Interactable_UI
 				CloseOptions();
 				GameManager.Instance.AddPlayerGold(reward);
 				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
+				interactingWeapon.LinkedController.SetModelActive(true);
 				Destroy(interactingWeapon.gameObject);
 
-				currentInteractingController.SetModelActive(true);
+				
 
 
 				Debug.Log("correct");

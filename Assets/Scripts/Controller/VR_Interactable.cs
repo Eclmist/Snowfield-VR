@@ -56,6 +56,11 @@ public class VR_Interactable : MonoBehaviour {
 		
 	}
 
+	protected virtual void Update()
+	{
+
+	}
+
 	protected virtual void OnGripPress() { }
 
 	protected virtual void OnGripHold() { }
