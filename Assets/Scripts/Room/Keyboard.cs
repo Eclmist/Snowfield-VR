@@ -26,7 +26,7 @@ namespace Opening_Room
 
 			queueKeypress = true;
 
-			ControllerButtonHints.HideAllButtonHints(ctrl.Hand);
+			ControllerButtonHints.HideAllTextHints(ctrl.Hand);
 			hoverhint = "";
 
 		}
@@ -43,7 +43,7 @@ namespace Opening_Room
 		{
 			base.OnControllerExit();
 
-			ControllerButtonHints.HideAllButtonHints(ctrl.Hand);
+			ControllerButtonHints.HideAllTextHints(ctrl.Hand);
 		}
 
 
