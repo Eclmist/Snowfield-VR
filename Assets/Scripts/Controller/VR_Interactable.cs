@@ -40,7 +40,6 @@ public class VR_Interactable : MonoBehaviour {
 
 	protected virtual void OnTriggerPress()
 	{
-		Debug.Log("sdfsdsdfpresed");
 		if (currentInteractingController)
 		{
 			

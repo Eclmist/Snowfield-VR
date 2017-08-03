@@ -11,29 +11,29 @@ public class CraftedItem : GenericItem
     #region PlayerInteraction
     protected bool removable = true, toggled = false;
     [SerializeField]
-    [Tooltip("Intended Pivot of the sword, doesnt need to be child(Calculated on awake)")]
+    [Tooltip("Intended Pivot of the sword")]
     protected Transform pivot;
 
-    protected Vector3 offsetPosition;
-    protected Quaternion offsetRotation;
+	protected Vector3 offsetPosition;
+	protected Quaternion offsetRotation;
 
 	protected Collider colObject = null;
     protected override void Start()
     {
         base.Start();
-        if (!pivot)
-        {
-            offsetPosition = Vector3.zero;
-            offsetRotation = Quaternion.identity;
-        }
-        else
-        {
+		if (!pivot)
+		{
+			offsetPosition = Vector3.zero;
+			offsetRotation = Quaternion.identity;
+		}
+		else
+		{
 
-            offsetPosition = pivot.localPosition;
-            offsetRotation = pivot.localRotation;
-        }
-        
-    }
+			offsetPosition = -pivot.localPosition;
+			offsetRotation = pivot.localRotation;
+		}
+
+	}
     protected virtual void UseItem()
     {
         Debug.Log("You are using " + this.name);
@@ -74,9 +74,8 @@ public class CraftedItem : GenericItem
             rigidBody.useGravity = false;
             itemCollider.isTrigger = true;
             toggled = true;
-			targetPositionPoint.transform.position = referenceCheck.transform.position + transform.rotation * offsetPosition;;
-			targetPositionPoint.transform.rotation = referenceCheck.transform.rotation * offsetRotation;
-        }
+			
+		}
         else
         {
             toggled = false;
@@ -130,10 +129,10 @@ public class CraftedItem : GenericItem
 	public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
         base.OnUpdateInteraction(controller);
-        transform.rotation = controller.transform.rotation * offsetRotation;
-        transform.position = controller.transform.position + transform.rotation * offsetPosition;
+		transform.rotation = controller.transform.rotation * offsetRotation;
+		transform.position = controller.transform.position + transform.rotation * offsetPosition;
 
-    }
+	}
 
     protected override void OnTriggerExit(Collider collision)
     {

@@ -72,18 +72,20 @@ public class Ingot : BlacksmithItem {
 
     public void IncrementMorphStep()
     {
+		// If it is the very first hit
         if(currentMorphSteps == 0)
         {
 
 			preNumberOfHits = (int)Random.Range(2, 3);
 			// Generate morph chance
 			if (WeaponTierManager.Instance.WeaponClassList != null)
-				targetMorphSteps = Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits;
+				targetMorphSteps = (Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits);
 				//targetMorphSteps = 1; // Random.Range(1,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type));
 			
         }
 
         currentMorphSteps++;
+
         if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
         {
             ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
@@ -93,7 +95,6 @@ public class Ingot : BlacksmithItem {
 				fakeItem.trueForm = itemData;
 
                 GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
-				Debug.Log(g.name);
 				g.AddComponent<FakeItem>();
 				g.GetComponent<FakeItem>().trueForm = itemData;
                 Destroy(this.gameObject);       
