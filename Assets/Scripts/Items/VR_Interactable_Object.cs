@@ -33,16 +33,18 @@ public class VR_Interactable_Object : VR_Interactable
 	}
 
 	private bool isHinting;
-
+	private bool hintOverride;
 	private IEnumerator Hint()
 	{
 		isHinting = true;
 
 		while (isHinting)
 		{
-			Color col = Color.Lerp(outlineColor, Color.black, (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
-			SetOutlineColor(col);
-
+			if (!hintOverride)
+			{
+				Color col = Color.Lerp(outlineColor, new Color(0, 0, 0, 0), (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
+				SetOutlineColor(col);
+			}
 			yield return new WaitForFixedUpdate();
 		}
 	}
@@ -70,7 +72,7 @@ public class VR_Interactable_Object : VR_Interactable
                 if (m)
                 {
                     m.SetOverrideTag("RenderType", "Outline");
-	                m.SetColor("_OutlineColor", Color.black);
+	                m.SetColor("_OutlineColor", new Color(0,0,0,0));
 
 					childMaterials.Add(m);
                 }
@@ -103,6 +105,7 @@ public class VR_Interactable_Object : VR_Interactable
 		controller.Vibrate (triggerEnterVibration);
 		OnControllerEnter ();
 		SetOutline(true);
+		hintOverride = true;
 	}
 
 	public virtual void OnControllerStay(VR_Controller_Custom controller)
@@ -119,6 +122,8 @@ public class VR_Interactable_Object : VR_Interactable
 
 		OnControllerExit();	
         SetOutline(false);
+
+		hintOverride = false;
     }
 
 	public virtual void OnTriggerPress(VR_Controller_Custom controller)
@@ -209,7 +214,7 @@ public class VR_Interactable_Object : VR_Interactable
 
     public void SetOutline(bool enabled)
     {
-        SetOutlineColor(enabled ? outlineColor : Color.black);
+        SetOutlineColor(enabled ? outlineColor : new Color(0,0,0,0));
     }
 
     private void SetOutlineColor(Color color)
