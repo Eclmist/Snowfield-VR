@@ -30,7 +30,7 @@ public class OutlineRenderer : MonoBehaviour
 	protected void OnEnable()
 	{
 		cam = GetComponent<Camera>();
-		tempSecondaryCamera = new GameObject().AddComponent<Camera>();
+		tempSecondaryCamera = new GameObject("Outline Camera").AddComponent<Camera>();
 		tempSecondaryCamera.enabled = false;
 		Debug.Assert(replacement);
 		mat = new Material(shader);
