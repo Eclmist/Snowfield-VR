@@ -805,7 +805,7 @@ namespace Valve.VR.InteractionSystem
 		}
 
 
-
+		public static bool playerKnowsHowToTeleport;
 
 		//-------------------------------------------------
 		private void TryTeleportPlayer()
@@ -817,6 +817,9 @@ namespace Valve.VR.InteractionSystem
 					//Pointing at an unlocked teleport marker
 					teleportingToMarker = pointedAtTeleportMarker;
 					InitiateTeleportFade();
+
+					playerKnowsHowToTeleport = true;
+
 
 					CancelTeleportHint();
 				}
@@ -986,7 +989,7 @@ namespace Valve.VR.InteractionSystem
 					{
 						if ( !isShowingHint )
 						{
-							ControllerButtonHints.ShowTextHint( hand, EVRButtonId.k_EButton_SteamVR_Touchpad, "Move Around" );
+							ControllerButtonHints.ShowTextHint( hand, EVRButtonId.k_EButton_SteamVR_Touchpad, "Move around" );
 							prevBreakTime = Time.time;
 							prevHapticPulseTime = Time.time;
 						}

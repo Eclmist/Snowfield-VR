@@ -23,6 +23,7 @@ public class VR_Interactable_Object : VR_Interactable
 	private static readonly int interactableLayerIndex = 8;
 	private CollisionDetectionMode defaultCollisionMode;
 
+	public static bool playerKnowsHowToInteractWithObjects;
 
 	public void HintObject()
 	{
@@ -131,7 +132,9 @@ public class VR_Interactable_Object : VR_Interactable
 		if (interactSound)
 			interactSound.Play();
 
-	    isHinting = false;
+		playerKnowsHowToInteractWithObjects = true;
+
+		isHinting = false;
 
 		OnTriggerPress ();
 

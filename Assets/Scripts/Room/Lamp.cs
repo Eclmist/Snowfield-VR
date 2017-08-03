@@ -36,6 +36,7 @@ namespace Opening_Room
 		public void TurnOn(bool on)
 		{
 			isTurnedOn = on;
+			UpdateLamp();
 		}
 
 		protected void UpdateLamp()

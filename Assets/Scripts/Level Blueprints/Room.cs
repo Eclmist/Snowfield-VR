@@ -16,16 +16,19 @@ namespace Opening_Room
 		public Keyboard keyboard;
 
 		public VideoPlayer tv;
+		public MeshRenderer tvMeshRen;
+
 		public VideoClip messageVideo;
 
 		public GameObject BGM;
 		public GameObject StaticLoop;
 		public GameObject Music;
 
-		public GameObject GlitchLeft;
-		public GameObject GlitchMiddle;
-		public GameObject GlitchRight;
+		public MeshRenderer GlitchLeft;
+		public MeshRenderer GlitchMiddle;
+		public MeshRenderer GlitchRight;
 
+		public Renderer windowLight;
 	}
 
 	[System.Serializable]
@@ -44,6 +47,8 @@ namespace Opening_Room
 
 		private float timer = 0;
 
+		[Space(20)]
+		[Header("Debug READONLY")]
 		public SequenceEvent currentEvent; // TODO: Make private
 
 		private static bool currentEventCompleted = false;
@@ -62,7 +67,7 @@ namespace Opening_Room
 			timer += Time.deltaTime;
 
 			// Try to play next event
-			if (currentEvent == null)
+			while (currentEvent == null)
 			{
 				if (events.Count <= 0) //No more events, can kill level blueprint already
 				{
@@ -97,7 +102,9 @@ namespace Opening_Room
 
 		public void HintTeleportEventUpdate()
 		{
-			if (!ControllerButtonHints.IsButtonHintActive(player.rightHand, Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad))
+			// hint will be triggered by teleport.cs
+
+			if (Teleport.playerKnowsHowToTeleport)
 			{
 				CompleteCurrentEvent();
 			}
@@ -116,11 +123,7 @@ namespace Opening_Room
 
 			if (sequenceObjects.lamp.GetTurnedOn() == false)
 			{
-				foreach (Hand hand in player.hands)
-				{
-					ControllerButtonHints.ShowTextHint(hand, Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Turn on the lamp");
-					sequenceObjects.lamp.HintObject();
-				}
+				ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Turn on the lamp");
 			}
 
 			if (!lampCoroutineRunning)
@@ -170,12 +173,12 @@ namespace Opening_Room
 			sequenceObjects.lamp.TurnOn(false);
 
 
-			yield return StartCoroutine(WaitForKeyboard("Open Message"));
+			yield return StartCoroutine(WaitForKeyboard("Open message"));
 
 			sequenceObjects.Music.SetActive(true);
 
 			sequenceObjects.message.SetActive(false);
-			sequenceObjects.tv.enabled = true;
+			sequenceObjects.tvMeshRen.enabled = true;
 			sequenceObjects.tv.clip = sequenceObjects.messageVideo;
 			sequenceObjects.tv.isLooping = false;
 
@@ -203,16 +206,16 @@ namespace Opening_Room
 			// Make crazy shit happen here
 
 			sequenceObjects.StaticLoop.SetActive(true);
-			sequenceObjects.GlitchMiddle.SetActive(true);
+			sequenceObjects.GlitchMiddle.enabled = true;
+			sequenceObjects.GlitchMiddle.GetComponent<AudioSource>().Play();
+			yield return new WaitForSeconds(1F);
 
-			yield return new WaitForSeconds(0.4F);
+			sequenceObjects.GlitchRight.enabled = true;
+			sequenceObjects.GlitchRight.GetComponent<AudioSource>().Play();
 
-			sequenceObjects.GlitchRight.SetActive(true);
-			yield return new WaitForSeconds(0.3F);
-			sequenceObjects.GlitchLeft.SetActive(true);
-
-
-
+			yield return new WaitForSeconds(1.5F);
+			sequenceObjects.GlitchLeft.enabled = true;
+			sequenceObjects.GlitchLeft.GetComponent<AudioSource>().Play();
 		}
 
 		private IEnumerator WaitForKeyboard(string hoverhint)
@@ -220,7 +223,7 @@ namespace Opening_Room
 			float startTime = Time.time;
 			bool hinting = false;
 
-			sequenceObjects.keyboard.SetHoverHint(hoverhint);
+			ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, hoverhint);
 
 			while (!sequenceObjects.keyboard.GetKey())
 			{
@@ -233,7 +236,98 @@ namespace Opening_Room
 				yield return null;
 			}
 
-			Debug.Log("Keyboard Pressed");
+		}
+
+		bool interactWithObjectEventFlag = false;
+		public void InteractWithObjectsEvent()
+		{
+			if (!interactWithObjectEventFlag)
+			{
+				interactWithObjectEventFlag = true;
+				VR_Interactable_Object.playerKnowsHowToInteractWithObjects = false;
+
+				ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Clean your room");
+
+				StartCoroutine(InteractWithObjectCoroutine());
+			}
+
+			if (!eventScheduledToEnd && VR_Interactable_Object.playerKnowsHowToInteractWithObjects)
+			{
+				StartCoroutine(EndEventAfterDelay(10));
+			}
+		}
+
+		private IEnumerator InteractWithObjectCoroutine()
+		{
+			while (true)
+			{
+				if (VR_Interactable_Object.playerKnowsHowToInteractWithObjects)
+				{
+					yield return StartCoroutine(EndEventAfterDelay(10));
+
+					HideAllControllerHints();
+				}
+
+				yield return null;
+			}
+		}
+
+		bool sleeping = false;
+
+		public void SleepEvent()
+		{
+			if (!sleeping)
+			{
+				Bed.canSleep = true;
+				StartCoroutine(SleepEventCoroutine());
+
+			}
+		}
+
+		private IEnumerator SleepEventCoroutine()
+		{
+			sleeping = true;
+
+			while (!Bed.eyeClosed)
+			{
+				yield return null;
+			}
+
+			//Eye closed
+			sequenceObjects.windowLight.material.SetColor("_EmissionColor", new Color(0.5F, 0.4298039F, 0.3566172F));
+			sequenceObjects.windowLight.UpdateGIMaterials();
+
+			CompleteCurrentEvent();
+
+			Debug.Log("SleepEvent Ended");
+		}
+
+
+
+		bool eventScheduledToEnd = false;
+
+		private IEnumerator EndEventAfterDelay(float time)
+		{
+			eventScheduledToEnd = true;
+			yield return new WaitForSeconds(time);
+			CompleteCurrentEvent();
+			eventScheduledToEnd = false;
+		}
+
+		private void HideAllControllerHints()
+		{
+			foreach (Hand hand in player.hands)
+			{
+				ControllerButtonHints.HideAllTextHints(hand);
+			}
+		}
+
+		private void ShowControllerHints(Valve.VR.EVRButtonId btn, string text, bool glowbtn = true)
+		{
+			foreach (Hand hand in player.hands)
+			{
+				ControllerButtonHints.ShowTextHint(hand, btn, text, glowbtn);
+			}
 		}
 	}
 }
