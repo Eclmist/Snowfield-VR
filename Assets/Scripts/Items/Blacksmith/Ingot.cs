@@ -88,16 +88,26 @@ public class Ingot : BlacksmithItem {
 
         if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
         {
-            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
-            if(itemData != null)
+            if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRate(physicalMaterial.type))
             {
-				FakeItem fakeItem = new FakeItem();
-				fakeItem.trueForm = itemData;
+                // succeeded
+                ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
+                if(itemData != null)
+                {
+    				FakeItem fakeItem = new FakeItem();
+    				fakeItem.trueForm = itemData;
 
-                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
-				g.AddComponent<FakeItem>();
-				g.GetComponent<FakeItem>().trueForm = itemData;
-                Destroy(this.gameObject);       
+                    GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
+    				g.AddComponent<FakeItem>();
+    				g.GetComponent<FakeItem>().trueForm = itemData;
+                    Destroy(this.gameObject); 
+                }
+
+            }
+            else
+            {
+                // failed
+                    Destroy(this.gameObject); 
             }
         }
     }
