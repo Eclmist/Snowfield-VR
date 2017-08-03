@@ -17,7 +17,7 @@ namespace Opening_Room
 
 		[SerializeField] private Light light;
 
-		public bool isTurnedOn = false;	// TODO: Make private
+		private bool isTurnedOn = false;
 
 		public bool GetTurnedOn(/* ͜ʖ ͡*/)
 		{
@@ -30,12 +30,6 @@ namespace Opening_Room
 
 			isTurnedOn = !isTurnedOn;
 
-			UpdateLamp();
-		}
-
-		//TODO: Remove this loop
-		protected void Update()
-		{
 			UpdateLamp();
 		}
 
