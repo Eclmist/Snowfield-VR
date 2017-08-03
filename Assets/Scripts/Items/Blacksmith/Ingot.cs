@@ -9,6 +9,7 @@ public class Ingot : BlacksmithItem {
 
     private Material initialMaterial;
     public Material forgingMaterial; // Material to lerp to when heated
+    private TempKillScript tempKill; // To show that ingot failed
     [SerializeField]
     protected MeshRenderer meshRenderer; // To modify the material
     [SerializeField]
@@ -41,6 +42,7 @@ public class Ingot : BlacksmithItem {
 		base.Start();
 
 		meshRenderer = GetComponent<MeshRenderer>();
+        tempKill = GetComponent<TempKillScript>();
 
 		if (meshRenderer == null)
         {
@@ -88,7 +90,7 @@ public class Ingot : BlacksmithItem {
 
         if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
         {
-            if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRate(physicalMaterial.type))
+            if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRateForTier(physicalMaterial.type))
             {
                 // succeeded
                 ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
@@ -105,9 +107,10 @@ public class Ingot : BlacksmithItem {
 
             }
             else
-            {
-                // failed
-                    Destroy(this.gameObject); 
+            {   
+                // Fail
+                tempKill.Kill();
+                Destroy(this.gameObject); 
             }
         }
     }

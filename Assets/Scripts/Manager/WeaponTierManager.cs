@@ -118,7 +118,7 @@ public class WeaponTierManager : MonoBehaviour {
         return null;
     }
 
-    public float GetSuccessRateForTier(PhysicalMaterial.Type)
+    public float GetSuccessRateForTier(PhysicalMaterial.Type type)
     {
     	foreach(WeaponClass wc in weaponClassList)
     	{
@@ -130,7 +130,7 @@ public class WeaponTierManager : MonoBehaviour {
     	}
 
 
-    	return null;
+    	return -1;
     }
 
 
