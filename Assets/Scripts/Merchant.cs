@@ -37,12 +37,6 @@ public class Merchant : MonoBehaviour {
 			
     }
 
-	public void CloseMerchantPanel()
-	{
-		if(panelInstance)
-			Destroy(panelInstance.gameObject);
-	}
-
 
     // Retrieve the itemData for all buyable items
     private void PopulateBuyableItemDataList()
