@@ -14,7 +14,6 @@ public class Merchant : MonoBehaviour {
 
 	private MerchantPanel panelInstance = null;
 
-
     // Use this for initialization
     void Start ()
 	{
@@ -24,13 +23,17 @@ public class Merchant : MonoBehaviour {
 	}
 
 
-    public void SpawnMerchantPanel()
+    public MerchantPanel SpawnMerchantPanel()
     {
 		if(!panelInstance)
 		{
 			panelInstance = Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant, merchantPanel.transform.rotation);
 			panelInstance.InitializeAndDisplayCatalog(buyableItemData);
+
+            return merchantPanel;
 		}
+
+        return null;
 			
     }
 
