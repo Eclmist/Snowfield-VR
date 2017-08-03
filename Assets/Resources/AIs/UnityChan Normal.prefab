@@ -6028,7 +6028,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6082,7 +6082,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6139,7 +6139,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6462,7 +6462,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6570,7 +6570,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6708,7 +6708,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6913,7 +6913,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6943,7 +6943,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -6984,7 +6984,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -7014,7 +7014,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -7107,7 +7107,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -7280,7 +7280,7 @@ MonoBehaviour:
   isUseEachBoneForceSettings: 1
   stiffnessForce: 0.01
   dragForce: 0.4
-  springForce: {x: 0, y: -0.0001, z: 0}
+  springForce: {x: 0.001988256, y: 0, z: 0}
   colliders:
   - {fileID: 114733261014148964}
   - {fileID: 114832874931067086}
@@ -7306,13 +7306,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eye: {fileID: 4222228151508488}
   detectionDistance: 7.5
-  attackRange: 3
+  attackRange: 1.5
   currentState: 0
-  movementSpeed: 1
-  minimumDistToAvoid: 0
+  movementSpeed: 3
+  minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
+  animUseSlot: 0
+  attackTimer: 0
 --- !u!135 &135296812005784712
 SphereCollider:
   m_ObjectHideFlags: 1

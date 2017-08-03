@@ -25,9 +25,9 @@ public class DisplacableObject : VR_Interactable_Object
         joint = GetComponent<ConfigurableJoint>();
     }
     // Use this for initialization
-    void Start()
+    protected override void Start()
     {
-
+        base.Start();
         if (boundRigidBody != null)
             joint.connectedBody = boundRigidBody;
 

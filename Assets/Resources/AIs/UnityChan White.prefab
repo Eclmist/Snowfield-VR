@@ -9433,13 +9433,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eye: {fileID: 4421743545141992}
   detectionDistance: 7.5
-  attackRange: 3
+  attackRange: 1.5
   currentState: 0
-  movementSpeed: 1
-  minimumDistToAvoid: 0
+  movementSpeed: 3
+  minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
+  animUseSlot: 0
+  attackTimer: 0
 --- !u!114 &114860442717778234
 MonoBehaviour:
   m_ObjectHideFlags: 1

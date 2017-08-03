@@ -36,8 +36,9 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState nextState;
     protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
+   
     [SerializeField]
-    [Range(0.5f,5)]
+    [Range(0.5f, 5)]
     protected float movementSpeed = 1;
 
     #region Avoidance
@@ -76,21 +77,23 @@ public abstract class ActorFSM : MonoBehaviour
         {
             case FSMState.DEATH:
                 animator.SetBool("Death", true);
-                break;
+                return;
             case FSMState.PETROL:
+                animator.SetFloat("Speed", movementSpeed);
                 SetNodeOffset();
-                break;
+                return;
+                
             default:
-                break;
+                return;
         }
 
     }
-	public virtual void NewSpawn()
-	{
-		nextState = FSMState.IDLE;
-		ChangeState (FSMState.IDLE);
-	
-	}
+    public virtual void NewSpawn()
+    {
+        nextState = FSMState.IDLE;
+        ChangeState(FSMState.IDLE);
+
+    }
 
     protected virtual void Awake()
     {
@@ -113,11 +116,11 @@ public abstract class ActorFSM : MonoBehaviour
     public void SetNodeOffset()
     {
         pathNodeOffset.Clear();
-        foreach(Node n in path)
+        foreach (Node n in path)
         {
             Vector2 newVec2 = Random.insideUnitCircle * .25f;
             Vector3 newVec3 = new Vector3(newVec2.x, 0, newVec2.y);
-            pathNodeOffset.Add(newVec2);
+            pathNodeOffset.Add(newVec3);
         }
     }
     // Use this for initialization
@@ -136,8 +139,8 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void Update()
     {
-		rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
-		rigidBody.angularVelocity = Vector3.zero;
+        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
+        rigidBody.angularVelocity = Vector3.zero;
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
@@ -150,7 +153,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateFSMState()
     {
-        
+
         UpdateAnyState();
         switch (currentState)
         {
@@ -170,18 +173,21 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    protected virtual void UpdateAnyState() { }
+    protected virtual void UpdateAnyState()
+    { }
+
     protected abstract void UpdateIdleState();
-    private bool backing = false;
+
 
     protected virtual void UpdateCombatState()
     {
-        Debug.Log(target);
         if (target != null && target.CanBeAttacked)
         {
             float tempAttackRange = attackRange;
+
             if (target is Player)
                 tempAttackRange += 1;
+
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
             Vector3 dir = temptarget - transform.position;
@@ -192,21 +198,21 @@ public abstract class ActorFSM : MonoBehaviour
             //Debug.DrawRay(head.transform.position - head.right, _direction);
             if (distance < detectionDistance)
             {
-                if (backing)
-                {
-                    animator.SetFloat("Speed", movementSpeed);
-                    targetPoint = transform.position - dir;
-                    if (distance > tempAttackRange / 2.0)
-                        backing = false;
-                }
-                else if (!backing && distance < tempAttackRange / 8.0)
-                {
-                    animator.SetBool("Attacking", false);
-                    animator.SetFloat("Speed", movementSpeed);
-                    targetPoint = transform.position - dir;
-                    backing = true;
-                }
-                else if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
+                //if (backing)
+                //{
+                //    animator.SetFloat("Speed", movementSpeed);
+                //    targetPoint = transform.position - dir;
+                //    if (distance > tempAttackRange / 2.0)
+                //        backing = false;
+                //}
+                //else if (!backing && distance < tempAttackRange / 8.0)
+                //{
+                //    animator.SetBool("Attacking", false);
+                //    animator.SetFloat("Speed", movementSpeed);
+                //    targetPoint = transform.position - dir;
+                //    backing = true;
+                //}
+                if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
                 {
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", movementSpeed);
@@ -251,7 +257,7 @@ public abstract class ActorFSM : MonoBehaviour
                 path[0].Occupied = false;
                 path.RemoveAt(0);
                 pathNodeOffset.RemoveAt(0);
-				ChangeState(FSMState.PETROL);
+                ChangeState(FSMState.PETROL);
                 return;
             }
             else
@@ -266,10 +272,9 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdatePetrolState()
     {
-        Debug.Log(path.Count);
         if (path.Count == 0)
         {
-            
+
             ChangeState(nextState);
         }
         else
@@ -315,15 +320,16 @@ public abstract class ActorFSM : MonoBehaviour
     public void SetNode(Node n)
     {
         int index = -1;
-        for(int i = 0;i < path.Count; i++)
+        for (int i = 0; i < path.Count; i++)
         {
             if (path[i] == n)
                 index = i;
         }
-        if(index != 1)
-        path.RemoveRange(0, index);
+        if (index != 1)
+            path.RemoveRange(0, index);
     }
 
+    [SerializeField]
     protected EquipSlot.EquipmentSlotType animUseSlot;
 
     protected void ChangePath(List<Node> _path)
@@ -362,16 +368,16 @@ public abstract class ActorFSM : MonoBehaviour
             Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
-            
-                if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
-                {
-                    CurrentAI.Attack(currentUseWeapon, target);
-                }
-                else if(target is Actor)
-                {
-                    CurrentAI.Attack(0, target);
-                }
-            
+
+            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
+            {
+                CurrentAI.Attack(currentUseWeapon, target);
+            }
+            else if (target is Actor)
+            {
+                CurrentAI.Attack(0, target);
+            }
+
         }
     }
 
@@ -445,7 +451,7 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
-    public void DamageTaken(Actor attacker)
+    public virtual void DamageTaken(Actor attacker)
     {
         if (!(target is Actor))
         {
@@ -485,14 +491,15 @@ public abstract class ActorFSM : MonoBehaviour
     //    else
     //        return (-transform.forward * minimumDistToAvoid) + transform.position;
     //}
-	public void StartLookAtRoutine(Transform targetTransform, float seconds, float angle){
-		StartCoroutine (LookAtTransform(targetTransform, seconds, angle));
-	}
+    public void StartLookAtRoutine(Transform targetTransform, float seconds, float angle)
+    {
+        StartCoroutine(LookAtTransform(targetTransform, seconds, angle));
+    }
     public IEnumerator LookAtTransform(Transform targetTransform, float seconds, float angle)
     {
         while (seconds >= 0)
         {
-			
+
             isHandlingAction = true;
 
             Vector3 dir = targetTransform.position - transform.position;

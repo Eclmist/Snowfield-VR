@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AdventurerFSM))]
-public class AdventurerAI : AI
+public class AdventurerAI : FriendlyAI
 {
     //private List<Relation> actorRelations = new List<Relation>();
 
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
 
-    private List<InteractionsWithPlayer> interactionsWithPlayer = new List<InteractionsWithPlayer>();
+    
 
     [SerializeField]
     protected AdventurerAIData data;
@@ -27,36 +27,39 @@ public class AdventurerAI : AI
             data = (AdventurerAIData)value;
         }
     }
+
+   
     protected override void Awake()
     {
         base.Awake();
         GetSlots();
     }
 
-    public void StopAllInteractions()
+    
+    protected override void Start()
     {
-        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
-        {
-            interaction.StopInteraction();
-        }
-    }
-    protected virtual void Start()
-    {
-        interactionsWithPlayer.AddRange(GetComponents<InteractionsWithPlayer>());
+        base.Start();
         if (QuestBook.StoryQuests == null)
             QuestBook.BeginQuestBook();
     }
 
-    public bool Interacting
+
+
+    public void UnEquipWeapons()
     {
-        get
+        if (leftHand != null && leftHand.Item != null)
         {
-            foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
-            {
-                if (interaction.IsInteracting)
-                    return true;
-            }
-            return false;
+            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
+                Destroy(leftHand.Item.gameObject);
+            else
+                leftHand.Item.Unequip();
+        }
+        if (rightHand != null && rightHand.Item != null)
+        {
+            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
+                Destroy(rightHand.Item.gameObject);
+            else
+                rightHand.Item.Unequip();
         }
     }
 
@@ -141,31 +144,7 @@ public class AdventurerAI : AI
         }
     }
 
-    public bool IsInteractionAvailable()
-    {
-        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
-        {
-            if (!interaction.Interacted)
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool StartInteraction()
-    {
-        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
-        {
-            if (!interaction.Interacted)
-            {
-                interaction.StartInteraction();
-                return true;
-            }
-        }
-
-        return false;
-    }
-
+   
     //protected System.Collections.IEnumerator StartInteraction(OptionPane op)
     //{
     //    isInteracting = true;
@@ -197,15 +176,9 @@ public class AdventurerAI : AI
             if (currentJob.Level > tempCurrentLevel && gameObject.activeSelf == true)
                 TextSpawnerManager.Instance.SpawnText("Level Up!", Color.green, transform, 4);
         }
-
-
-
     }
 
-    public override void Interact(Actor actor)
-    {
-        (currentFSM as AdventurerFSM).StartInteractRoutine(actor);
-    }
+    
 
     public override void Spawn()
     {
@@ -241,7 +214,10 @@ public class AdventurerAI : AI
     {
         base.TakeDamage(damage, attacker);
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+        {
             AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 20, TownManager.Instance.GetRandomSpawnPoint());
+            UnEquipWeapons();
+        }
     }
 
 
