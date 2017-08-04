@@ -52,7 +52,7 @@ public class Weapon : Equipment
 
     protected override void Update()
     {
-        base.Update();
+		base.Update();
         if (modRen)
         {
 
@@ -120,7 +120,6 @@ public class Weapon : Equipment
         if (LinkedController != null)
         {
             IDamagable target = collision.GetComponent<IDamagable>();
-            Debug.Log(target);
             if (target != null && target is Monster)
             {
                 target.TakeDamage(Damage, Player.Instance);
@@ -151,12 +150,12 @@ public class Weapon : Equipment
         }
     }
 
-    public override void OnGripHold(VR_Controller_Custom controller)
+	protected override void OnGripHold()
     {
         StartCharge();
     }
 
-    public override void OnGripRelease(VR_Controller_Custom controller)
+	protected override void OnGripRelease()
     {
         EndCharge();
     }

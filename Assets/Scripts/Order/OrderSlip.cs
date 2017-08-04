@@ -86,13 +86,13 @@ public class OrderSlip : VR_Interactable_UI
 
     private void DisplayOptions()
     {
-        if (currentOP)
-            currentOP.Destroy();
+		CloseOptions();
 
         OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
-        op.transform.LookAt(Player.Instance.transform);
+		currentOP = op;
+		op.transform.LookAt(Player.Instance.transform);
         interactingWeapon = currentInteractingController.GetComponentInChildren<Weapon>();
-        currentOP = op;
+        
         op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
         op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
         op.SetEvent(OptionPane.ButtonType.Cancel, CloseOptions);
@@ -120,11 +120,16 @@ public class OrderSlip : VR_Interactable_UI
             if (interactingWeapon.ItemID == order.ItemID)
             {
                 OrderEnd(true);
-                GameManager.Instance.AddPlayerGold(reward);
-                Destroy(interactingWeapon.gameObject);
-                currentInteractingController.Model.SetActive(true);
-                currentOP.ClosePane();
-                Debug.Log("correct");
+				CloseOptions();
+				GameManager.Instance.AddPlayerGold(reward);
+				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
+				interactingWeapon.LinkedController.SetModelActive(true);
+				Destroy(interactingWeapon.gameObject);
+
+				
+
+
+				Debug.Log("correct");
             }
 
         }
@@ -138,16 +143,16 @@ public class OrderSlip : VR_Interactable_UI
     private void SpawnDetailsPanel()
     {
         Debug.Log("spawn detail");
-        string desc = "Name: " + o_name;
+        string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
 
-        if (currentOP)
-            currentOP.Destroy();
+		CloseOptions();
 
-        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
+        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite,desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
         op.transform.LookAt(Player.Instance.transform);
         op.SetEvent(OptionPane.ButtonType.Ok, CloseOptions);
 
         currentOP.ClosePane();
+		currentOP = op;
     }
 
 

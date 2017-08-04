@@ -27,7 +27,8 @@ public class DisplacableObject : VR_Interactable_Object
     // Use this for initialization
     protected override void Start()
     {
-        base.Start();
+		base.Start ();
+
         if (boundRigidBody != null)
             joint.connectedBody = boundRigidBody;
 
@@ -43,7 +44,7 @@ public class DisplacableObject : VR_Interactable_Object
     }
 
 
-    public override void OnTriggerHold(VR_Controller_Custom controller)
+    public override void OnFixedUpdateInteraction(VR_Controller_Custom controller)
     {
         controller.Vibrate(rigidBody.velocity.magnitude / 5 * 10);
 
