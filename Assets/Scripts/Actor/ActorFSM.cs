@@ -391,7 +391,7 @@ public abstract class ActorFSM : MonoBehaviour
 
 
 
-    protected bool CheckObstacles()
+    protected Collider CheckObstacles()
     {
         RaycastHit Hit;
         //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
@@ -403,10 +403,10 @@ public abstract class ActorFSM : MonoBehaviour
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
 
-            return true;
+            return Hit.collider;
         }
         else
-            return false;
+            return null;
     }
 
     protected Vector3 AvoidObstacles(Vector3 endPoint)

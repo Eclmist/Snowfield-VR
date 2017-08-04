@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
 
     private GameClock gameClock;
 
+    protected int currentTax = 0;
+
     public GameClock GameClock
     {
         get
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour {
             return gameClock;
         }
     }
+
+   
 
     [SerializeField]
     [Range(0.5f, 1)]
@@ -29,7 +33,13 @@ public class GameManager : MonoBehaviour {
 
     #endregion
 
-    #region RequestRegion
+    public int Tax
+    {
+        get
+        {
+            return currentTax;
+        }
+    }
 
     public enum GameState
     {
@@ -46,7 +56,7 @@ public class GameManager : MonoBehaviour {
             return currentState;
         }
     }
-    #endregion
+
     protected void Awake()
     {
         if (!Instance)
@@ -76,7 +86,11 @@ public class GameManager : MonoBehaviour {
         if(currentState == GameState.DAYMODE)
         {
             if (gameClock.TimeOfDay > nightTime || gameClock.TimeOfDay < dayTime)
+            {
+                AddPlayerGold(-currentTax);
+                currentTax = 0;
                 PrepareForNight();
+            }
         }
         if (currentState == GameState.NIGHTMODE)
         {
@@ -93,6 +107,11 @@ public class GameManager : MonoBehaviour {
         WaveManager.Instance.SpawnWave(gameClock.Day);
 
     }
+
+    public void AddTax(int value)
+    {
+        currentTax += value;
+    }
  //   private void RequestBoardUpdate()
  //   {
 	//	if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
@@ -105,7 +124,10 @@ public class GameManager : MonoBehaviour {
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
-       
+        if(Player.Instance.Gold < 0)
+        {
+            //lose
+        }
     }
 
 
