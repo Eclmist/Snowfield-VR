@@ -16,6 +16,8 @@ public class OrderSlip : VR_Interactable_UI
     private Order order;
     private AdventurerAI ai;
     [SerializeField] GameObject detailPane;
+    [SerializeField] AudioClip orderCompleteSound;
+    [SerializeField] AudioClip orderFadeInSound;
     OptionPane currentOP;
 
     public AdventurerAI OrderedAI
@@ -51,6 +53,15 @@ public class OrderSlip : VR_Interactable_UI
         slip.gameObject.SetActive(false);
         StartCoroutine(OrderCoroutine());
     }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        if (orderFadeInSound)
+            AudioSource.PlayClipAtPoint(orderFadeInSound,transform.position);
+    }
+
 
     public void ShowOrderInformation()
     {
@@ -123,6 +134,10 @@ public class OrderSlip : VR_Interactable_UI
 				CloseOptions();
 				GameManager.Instance.AddPlayerGold(reward);
 				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
+
+                if (orderCompleteSound)
+                    AudioSource.PlayClipAtPoint(orderCompleteSound,transform.position);
+
 				interactingWeapon.LinkedController.SetModelActive(true);
 				Destroy(interactingWeapon.gameObject);
 
