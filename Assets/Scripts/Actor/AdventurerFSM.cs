@@ -2,24 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdventurerFSM : FriendlyAIFSM
+public class AdventurerFSM : FriendlyAiFSM
 {
 
     protected Weapon currentUseWeapon;
-
-    public override void NewSpawn()
-    {
-        base.NewSpawn();
-        visitedShop.Clear();
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        currentAdventurerAI = GetComponent<AdventurerAI>();
-    }
- 
-
 
     public virtual void EndAttack()
     {
@@ -54,9 +40,9 @@ public class AdventurerFSM : FriendlyAIFSM
     {
 
         FSMState previousState = currentState;
-        currentAdventurerAI.StopAllInteractions();
+        currentFriendlyAI.StopAllInteractions();
         if (state != FSMState.COMBAT)
-            currentAdventurerAI.UnEquipWeapons();
+            (currentFriendlyAI as AdventurerAI).UnEquipWeapons();
         base.ChangeState(state);
         if (previousState != currentState)
         {
@@ -64,7 +50,7 @@ public class AdventurerFSM : FriendlyAIFSM
             {
                 
                 case FSMState.COMBAT:
-                    currentAdventurerAI.EquipRandomWeapons();
+                    (currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
                     attackTimer = 20;
                     //animator.SetBool("KnockBack", true);//Wrong place
                     //timer = 5;
@@ -86,11 +72,13 @@ public class AdventurerFSM : FriendlyAIFSM
 
     protected override void HandleCombatAction()
     {
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Cast"))
             animator.SetBool("Attacking", false);
         else
             animator.SetBool("Attacking", true);
-        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
+
+        currentUseWeapon = (Weapon)currentFriendlyAI.returnEquipment(animUseSlot);
         if ((currentUseWeapon == null || !currentUseWeapon.Powered) && attackTimer <= 0)
         {
             attackTimer = 20;
@@ -101,7 +89,7 @@ public class AdventurerFSM : FriendlyAIFSM
     public void StartCharge()
     {
 
-        currentUseWeapon = (Weapon)currentAdventurerAI.returnEquipment(animUseSlot);
+        currentUseWeapon = (Weapon)currentFriendlyAI.returnEquipment(animUseSlot);
 
         if (currentUseWeapon != null)
         {

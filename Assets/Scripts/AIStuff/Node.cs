@@ -13,8 +13,7 @@ public class Node : MonoBehaviour, IBundle<Node>
     private bool isSelected = false;
     private int bundleIndex;
     private Vector3 worldPosition;
-    [SerializeField]
-    protected LayerMask actorMask;
+
     
     private List<NodeEvent> nodeEvents = new List<NodeEvent>();
     [SerializeField]

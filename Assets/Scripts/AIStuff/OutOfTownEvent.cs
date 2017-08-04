@@ -10,9 +10,12 @@ public class OutOfTownEvent : NodeEvent
     {
         if (ai is FriendlyAI)
         {
-            float duration = (ai as FriendlyAI).GetOutOfTimeDuration();
             ai.Despawn();
-            AIManager.Instance.Spawn(ai, duration, CurrentNode, ai.OutOfTownProgress, 1);//The 1 means every second, can be replaced with ai's capabilities if have time
+            if (ai is AdventurerAI)
+            {
+                float duration = (ai as FriendlyAI).GetOutOfTimeDuration();
+                AIManager.Instance.Spawn(ai, duration, CurrentNode, ai.OutOfTownProgress, 1);//The 1 means every second, can be replaced with ai's capabilities if have time
+            }
             CurrentNode.Occupied = false;
         }
     }

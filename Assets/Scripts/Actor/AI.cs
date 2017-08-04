@@ -82,15 +82,11 @@ public abstract class AI : Actor
 
     public virtual void Spawn()
     {
-
         gameObject.SetActive(true);
-
     }
 
     public virtual void Despawn()
     {
-
-
         if (disablePS)
         {
             Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);

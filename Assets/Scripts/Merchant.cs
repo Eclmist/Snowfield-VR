@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Merchant : MonoBehaviour {
+public class Merchant : MonoBehaviour
+{
 
     [SerializeField]
     private List<GenericItem> buyableGenericItems;
@@ -12,27 +13,19 @@ public class Merchant : MonoBehaviour {
     private float offsetFromMerchant;
     private List<ItemData> buyableItemData = new List<ItemData>();
 
-
     // Use this for initialization
-    void Start () {
-
+    protected void Start()
+    {
         PopulateBuyableItemDataList();
-
-	}
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            SpawnMerchantPanel();
-        }
     }
-
-    public void SpawnMerchantPanel()
+    
+    public MerchantPanel SpawnMerchantPanel()
     {
-        Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant , merchantPanel.transform.rotation).InitializeAndDisplayCatalog(buyableItemData);    
-    }
+        MerchantPanel panelInstance = Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant, merchantPanel.transform.rotation);
+        panelInstance.InitializeAndDisplayCatalog(buyableItemData);
 
+        return panelInstance;
+    }
 
     // Retrieve the itemData for all buyable items
     private void PopulateBuyableItemDataList()
@@ -46,5 +39,5 @@ public class Merchant : MonoBehaviour {
         }
     }
 
-   
+
 }

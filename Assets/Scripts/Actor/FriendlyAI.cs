@@ -38,7 +38,7 @@ public abstract class FriendlyAI : AI {
 
     public override void Interact(Actor actor)
     {
-        (currentFSM as AdventurerFSM).StartInteractRoutine(actor);
+        (currentFSM as FriendlyAiFSM).StartInteractRoutine(actor);
     }
 
     public bool IsInteractionAvailable()

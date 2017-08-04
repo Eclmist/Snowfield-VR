@@ -18,14 +18,13 @@ public abstract class ActorFSM : MonoBehaviour
         SHOPPING,
         DEATH
     }
-    protected CapsuleCollider capsuleCollider;
+
     protected bool isHandlingAction = false;
     [SerializeField]
     protected Transform eye;
 
     [SerializeField]
     protected float detectionDistance = 10, attackRange = 0;
-    protected Vector3 targetPoint = Vector3.zero;
     protected List<Node> path;
     protected bool requestedPath, pathFound;
     [SerializeField]
@@ -36,7 +35,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState nextState;
     protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
-   
+
     [SerializeField]
     [Range(0.5f, 5)]
     protected float movementSpeed = 1;
@@ -82,7 +81,7 @@ public abstract class ActorFSM : MonoBehaviour
                 animator.SetFloat("Speed", movementSpeed);
                 SetNodeOffset();
                 return;
-                
+
             default:
                 return;
         }
@@ -99,7 +98,6 @@ public abstract class ActorFSM : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        capsuleCollider = GetComponent<CapsuleCollider>();
     }
     public IDamagable Target
     {
@@ -174,56 +172,77 @@ public abstract class ActorFSM : MonoBehaviour
     }
 
     protected virtual void UpdateAnyState()
-    { }
+    {
+        if (target != null && target.Equals(null))
+            target = null;
+    }
+
+
+    //if (backing)
+    //{
+    //    animator.SetFloat("Speed", movementSpeed);
+    //    targetPoint = transform.position - dir;
+    //    if (distance > tempAttackRange / 2.0)
+    //        backing = false;
+    //}
+    //else if (!backing && distance < tempAttackRange / 8.0)
+    //{
+    //    animator.SetBool("Attacking", false);
+    //    animator.SetFloat("Speed", movementSpeed);
+    //    targetPoint = transform.position - dir;
+    //    backing = true;
+    //}
 
     protected abstract void UpdateIdleState();
 
 
     protected virtual void UpdateCombatState()
     {
-        if (target != null && target.CanBeAttacked)
+
+        if (target != null && !target.Equals(null) && target.CanBeAttacked)
         {
+
             float tempAttackRange = attackRange;
 
             if (target is Player)
                 tempAttackRange += 1;
 
-            Vector3 temptarget = target.transform.position;
-            temptarget.y = transform.position.y;
-            Vector3 dir = temptarget - transform.position;
-            float distance = Vector3.Distance(temptarget, transform.position);
-            float angle = Vector3.Angle(transform.forward, dir);
-
+            Vector3 dir = target.transform.position - eye.transform.position;
+            float distance = float.MaxValue;
+            Ray ray = new Ray(eye.position, dir);
+            RaycastHit hit;
 
             //Debug.DrawRay(head.transform.position - head.right, _direction);
-            if (distance < detectionDistance)
+            if (target.Collider.Raycast(ray, out hit, detectionDistance))
             {
-                //if (backing)
-                //{
-                //    animator.SetFloat("Speed", movementSpeed);
-                //    targetPoint = transform.position - dir;
-                //    if (distance > tempAttackRange / 2.0)
-                //        backing = false;
-                //}
-                //else if (!backing && distance < tempAttackRange / 8.0)
-                //{
-                //    animator.SetBool("Attacking", false);
-                //    animator.SetFloat("Speed", movementSpeed);
-                //    targetPoint = transform.position - dir;
-                //    backing = true;
-                //}
-                if (distance > tempAttackRange || Mathf.Abs(angle) > 45)
+                dir = target.transform.position - transform.position;
+                dir.Normalize();
+                dir.y = 0;
+
+                Debug.Log(dir.y);
+                float angle = Vector3.Angle(transform.forward, dir);
+                Vector3 tempPoint = hit.point;
+                tempPoint.y = eye.position.y;
+                distance = Vector3.Distance(eye.position, tempPoint);
+
+                if (distance > tempAttackRange || Mathf.Abs(angle) > 30)
                 {
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", movementSpeed);
-                    targetPoint = target.transform.position;
+                    if (CanMove())
+                    {
+                        rigidBody.velocity = AvoidObstacles(target.transform.position);
+                        LookAtPlayer(target.transform.position);
+                        return;
+                    }
                 }
                 else
                 {
                     animator.SetFloat("Speed", 0);
                     HandleCombatAction();
-
                 }
+
+                
 
             }
             else
@@ -238,15 +257,12 @@ public abstract class ActorFSM : MonoBehaviour
             return;
         }
 
-        if (CanMove())
-        {
-            rigidBody.velocity = AvoidObstacles(targetPoint);
-            LookAtPlayer(targetPoint);
-            return;
-        }
     }
 
-    protected abstract void HandleCombatAction();
+    protected virtual void HandleCombatAction()
+    {
+
+    }
 
     protected virtual void UpdateEventHandling()
     {
@@ -358,10 +374,10 @@ public abstract class ActorFSM : MonoBehaviour
     {
         float tempAttackRange = attackRange;
         if (target is Player)
-            tempAttackRange += 3;
+            tempAttackRange += 1;
         Vector3 dir = target.transform.position - transform.position;
-        dir.y = 0;
         dir.Normalize();
+        dir.y = 0;
         float angle = Vector3.Angle(transform.forward, dir);
         if (target != null)
         {
@@ -369,7 +385,7 @@ public abstract class ActorFSM : MonoBehaviour
             Vector3 temptarget = target.transform.position;
             temptarget.y = transform.position.y;
 
-            if (Mathf.Abs(angle) < 45 && Vector3.Distance(transform.position, temptarget) < tempAttackRange)
+            if (Mathf.Abs(angle) < 30)
             {
                 CurrentAI.Attack(currentUseWeapon, target);
             }
@@ -422,20 +438,20 @@ public abstract class ActorFSM : MonoBehaviour
         //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
         Vector3 right45 = (eye.forward + eye.right).normalized;
         Vector3 left45 = (eye.forward - eye.right).normalized;
-
+        Debug.DrawLine(eye.position, eye.position + right45 * minimumDistToAvoid);
+        Debug.DrawLine(eye.position, eye.position + right45 * minimumDistToAvoid);
         if (Physics.Raycast(eye.position, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward - transform.right * distanceExp * movementSpeed;
+
+            return transform.forward - transform.right * movementSpeed * distanceExp;
         }
         else if (Physics.Raycast(eye.position, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            // 0 if near, 1 if far
             float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;

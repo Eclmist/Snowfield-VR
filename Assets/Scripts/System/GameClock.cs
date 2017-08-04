@@ -25,6 +25,8 @@ public class GameClock {
         }
     }
 
+   
+
     public int Day
     {
         get

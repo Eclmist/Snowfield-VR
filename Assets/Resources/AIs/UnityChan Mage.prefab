@@ -2343,7 +2343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4969686256945038}
   - component: {fileID: 95994737269553222}
-  - component: {fileID: 114649669341014428}
   - component: {fileID: 54467170355204904}
   - component: {fileID: 136965158231000992}
   - component: {fileID: 114511048026204918}
@@ -7679,20 +7678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7245e9b78ecbe3742a827bb1e054b53c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114649669341014428
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1614371202211268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 058a2736f2afd564eae55007a87eed87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _random: 1
-  _minInterval: 10
-  _interval: 20
 --- !u!114 &114655623230621984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7705,14 +7690,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eye: {fileID: 4832099065380888}
-  detectionDistance: 7.5
+  detectionDistance: 20
   attackRange: 3
   currentState: 0
-  movementSpeed: 1
+  movementSpeed: 3.04
   minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 4294909951
+  animUseSlot: 0
+  attackTimer: 0
 --- !u!114 &114696859292605014
 MonoBehaviour:
   m_ObjectHideFlags: 1

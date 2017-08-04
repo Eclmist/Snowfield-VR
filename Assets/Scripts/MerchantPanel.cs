@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MerchantPanel : MonoBehaviour
+public class MerchantPanel : MonoBehaviour, IUI
 {
 
     [SerializeField]
@@ -11,8 +11,7 @@ public class MerchantPanel : MonoBehaviour
     [SerializeField]
     private GridLayoutGroup layoutGroup;
     
-
-
+ 
     // Displays the catalog
     public void InitializeAndDisplayCatalog(List<ItemData> itemDataList)
     {
@@ -21,7 +20,10 @@ public class MerchantPanel : MonoBehaviour
     }
 
     
-
+    public void ClosePane()
+    {
+        Destroy(gameObject);
+    }
     
 
 

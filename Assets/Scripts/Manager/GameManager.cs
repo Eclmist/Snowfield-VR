@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    
 	protected void Update()
     {
         GameHandle();
@@ -80,8 +81,11 @@ public class GameManager : MonoBehaviour {
         }
         if (currentState == GameState.NIGHTMODE)
         {
-            if(gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
-            	currentState = GameState.DAYMODE;
+            if (gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
+            {
+                AIManager.Instance.SpawnMerchant();
+                currentState = GameState.DAYMODE;
+            }
         }
 
         //Debug.Log(currentState);
