@@ -22,13 +22,13 @@ public class Merchant : MonoBehaviour {
 
 	}
 
-
     public MerchantPanel SpawnMerchantPanel()
     {
 		if(!panelInstance)
 		{
-			panelInstance = Instantiate(merchantPanel, transform.position + offsetFromMerchant, merchantPanel.transform.rotation);
+			panelInstance = Instantiate(merchantPanel, transform.position + offsetFromMerchant,Quaternion.identity);
 			panelInstance.InitializeAndDisplayCatalog(buyableItemData);
+            panelInstance.transform.LookAt(Player.Instance.transform);
 
             return merchantPanel;
 		}
