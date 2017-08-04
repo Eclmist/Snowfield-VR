@@ -12,6 +12,7 @@ public class TargetRevenue : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        //revenueText.text = "Upcoming tax:" + GameManager.Instance.Tax + "\n" + "Gold after deduction:" + (Player.Instance.Gold - GameManager.Instance.Tax);
+        if(revenueText)
+            revenueText.text = "Upcoming tax:" + GameManager.Instance.Tax + "\n" + "Gold after deduction:" + (Player.Instance.Gold - GameManager.Instance.Tax);
 	}
 }
