@@ -10,7 +10,6 @@ public class MerchantPanel : MonoBehaviour
     private InteractableBuy interactableBuy;
     [SerializeField]
     private GridLayoutGroup layoutGroup;
-    
 
 
     // Displays the catalog
