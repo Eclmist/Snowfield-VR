@@ -430,6 +430,7 @@ public class SteamVR_RenderModel : MonoBehaviour
 
 				material = new Material(shader != null ? shader : Shader.Find("Standard"));
 				material.mainTexture = texture;
+				material.SetFloat ("_Glossiness", 0);
 				//material.hideFlags = HideFlags.DontUnloadUnusedAsset;
 
 				materials[renderModel.diffuseTextureId] = material;

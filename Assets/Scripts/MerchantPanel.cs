@@ -20,9 +20,12 @@ public class MerchantPanel : MonoBehaviour
             Instantiate(interactableBuy, layoutGroup.transform, false).Initialize(data);
     }
 
-    
 
-    
+    public void CloseMerchantPanel()
+    {
+        Destroy(gameObject);
+    }
+
 
 
 }

@@ -173,7 +173,7 @@ public class TeleportVive : MonoBehaviour {
                     // We have finished fading in
                     CurrentTeleportState = TeleportState.None;
                 }
-                else
+				else
                 {
                     //Change origin transform to target transform (teleportation plane outside the shop)
                     if ((Pointer.SelectedPoint.x <= target.position.x + 1 && Pointer.SelectedPoint.x >= target.position.x - 1)
@@ -196,7 +196,8 @@ public class TeleportVive : MonoBehaviour {
                     }
                     else // We have finished fading out - time to teleport!         
                     {
-                        Player.Instance.InCombatZone = false;
+						if (Player.Instance)
+                        	Player.Instance.InCombatZone = false;
                         OriginTransform.position = Pointer.SelectedPoint;
 
                         Vector3 offset = OriginTransform.position - HeadTransform.position;

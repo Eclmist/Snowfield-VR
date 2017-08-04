@@ -9,6 +9,8 @@
 		Tags { "RenderType"="Outline" "Queue"="Transparent"}
 		LOD 100
 
+		Blend One One
+
 		Pass
 		{
 			CGPROGRAM

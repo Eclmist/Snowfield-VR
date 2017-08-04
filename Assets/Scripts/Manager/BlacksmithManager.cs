@@ -49,6 +49,19 @@ public class BlacksmithManager : MonoBehaviour {
         get { return this.materialList; }
     }
 
+	public PhysicalMaterial GetPhysicalMaterialInfo(PhysicalMaterial.Type type)
+	{
+		foreach(PhysicalMaterial pm in materialList)
+		{
+			if(pm.type == type)
+			{
+				return pm;
+			}
+		}
+
+		return null;
+	}
+
 
 
     void Awake()
@@ -56,11 +69,11 @@ public class BlacksmithManager : MonoBehaviour {
         Instance = this;
         availableIngots = new List<GameObject>();
         availableOres = new List<GameObject>();
-        materialList = new List<PhysicalMaterial>();
+        //materialList = new List<PhysicalMaterial>();
 
-        StorePrefabReferences("Ingots",availableIngots);
-        StorePrefabReferences("Ores", availableOres);
-        CheckPhysicalMaterials(availableIngots);
+        //StorePrefabReferences("Ingots",availableIngots);
+        //StorePrefabReferences("Ores", availableOres);
+        //CheckPhysicalMaterials(availableIngots);
 
     }
 

@@ -39,10 +39,11 @@ namespace Edwon.VR.Input
             //yield return new WaitForSeconds(.2f);
             while (true)
             {
-                deviceIndex = (int)_hand.GetComponent<SteamVR_TrackedObject>().index;
+
+				deviceIndex = (int)(_hand.GetComponent<Valve.VR.InteractionSystem.Hand>().GuessCurrentHandType());
+
                 if (deviceIndex > -1)
                 {
-                    //Debug.Log("I just got registered. Index: " + deviceIndex);
                     yield break;
                 }
                 yield return null;

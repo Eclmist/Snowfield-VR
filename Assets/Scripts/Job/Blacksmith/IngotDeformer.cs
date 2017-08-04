@@ -25,10 +25,12 @@ public class IngotDeformer : MonoBehaviour
 
 	private MeshFilter modelFilter;
 	private Mesh currentMesh;
+	private MeshCollider collider;
 
 	protected void Start()
 	{
 		modelFilter = GetComponent<MeshFilter>();
+		collider = GetComponent<MeshCollider>();
 	}
 
 
@@ -59,6 +61,8 @@ public class IngotDeformer : MonoBehaviour
 		currentMesh.RecalculateNormals();
 		currentMesh.RecalculateTangents();
 		modelFilter.mesh = currentMesh;
+
+		collider.sharedMesh = currentMesh;
 	}
 
 	//Debug
