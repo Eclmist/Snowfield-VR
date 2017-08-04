@@ -10,6 +10,7 @@ public class Order {
     private int duration;//i feel like having an actual time here would be better 
     private int goldReward;
     private int id;
+	private PhysicalMaterial.Type materialType;
     
     public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id)
     {
@@ -20,7 +21,18 @@ public class Order {
         id = _id;
     }
 
-    public string Name
+	public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id,PhysicalMaterial.Type type)
+	{
+		name = _name;
+		sprite = _sprite;
+		duration = _duration;
+		goldReward = _goldReward;
+		id = _id;
+		materialType = type;
+	}
+
+
+	public string Name
     {
         get{ return this.name; }
     }
@@ -44,6 +56,12 @@ public class Order {
     {
         get { return this.id; }
     }
+
+	public PhysicalMaterial.Type MaterialType
+	{
+		get { return this.materialType; }
+	}
+
 
 
 

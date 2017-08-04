@@ -11,7 +11,11 @@ public class WeaponTierManager : MonoBehaviour {
     {
         [SerializeField]
         private PhysicalMaterial.Type type;
-
+        
+        [SerializeField]
+        [Range(1,100f)]
+        private float successRate;
+        
         [SerializeField][Header("Item ID")]
         private List<ItemData> itemList;
 
@@ -19,6 +23,11 @@ public class WeaponTierManager : MonoBehaviour {
         public PhysicalMaterial.Type Type
         {
             get { return this.type; }
+        }
+
+        public float SuccessRate
+        {
+        	get {return this.successRate;}
         }
 
         public List<ItemData> TierList
@@ -107,6 +116,21 @@ public class WeaponTierManager : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public float GetSuccessRateForTier(PhysicalMaterial.Type type)
+    {
+    	foreach(WeaponClass wc in weaponClassList)
+    	{
+    		if(wc.Type == type)
+    		{
+
+    			return wc.SuccessRate;
+    		}
+    	}
+
+
+    	return -1;
     }
 
 

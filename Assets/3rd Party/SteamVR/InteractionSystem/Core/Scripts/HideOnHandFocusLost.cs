@@ -13,7 +13,7 @@ namespace Valve.VR.InteractionSystem
 	public class HideOnHandFocusLost : MonoBehaviour
 	{
 		//-------------------------------------------------
-		private void OnHandFocusLost( Hand hand )
+		public void OnHandFocusLost( Hand hand )
 		{
 			gameObject.SetActive( false );
 		}

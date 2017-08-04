@@ -12,6 +12,9 @@ public abstract class OptionPane : MonoBehaviour, IUI
 	{
 		public Text title;
 		public Text message;
+		public Text message2;
+		public Image image;
+		
 	}
 
 	public enum ButtonType
@@ -76,6 +79,22 @@ public abstract class OptionPane : MonoBehaviour, IUI
             paneElements.message.text = message;
 		alreadySetContent = true;
 	}
+
+	public virtual void SetContents(string title, string message, string message2 = null, Sprite icon = null)
+	{
+		if (paneElements.title)
+			paneElements.title.text = title;
+		if (paneElements.message)
+			paneElements.message.text = message;
+		if (paneElements.message2)
+			paneElements.message2.text = message2;
+		if (paneElements.image)
+			paneElements.image.sprite = icon;
+		
+		alreadySetContent = true;
+	}
+
+
 
 	public abstract void SetEvent(ButtonType button, UnityAction func);
 
