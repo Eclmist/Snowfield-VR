@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 33639707824407118}
   - component: {fileID: 23356041434919536}
   - component: {fileID: 64638934138298210}
+  - component: {fileID: 114995268696317584}
   m_Layer: 0
   m_Name: Stand_1
   m_TagString: Untagged
@@ -302,13 +303,13 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 9d28c3bdf3310bd46aa723157949f18b, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -317,6 +318,18 @@ MonoBehaviour:
   m_Text: 'Today''s target: 20000 g
 
     Remaining: 100 g'
+--- !u!114 &114995268696317584
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406638677978112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a987bec6ffee734418fe659bd3765e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  revenueText: {fileID: 114854012848487218}
 --- !u!222 &222223977020643728
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -364,8 +377,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -9.799999}
-  m_SizeDelta: {x: 160, y: 49.6}
+  m_AnchoredPosition: {x: 0, y: 0.000012398}
+  m_SizeDelta: {x: 160, y: 78.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224480171772242500
 RectTransform:
