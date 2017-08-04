@@ -43,7 +43,7 @@ public class VR_Interactable_Object : VR_Interactable
 		{
 			if (!hintOverride)
 			{
-				Color col = Color.Lerp(outlineColor, new Color(0, 0, 0, 0), (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
+				Color col = Color.Lerp(outlineColor, Color.black, (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
 				SetOutlineColor(col);
 			}
 			yield return new WaitForFixedUpdate();
@@ -96,7 +96,6 @@ public class VR_Interactable_Object : VR_Interactable
 			interactSound.clip = Resources.Load<AudioClip>("click5");
 		}
 
-		
 	}
 
 
@@ -107,14 +106,6 @@ public class VR_Interactable_Object : VR_Interactable
 		OnControllerEnter ();
 		SetOutline(true);
 		hintOverride = true;
-	}
-
-	public virtual void OnControllerStay(VR_Controller_Custom controller)
-	{
-		if (isHinting)
-		{
-			SetOutline(true);	// force override hint
-		}
 	}
 
 	public virtual void OnControllerExit(VR_Controller_Custom controller)
@@ -132,7 +123,7 @@ public class VR_Interactable_Object : VR_Interactable
 		if (interactSound)
 			interactSound.Play();
 
-		playerKnowsHowToInteractWithObjects = true;
+		PlayerLearnedInteraction();
 
 		isHinting = false;
 
@@ -214,6 +205,10 @@ public class VR_Interactable_Object : VR_Interactable
 		
 	}
 
+	protected virtual void PlayerLearnedInteraction()
+	{
+		playerKnowsHowToInteractWithObjects = true;
+	}
 
     public void SetOutline(bool enabled)
     {

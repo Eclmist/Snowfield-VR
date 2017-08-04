@@ -20,32 +20,14 @@ namespace Opening_Room
 
 		private string hoverhint = "";
 
-		public override void OnTriggerPress(VR_Controller_Custom ctrl)
+		public override void OnTriggerRelease(VR_Controller_Custom ctrl)
 		{
-			base.OnTriggerPress();
+			playerKnowsHowToInteractWithObjects = false;
+
+			base.OnTriggerRelease(ctrl);
 
 			queueKeypress = true;
-
-			ControllerButtonHints.HideAllTextHints(ctrl.Hand);
-			hoverhint = "";
-
 		}
-
-		public override void OnControllerEnter(VR_Controller_Custom ctrl)
-		{
-			base.OnControllerEnter();
-
-			if (hoverhint != "")
-				ControllerButtonHints.ShowTextHint(ctrl.Hand, Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, hoverhint);
-		}
-
-		public override void OnControllerExit(VR_Controller_Custom ctrl)
-		{
-			base.OnControllerExit();
-
-			ControllerButtonHints.HideAllTextHints(ctrl.Hand);
-		}
-
 
 		void Update()
 		{
@@ -65,5 +47,8 @@ namespace Opening_Room
 			hoverhint = text;
 		}
 
+		protected override void PlayerLearnedInteraction()
+		{
+		}
 	}
 }

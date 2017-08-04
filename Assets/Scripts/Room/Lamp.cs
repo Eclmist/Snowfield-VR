@@ -24,11 +24,17 @@ namespace Opening_Room
 			return isTurnedOn;
 		}
 
-		protected override void OnTriggerPress()
+		protected override void OnTriggerRelease()
 		{
-			base.OnTriggerPress();
+			base.OnTriggerRelease();
 
 			isTurnedOn = !isTurnedOn;
+			interactSound.volume /= 8;
+			interactSound.pitch *= 4;
+
+			interactSound.Play();
+			interactSound.volume *= 8;
+			interactSound.pitch /= 4;
 
 			UpdateLamp();
 		}
@@ -59,5 +65,10 @@ namespace Opening_Room
 			bulb.UpdateGIMaterials();
 			topCover.UpdateGIMaterials();
 		}
+
+		protected override void PlayerLearnedInteraction()
+		{
+		}
+
 	}
 }

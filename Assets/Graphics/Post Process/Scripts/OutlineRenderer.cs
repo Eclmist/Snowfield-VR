@@ -42,6 +42,11 @@ public class OutlineRenderer : MonoBehaviour
 		camHeight = cam.pixelHeight;
 	}
 
+	protected void OnDisable()
+	{
+		Destroy(tempSecondaryCamera.gameObject);
+	}
+
 	protected void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		//set up a temporary camera
@@ -50,7 +55,7 @@ public class OutlineRenderer : MonoBehaviour
 		blurMat.SetVector ("_BlurSize", offset);
 
 		tempSecondaryCamera.CopyFrom(cam);
-		tempSecondaryCamera.clearFlags = CameraClearFlags.Color;
+		tempSecondaryCamera.clearFlags = CameraClearFlags.SolidColor;
 		tempSecondaryCamera.backgroundColor = Color.black;
 		tempSecondaryCamera.cullingMask = LayerMask.GetMask("Interactable", "Player");
 		tempSecondaryCamera.useOcclusionCulling = false;

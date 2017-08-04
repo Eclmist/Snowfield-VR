@@ -10,10 +10,13 @@ namespace Opening_Room
 	[System.Serializable]
 	public struct SequenceObjectGroup
 	{
+		public AudioClip notificationSound;
+
 		public GameObject message;
 		public TeleportPoint computerTeleportationPoint;
 		public Lamp lamp;
 		public Keyboard keyboard;
+		public Bed bed;
 
 		public VideoPlayer tv;
 		public MeshRenderer tvMeshRen;
@@ -24,11 +27,17 @@ namespace Opening_Room
 		public GameObject StaticLoop;
 		public GameObject Music;
 
-		public MeshRenderer GlitchLeft;
-		public MeshRenderer GlitchMiddle;
-		public MeshRenderer GlitchRight;
+		public Renderer GlitchLeft;
+		public Renderer GlitchMiddle;
+		public Renderer GlitchRight;
 
 		public Renderer windowLight;
+		public ReflectionProbe reflectionProbe;
+
+		public AudioSource ambient;
+
+		public OutlineRenderer outlineRen;
+		public GlitchCamera glitchScript;
 	}
 
 	[System.Serializable]
@@ -167,13 +176,16 @@ namespace Opening_Room
 			yield return new WaitForSeconds(3);
 
 			sequenceObjects.message.SetActive(true);
+			sequenceObjects.outlineRen.enabled = true;
+
 			sequenceObjects.computerTeleportationPoint.enabled = true;
 
 			yield return new WaitForSeconds(0.5F);
-			sequenceObjects.lamp.TurnOn(false);
-
 
 			yield return StartCoroutine(WaitForKeyboard("Open message"));
+
+			sequenceObjects.lamp.TurnOn(false);
+			sequenceObjects.lamp.enabled = false;
 
 			sequenceObjects.Music.SetActive(true);
 
@@ -205,17 +217,22 @@ namespace Opening_Room
 			//sequenceObjects.tv.Play();
 			// Make crazy shit happen here
 
+			sequenceObjects.outlineRen.enabled = false;
+			sequenceObjects.glitchScript.enabled = true;
+
 			sequenceObjects.StaticLoop.SetActive(true);
 			sequenceObjects.GlitchMiddle.enabled = true;
 			sequenceObjects.GlitchMiddle.GetComponent<AudioSource>().Play();
-			yield return new WaitForSeconds(1F);
+			yield return new WaitForSeconds(0.5F);
 
 			sequenceObjects.GlitchRight.enabled = true;
 			sequenceObjects.GlitchRight.GetComponent<AudioSource>().Play();
 
-			yield return new WaitForSeconds(1.5F);
+			yield return new WaitForSeconds(0.6F);
 			sequenceObjects.GlitchLeft.enabled = true;
 			sequenceObjects.GlitchLeft.GetComponent<AudioSource>().Play();
+
+
 		}
 
 		private IEnumerator WaitForKeyboard(string hoverhint)
@@ -228,7 +245,7 @@ namespace Opening_Room
 			while (!sequenceObjects.keyboard.GetKey())
 			{
 
-				if (!hinting && Time.time - startTime > 7)
+				if (!hinting && Time.time - startTime > 10)
 				{
 					sequenceObjects.keyboard.HintObject();
 					hinting = true;
@@ -236,6 +253,7 @@ namespace Opening_Room
 				yield return null;
 			}
 
+			HideAllControllerHints();
 		}
 
 		bool interactWithObjectEventFlag = false;
@@ -250,26 +268,18 @@ namespace Opening_Room
 
 				StartCoroutine(InteractWithObjectCoroutine());
 			}
-
-			if (!eventScheduledToEnd && VR_Interactable_Object.playerKnowsHowToInteractWithObjects)
-			{
-				StartCoroutine(EndEventAfterDelay(10));
-			}
 		}
 
 		private IEnumerator InteractWithObjectCoroutine()
 		{
-			while (true)
+			while (!VR_Interactable_Object.playerKnowsHowToInteractWithObjects)
 			{
-				if (VR_Interactable_Object.playerKnowsHowToInteractWithObjects)
-				{
-					yield return StartCoroutine(EndEventAfterDelay(10));
-
-					HideAllControllerHints();
-				}
-
 				yield return null;
 			}
+
+			yield return StartCoroutine(EndEventAfterDelay(10));
+
+			HideAllControllerHints();
 		}
 
 		bool sleeping = false;
@@ -278,7 +288,10 @@ namespace Opening_Room
 		{
 			if (!sleeping)
 			{
+				ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Go to sleep");
 				Bed.canSleep = true;
+				sequenceObjects.bed.HintObject();
+				sleeping = true;
 				StartCoroutine(SleepEventCoroutine());
 
 			}
@@ -288,18 +301,30 @@ namespace Opening_Room
 		{
 			sleeping = true;
 
+			while (!Bed.sleeping)
+			{
+				yield return null;
+			}
+
+			sequenceObjects.outlineRen.enabled = false;
+
+			AudioFadeOut.FadeOut(sequenceObjects.ambient, 2);
+			Bed.canSleep = false;
+			HideAllControllerHints();
+
 			while (!Bed.eyeClosed)
 			{
 				yield return null;
 			}
 
+			AudioFadeOut.FadeIn(sequenceObjects.ambient, 2);
+
+
 			//Eye closed
-			sequenceObjects.windowLight.material.SetColor("_EmissionColor", new Color(0.5F, 0.4298039F, 0.3566172F));
+			sequenceObjects.windowLight.material.SetColor("_EmissionColor", Color.black);
 			sequenceObjects.windowLight.UpdateGIMaterials();
-
+			sequenceObjects.reflectionProbe.intensity = 2.1F;
 			CompleteCurrentEvent();
-
-			Debug.Log("SleepEvent Ended");
 		}
 
 
@@ -308,10 +333,14 @@ namespace Opening_Room
 
 		private IEnumerator EndEventAfterDelay(float time)
 		{
-			eventScheduledToEnd = true;
-			yield return new WaitForSeconds(time);
-			CompleteCurrentEvent();
-			eventScheduledToEnd = false;
+			if (!eventScheduledToEnd)
+			{
+				eventScheduledToEnd = true;
+				yield return new WaitForSeconds(time);
+				CompleteCurrentEvent();
+				eventScheduledToEnd = false;
+			}
+			//Debug.Log("delayed event ended" + time);
 		}
 
 		private void HideAllControllerHints()
@@ -324,10 +353,16 @@ namespace Opening_Room
 
 		private void ShowControllerHints(Valve.VR.EVRButtonId btn, string text, bool glowbtn = true)
 		{
+
 			foreach (Hand hand in player.hands)
 			{
 				ControllerButtonHints.ShowTextHint(hand, btn, text, glowbtn);
+
+				AudioSource.PlayClipAtPoint(sequenceObjects.notificationSound, hand.transform.position);
 			}
+
+
+
 		}
 	}
 }

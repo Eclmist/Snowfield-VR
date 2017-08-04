@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 475678}
   - component: {fileID: 3364936}
   - component: {fileID: 2356592}
-  - component: {fileID: 13593758}
+  - component: {fileID: 136204229988668874}
   m_Layer: 21
   m_Name: teleport_marker_mesh
   m_TagString: Untagged
@@ -158,7 +158,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125956}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.792, y: -0.007496405, z: 1.864}
+  m_LocalPosition: {x: -0.792, y: -0.007496405, z: 1.724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 475678}
@@ -477,7 +477,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0135c95e70592e4fac2f29e7b78abcf, type: 3}
   m_Name: 
@@ -512,18 +512,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!135 &13593758
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162288}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.47625
-  m_Center: {x: 0, y: 0.48375, z: 0}
 --- !u!222 &22232488
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -614,3 +602,16 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 125956}
   m_IsPrefabParent: 1
+--- !u!136 &136204229988668874
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.29
+  m_Height: 1.24
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.23, z: 0}

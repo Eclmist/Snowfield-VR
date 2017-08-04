@@ -19,4 +19,21 @@ public static class AudioFadeOut
 		audioSource.volume = startVolume;
 	}
 
+	public static IEnumerator FadeIn(AudioSource audioSource, float FadeTime, float volTarget = 1)
+	{
+		float startVolume = audioSource.volume;
+		audioSource.Play();
+
+		while (audioSource.volume < volTarget)
+		{
+			audioSource.volume += startVolume * Time.deltaTime / FadeTime;
+
+			yield return null;
+		}
+
+		audioSource.volume = volTarget;
+
+	}
+
+
 }

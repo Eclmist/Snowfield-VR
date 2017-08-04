@@ -14,8 +14,6 @@ using UnityEngine;
 
 
 public class GenericItem : VR_Interactable_Object, IDamage
-
-
 {
 
 	protected bool isColliding = false;

@@ -7,22 +7,40 @@ namespace Opening_Room
 {
 	public class Bed : VR_Interactable_Object
 	{
-		[SerializeField] private PostProcessingProfile fx;
+		[SerializeField] private PostProcessingBehaviour fxBehaviour;
+
 		[SerializeField] private Valve.VR.InteractionSystem.Hand leftHand;
 		[SerializeField] private Valve.VR.InteractionSystem.Hand rightHand;
 
 		[SerializeField] private float sleepTime;
 		[SerializeField] private float sleepSpeed;
 
-		private float sleepVal = 0;
+		public static bool canSleep = false;
+		public static bool sleeping = false;
+		public static float sleepVal;
 
-		public static bool canSleep;
 		public static bool eyeClosed;
-		public override void OnTriggerPress(VR_Controller_Custom ctrl)
+
+		protected override void Start()
 		{
-			if (canSleep)
+			canSleep = false;
+		}
+
+		public override void OnTriggerPress(VR_Controller_Custom controller)
+		{
+			if (canSleep && !sleeping)
+				base.OnTriggerPress(controller);
+
+		}
+
+		public override void OnTriggerRelease(VR_Controller_Custom controller)
+		{
+
+			if (canSleep && !sleeping)
 			{
-				base.OnTriggerPress(ctrl);
+				base.OnTriggerRelease(controller);
+
+				sleeping = true;
 				StartCoroutine(Sleep());
 			}
 		}
@@ -35,6 +53,7 @@ namespace Opening_Room
 
 		IEnumerator Sleep()
 		{
+			PostProcessingProfile fx = fxBehaviour.profile;
 			fx.vignette.enabled = true;
 			fx.depthOfField.enabled = true;
 
@@ -49,8 +68,11 @@ namespace Opening_Room
 			while (sleepVal < 1)
 			{
 				sleepVal += Time.deltaTime * sleepSpeed;
-				vignetteSettings.intensity = sleepVal;
+				vignetteSettings.opacity = sleepVal;
 				dofSettings.focalLength = 1 + sleepVal * 10;
+
+				fx.vignette.settings = vignetteSettings;
+				fx.depthOfField.settings = dofSettings;
 				yield return null;
 			}
 
@@ -58,20 +80,34 @@ namespace Opening_Room
 			yield return new WaitForSeconds(sleepTime);
 			eyeClosed = false;
 
-			leftHand.gameObject.SetActive(true);
-			rightHand.gameObject.SetActive(true);
-			
-
 			while (sleepVal > 0)
 			{
 				sleepVal -= Time.deltaTime * sleepSpeed;
-				vignetteSettings.intensity = sleepVal;
+				vignetteSettings.opacity = sleepVal;
 				dofSettings.focalLength = 1 + sleepVal * 10;
+				fx.vignette.settings = vignetteSettings;
+				fx.depthOfField.settings = dofSettings;
+
 				yield return null;
 			}
 
 			fx.depthOfField.enabled = false;
 			fx.vignette.enabled = false;
+			leftHand.gameObject.SetActive(true);
+			rightHand.gameObject.SetActive(true);
+
+			sleeping = false;
+		}
+
+		protected override void PlayerLearnedInteraction()
+		{
+		}
+
+		protected void OnDisable()
+		{
+			PostProcessingProfile fx = fxBehaviour.profile;
+			fx.vignette.enabled = false;
+			fx.depthOfField.enabled = false;
 
 		}
 	}

@@ -54,7 +54,6 @@
 
 				//offset -= outline * 4;
 				//offset = max(0, offset);
-
 				blur -= outline;
 
 				blur = max(0, blur);
