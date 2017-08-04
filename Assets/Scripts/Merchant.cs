@@ -9,7 +9,7 @@ public class Merchant : MonoBehaviour {
     [SerializeField]
     private MerchantPanel merchantPanel;
     [SerializeField]
-    private float offsetFromMerchant;
+    private Vector3 offsetFromMerchant;
     private List<ItemData> buyableItemData = new List<ItemData>();
 
 	private MerchantPanel panelInstance = null;
@@ -27,7 +27,7 @@ public class Merchant : MonoBehaviour {
     {
 		if(!panelInstance)
 		{
-			panelInstance = Instantiate(merchantPanel, transform.position + transform.forward * offsetFromMerchant, merchantPanel.transform.rotation);
+			panelInstance = Instantiate(merchantPanel, transform.position + offsetFromMerchant, merchantPanel.transform.rotation);
 			panelInstance.InitializeAndDisplayCatalog(buyableItemData);
 
             return merchantPanel;
