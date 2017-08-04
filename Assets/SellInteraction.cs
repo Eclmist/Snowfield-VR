@@ -15,7 +15,7 @@ public class SellInteraction : InteractionsWithPlayer {
         {
             OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK, "SellItem", currentAI.Data.Name + " has sold you " + sellItemData.ObjectReference.name, transform.position, Player.Instance.transform, transform);
             op.SetEvent(OptionPane.ButtonType.Ok, SellItemDelegate);
-            currentPane = op;
+            currentUI = op;
             return true;
         }
 

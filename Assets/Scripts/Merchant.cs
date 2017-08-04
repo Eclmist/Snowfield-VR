@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Merchant : MonoBehaviour {
+public class Merchant : MonoBehaviour
+{
 
     [SerializeField]
     private List<GenericItem> buyableGenericItems;
@@ -12,31 +13,19 @@ public class Merchant : MonoBehaviour {
     private Vector3 offsetFromMerchant;
     private List<ItemData> buyableItemData = new List<ItemData>();
 
-	private MerchantPanel panelInstance = null;
-
     // Use this for initialization
-    void Start ()
-	{
-
+    protected void Start()
+    {
         PopulateBuyableItemDataList();
-
-	}
-
+    }
+    
     public MerchantPanel SpawnMerchantPanel()
     {
-		if(!panelInstance)
-		{
-			panelInstance = Instantiate(merchantPanel, transform.position + offsetFromMerchant,Quaternion.identity);
-			panelInstance.InitializeAndDisplayCatalog(buyableItemData);
-            panelInstance.transform.LookAt(Player.Instance.transform);
+        MerchantPanel panelInstance = Instantiate(merchantPanel, transform.position + offsetFromMerchant, merchantPanel.transform.rotation);
+        panelInstance.InitializeAndDisplayCatalog(buyableItemData);
 
-            return merchantPanel;
-		}
-
-        return null;
-			
+        return panelInstance;
     }
-
 
     // Retrieve the itemData for all buyable items
     private void PopulateBuyableItemDataList()
@@ -50,5 +39,5 @@ public class Merchant : MonoBehaviour {
         }
     }
 
-   
+
 }

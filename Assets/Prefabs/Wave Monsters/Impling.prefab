@@ -1424,11 +1424,12 @@ MonoBehaviour:
   detectionDistance: 10
   attackRange: 2
   currentState: 0
-  movementSpeed: 1
+  movementSpeed: 1.5
   minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
+  animUseSlot: 0
 --- !u!114 &114929313324412156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1441,11 +1442,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats:
-  - value: 700
+  - value: 10000000
     statsType: 0
   - value: 50
     statsType: 1
-  - value: 10000
+  - value: 1
     statsType: 2
   allStats: []
 --- !u!136 &136123209547254808

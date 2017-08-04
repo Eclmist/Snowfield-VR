@@ -11,13 +11,24 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public abstract bool CheckConversingWith(Actor target);
 
+    protected Collider thisCollider;
+
+
     protected StatsContainer variable;
 
     protected virtual void Awake()
     {
         variable = GetComponent<StatsContainer>();
+        thisCollider = GetComponent<Collider>();
     }
 
+    public Collider Collider
+    {
+        get
+        {
+            return thisCollider;
+        }
+    }
     public virtual StatsContainer StatContainer
     {
         get
@@ -123,7 +134,6 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
             else
                 return null;
         }
-
     }
 
     

@@ -52,7 +52,7 @@ public abstract class AI : Actor
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
-            UnEquipWeapons();
+            
         }
         else
         {
@@ -60,23 +60,7 @@ public abstract class AI : Actor
         }
     }
 
-    public void UnEquipWeapons()
-    {
-        if (leftHand != null && leftHand.Item != null)
-        {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
-                Destroy(leftHand.Item.gameObject);
-            else
-                leftHand.Item.Unequip();
-        }
-        if (rightHand != null && rightHand.Item != null)
-        {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
-                Destroy(rightHand.Item.gameObject);
-            else
-                rightHand.Item.Unequip();
-        }
-    }
+   
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {
@@ -89,10 +73,7 @@ public abstract class AI : Actor
     }
     public abstract void Interact(Actor actor);
 
-    public virtual float GetOutOfTimeDuration()
-    {
-        return 0;
-    }
+    
 
     public virtual void OutOfTownProgress()
     {
@@ -101,15 +82,11 @@ public abstract class AI : Actor
 
     public virtual void Spawn()
     {
-
         gameObject.SetActive(true);
-
     }
 
     public virtual void Despawn()
     {
-
-
         if (disablePS)
         {
             Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);

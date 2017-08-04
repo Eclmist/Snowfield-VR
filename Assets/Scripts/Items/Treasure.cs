@@ -6,8 +6,20 @@ using UnityEngine;
 public class Treasure : MonoBehaviour, IDamagable {
 
 
+    protected Collider col;
 
+    protected void Awake()
+    {
+        col = GetComponent<Collider>();
+    }
 
+    public Collider Collider
+    {
+        get
+        {
+            return col;
+        }
+    }
     public bool CanBeAttacked
     {
         get

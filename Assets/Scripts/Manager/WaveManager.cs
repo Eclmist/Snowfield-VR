@@ -119,7 +119,6 @@ public class WaveManager : MonoBehaviour
             for (int j = 0; j < groups[i].monsters.Length; j++)
             {
                 Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
-				Debug.Log ("added");
                 monstersInTheScene.Add(monster);
                 monster.Data.GetJob(JobType.COMBAT).SetLevel(level);
 				yield return new WaitForSeconds(timeBetweenEachMonsterSpawn);

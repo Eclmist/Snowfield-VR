@@ -7,9 +7,9 @@ public class Hammer : BlacksmithItem
 	private AudioSource source;
 
 	private float timeSinceLastHit = 0;
-
-	void Start()
+	protected override void Start()
 	{
+        base.Start();
 		source = GetComponent<AudioSource>();
 	}
 

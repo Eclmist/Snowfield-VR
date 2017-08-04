@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 
-public abstract class OptionPane : MonoBehaviour
+public abstract class OptionPane : MonoBehaviour, IUI
 {
 	[System.Serializable]
 	public struct OP_Elements

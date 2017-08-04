@@ -4,9 +4,6 @@ using UnityEngine;
 
 public interface IDamagable
 {
-
-   
-
     void TakeDamage(float damage, Actor attacker);
 
     bool CanBeAttacked
@@ -14,6 +11,11 @@ public interface IDamagable
         get;
     }
     Transform transform
+    {
+        get;
+    }
+
+    Collider Collider
     {
         get;
     }
