@@ -10,7 +10,7 @@
 		LOD 100
 
 		Blend SrcAlpha OneMinusSrcAlpha
-
+		Zwrite Off
 		Pass
 		{
 			CGPROGRAM
