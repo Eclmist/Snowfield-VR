@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FriendlyAiFSM : ActorFSM {
+public class FriendlyAiFSM : ActorFSM
+{
 
     protected List<Shop> visitedShop = new List<Shop>();
 
@@ -117,31 +118,45 @@ public class FriendlyAiFSM : ActorFSM {
         while (isHandlingAction)
         {
             LookAtPlayer(actor.transform.position);
+            Vector3 endPos = target.transform.position;
+            endPos.y = transform.position.y;
+            Vector3 dir = (target.transform.position - transform.position).normalized;
+            dir.y = 0;
 
-            if (target is Player)
+            float angle = Mathf.Abs(Vector3.Angle(transform.forward, dir));
+
+            if (angle < 30)
             {
-                Player player = target as Player;
-                if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
+                if (target is Player)
                 {
-                    Debug.Log(currentFriendlyAI.IsInteractionAvailable());
-                    if (player.CheckConversingWith(currentFriendlyAI))
+                    Player player = target as Player;
+                    if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
                     {
-                        waitTimer = 5;
-
-                        if (!currentFriendlyAI.Interacting)
+                        Debug.Log(currentFriendlyAI.IsInteractionAvailable());
+                        if (player.CheckConversingWith(currentFriendlyAI))
                         {
-                            currentFriendlyAI.StartInteraction();
+                            waitTimer = 5;
+
+                            if (!currentFriendlyAI.Interacting)
+                            {
+                                currentFriendlyAI.StartInteraction();
+                            }
+                        }
+                        else
+                        {
+                            waitTimer -= Time.deltaTime;
+                            if (waitTimer <= 0)
+                            {
+                                currentFriendlyAI.StopAllInteractions();
+                                break;
+                            }
+
                         }
                     }
                     else
                     {
-                        waitTimer -= Time.deltaTime;
-                        if (waitTimer <= 0)
-                        {
-                            currentFriendlyAI.StopAllInteractions();
-                            break;
-                        }
-
+                        currentFriendlyAI.StopAllInteractions();
+                        break;
                     }
                 }
                 else
@@ -149,11 +164,6 @@ public class FriendlyAiFSM : ActorFSM {
                     currentFriendlyAI.StopAllInteractions();
                     break;
                 }
-            }
-            else
-            {
-                currentFriendlyAI.StopAllInteractions();
-                break;
             }
             yield return new WaitForEndOfFrame();
 
