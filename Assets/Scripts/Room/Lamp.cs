@@ -69,6 +69,5 @@ namespace Opening_Room
 		protected override void PlayerLearnedInteraction()
 		{
 		}
-
 	}
 }

@@ -38,6 +38,10 @@ namespace Opening_Room
 
 		public OutlineRenderer outlineRen;
 		public GlitchCamera glitchScript;
+
+		public Light purpleLight;
+
+		public Animator cupboardAnimator;
 	}
 
 	[System.Serializable]
@@ -240,9 +244,13 @@ namespace Opening_Room
 
 			while (glitchVal < 1)
 			{
-				glitchVal += Time.deltaTime;
+				glitchVal += Time.deltaTime / 10;
 				sequenceObjects.glitchScript.SetGlitchAmount(glitchVal);
+				sequenceObjects.purpleLight.intensity = (glitchVal / 10) - Random.Range(0, 0.2F);
+				yield return null;
 			}
+
+			sequenceObjects.cupboardAnimator.enabled = true;
 
 		}
 

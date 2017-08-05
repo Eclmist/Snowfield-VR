@@ -84,30 +84,30 @@ public class Glitch2 : MonoBehaviour
         glitchMaterial.SetFloat("_intensity", _intensity);
         glitchMaterial.SetTexture("_dispTex", displacementMap);
 
-        if (glitchup > glitchupTime)
-        {
-            if (Random.value < 0.1f * _intensity)
-                glitchMaterial.SetFloat("flip_up", Random.Range(0, 1f) * _intensity);
-            else
-                glitchMaterial.SetFloat("flip_up", 0);
+		if (glitchup > glitchupTime)
+		{
+			if (Random.value < 0.1f * _intensity)
+				glitchMaterial.SetFloat("flip_up", Random.Range(0, 1f));
+			else
+				glitchMaterial.SetFloat("flip_up", 0);
 
-            glitchup = 0;
-            glitchupTime = Random.value / 10f;
-        }
+			glitchup = 0;
+			glitchupTime = Random.value / 10f;
+		}
 
-        if (glitchdown > glitchdownTime)
-        {
-            if (Random.value < 0.1f * _intensity)
-                glitchMaterial.SetFloat("flip_down", 1 - Random.Range(0, 1f) * _intensity);
-            else
-                glitchMaterial.SetFloat("flip_down", 1);
+		if (glitchdown > glitchdownTime)
+		{
+			if (Random.value < 0.1f * _intensity)
+				glitchMaterial.SetFloat("flip_down", 1 - Random.Range(0, 1f));
+			else
+				glitchMaterial.SetFloat("flip_down", 1);
 
 
-            glitchdown = 0;
-            glitchdownTime = Random.value / 10f;
-        }
+			glitchdown = 0;
+			glitchdownTime = Random.value / 10f;
+		}
 
-        if (Random.value < 0.05 * _intensity)
+		if (Random.value < 0.05 * _intensity)
         {
             glitchMaterial.SetFloat("displace", Random.value * _intensity);
             glitchMaterial.SetFloat("scale", 1 - Random.value * _intensity);

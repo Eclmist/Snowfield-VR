@@ -7,7 +7,7 @@ using UnityEngine;
 public class GlitchCamera : MonoBehaviour {
 
 	[SerializeField] Material glitchMat;
-	[SerializeField] [Range(0,1)] private float glitchAmount = 1;
+	[SerializeField] [Range(0,1)] private float glitchAmount = 0;
 
 	[SerializeField] [Range(0, 1)] private float minMask = 0.7F;
 	private float correctedMinMask;
@@ -28,11 +28,6 @@ public class GlitchCamera : MonoBehaviour {
 	private void OnEnable()
 	{
 		correctedMinMask = 1 - minMask;
-		if (glitch2)
-		{
-			glitch2.enabled = true;
-		}
-
 		cam = GetComponent<Camera>();
 		tempSecondaryCamera = new GameObject("Glitch Camera").AddComponent<Camera>();
 		tempSecondaryCamera.enabled = false;
@@ -93,7 +88,21 @@ public class GlitchCamera : MonoBehaviour {
 
 	public void SetGlitchAmount(float amount)
 	{
+		glitchAmount = amount;
 		Shader.SetGlobalFloat("_MaskCutoff", 1 - glitchAmount * correctedMinMask);
-		glitch2._intensity = amount;
+
+		if (glitch2)
+		{
+			if (amount > 0.1F)
+			{
+				glitch2.enabled = true;
+				glitch2._intensity = (amount / 2);
+
+			}
+			else
+			{
+				glitch2.enabled = false;
+			}
+		}
 	}
 }

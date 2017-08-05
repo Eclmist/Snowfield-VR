@@ -62,7 +62,6 @@ public class VR_Interactable_Object : VR_Interactable
 
 	protected override void Awake()
 	{
-
         rigidBody = GetComponent<Rigidbody>();
         childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
