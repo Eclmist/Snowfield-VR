@@ -32,8 +32,15 @@ namespace Opening_Room
 		{
 			if (debugSleepTrigger)
 			{
-				Sleep();
+				if (canSleep && !sleeping)
+				{
+					sleeping = true;
+					StartCoroutine(Sleep());
+				}
+
 				debugSleepTrigger = false;
+
+				StopHint();
 			}
 		}
 

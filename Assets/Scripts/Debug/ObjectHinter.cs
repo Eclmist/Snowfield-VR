@@ -43,7 +43,7 @@ public class ObjectHinter : MonoBehaviour
 
 				if (Physics.Raycast(mouseRay, out hit, LayerMask.GetMask("Interactable")))
 				{
-					VR_Interactable_Object obj = hit.collider.GetComponent<VR_Interactable_Object>();
+					VR_Interactable_Object obj = hit.collider.GetComponentInParent<VR_Interactable_Object>();
 					if (obj)
 					{
 						obj.HintObject();
