@@ -137,7 +137,11 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     }
 
     
-   
+    public virtual void Die()
+    {
+        variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
+        
+    }
 
     public virtual void GainExperience(JobType jobType, int value)
     {

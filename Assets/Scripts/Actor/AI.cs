@@ -60,7 +60,11 @@ public abstract class AI : Actor
         }
     }
 
-   
+    public override void Die()
+    {
+        base.Die();
+        currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
+    }
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {

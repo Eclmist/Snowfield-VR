@@ -39,9 +39,9 @@ public class Treasure : MonoBehaviour, IDamagable {
 
     public void TakeDamage(float Damage,Actor actor)
     {
-        actor.TakeDamage(99999, null);
+       
         GameManager.Instance.AddTax((int)Damage);
-     
+        actor.Die();
     }
 	public new Transform transform
     {

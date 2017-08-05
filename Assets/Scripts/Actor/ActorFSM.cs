@@ -174,7 +174,10 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void UpdateAnyState()
     {
         if (target != null && target.Equals(null))
+        {
+            Debug.Log("SetNull");
             target = null;
+        }
     }
 
 
@@ -198,7 +201,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateCombatState()
     {
-
+       
         if (target != null && !target.Equals(null) && target.CanBeAttacked)
         {
 
@@ -219,7 +222,6 @@ public abstract class ActorFSM : MonoBehaviour
                 dir.Normalize();
                 dir.y = 0;
 
-                Debug.Log(dir.y);
                 float angle = Vector3.Angle(transform.forward, dir);
                 Vector3 tempPoint = hit.point;
                 tempPoint.y = eye.position.y;
@@ -227,6 +229,7 @@ public abstract class ActorFSM : MonoBehaviour
 
                 if (distance > tempAttackRange || Mathf.Abs(angle) > 30)
                 {
+                    
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", movementSpeed);
                     if (CanMove())
@@ -247,6 +250,7 @@ public abstract class ActorFSM : MonoBehaviour
             }
             else
             {
+
                 ChangeState(FSMState.IDLE);
                 return;
             }
@@ -414,7 +418,7 @@ public abstract class ActorFSM : MonoBehaviour
 
 
 
-    protected Collider CheckObstacles()
+    protected Collider CheckObstacles(LayerMask mask)
     {
         RaycastHit Hit;
         //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
@@ -422,8 +426,8 @@ public abstract class ActorFSM : MonoBehaviour
         Vector3 left45 = (eye.forward - eye.right).normalized;
 
         if (Physics.Raycast(eye.position, right45, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask) || Physics.Raycast(eye.position, left45, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask))
+            minimumDistToAvoid, mask) || Physics.Raycast(eye.position, left45, out Hit,
+            minimumDistToAvoid, mask))
         {
 
             return Hit.collider;
