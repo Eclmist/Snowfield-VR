@@ -44,7 +44,8 @@ public class OutlineRenderer : MonoBehaviour
 
 	protected void OnDisable()
 	{
-		Destroy(tempSecondaryCamera.gameObject);
+		if (tempSecondaryCamera)
+		DestroyImmediate(tempSecondaryCamera.gameObject);
 	}
 
 	protected void OnRenderImage(RenderTexture source, RenderTexture destination)

@@ -40,11 +40,13 @@
 			sampler2D _MainTex;
 			sampler2D _GlitchTex;
 
+			float4 _GlitchColor;
+
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 glitch = tex2D(_GlitchTex, i.uv);
-				return col + glitch;
+				return col + glitch.r * _GlitchColor;
 			}
 			ENDCG
 		}

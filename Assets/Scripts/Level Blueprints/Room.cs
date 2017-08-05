@@ -45,6 +45,7 @@ namespace Opening_Room
 	{
 		public UnityEvent invokableEventUpdate;
 		[Range(0,100)] public float startDelay;
+		public bool enabled = true;
 	}
 
 	public class Room : MonoBehaviour
@@ -86,6 +87,9 @@ namespace Opening_Room
 
 				currentEvent = events[0];
 				events.RemoveAt(0);
+
+				if (!currentEvent.enabled)
+					currentEvent = null;
 			}
 
 			if (currentEvent.startDelay < timer)
@@ -218,20 +222,27 @@ namespace Opening_Room
 			// Make crazy shit happen here
 
 			sequenceObjects.outlineRen.enabled = false;
-			sequenceObjects.glitchScript.enabled = true;
 
 			sequenceObjects.StaticLoop.SetActive(true);
 			sequenceObjects.GlitchMiddle.enabled = true;
 			sequenceObjects.GlitchMiddle.GetComponent<AudioSource>().Play();
-			yield return new WaitForSeconds(0.5F);
+			yield return new WaitForSeconds(0.3F);
 
 			sequenceObjects.GlitchRight.enabled = true;
 			sequenceObjects.GlitchRight.GetComponent<AudioSource>().Play();
 
-			yield return new WaitForSeconds(0.6F);
+			yield return new WaitForSeconds(0.4F);
 			sequenceObjects.GlitchLeft.enabled = true;
 			sequenceObjects.GlitchLeft.GetComponent<AudioSource>().Play();
 
+			float glitchVal = 0;
+			sequenceObjects.glitchScript.enabled = true;
+
+			while (glitchVal < 1)
+			{
+				glitchVal += Time.deltaTime;
+				sequenceObjects.glitchScript.SetGlitchAmount(glitchVal);
+			}
 
 		}
 
@@ -288,7 +299,7 @@ namespace Opening_Room
 		{
 			if (!sleeping)
 			{
-				ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Go to sleep");
+				ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Go back to sleep");
 				Bed.canSleep = true;
 				sequenceObjects.bed.HintObject();
 				sleeping = true;

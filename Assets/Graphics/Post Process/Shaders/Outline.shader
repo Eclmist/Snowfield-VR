@@ -58,7 +58,7 @@
 
 				blur = max(0, blur);
 
-
+				///return outline;
 				fixed4 col = tex2D(_MainTex, i.uv);
 				return col + blur;
 			}

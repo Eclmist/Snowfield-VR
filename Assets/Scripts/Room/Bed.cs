@@ -21,9 +21,20 @@ namespace Opening_Room
 
 		public static bool eyeClosed;
 
+		public bool debugSleepTrigger;
+
 		protected override void Start()
 		{
 			canSleep = false;
+		}
+
+		protected void Update()
+		{
+			if (debugSleepTrigger)
+			{
+				Sleep();
+				debugSleepTrigger = false;
+			}
 		}
 
 		public override void OnTriggerPress(VR_Controller_Custom controller)

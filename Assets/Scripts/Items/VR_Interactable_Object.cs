@@ -33,6 +33,16 @@ public class VR_Interactable_Object : VR_Interactable
 		}
 	}
 
+	public void StopHint()
+	{
+		if (isHinting)
+		{
+			isHinting = false;
+			SetOutline(false);
+		}
+	}
+
+
 	private bool isHinting;
 	private bool hintOverride;
 	private IEnumerator Hint()
@@ -51,7 +61,8 @@ public class VR_Interactable_Object : VR_Interactable
 	}
 
 	protected override void Awake()
-    {
+	{
+
         rigidBody = GetComponent<Rigidbody>();
         childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
@@ -125,9 +136,14 @@ public class VR_Interactable_Object : VR_Interactable
 
 		PlayerLearnedInteraction();
 
-		isHinting = false;
+	    if (isHinting)
+		    StopHint();
+	    else
+	    {
+		    SetOutline(false);
+		}
 
-		OnTriggerPress ();
+		OnTriggerPress();
 
 		controller.Vibrate(triggerPressVibration);
 
@@ -138,7 +154,6 @@ public class VR_Interactable_Object : VR_Interactable
 
 		targetPositionPoint.transform.parent = controller.transform;
 
-        SetOutline(false);
 
         if (currentInteractingController)
             currentInteractingController.Release();
