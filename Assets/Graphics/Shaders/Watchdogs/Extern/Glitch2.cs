@@ -87,7 +87,7 @@ public class Glitch2 : MonoBehaviour
 		if (glitchup > glitchupTime)
 		{
 			if (Random.value < 0.1f * _intensity)
-				glitchMaterial.SetFloat("flip_up", Random.Range(0, 1f));
+				glitchMaterial.SetFloat("flip_up", Random.Range(0, 0.3f));
 			else
 				glitchMaterial.SetFloat("flip_up", 0);
 
@@ -98,7 +98,7 @@ public class Glitch2 : MonoBehaviour
 		if (glitchdown > glitchdownTime)
 		{
 			if (Random.value < 0.1f * _intensity)
-				glitchMaterial.SetFloat("flip_down", 1 - Random.Range(0, 1f));
+				glitchMaterial.SetFloat("flip_down", 1 - Random.Range(0, 0.3f));
 			else
 				glitchMaterial.SetFloat("flip_down", 1);
 

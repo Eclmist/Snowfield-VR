@@ -19,10 +19,8 @@ namespace Opening_Room
 		public Bed bed;
 
 		public VideoPlayer tv;
-		public MeshRenderer tvMeshRen;
-
-		public VideoClip messageVideo;
-
+		public Renderer tvMeshRen;
+		
 		public GameObject BGM;
 		public GameObject StaticLoop;
 		public GameObject Music;
@@ -30,11 +28,14 @@ namespace Opening_Room
 		public Renderer GlitchLeft;
 		public Renderer GlitchMiddle;
 		public Renderer GlitchRight;
+		public AudioClip shutdownSound;
 
 		public Renderer windowLight;
 		public ReflectionProbe reflectionProbe;
 
 		public AudioSource ambient;
+		public AudioSource tetTheme;
+		public AudioSource voice;
 
 		public OutlineRenderer outlineRen;
 		public GlitchCamera glitchScript;
@@ -73,6 +74,11 @@ namespace Opening_Room
 		{
 			player = Valve.VR.InteractionSystem.Player.instance;
 			currentEvent = null;
+
+			sequenceObjects.tv.Prepare();
+			sequenceObjects.GlitchLeft.GetComponent<VideoPlayer>().Prepare();
+			sequenceObjects.GlitchMiddle.GetComponent<VideoPlayer>().Prepare();
+			sequenceObjects.GlitchRight.GetComponent<VideoPlayer>().Prepare();
 		}
 
 		protected void Update()
@@ -193,14 +199,15 @@ namespace Opening_Room
 			yield return StartCoroutine(WaitForKeyboard("Open message"));
 
 			sequenceObjects.lamp.TurnOn(false);
-			sequenceObjects.lamp.enabled = false;
+			sequenceObjects.lamp.interactable = false;
 
 			sequenceObjects.Music.SetActive(true);
 
 			sequenceObjects.message.SetActive(false);
-			sequenceObjects.tvMeshRen.enabled = true;
-			sequenceObjects.tv.clip = sequenceObjects.messageVideo;
+			sequenceObjects.tvMeshRen.enabled = false;
+
 			sequenceObjects.tv.isLooping = false;
+			sequenceObjects.tv.Play();
 
 			while (sequenceObjects.tv.time < 5)
 			{
@@ -225,30 +232,67 @@ namespace Opening_Room
 			//sequenceObjects.tv.Play();
 			// Make crazy shit happen here
 
+			AudioFadeOut.FadeOut(sequenceObjects.BGM.GetComponent<AudioSource>(), 1);
+
+
 			sequenceObjects.outlineRen.enabled = false;
 
-			sequenceObjects.StaticLoop.SetActive(true);
+
 			sequenceObjects.GlitchMiddle.enabled = true;
-			sequenceObjects.GlitchMiddle.GetComponent<AudioSource>().Play();
-			yield return new WaitForSeconds(0.3F);
+			sequenceObjects.GlitchMiddle.GetComponent<VideoPlayer>().Play();
+			AudioSource.PlayClipAtPoint(sequenceObjects.shutdownSound, sequenceObjects.GlitchMiddle.transform.position);
+			yield return new WaitForSeconds(0.2F);
 
 			sequenceObjects.GlitchRight.enabled = true;
+			sequenceObjects.GlitchRight.GetComponent<VideoPlayer>().Play();
+			AudioSource.PlayClipAtPoint(sequenceObjects.shutdownSound, sequenceObjects.GlitchRight.transform.position);
+
+			yield return new WaitForSeconds(0.3F);
+
+			sequenceObjects.GlitchLeft.enabled = true;
+			sequenceObjects.GlitchLeft.GetComponent<VideoPlayer>().Play();
+			AudioSource.PlayClipAtPoint(sequenceObjects.shutdownSound, sequenceObjects.GlitchLeft.transform.position);
+
+			sequenceObjects.reflectionProbe.enabled = false;
+
+			yield return new WaitForSeconds(1.5f);
+
+			sequenceObjects.StaticLoop.SetActive(true);
+			sequenceObjects.GlitchMiddle.GetComponent<AudioSource>().Play();
+			yield return new WaitForSeconds(0.2F);
+
 			sequenceObjects.GlitchRight.GetComponent<AudioSource>().Play();
 
-			yield return new WaitForSeconds(0.4F);
-			sequenceObjects.GlitchLeft.enabled = true;
+			yield return new WaitForSeconds(0.3F);
 			sequenceObjects.GlitchLeft.GetComponent<AudioSource>().Play();
 
 			float glitchVal = 0;
 			sequenceObjects.glitchScript.enabled = true;
+
 
 			while (glitchVal < 1)
 			{
 				glitchVal += Time.deltaTime / 10;
 				sequenceObjects.glitchScript.SetGlitchAmount(glitchVal);
 				sequenceObjects.purpleLight.intensity = (glitchVal / 10) - Random.Range(0, 0.2F);
+
+
+				if (glitchVal > 0.72F)
+				{
+					sequenceObjects.voice.enabled = true;
+
+				}
+				else if (glitchVal > 0.2F)
+				{
+					sequenceObjects.tetTheme.enabled = true;
+
+				}
+
 				yield return null;
 			}
+
+			yield return new WaitForSeconds(0.3F);
+
 
 			sequenceObjects.cupboardAnimator.enabled = true;
 
@@ -327,7 +371,7 @@ namespace Opening_Room
 
 			sequenceObjects.outlineRen.enabled = false;
 
-			AudioFadeOut.FadeOut(sequenceObjects.ambient, 2);
+			AudioFadeOut.FadeOut(sequenceObjects.ambient, 1);
 			Bed.canSleep = false;
 			HideAllControllerHints();
 
@@ -336,7 +380,7 @@ namespace Opening_Room
 				yield return null;
 			}
 
-			AudioFadeOut.FadeIn(sequenceObjects.ambient, 2);
+			AudioFadeOut.FadeIn(sequenceObjects.ambient, 1);
 
 
 			//Eye closed

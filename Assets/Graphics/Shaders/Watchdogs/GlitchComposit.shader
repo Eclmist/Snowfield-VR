@@ -41,12 +41,35 @@
 			sampler2D _GlitchTex;
 
 			float4 _GlitchColor;
-
+			float worldY;
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
 				fixed4 glitch = tex2D(_GlitchTex, i.uv);
-				return col + glitch.r * _GlitchColor;
+
+				//fixed colLeft = tex2D(_MainTex, i.uv + fixed2(0.0008, 0)).r;
+				//fixed colRight = tex2D(_MainTex, i.uv + fixed2(-0.0008, 0)).r;
+				//fixed colUp = tex2D(_MainTex, i.uv + fixed2(0, 0.0014)).r;
+				//fixed colDown = tex2D(_MainTex, i.uv + fixed2(0, -0.0014)).r;
+
+				//if (abs(depthDown - depth) > 0.00001 && abs(colDown - col.r) > 0.001) col += fixed4(0, 0.4, 1, 1);
+				//if (abs(depthUp - depth) > 0.00001 && abs(colUp - col.r) > 0.001) col += fixed4(0, 0.4, 1, 1);
+				//if (abs(depthRight - depth) > 0.00001 && abs(colRight - col.r) > 0.001) col += fixed4(0, 0.4, 1, 1);
+				//if (abs(depthLeft - depth) > 0.00001 && abs(colLeft - col.r) > 0.001) col += fixed4(0, 0.4, 1, 1);
+
+				//return depth + depthLeft + depthUp;
+
+				//fixed outline = 0;
+
+				//if (i.uv.y < 0.5)
+				//{
+				//	outline += pow(abs(colDown - col.r), 2.2);
+				//	outline += pow(abs(colUp - col.r), 2.2);
+				//	outline += pow(abs(colRight - col.r), 2.2);
+				//	outline += pow(abs(colLeft - col.r), 2.2);
+				//}
+
+				return col + glitch.r * _GlitchColor;// +min(0.8, (outline) * 10000000) * fixed4(1, 0, 0, 1);
 			}
 			ENDCG
 		}
