@@ -123,35 +123,61 @@ public class OrderSlip : VR_Interactable_UI
     private void TryConfirmOrder()
     {
 
-        Debug.Log("try to confirm");
-       
+        bool isCorrect = false;
+
 
         if (interactingWeapon)
         {
             if (interactingWeapon.ItemID == order.ItemID)
             {
-                OrderEnd(true);
-				CloseOptions();
-				GameManager.Instance.AddPlayerGold(reward);
-				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
+                isCorrect = true;
+            }
+            else // give the player lesser reward if material type is the same
+            {
+                ItemData tempData = ItemManager.Instance.GetItemData(interactingWeapon.ItemID);
+                CraftedItem tempCraftedItem = tempData.ObjectReference.GetComponent<CraftedItem>();
 
-                if (orderCompleteSound)
-                    AudioSource.PlayClipAtPoint(orderCompleteSound,transform.position);
+                if (tempCraftedItem)
+                {
 
-				interactingWeapon.LinkedController.SetModelActive(true);
-				Destroy(interactingWeapon.gameObject);
+                    PhysicalMaterial.Type tempType = tempCraftedItem.GetPhysicalMaterial();
 
-				
+                    if (order.MaterialType == tempType)
+                    {
 
+                        int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
+                        reward /= reduction;
+                        isCorrect = true;
 
-				Debug.Log("correct");
+                    }
+
+                }
             }
 
         }
-        else
+
+
+
+        if(isCorrect)
         {
-            Debug.Log("wrong?");
+
+            OrderEnd(true);
+            GameManager.Instance.AddPlayerGold(reward);
+            TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
+
+            if (orderCompleteSound)
+                AudioSource.PlayClipAtPoint(orderCompleteSound, transform.position);
+
+
+            interactingWeapon.LinkedController.SetModelActive(true);
+            Destroy(interactingWeapon.gameObject);
+
         }
+
+
+        CloseOptions();
+
+
 
     }
 
@@ -172,8 +198,9 @@ public class OrderSlip : VR_Interactable_UI
 
 
 
-    protected override void OnTriggerPress()
+    protected override void OnTriggerRelease()
     {
+        base.OnTriggerRelease();
 
         if (currentInteractingController.UI == this)
         {
