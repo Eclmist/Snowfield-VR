@@ -40,7 +40,7 @@ public class Treasure : MonoBehaviour, IDamagable {
     public void TakeDamage(float Damage,Actor actor)
     {
         actor.TakeDamage(99999, null);
-        GameManager.Instance.AddPlayerGold((int)-Damage);
+        GameManager.Instance.AddTax((int)Damage);
      
     }
 	public new Transform transform
