@@ -18,6 +18,7 @@ public class OrderSlip : VR_Interactable_UI
     [SerializeField] GameObject detailPane;
     [SerializeField] AudioClip orderCompleteSound;
     [SerializeField] AudioClip orderFadeInSound;
+    [SerializeField] AudioClip wrongOrderSound;
     OptionPane currentOP;
 
     public AdventurerAI OrderedAI
@@ -172,6 +173,12 @@ public class OrderSlip : VR_Interactable_UI
             interactingWeapon.LinkedController.SetModelActive(true);
             Destroy(interactingWeapon.gameObject);
 
+        }
+        else
+        {
+            TextSpawnerManager.Instance.SpawnText("Not even close!", Color.red, transform);
+            if (wrongOrderSound)
+                AudioSource.PlayClipAtPoint(wrongOrderSound,transform.position);
         }
 
 
