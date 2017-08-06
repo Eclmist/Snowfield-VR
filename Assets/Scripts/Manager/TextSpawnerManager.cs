@@ -52,7 +52,7 @@ public class TextSpawnerManager : MonoBehaviour {
 
 
     // Generates a text that stays at a position 
-    public void SpawnSoundEffect(string text, Color color, Transform t, Vector3 offset, float scale = 1)
+    public void SpawnSoundEffect(string text, Color color, Transform t, Vector3 offset, float duration, float scale = 1)
     {
 
         
@@ -63,7 +63,7 @@ public class TextSpawnerManager : MonoBehaviour {
         st.SetColor(color);
         st.GetComponentInChildren<Animator>().enabled = false;
         st.GetComponentInChildren<Outline>().enabled = true;
-        StartCoroutine(Shake(st.gameObject, 3, 0.05f));
+        StartCoroutine(Shake(st.gameObject, duration, 0.05f));
 
     }
 
