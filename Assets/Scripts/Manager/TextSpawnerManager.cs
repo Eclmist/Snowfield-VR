@@ -68,6 +68,27 @@ public class TextSpawnerManager : MonoBehaviour {
     }
 
 
+    public void SpawnSoundEffect(string text, Color color, Vector3 pos, float duration, float scale = 1)
+    {
+
+        SpawnedText st = Instantiate(textPrefab, pos, Quaternion.identity);
+
+        st.transform.localScale *= scale;
+        st.SetText(text);
+        st.SetColor(color);
+        st.GetComponentInChildren<Animator>().enabled = false;
+        st.GetComponentInChildren<Outline>().enabled = true;
+        StartCoroutine(Shake(st.gameObject, duration, 0.05f));
+
+    }
+
+
+    public void SpawnVisual(GameObject prefab, Transform t,float scale = 1)
+    {
+        Instantiate(prefab, t.position, t.rotation).transform.localScale *= scale;
+    }
+
+
     private IEnumerator Shake(GameObject g, float shakeDuration, float shakeIntensity)
     {
 
