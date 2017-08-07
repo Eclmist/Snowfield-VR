@@ -78,7 +78,11 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         float damage = item != null ? item.Damage : 0;
         if (target != null)
-            target.TakeDamage((damage + variable.GetStat(Stats.StatsType.ATTACK).Current) * scale, this);
+        {
+            damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
+            float randomVal = Random.Range(0.8f, 1.2f);
+            target.TakeDamage(damage * randomVal, this);
+        }
     }
 
     public virtual void Attack(float damage, IDamagable target)

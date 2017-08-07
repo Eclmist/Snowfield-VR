@@ -104,5 +104,9 @@ public class AI_HUD : MonoBehaviour {
 		{
 			actor.TakeDamage(50, null);
 		}
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            actor.GainExperience(JobType.COMBAT, 10000);
+        }
 	}
 }

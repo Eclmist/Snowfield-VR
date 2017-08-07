@@ -9,14 +9,6 @@ public class SpawnedText : MonoBehaviour {
     private Text text;
     [SerializeField]
     private Animator anim;
-    
-
-	// Use this for initialization
-	void Start ()
-    {
-        Destroy(this.gameObject,anim.GetCurrentAnimatorClipInfo(0).Length);
-	}
-	
 
 
     public void SetText(string s)

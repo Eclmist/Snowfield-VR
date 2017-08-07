@@ -65,20 +65,24 @@ public class BossFSM : MonsterFSM
         base.HandleCombatAction();
         if (!setAttack)
         {
-            List<CoolDown> availableAttack = new List<CoolDown>();
-            availableAttack.AddRange(attacks);
-            availableAttack.RemoveAll(CoolDownSkill => CoolDownSkill.CurrentCoolDown <= CoolDownSkill.MaxCoolDown);
             int random = 0;
-            if (availableAttack.Count > 0)
+            if (target is Actor)
             {
-                setAttack = true;
-                random = Random.Range(0, availableAttack.Count);
-                for(int i = 0;i < attacks.Length; i++)
+                List<CoolDown> availableAttack = new List<CoolDown>();
+                availableAttack.AddRange(attacks);
+                availableAttack.RemoveAll(CoolDownSkill => CoolDownSkill.CurrentCoolDown <= CoolDownSkill.MaxCoolDown);
+
+                if (availableAttack.Count > 0)
                 {
-                    if (attacks[i].Equals(availableAttack[random]))
+                    setAttack = true;
+                    random = Random.Range(0, availableAttack.Count);
+                    for (int i = 0; i < attacks.Length; i++)
                     {
-                        currentAttack = i;
-                        random = i;
+                        if (attacks[i].Equals(availableAttack[random]))
+                        {
+                            currentAttack = i;
+                            random = i;
+                        }
                     }
                 }
             }
@@ -97,7 +101,8 @@ public class BossFSM : MonsterFSM
         setAttack = false;
         ResetCD(currentAttack);
         Vector3 colBounds = CurrentAI.Collider.bounds.extents;
-
+        colBounds.x = 0;
+        TextSpawnerManager.Instance.SpawnSoundEffect("\"ニャ!\"", Color.white, transform, transform.rotation * (colBounds * 2), 3, 10);
         Collider[] collider = Physics.OverlapSphere(transform.position + transform.up * colBounds.y, colBounds.z + attackRange,aggroLayer);
         foreach (Collider col in collider)
         {

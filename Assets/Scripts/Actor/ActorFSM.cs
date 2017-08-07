@@ -256,7 +256,6 @@ public abstract class ActorFSM : MonoBehaviour
             Vector3 useVector = transform.position;
             useVector.y = eye.position.y;
             Vector3 dir = (target.transform.position - useVector).normalized;
-            float distance = float.MaxValue;
 
             Ray ray = new Ray(useVector, dir);
             RaycastHit hit;
@@ -270,7 +269,7 @@ public abstract class ActorFSM : MonoBehaviour
                 float angle = Vector3.Angle(transform.forward, dir);
                 Vector3 tempPoint = hit.point;
                 tempPoint.y = transform.position.y;
-                distance = Vector3.Distance(transform.position, tempPoint);
+                float distance = Vector3.Distance(transform.position, tempPoint);
 
                 if (distance > tempAttackRange || Mathf.Abs(angle) > 15)
                 {
@@ -360,7 +359,7 @@ public abstract class ActorFSM : MonoBehaviour
                 }
 
 
-                if (Vector3.Distance(transform.position, targetPoint) < .25f)
+                if (Vector3.Distance(transform.position, targetPoint) < .5f)
                 {
 
                     handledEvents.AddRange(path[0].Events);

@@ -31,7 +31,6 @@ public abstract class AI : Actor
         currentFSM = GetComponent<ActorFSM>();
         spawnPS = transform.Find("SpawnParticle").gameObject;
         disablePS = transform.Find("DeathParticle").gameObject;
-        Debug.Log(disablePS);
     }
 
     public void ChangeState(ActorFSM.FSMState state)

@@ -15,7 +15,7 @@ public class AIManager : MonoBehaviour
     public static AIManager Instance;
 
     [SerializeField]
-    [Range(10, 50)]
+    [Range(0, 50)]
     protected int timeBetweenAISpawn;
 
 

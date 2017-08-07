@@ -115,6 +115,7 @@ public class StatsContainer : MonoBehaviour
         for (int i = 0; i < allStats.Count; i++)
         {
             allStats[i].Max = baseStats[i].Max + actor.GetBonusStatValueFromJob(allStats[i].Type);
+            allStats[i].Current = allStats[i].Max;
         }
     }
 

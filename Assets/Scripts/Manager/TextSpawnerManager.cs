@@ -31,6 +31,7 @@ public class TextSpawnerManager : MonoBehaviour {
 
         st.SetText(text);
         st.SetColor(color);
+        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
 
     }
 
@@ -48,6 +49,8 @@ public class TextSpawnerManager : MonoBehaviour {
         st.transform.localScale *= scale;
         st.SetText(text);
         st.SetColor(color);
+        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
+
     }
 
 
@@ -57,13 +60,14 @@ public class TextSpawnerManager : MonoBehaviour {
 
         
         SpawnedText st = Instantiate(textPrefab,t.position + offset,Quaternion.identity);
+        
 
         st.transform.localScale *= scale;
         st.SetText(text);
         st.SetColor(color);
         st.GetComponentInChildren<Animator>().enabled = false;
         st.GetComponentInChildren<Outline>().enabled = true;
-        StartCoroutine(Shake(st.gameObject, duration, 0.05f));
+        StartCoroutine(Shake(st.gameObject, duration, 0.07f));
 
     }
 
@@ -97,7 +101,7 @@ public class TextSpawnerManager : MonoBehaviour {
             g.transform.position = new Vector3(x + originalPos.x, y + originalPos.y, originalPos.z);
 
 
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         g.transform.position = originalPos;
