@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 222476775320765158}
   - component: {fileID: 114865633112886394}
   m_Layer: 0
-  m_Name: Message body
+  m_Name: Message title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1388,6 +1388,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1939063539345010
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224145489029897490}
+  - component: {fileID: 222623069365544012}
+  - component: {fileID: 114587368569313502}
+  m_Layer: 0
+  m_Name: Message body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1941607500082442
 GameObject:
   m_ObjectHideFlags: 1
@@ -2395,7 +2412,7 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 10
+  m_DynamicPixelsPerUnit: 12.09
 --- !u!114 &114158516710680242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3712,7 +3729,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageBody: {fileID: 114865633112886394}
+  messageTitle: {fileID: 0}
+  messageBody: {fileID: 114587368569313502}
   interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
@@ -3879,6 +3897,39 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114587368569313502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939063539345010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9705882, g: 0.9705882, b: 0.9705882, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 99d0521893ea91b4a9718a0abb4ec05c, type: 3}
+    m_FontSize: 197
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 197
+    m_MaxSize: 300
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: fvfdgvdfgdfgfdgfdgfdg
 --- !u!114 &114600275711798690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4252,7 +4303,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageBody: {fileID: 114865633112886394}
+  messageTitle: {fileID: 114865633112886394}
+  messageBody: {fileID: 114587368569313502}
   interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
     type: 2}
   inbox: []
@@ -4616,7 +4668,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageBody: {fileID: 114865633112886394}
+  messageTitle: {fileID: 0}
+  messageBody: {fileID: 114587368569313502}
   interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
@@ -4941,10 +4994,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 99d0521893ea91b4a9718a0abb4ec05c, type: 3}
-    m_FontSize: 212
-    m_FontStyle: 0
+    m_FontSize: 241
+    m_FontStyle: 1
     m_BestFit: 1
-    m_MinSize: 212
+    m_MinSize: 0
     m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -4952,7 +5005,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: fvfdgvdfgdfgfdgfdgfdg
+  m_Text: Some title
 --- !u!114 &114879887480174440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5254,7 +5307,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageBody: {fileID: 114865633112886394}
+  messageTitle: {fileID: 0}
+  messageBody: {fileID: 114587368569313502}
   interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
@@ -5759,6 +5813,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1779297583033536}
+--- !u!222 &222623069365544012
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939063539345010}
 --- !u!222 &222646380151873776
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -6228,6 +6288,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0.064, y: -0.048}
   m_SizeDelta: {x: 0.075, y: 0.058}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224145489029897490
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939063539345010}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224203520781020662}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 129.4}
+  m_SizeDelta: {x: 869, y: 372}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224159686650962926
 RectTransform:
   m_ObjectHideFlags: 1
@@ -6296,6 +6374,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -0.9583505, y: 0.95835066, z: 0.95835066}
   m_Children:
+  - {fileID: 224145489029897490}
   - {fileID: 224470582193838042}
   m_Father: {fileID: 224283765589627406}
   m_RootOrder: 1
@@ -6688,16 +6767,16 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1200727909457322}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224203520781020662}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 137}
+  m_AnchoredPosition: {x: 0, y: 271.8}
   m_SizeDelta: {x: 869, y: 372}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224484232360544400
@@ -7121,7 +7200,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224607668259974}
   m_LocalRotation: {x: -0, y: -0.9992877, z: -0, w: 0.03773704}
-  m_LocalPosition: {x: 0, y: 0, z: 9.44}
+  m_LocalPosition: {x: 0, y: 0, z: -0.16157554}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 224131309351220570}
@@ -7132,7 +7211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -175.675, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.758, y: 1.028}
+  m_AnchoredPosition: {x: 1.3998723, y: 1.242}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224765393114255994
