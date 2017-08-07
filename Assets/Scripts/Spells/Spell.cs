@@ -11,7 +11,19 @@ public class Spell : VR_Interactable
     protected GameObject indicator;
 
     protected GameObject spellGO;
+
+    protected ParticleSystem particleRef;
     //protected bool isCasted;
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Cast();
+        }
+    }
 
     public GameObject SpellPrefab
     {
@@ -25,27 +37,7 @@ public class Spell : VR_Interactable
 
     protected virtual void Cast()
     {
-        //if (!isCasted)
-        //{
-        //    var em = indicator.GetComponent<ParticleSystem>().emission;
-        //    em.enabled = false;
 
-        //    spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
-
-        //    isCasted = true;
-        //}
-        //else
-        //{
-        //    var em = spellGO.GetComponent<ParticleSystem>().emission;
-            
-        //    var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
-
-        //    em.enabled = false;
-        //    emsmoke.enabled = false;
-
-        //    Destroy(spellGO, 3);
-        //    Destroy(indicator, 3);
-        //}
     }
 
     protected virtual void Hold()

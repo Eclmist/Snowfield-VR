@@ -9,32 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1228816171098636}
+  m_RootGameObject: {fileID: 1179717039768646}
   m_IsPrefabParent: 1
---- !u!1 &1228816171098636
+--- !u!1 &1179717039768646
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4340060799175084}
-  - component: {fileID: 198464257432203690}
-  - component: {fileID: 199279809227884834}
-  - component: {fileID: 114903609539649010}
+  - component: {fileID: 4168950838014668}
+  - component: {fileID: 198378121901321870}
+  - component: {fileID: 199936922624104432}
   m_Layer: 0
-  m_Name: FlameCharge
+  m_Name: Dragon Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4340060799175084
+--- !u!4 &4168950838014668
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1228816171098636}
+  m_GameObject: {fileID: 1179717039768646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -42,26 +41,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114903609539649010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1228816171098636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2312a16dfb99e545ab14b5bae6cef24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellPrefab: {fileID: 1872019811428252, guid: 8c8d7e0c07705334e83a6b7147017d6d,
-    type: 2}
-  indicator: {fileID: 1228816171098636}
---- !u!198 &198464257432203690
+--- !u!198 &198378121901321870
 ParticleSystem:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1228816171098636}
+  m_GameObject: {fileID: 1179717039768646}
   serializedVersion: 5
   lengthInSec: 2
   simulationSpeed: 1
@@ -3110,13 +3095,13 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
---- !u!199 &199279809227884834
+--- !u!199 &199936922624104432
 ParticleSystemRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1228816171098636}
+  m_GameObject: {fileID: 1179717039768646}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
