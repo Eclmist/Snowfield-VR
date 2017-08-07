@@ -51,7 +51,7 @@ public class OutlineRenderer : MonoBehaviour
 	protected void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		//set up a temporary camera
-		RenderTexture TempRT = RenderTexture.GetTemporary(camWidth, camHeight, 0);
+		RenderTexture TempRT = RenderTexture.GetTemporary(camWidth / 10, camHeight/ 10, 0	);
 
 		blurMat.SetVector ("_BlurSize", offset);
 

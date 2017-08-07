@@ -17,16 +17,14 @@ public class Pen : GenericItem
 		pickupTime = Time.time;
 	}
 
-	protected override void OnFixedUpdateInteraction()
+	protected override void OnTriggerHold()
 	{
-	
-		base.OnFixedUpdateInteraction();
+		base.OnTriggerHold();
 
 		if (Time.time - pickupTime > holdTime)
 		{
 			OnTriggerRelease(controller);
 			controller = null;
 		}
-
 	}
 }
