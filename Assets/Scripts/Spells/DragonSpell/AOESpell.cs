@@ -27,6 +27,11 @@ public class AOESpell : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		
+		transform.parent = null;
+
+		transform.position = new Vector3(Player.Instance.transform.position.x + 2, Player.Instance.transform.position.y, Player.Instance.transform.position.z);
+
         Destroy(this.gameObject, destroyTime);
 
         col = GetComponent<BoxCollider>();

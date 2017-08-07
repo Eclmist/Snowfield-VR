@@ -4,35 +4,38 @@ using UnityEngine;
 
 public class FlameChargeSpell : Spell
 {
-
     protected bool hasFlag = false;
     protected bool casted = false;
 
-    protected override void Hold()
-    {
-        if (!casted)
-        {
-            if (!hasFlag)
-            {
-                spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+	protected override void OnTriggerHold()
+	{
+		Debug.Log("I'm Holding in Charge");
 
-                hasFlag = true;
-            }
-            else
-            {
-                var em = spellGO.GetComponent<ParticleSystem>().emission;
+		base.OnTriggerHold();
 
-                var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+		if (!casted)
+		{
+			if (!hasFlag)
+			{
+				spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
 
-                em.enabled = true;
-                emsmoke.enabled = true;
+				hasFlag = true;
+			}
+			else
+			{
+				var em = spellGO.GetComponent<ParticleSystem>().emission;
 
-                casted = true;
-            }
-        }
-    }
+				var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
 
-    protected override void Release()
+				em.enabled = true;
+				emsmoke.enabled = true;
+
+				casted = true;
+			}
+		}
+	}
+
+	protected override void Release()
     {
         if (casted)
         {

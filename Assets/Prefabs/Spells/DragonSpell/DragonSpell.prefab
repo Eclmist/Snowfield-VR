@@ -2076,7 +2076,7 @@ Transform:
   m_GameObject: {fileID: 1967372248535406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4291017723094462}
   - {fileID: 4457742764464006}
@@ -2378,7 +2378,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 8, y: 2, z: 8}
+  m_Size: {x: 4, y: 2, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &82198112592441038
 AudioSource:
@@ -4986,9 +4986,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  interactSound: {fileID: 0}
   spellPrefab: {fileID: 0}
   indicator: {fileID: 0}
-  zOffset: 3
+  zOffset: 10
 --- !u!114 &114875869314960620
 MonoBehaviour:
   m_ObjectHideFlags: 1

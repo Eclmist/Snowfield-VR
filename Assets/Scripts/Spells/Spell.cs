@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Spell : VR_Interactable
+public class Spell : VR_Interactable_Object
 {
     [SerializeField]
     protected GameObject spellPrefab;
@@ -11,19 +11,6 @@ public class Spell : VR_Interactable
     protected GameObject indicator;
 
     protected GameObject spellGO;
-
-    protected ParticleSystem particleRef;
-    //protected bool isCasted;
-
-    protected override void Update()
-    {
-        base.Update();
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Cast();
-        }
-    }
 
     public GameObject SpellPrefab
     {
@@ -40,18 +27,14 @@ public class Spell : VR_Interactable
 
     }
 
-    protected virtual void Hold()
-    {
-        Debug.Log("Holding");
-    }
-
     protected virtual void Release()
     {
 
     }
 
-	public virtual void OnUpdateInteraction(VR_Controller_Custom controller)
+	public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
+		base.OnUpdateInteraction(controller);
         transform.position = LinkedController.transform.position;
         transform.rotation = LinkedController.transform.rotation;
     }
@@ -64,9 +47,10 @@ public class Spell : VR_Interactable
    
 	protected override void OnTriggerHold()
     {
-       
-        Hold();
-    }
+		base.OnTriggerHold();
+
+		Debug.Log("Holding");
+	}
 
 	protected override void OnTriggerRelease()
     {
