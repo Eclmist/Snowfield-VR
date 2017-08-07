@@ -9,6 +9,8 @@
 		Tags { "RenderType"="Outline" "Queue"="Transparent"}
 		LOD 100
 
+		Blend SrcAlpha OneMinusSrcAlpha
+		Zwrite Off
 		Pass
 		{
 			CGPROGRAM
@@ -34,6 +36,7 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
+				o.uv = v.uv;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				return o;
 			}

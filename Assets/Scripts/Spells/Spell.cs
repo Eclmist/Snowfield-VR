@@ -58,25 +58,25 @@ public class Spell : VR_Interactable
 
     }
 
-    public override void OnUpdateInteraction(VR_Controller_Custom controller)
+	public virtual void OnUpdateInteraction(VR_Controller_Custom controller)
     {
         transform.position = LinkedController.transform.position;
         transform.rotation = LinkedController.transform.rotation;
     }
 
-    public override void OnTriggerPress(VR_Controller_Custom controller)
+	protected override void OnTriggerPress()
     {
         Cast();
     }
 
    
-    public override void OnTriggerHold(VR_Controller_Custom controller)
+	protected override void OnTriggerHold()
     {
        
         Hold();
     }
 
-    public override void OnTriggerRelease(VR_Controller_Custom controller)
+	protected override void OnTriggerRelease()
     {
         Release();
     }

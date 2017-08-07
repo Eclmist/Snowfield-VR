@@ -8,22 +8,6 @@ public class VR_Interactable_Object : VR_Interactable
 
     protected Rigidbody rigidBody;
 
-    [SerializeField]
-    public bool interactable = true;
-
-    [Header("Vibrations")]
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerEnterVibration = 0.8F;
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerExitVibration = 0.3F;
-    [SerializeField]
-    [Range(0, 10)]
-    protected float triggerPressVibration = 0;
-
-
-
     // Outline Rendering
     [SerializeField]
     private Color outlineColor = Color.yellow;
@@ -31,15 +15,63 @@ public class VR_Interactable_Object : VR_Interactable
     private Renderer[] childRenderers;
     private List<Material> childMaterials = new List<Material>();
 
+	protected GameObject targetPositionPoint;
+
+	[SerializeField]
+	protected AudioSource interactSound;
+
+	private static readonly int interactableLayerIndex = 8;
+	private CollisionDetectionMode defaultCollisionMode;
+
+	public static bool playerKnowsHowToInteractWithObjects;
+
+	public void HintObject()
+	{
+		if (!isHinting)
+		{
+			StartCoroutine(Hint());
+		}
+	}
+
+	public void StopHint()
+	{
+		if (isHinting)
+		{
+			isHinting = false;
+			SetOutline(false);
+		}
+	}
 
 
-    protected override void Awake()
-    {
+	private bool isHinting;
+	private bool hintOverride;
+	private IEnumerator Hint()
+	{
+		isHinting = true;
+
+		while (isHinting)
+		{
+			if (!hintOverride)
+			{
+				Color col = Color.Lerp(outlineColor, Color.black, (Mathf.Sin(Time.time * 2.5F) + 1) / 2);
+				SetOutlineColor(col);
+			}
+			yield return new WaitForFixedUpdate();
+		}
+	}
+
+	protected override void Awake()
+	{
         rigidBody = GetComponent<Rigidbody>();
         childRenderers = GetComponentsInChildren<Renderer>();
         rigidBody = GetComponent<Rigidbody>();
 
-        gameObject.layer = 8;
+        gameObject.layer = interactableLayerIndex;   //Set layer to 8 (interactable)
+
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			(transform.GetChild(i)).gameObject.layer = interactableLayerIndex;
+		}
 
         foreach (Renderer r in childRenderers)
         {
@@ -51,33 +83,77 @@ public class VR_Interactable_Object : VR_Interactable
                 if (m)
                 {
                     m.SetOverrideTag("RenderType", "Outline");
-                    m.SetColor("_OutlineColor", Color.black);
-                    childMaterials.Add(m);
+	                m.SetColor("_OutlineColor", new Color(0,0,0,0));
+
+					childMaterials.Add(m);
                 }
             }
         }
     }
 
 
-    protected virtual void Update()
-    {
-    }
+	protected override void Start()
+	{
+		base.Start();
 
-    public override void OnControllerEnter(VR_Controller_Custom controller)
-    {
-        controller.Vibrate(triggerEnterVibration);
-        SetOutline(true);
-    }
+		defaultCollisionMode = rigidBody.collisionDetectionMode;
+
+		if (!interactSound)
+		{
+			interactSound = gameObject.AddComponent<AudioSource>();
+
+			interactSound.spatialBlend = 1;
+			interactSound.clip = Resources.Load<AudioClip>("click5");
+		}
+
+	}
 
 
-    public override void OnControllerExit(VR_Controller_Custom controller)
+
+	public virtual void OnControllerEnter(VR_Controller_Custom controller)
     {
+		controller.Vibrate (triggerEnterVibration);
+		OnControllerEnter ();
+		SetOutline(true);
+		hintOverride = true;
+	}
+
+	public virtual void OnControllerExit(VR_Controller_Custom controller)
+    {
+		controller.Vibrate(triggerExitVibration);
+
+		OnControllerExit();	
         SetOutline(false);
+
+		hintOverride = false;
     }
 
-    public override void OnTriggerPress(VR_Controller_Custom controller)
+	public virtual void OnTriggerPress(VR_Controller_Custom controller)
     {
-        SetOutline(false);
+		if (interactSound)
+			interactSound.Play();
+
+		PlayerLearnedInteraction();
+
+	    if (isHinting)
+		    StopHint();
+	    else
+	    {
+		    SetOutline(false);
+		}
+
+		OnTriggerPress();
+
+		controller.Vibrate(triggerPressVibration);
+
+
+		targetPositionPoint = new GameObject (name + "'s pivot point");
+		targetPositionPoint.transform.position = transform.position;
+		targetPositionPoint.transform.rotation = transform.rotation;
+
+		targetPositionPoint.transform.parent = controller.transform;
+
+
         if (currentInteractingController)
             currentInteractingController.Release();
 
@@ -85,22 +161,50 @@ public class VR_Interactable_Object : VR_Interactable
         controller.SetInteraction(this);
         lastPosition = transform.position;
         currentReleaseVelocity = Vector3.zero;
+
+		//Set CCD
+		rigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
 
-    private Vector3 currentReleaseVelocity = Vector3.zero;
-    public override void OnTriggerRelease(VR_Controller_Custom controller)
+    protected Vector3 currentReleaseVelocity = Vector3.zero;
+
+	public virtual void OnTriggerRelease(VR_Controller_Custom controller)
     {
+		OnTriggerRelease ();
+	
+        //rigidBody.angularVelocity = controller.AngularVelocity;
 
-        currentInteractingController = null;
-        rigidBody.AddForce(currentReleaseVelocity, ForceMode.Impulse);
-        rigidBody.angularVelocity = controller.AngularVelocity;
 
-    }
+		targetPositionPoint.transform.parent = null;
+		Destroy (targetPositionPoint);
+		currentInteractingController = null;
+		controller.SetInteraction (null);
+
+		//Set CCD
+		rigidBody.collisionDetectionMode = defaultCollisionMode;
+	}
+
+	public virtual void OnGripRelease(VR_Controller_Custom controller) {
+		OnGripRelease ();
+	}
+
+	public virtual void OnGripPress(VR_Controller_Custom controller) {
+		OnGripPress ();
+	}
+
+	public virtual void OnGripHold(VR_Controller_Custom controller) {
+		OnGripHold ();
+	}
+
+	public virtual void OnTriggerHold(VR_Controller_Custom controller) {
+		OnTriggerHold ();
+	}
 
     protected Vector3 lastPosition = Vector3.zero;
 
-    public override void OnUpdateInteraction(VR_Controller_Custom controller)
+	public virtual void OnUpdateInteraction(VR_Controller_Custom controller)
     {
+
         currentReleaseVelocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
         //if (currentReleaseVelocity.magnitude > flatVelocity.magnitude)
@@ -110,9 +214,19 @@ public class VR_Interactable_Object : VR_Interactable
 
     }
 
+	public virtual void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
+	{
+		
+	}
+
+	protected virtual void PlayerLearnedInteraction()
+	{
+		playerKnowsHowToInteractWithObjects = true;
+	}
+
     public void SetOutline(bool enabled)
     {
-        SetOutlineColor(enabled ? outlineColor : Color.black);
+        SetOutlineColor(enabled ? outlineColor : new Color(0,0,0,0));
     }
 
     private void SetOutlineColor(Color color)
@@ -123,14 +237,19 @@ public class VR_Interactable_Object : VR_Interactable
         }
     }
 
-    protected virtual void OnTriggerEnter(Collider col)
+	protected virtual void OnTriggerEnter(Collider col)
     {
-        if (currentInteractingController)
-            currentInteractingController.OnTriggerEnter(col);
+
+		if (currentInteractingController) {
+			currentInteractingController.OnTriggerEnter (col);
+		}
     }
 
-    protected virtual void OnTriggerExit(Collider col)
+
+
+	protected virtual void OnTriggerExit(Collider col)
     {
+
         if (currentInteractingController)
             currentInteractingController.OnTriggerExit(col);
     }

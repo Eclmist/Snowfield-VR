@@ -6,6 +6,7 @@ namespace UnityStandardAssets.ImageEffects
     [ExecuteInEditMode]
     [RequireComponent (typeof (Camera))]
     [AddComponentMenu ("Image Effects/Edge Detection/Edge Detection")]
+	[ImageEffectAllowedInSceneView]
     public class EdgeDetection : PostEffectsBase
     {
         public enum EdgeDetectMode

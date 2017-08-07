@@ -7,46 +7,58 @@ using UnityEngine;
 public class OutlineRenderer : MonoBehaviour
 {
 	[SerializeField] private Shader shader;
+	[Tooltip ("SP/Outline/Unlitbase i think")]
 	[SerializeField] private Shader replacement;
-	//[SerializeField] private Shader blur;
+	[SerializeField] private Shader blur;
 
-	[SerializeField] private int downsample = 2;
+	[SerializeField] [Range(0,3)] private int downsample = 1;
 
 
-	//[SerializeField] [Range(0,4)] private int blurIteration = 4;
+	[SerializeField] [Range(0,4)] private int blurIteration = 4;
 	//[SerializeField] [Range(1, 4)] private int downSample = 2;
 
 	[SerializeField] private Vector2 offset = new Vector2(1,1);
 
-	private Camera camera;
+	private Camera cam;
 	private Camera tempSecondaryCamera;
 	private Material mat;
-	//private Material blurMat;
-	RenderTexture TempRT;
+	private Material blurMat;
+
+	private int camWidth;
+	private int camHeight;
 
 	protected void OnEnable()
 	{
-		camera = GetComponent<Camera>();
-		tempSecondaryCamera = new GameObject().AddComponent<Camera>();
+		cam = GetComponent<Camera>();
+		tempSecondaryCamera = new GameObject("Outline Camera").AddComponent<Camera>();
 		tempSecondaryCamera.enabled = false;
 		Debug.Assert(replacement);
 		mat = new Material(shader);
 		Debug.Assert(mat);
-		//blurMat = new Material(blur);
-		//Debug.Assert(blurMat);
+		blurMat = new Material(blur);
+		Debug.Assert(blurMat);
 
-		TempRT = new RenderTexture(camera.pixelWidth / downsample, camera.pixelHeight / downsample, 0);
+		camWidth = cam.pixelWidth;
+		camHeight = cam.pixelHeight;
+	}
 
+	protected void OnDisable()
+	{
+		if (tempSecondaryCamera)
+		DestroyImmediate(tempSecondaryCamera.gameObject);
 	}
 
 	protected void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		//set up a temporary camera
+		RenderTexture TempRT = RenderTexture.GetTemporary(camWidth, camHeight, 0	);
 
-		tempSecondaryCamera.CopyFrom(camera);
-		tempSecondaryCamera.clearFlags = CameraClearFlags.Color;
+		blurMat.SetVector ("_BlurSize", offset);
+
+		tempSecondaryCamera.CopyFrom(cam);
+		tempSecondaryCamera.clearFlags = CameraClearFlags.SolidColor;
 		tempSecondaryCamera.backgroundColor = Color.black;
-		tempSecondaryCamera.cullingMask = LayerMask.GetMask("Interactable");
+		tempSecondaryCamera.cullingMask = LayerMask.GetMask("Interactable", "Player");
 		tempSecondaryCamera.useOcclusionCulling = false;
 		//make the temporary rendertexture
 
@@ -55,27 +67,29 @@ public class OutlineRenderer : MonoBehaviour
 
 		tempSecondaryCamera.RenderWithShader(replacement, "RenderType");
 
-		//for (int i = 0; i < blurIteration; i++)
-		//{ }
+		RenderTexture blurredTex = RenderTexture.GetTemporary(TempRT.width  / (downsample+1), TempRT.height  / (downsample+1), 0);
 
-		//RenderTexture blurredTex = new RenderTexture(source.width / downSample, source.height / downSample, 0);
-		mat.SetVector("_offset", offset);
+		Graphics.Blit (TempRT, blurredTex);
 
-		//Graphics.Blit(TempRT, blurredTex, blurMat);
+		for (int i = 0; i < blurIteration; i++) 
+		{
+			RenderTexture temp = RenderTexture.GetTemporary(blurredTex.width, blurredTex.height);
 
+			Graphics.Blit (blurredTex, temp, blurMat, 0); // horizontalPass
+			Graphics.Blit (temp, blurredTex, blurMat, 1); // vertical Pass
+
+			RenderTexture.ReleaseTemporary (temp);
+		}
+
+		//mat.SetVector("_offset", offset);
 
 		mat.SetTexture("_OutlineBufferTex", TempRT);
-		//mat.SetTexture("_OutlineBufferTexBlurred", blurredTex);
+		mat.SetTexture("_OutlineBufferTexBlurred", blurredTex);
 
 		Graphics.Blit(source, destination, mat);
 
-		//blurredTex.Release();
-	}
-
-
-	protected void OnDisable()
-	{
-		TempRT.Release();
+		RenderTexture.ReleaseTemporary (blurredTex);
+		RenderTexture.ReleaseTemporary (TempRT);
 	}
 }
 

@@ -8,7 +8,7 @@ public class PlayAudio : MonoBehaviour
 
 	public void PlayFX(int index)
 	{
-		if (audio.Length <= index + 1 && index >= 0)
+		if (audio[index])
 			audio[index].Play();
 	}
 }

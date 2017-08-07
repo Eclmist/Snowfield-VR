@@ -26,13 +26,13 @@ public class Shield : Equipment,IBlock {
         }
     }
     // Use this for initialization
-    public override void OnGripPress(VR_Controller_Custom controller)
+    protected override void OnGripPress()
     {
         isBlocking = true;
         ward.SetWardActive(true);
     }
 
-    public override void OnGripRelease(VR_Controller_Custom controller)
+	protected override void OnGripRelease()
     {
         isBlocking = false;
         ward.SetWardActive(false);
