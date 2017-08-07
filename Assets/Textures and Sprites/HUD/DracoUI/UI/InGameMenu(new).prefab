@@ -1271,7 +1271,6 @@ GameObject:
   - component: {fileID: 114796045366413222}
   - component: {fileID: 114908576165160106}
   - component: {fileID: 65683264666021394}
-  - component: {fileID: 54188783228621884}
   - component: {fileID: 82107345432949318}
   - component: {fileID: 114249359561671666}
   m_Layer: 0
@@ -1280,7 +1279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1779297583033536
 GameObject:
   m_ObjectHideFlags: 1
@@ -1472,21 +1471,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!54 &54188783228621884
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1765556847907128}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!54 &54380090402426264
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -2451,9 +2435,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114601286697048252}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}
@@ -2596,9 +2580,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -2693,9 +2677,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114695737833488358}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2836,9 +2820,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114796045366413222}
   normalColor: {r: 1, g: 1, b: 1, a: 0.822}
@@ -2875,7 +2859,18 @@ MonoBehaviour:
         PublicKeyToken=null
     onTriggerPress:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 114908576165160106}
+          m_MethodName: SetMessageReference
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
     onTriggerHold:
@@ -3092,9 +3087,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 2
-  triggerExitVibration: 2
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114747189860338944}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -3201,9 +3196,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114724208268280352}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3284,9 +3279,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114721346534865612}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3717,10 +3712,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
   messageBody: {fileID: 114865633112886394}
-  interactableMesssage: {fileID: 1666848451181864, guid: bb654d06357a3dd4d878adde29d15159,
-    type: 2}
+  interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
 --- !u!114 &114533345738471406
@@ -4259,9 +4252,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
   messageBody: {fileID: 114865633112886394}
-  interactableMesssage: {fileID: 1666848451181864, guid: bb654d06357a3dd4d878adde29d15159,
+  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
     type: 2}
   inbox: []
   totalUnreadMails: 0
@@ -4277,9 +4269,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114627849072369932}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -4624,10 +4616,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
   messageBody: {fileID: 114865633112886394}
-  interactableMesssage: {fileID: 1666848451181864, guid: bb654d06357a3dd4d878adde29d15159,
-    type: 2}
+  interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
 --- !u!114 &114766150071945644
@@ -4747,9 +4737,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -4942,7 +4932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4962,7 +4952,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: fvfdgvdfgdfgfdgfdgfdg
 --- !u!114 &114879887480174440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5113,9 +5103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
+  triggerEnterVibration: 0.4
+  triggerExitVibration: 0
+  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -5264,10 +5254,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
   messageBody: {fileID: 114865633112886394}
-  interactableMesssage: {fileID: 1666848451181864, guid: bb654d06357a3dd4d878adde29d15159,
-    type: 2}
+  interactableMesssage: {fileID: 0}
   inbox: []
   totalUnreadMails: 0
 --- !u!114 &114940505839137300
@@ -6709,8 +6697,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 869, y: 725}
+  m_AnchoredPosition: {x: 0, y: 137}
+  m_SizeDelta: {x: 869, y: 372}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224484232360544400
 RectTransform:
@@ -6953,10 +6941,10 @@ RectTransform:
   m_Father: {fileID: 224812690796254648}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 168.55, y: -70.9}
+  m_SizeDelta: {x: 337.1, y: 141.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224622113724908324
 RectTransform:
@@ -7133,7 +7121,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224607668259974}
   m_LocalRotation: {x: -0, y: -0.9992877, z: -0, w: 0.03773704}
-  m_LocalPosition: {x: 0, y: 0, z: 2.46}
+  m_LocalPosition: {x: 0, y: 0, z: 9.44}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 224131309351220570}
@@ -7144,7 +7132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -175.675, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.43, y: 71.7}
+  m_AnchoredPosition: {x: 1.758, y: 1.028}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224765393114255994
@@ -7236,7 +7224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.097379886}
+  m_AnchoredPosition: {x: 0, y: 0.09737989}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224834470732760098

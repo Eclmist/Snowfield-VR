@@ -6,7 +6,7 @@ public class VR_ButtonBehindScroll : VR_Button {
 
     // If the distance between the last recorded trigger press and release is greater than this,
     // the button will not trigger
-    [SerializeField] protected float distanceMoveThreshold;
+    [SerializeField] private float distanceMoveThreshold;
     private Vector3 start;
     private bool clicked = false;
 
@@ -25,6 +25,7 @@ public class VR_ButtonBehindScroll : VR_Button {
         {
             clicked = false;
             base.OnTriggerRelease();
+			Debug.Log("releaseddddd");
         }
     }
 

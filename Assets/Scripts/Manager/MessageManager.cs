@@ -60,7 +60,7 @@ public class MessageManager : MonoBehaviour
     [SerializeField] private GridLayoutGroup glp;
     [SerializeField] private Text messageTitle;
     [SerializeField] private Text messageBody;
-    [SerializeField] private GameObject interactableMesssage;
+    [SerializeField] private InteractableMessage interactableMesssage;
     [SerializeField] private List<Mail> inbox = new List<Mail>();
     [SerializeField] private int totalUnreadMails;
 
@@ -96,11 +96,14 @@ public class MessageManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (inbox.Count > 0)
-                ReadMail(inbox[0]);
-        }
+			SendMail("Chen Xiang", "Do spell structure", null);
+		}
+		else if (Input.GetKeyDown(KeyCode.Alpha3))
+		{
+			SendMail("Third", "Third", null);
+		}
 
-        HandleMailEvents();
+		HandleMailEvents();
         UpdateUnreadCounter();
 
     }
@@ -110,14 +113,10 @@ public class MessageManager : MonoBehaviour
     {
         Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
-        GameObject g = Instantiate(interactableMesssage,glp.transform,false);
 
-        InteractableMessage interactableMessage = g.GetComponent<InteractableMessage>();
+		if(interactableMesssage)
+			Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
 
-        if (interactableMessage)
-            interactableMessage.StoredMail = temp;
-        else
-            Debug.Log("interactableMessage script missing from interactableMessage prefab!");
 
 
     }
@@ -143,9 +142,15 @@ public class MessageManager : MonoBehaviour
     // Select the mail and display it on the main message view
     public void DisplayMail(Mail mail)
     {
-        messageBody.text = mail.Message;
-        messageTitle.text = mail.Title;
-    }
+		if(messageBody)
+			messageBody.text = mail.Message;
+
+		if (messageTitle)
+			messageTitle.text = mail.Title;
+
+		//Debug.Log(messageTitle == null);
+
+	}
 
     public void DisplayInbox()
     {

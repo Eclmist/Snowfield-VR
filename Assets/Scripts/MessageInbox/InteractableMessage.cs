@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InteractableMessage : MonoBehaviour {
 
-    [SerializeField]
+	[SerializeField]
     private Text title;
 
     private MessageManager.Mail storedMail;
@@ -13,18 +13,29 @@ public class InteractableMessage : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        if (title.text.Length >= 20)
-            title.text = storedMail.Title.Substring(0, 15) + "...";
-        else
-            title.text = storedMail.Title;
+        //if (title.text.Length >= 20)
+        //    title.text = storedMail.Title.Substring(0, 15) + "...";
+        //else
+        //    title.text = storedMail.Title;
 
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-            SetMessageReference();
-    }
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.X))
+			SetMessageReference();
+	}
+
+	public void CreateMail(MessageManager.Mail mail)
+	{
+		storedMail = mail;
+
+		if (mail.Title.Length >= 20)
+			title.text = mail.Title.Substring(0, 15) + "...";
+		else
+			title.text = storedMail.Title;
+	}
+
 
 
     public MessageManager.Mail StoredMail
@@ -37,5 +48,7 @@ public class InteractableMessage : MonoBehaviour {
     {
         if(storedMail != null)
             MessageManager.Instance.DisplayMail(storedMail);
+
+		Debug.Log("you are viewing me");
     }
 }
