@@ -16,10 +16,10 @@ public class Player : Actor
     private Transform vivePosition;
 
     public static Player Instance;
-
     [SerializeField]
     protected PlayerData data;
 
+    
     [SerializeField]
     protected bool inCombatZone = true;
     protected float currentGroundHeight = 1;
@@ -33,6 +33,7 @@ public class Player : Actor
             currentGroundHeight = value;
         }
     }
+
     public bool InCombatZone
     {
         get
@@ -45,6 +46,18 @@ public class Player : Actor
         }
     }
 
+    public override ActorData Data
+    {
+        get
+        {
+            return data;
+        }
+
+        set
+        {
+            data = (PlayerData)value;
+        }
+    }
     public override bool CanBeAttacked
     {
         get
@@ -52,23 +65,16 @@ public class Player : Actor
             return base.CanBeAttacked && inCombatZone;
         }
     }
-    public override ActorData Data
-    {
-        get
-        {
-            return data;
-        }
-        set
-        {
-            data = (PlayerData)value;
-        }
 
-    }
     public int Gold
     {
         get
         {
             return data.Gold;
+        }
+        set
+        {
+            data.Gold = value;
         }
     }
 
@@ -79,32 +85,7 @@ public class Player : Actor
         ad.Play();
     }
 
-    public void AddJob(JobType newJobType)
-    {
-        Job newJob = new Job(newJobType);
-        data.JobList.Add(newJob);
-    }
-
-    public void GainExperience(JobType jobType, int value)
-    {
-        foreach (Job currentJob in data.JobList)
-        {
-            if (currentJob.Type == jobType)
-            {
-                currentJob.GainExperience(value);
-                break;
-            }
-        }
-    }
-
-
-    public List<Job> JobList
-    {
-        get
-        {
-            return data.JobList;
-        }
-    }
+   
     public override bool CheckConversingWith(Actor target)
     {
         Vector3 rotation1 = transform.forward;
@@ -128,7 +109,9 @@ public class Player : Actor
             }
             else
             {
-                AddJob(JobType.BLACKSMITH);
+				Job j = Data.AddJob(JobType.BLACKSMITH);
+                Stats s = new Stats(Stats.StatsType.ATTACK, 2);
+                j.AddStats(s);
             }
         }
         else
@@ -145,24 +128,14 @@ public class Player : Actor
 
     protected void OnDisable()
     {
-        SerializeManager.Save("PlayerData", data);
+        //SerializeManager.Save("PlayerData",data);
     }
 
-    public Job GetJob(JobType type)
-    {
-        foreach (Job job in data.JobList)
-        {
-            if (job.Type == type)
-            {
-                return job;
-            }
-        }
-        return null;
-    }
+    
 
     public void AddGold(int value)
     {
-        data.Gold += value;
+        Gold += value;
     }
 
 

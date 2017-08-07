@@ -6,9 +6,8 @@ using UnityEngine;
 public class Monster : AI {
 
     [SerializeField]
-    protected CombatActorData data;
+    protected ActorData data;
 
-    
     public override ActorData Data
     {
         get
@@ -18,7 +17,7 @@ public class Monster : AI {
 
         set
         {
-            data = (CombatActorData)value;
+            data = value;
         }
     }
     public override void Interact(Actor actor)

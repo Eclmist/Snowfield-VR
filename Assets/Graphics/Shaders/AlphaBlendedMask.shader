@@ -7,6 +7,7 @@ Shader "Unlit/AlphaBlendedMask" {
 		_MainTex("Particle Texture", 2D) = "white" {}
 		_InvFade("Soft Particles Factor", Range(0.01,3.0)) = 1.0
 		_MaskTex("Mask Texture", 2D) = "white" {}
+		_Stencil("Stencil Mask Index", Int) = 80
 	}
 
 		Category{
@@ -14,6 +15,14 @@ Shader "Unlit/AlphaBlendedMask" {
 		Blend SrcAlpha OneMinusSrcAlpha
 		ColorMask RGB
 		Cull Off Lighting Off ZWrite Off
+
+		Stencil 
+		{
+			Ref[_Stencil]
+			Pass Replace
+			Comp Always
+		
+		}
 
 		SubShader{
 		Pass{
@@ -86,6 +95,9 @@ Shader "Unlit/AlphaBlendedMask" {
 	fixed4 col = 2.0f * i.color *tex2D(_MainTex, i.texcoord);
 	col.rgb *= 20;
 	col.a *= tex2D(_MaskTex, i.maskuv).a;
+
+	 if (col.a <= 0.01) discard;
+
 	UNITY_APPLY_FOG(i.fogCoord, col);
 	return col;
 	}

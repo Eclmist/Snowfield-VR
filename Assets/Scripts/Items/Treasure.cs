@@ -6,8 +6,20 @@ using UnityEngine;
 public class Treasure : MonoBehaviour, IDamagable {
 
 
+    protected Collider col;
 
+    protected void Awake()
+    {
+        col = GetComponent<Collider>();
+    }
 
+    public Collider Collider
+    {
+        get
+        {
+            return col;
+        }
+    }
     public bool CanBeAttacked
     {
         get
@@ -25,10 +37,10 @@ public class Treasure : MonoBehaviour, IDamagable {
     }
 
 
-    public void TakeDamage(int Damage,Actor actor)
+    public void TakeDamage(float Damage,Actor actor)
     {
         actor.TakeDamage(99999, null);
-        GameManager.Instance.AddPlayerGold(-Damage - actor.Health);
+        GameManager.Instance.AddTax((int)Damage);
      
     }
 	public new Transform transform

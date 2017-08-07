@@ -18,6 +18,8 @@ public class ItemData : IStorable, IComparable {
     private int maxStackSize = 1;
     [SerializeField]
     private JobType jobType;
+    [SerializeField]
+    private int cost;
 
     
     public int ItemID
@@ -51,6 +53,11 @@ public class ItemData : IStorable, IComparable {
     public JobType JobType
     {
         get { return this.jobType; }
+    }
+
+    public int Cost
+    {
+        get { return this.cost; }
     }
 
 	public int CompareTo(object obj)

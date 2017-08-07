@@ -20,8 +20,6 @@ public class OrderTemplate {
     [SerializeField]
     private JobType jobType;
     [SerializeField]
-    private PhysicalMaterial physicalMaterial;
-    [SerializeField]
     private int referenceItemID;
 
 
@@ -46,10 +44,6 @@ public class OrderTemplate {
     }
 
     
-    public PhysicalMaterial PhysicalMaterial
-    {
-        get { return this.physicalMaterial; }
-    }
 
     public int ReferenceItemID
     {

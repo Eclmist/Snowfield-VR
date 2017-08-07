@@ -8,14 +8,14 @@ public class AIManager : MonoBehaviour
 
     private List<AdventurerAIData> listOfAIData;
 
-    private List<AI> allAIsInScene = new List<AI>();
     [SerializeField]
     private List<AI> typeOfAI = new List<AI>();
-
+    [SerializeField]
+    private List<MerchantAI> merchants = new List<MerchantAI>();
     public static AIManager Instance;
 
     [SerializeField]
-    [Range(10,50)]
+    [Range(10, 50)]
     protected int timeBetweenAISpawn;
 
 
@@ -67,7 +67,6 @@ public class AIManager : MonoBehaviour
             AI newActor = ((GameObject)Resources.Load(data.Path)).GetComponent<AI>();
             AI ai = Instantiate(newActor).GetComponent<AI>();
             ai.Data = data;
-            allAIsInScene.Add(ai);
             ai.gameObject.SetActive(false);
             StartCoroutine(SpawnCoroutine(ai, timePeriod, TownManager.Instance.GetRandomSpawnPoint()));
         }
@@ -77,26 +76,25 @@ public class AIManager : MonoBehaviour
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        Stats newAIBaseStats = newAI.Data.BaseStats;
-        AdventurerAIData newData = new AdventurerAIData((newAI.Data as AdventurerAIData).CurrentJob, newAIBaseStats, newAI.name,myPath);//Random name gen
+        AdventurerAIData newData = new AdventurerAIData(newAI.Data, newAI.name, myPath);//Random name gen
         return newData;
     }
 
     public void Spawn(AI currentAI, float timeToSpawn, Node spawnNode, UnityAction invokingEvent = null, float intervalBetweenInvoke = 0)
     {
-        StartCoroutine(SpawnCoroutine(currentAI, timeToSpawn, spawnNode, invokingEvent,intervalBetweenInvoke));
+        StartCoroutine(SpawnCoroutine(currentAI, timeToSpawn, spawnNode, invokingEvent, intervalBetweenInvoke));
     }
 
     protected IEnumerator SpawnCoroutine(AI currentAI, float timeToSpawn, Node spawnNode, UnityAction invokingEvent = null, float intervalBetweenInvoke = 0)
     {
-        
+
         if (invokingEvent == null)
         {
             yield return new WaitForSecondsRealtime(timeToSpawn);
         }
         else
         {
-            while(timeToSpawn > 0)
+            while (timeToSpawn > 0)
             {
                 yield return new WaitForSecondsRealtime(intervalBetweenInvoke);
                 invokingEvent();
@@ -110,15 +108,20 @@ public class AIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        SerializeManager.Save("AIData", listOfAIData);
+        //SerializeManager.Save("AIData", listOfAIData);
     }
 
-    public void SetAllAIState(ActorFSM.FSMState state)
+    public void SpawnMerchant()
     {
-        foreach (AI ai in allAIsInScene)
+        if (merchants.Count > 0)
         {
-            ai.ChangeState(state);
+            int index = Random.Range(0, merchants.Count);
+            MerchantAI AI = Instantiate(merchants[index]).GetComponent<MerchantAI>();
+            AI.gameObject.SetActive(false);
+            Spawn(AI, 0, TownManager.Instance.GetRandomSpawnPoint());
         }
+        else
+            Debug.Log("No merchants");
     }
 
     public AI GetRandomAIType()

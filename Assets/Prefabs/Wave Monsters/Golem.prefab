@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 136785274847137510}
   - component: {fileID: 114827926631770518}
   - component: {fileID: 114120943504851036}
-  - component: {fileID: 114553611762693400}
+  - component: {fileID: 114577512198510862}
   m_Layer: 14
   m_Name: Golem
   m_TagString: Untagged
@@ -671,7 +671,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!82 &82425902856915664
 AudioSource:
@@ -787,17 +787,16 @@ MonoBehaviour:
   spawnPS: {fileID: 0}
   disablePS: {fileID: 198610162909535382}
   data:
-    baseStats:
-      baseHealth: 300
-      baseAttack: 50
-      baseHealthRegeneration: 5
-      baseMovementSpeed: 3
-    combatJob:
-      level: 0
-      damagePerLevel: 20
-      healthPerLevel: 20
-      healthRegenPerLevel: 20
---- !u!114 &114553611762693400
+    jobList:
+    - currentJobType: 2
+      additionalStatsPerLevel:
+      - value: 20
+        statsType: 0
+      - value: 10
+        statsType: 1
+      - value: 3
+        statsType: 2
+--- !u!114 &114577512198510862
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -805,10 +804,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1952897687566670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
+  m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
+  baseStats:
+  - value: 700
+    statsType: 0
+  - value: 50
+    statsType: 1
+  - value: 10000
+    statsType: 2
+  allStats: []
 --- !u!114 &114827926631770518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -824,10 +830,12 @@ MonoBehaviour:
   detectionDistance: 10
   attackRange: 2
   currentState: 0
+  movementSpeed: 3
   minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
+  animUseSlot: 0
 --- !u!136 &136785274847137510
 CapsuleCollider:
   m_ObjectHideFlags: 1

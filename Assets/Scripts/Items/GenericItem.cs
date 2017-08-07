@@ -1,301 +1,155 @@
 ﻿using System.Collections;
 
-
-
-
-
 using UnityEngine;
 
-
-
-
-
 [RequireComponent(typeof(AudioSource))]
-
-
 public class GenericItem : VR_Interactable_Object, IDamage
-{
 
+{
 	protected bool isColliding = false;
 
-	[SerializeField] protected float directionalMultiplier = 5f, maxLerpForce = 10f;
+	[SerializeField]
+	protected float directionalMultiplier = 5f, maxLerpForce = 10f;
+
 	protected float collisionVibrationMagnitude = 0.002F;
 
-    protected JobType jobType;
+	protected JobType jobType;
 
 
-    public JobType JobType
+	public JobType JobType
 	{
 		get { return this.jobType; }
-    }
-		
-    protected Collider itemCollider;
+	}
+
+	protected Collider itemCollider;
 
 	//protected Vector3 positionOffset;
 	//protected Quaternion rotationOffset;
 
-    #region itemData
+	#region itemData
 
-    [SerializeField] private int itemID = -1;
+	[SerializeField] private int itemID = -1;
 
-    public int ItemID
+	public int ItemID
 
-
-    {
-        get { return this.itemID; }
+	{
+		get { return this.itemID; }
 		set { this.itemID = value; }
-    }
+	}
 
-    #endregion itemData
+	#endregion itemData
 
 
-    #region GenericItem
-    [SerializeField]
+	#region GenericItem
+	[SerializeField]
+	protected float damage;
 
+	[SerializeField]
+	protected string m_name;
 
-    protected int damage;
+	protected AudioSource audioSource;
 
+	#endregion GenericItem
 
+	#region IInteractable
 
+	private bool isFlying;
 
+	private IDamagable target;
 
-    [SerializeField]
+	[SerializeField]
+	private int maxVelocityDamageMultiplier = 5;
 
+	#endregion IInteractable
 
-    protected string m_name;
+	#region
 
+	[SerializeField]
+	protected float maxSwingForce;
 
+	#endregion
 
+	protected override void Awake()
 
+	{
+		itemCollider = GetComponentInChildren<Collider>();
 
-    protected AudioSource audioSource;
+		audioSource = GetComponent<AudioSource>();
 
+		base.Awake();
+	}
 
+	public float Damage
 
+	{
+		get
 
+		{
+			if (currentInteractingController != null)
 
-    #endregion GenericItem
+				return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? currentInteractingController.Velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
+			else if (isFlying)
 
+				return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? rigidBody.velocity.magnitude * damage : damage * maxVelocityDamageMultiplier;
+			else
 
+				return damage;
+		}
+	}
 
+	public string Name
 
+	{
+		get { return this.m_name; }
 
-    #region IInteractable
+		set { this.m_name = value; }
 
 
-
-
-
-    private bool isFlying;
-
-
-
-
-
-    private IDamagable target;
-
-
-
-
-
-    [SerializeField]
-
-
-    private int maxVelocityDamageMultiplier = 5;
-
-
-
-
-
-    #endregion IInteractable
-
-
-
-
-
-    #region
-
-
-
-
-
-    [SerializeField]
-
-
-    protected float maxSwingForce;
-
-
-
-
-
-    #endregion
-
-
-
-
-
-    protected override void Awake()
-
-
-
-
-
-    {
-
-
-        itemCollider = GetComponentInChildren<Collider>();
-
-
-
-
-
-        audioSource = GetComponent<AudioSource>();
-
-
-
-
-
-        base.Awake();
-
-
-    }
-
-
-
-
-
-    public int Damage
-
-
-    {
-
-
-        get
-
-
-        {
-
-
-            if (currentInteractingController != null)
-
-
-
-
-
-                return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? (int)(currentInteractingController.Velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
-
-
-            else if (isFlying)
-
-
-
-
-
-                return rigidBody.velocity.magnitude < maxVelocityDamageMultiplier ? (int)(rigidBody.velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
-
-
-            else
-
-
-
-
-
-                return damage;
-
-
-        }
-
-
-    }
-
-
-
-
-
-    public string Name
-
-
-
-
-
-    {
-
-
-        get { return this.m_name; }
-
-
-
-
-
-        set { this.m_name = value; }
-
-			
-    }
+	}
 
 
 
 
 
 	public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
-    {
+	{
+		transform.parent = null;
 		base.OnTriggerRelease(referenceCheck);
 
 		rigidBody.velocity = Vector3.zero;
 		rigidBody.angularVelocity = Vector3.zero;
 		rigidBody.AddForceAtPosition(currentReleaseVelocity, targetPositionPoint.transform.position, ForceMode.Impulse);
-
-        gameObject.layer = LayerMask.NameToLayer("Interactable");
+		
+		gameObject.layer = LayerMask.NameToLayer("Interactable");
 		rigidBody.useGravity = true;
-        StartCoroutine(Throw(Player.Instance));
-    }
+		StartCoroutine(Throw(Player.Instance));
+	}
 
+	public virtual IEnumerator Throw(Actor thrower)
 
+	{
+		isFlying = true;
 
+		while (rigidBody.velocity.magnitude > 0.1)
 
+		{
+			if (target != null)
 
-    public virtual IEnumerator Throw(Actor thrower)
+			{
+				thrower.Attack(this, target);
 
-    {
+				target = null;
 
-        isFlying = true;
+				break;
+			}
 
-        while (rigidBody.velocity.magnitude > 0.1)
+			yield return new WaitForEndOfFrame();
+		}
 
-        {
+		target = null;
 
-            if (target != null)
-
-            {
-
-
-                thrower.Attack(this, target);
-
-                target = null;
-
-                break;
-
-            }
-
-            yield return new WaitForEndOfFrame();
-
-
-        }
-
-
-
-
-
-        target = null;
-
-
-
-
-
-        isFlying = false;
-
-
-    }
-
+		isFlying = false;
+	}
 
 
 	public override void OnFixedUpdateInteraction(VR_Controller_Custom referenceCheck)
@@ -324,7 +178,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 			//Quaternion targetRotation = referenceCheck.transform.rotation * rotationOffset;
 
-			Quaternion RotationDelta =  targetPositionPoint.transform.rotation * Quaternion.Inverse(this.transform.rotation);
+			Quaternion RotationDelta = targetPositionPoint.transform.rotation * Quaternion.Inverse(this.transform.rotation);
 			float angle;
 			Vector3 axis;
 			RotationDelta.ToAngleAxis(out angle, out axis);
@@ -336,7 +190,6 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 			// -------------------------------------------------------
 			rigidBody.angularVelocity = axis * angle * angularVelocityNumber;
-			  	
 		}
 	}
 
@@ -344,40 +197,41 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-    public override void OnTriggerPress(VR_Controller_Custom controller)
-    {
+
+	public override void OnTriggerPress(VR_Controller_Custom controller)
+	{
 
 		controller.SetModelActive(false);
 		rigidBody.useGravity = false;
 		rigidBody.isKinematic = false;
-        gameObject.layer = LayerMask.NameToLayer("Player");
+		gameObject.layer = LayerMask.NameToLayer("Player");
+		
 		base.OnTriggerPress(controller);
-
-    }
-
-
-
-
-
-    protected virtual void OnCollisionEnter(Collision col)
-    {
-        if (isFlying)
-        {
-            target = col.transform.GetComponent<Monster>();
-        }
-
-		isColliding = true;
-
-		if (currentInteractingController != null)
-		{
-			// float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
-			currentInteractingController.Vibrate(triggerEnterVibration);
-		}
-    }
-
-	protected virtual void OnCollisionStay(Collision collision)
-	{
+		transform.parent = controller.transform;
 	}
+
+	protected virtual void OnCollisionEnter(Collision col)
+	{
+		isColliding = true;
+		if (isFlying)
+		{
+			target = col.transform.GetComponent<Monster>();
+		}
+	}
+
+	//protected virtual void OnCollisionStay(Collision collision)
+	//{
+		
+	//	if (currentInteractingController != null)
+	//	{
+	//		float value = Vector3.Distance(transform.rotation.eulerAngles, currentInteractingController.transform.rotation.eulerAngles);
+
+
+	//		// float value = currentInteractingController.Velocity.magnitude <= collisionVibrationMagnitude ? currentInteractingController.Velocity.magnitude : collisionVibrationMagnitude;
+	//		currentInteractingController.Vibrate(triggerEnterVibration);
+
+	//	}
+	//}
 
 	protected virtual void OnCollisionExit(Collision collision)
 	{
@@ -386,37 +240,17 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-    protected void PlaySound(float volume)
+	protected void PlaySound(float volume)
 
+	{
+		if (audioSource != null)
 
+		{
+			audioSource.volume = volume;
 
+			audioSource.Play();
+		}
+	}
 
-
-    {
-
-
-        if (audioSource != null)
-
-
-        {
-
-
-            audioSource.volume = volume;
-
-
-            audioSource.Play();
-
-
-        }
-
-
-    }
-
-
-
-
-
-    //public abstract void UpdatePosition();
-
-
+	//public abstract void UpdatePosition();
 }

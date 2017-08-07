@@ -249,8 +249,8 @@ GameObject:
   - component: {fileID: 54473267637976606}
   - component: {fileID: 136901149910156540}
   - component: {fileID: 114011067757031616}
-  - component: {fileID: 114366531607295686}
   - component: {fileID: 114233807265733384}
+  - component: {fileID: 114059664716432136}
   m_Layer: 14
   m_Name: Rabbit_Red
   m_TagString: Untagged
@@ -903,16 +903,34 @@ MonoBehaviour:
   spawnPS: {fileID: 0}
   disablePS: {fileID: 198441915835066168}
   data:
-    baseStats:
-      baseHealth: 40
-      baseAttack: 20
-      baseHealthRegeneration: 1
-      baseMovementSpeed: 2
-    combatJob:
-      level: 0
-      damagePerLevel: 5
-      healthPerLevel: 5
-      healthRegenPerLevel: 5
+    jobList:
+    - currentJobType: 2
+      additionalStatsPerLevel:
+      - value: 20
+        statsType: 0
+      - value: 10
+        statsType: 1
+      - value: 3
+        statsType: 2
+--- !u!114 &114059664716432136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1552184231242956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStats:
+  - value: 700
+    statsType: 0
+  - value: 50
+    statsType: 1
+  - value: 10000
+    statsType: 2
+  allStats: []
 --- !u!114 &114233807265733384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -928,22 +946,12 @@ MonoBehaviour:
   detectionDistance: 10
   attackRange: 3
   currentState: 0
+  movementSpeed: 3
   minimumDistToAvoid: 0
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 2048
---- !u!114 &114366531607295686
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1552184231242956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdb33248cab4554bb36b9cd45177bf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
+  animUseSlot: 0
 --- !u!136 &136901149910156540
 CapsuleCollider:
   m_ObjectHideFlags: 1

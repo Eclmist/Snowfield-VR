@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamage
 {
-    int Damage
+    float Damage
     {
         get;
     }

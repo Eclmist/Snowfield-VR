@@ -42,6 +42,7 @@ public class VR_Interactable : MonoBehaviour {
 	{
 		if (currentInteractingController)
 		{
+			
 			currentInteractingController.Vibrate(triggerPressVibration);
 		}
 	}
@@ -52,6 +53,11 @@ public class VR_Interactable : MonoBehaviour {
 	protected virtual void OnTriggerRelease()
 	{
 		
+	}
+
+	protected virtual void Update()
+	{
+
 	}
 
 	protected virtual void OnGripPress() { }

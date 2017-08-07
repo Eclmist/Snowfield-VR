@@ -16,6 +16,9 @@ public class OrderSlip : VR_Interactable_UI
     private Order order;
     private AdventurerAI ai;
     [SerializeField] GameObject detailPane;
+    [SerializeField] AudioClip orderCompleteSound;
+    [SerializeField] AudioClip orderFadeInSound;
+    [SerializeField] AudioClip wrongOrderSound;
     OptionPane currentOP;
 
     public AdventurerAI OrderedAI
@@ -52,6 +55,15 @@ public class OrderSlip : VR_Interactable_UI
         StartCoroutine(OrderCoroutine());
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        if (orderFadeInSound)
+            AudioSource.PlayClipAtPoint(orderFadeInSound,transform.position);
+    }
+
+
     public void ShowOrderInformation()
     {
         slip.gameObject.SetActive(true);
@@ -86,13 +98,13 @@ public class OrderSlip : VR_Interactable_UI
 
     private void DisplayOptions()
     {
-        if (currentOP)
-            currentOP.Destroy();
+		CloseOptions();
 
         OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
-        op.transform.LookAt(Player.Instance.transform);
+		currentOP = op;
+		op.transform.LookAt(Player.Instance.transform);
         interactingWeapon = currentInteractingController.GetComponentInChildren<Weapon>();
-        currentOP = op;
+        
         op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
         op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
         op.SetEvent(OptionPane.ButtonType.Cancel, CloseOptions);
@@ -112,48 +124,90 @@ public class OrderSlip : VR_Interactable_UI
     private void TryConfirmOrder()
     {
 
-        Debug.Log("try to confirm");
-       
+        bool isCorrect = false;
+
 
         if (interactingWeapon)
         {
             if (interactingWeapon.ItemID == order.ItemID)
             {
-                OrderEnd(true);
-                GameManager.Instance.AddPlayerGold(reward);
-                Destroy(interactingWeapon.gameObject);
-				currentInteractingController.SetModelActive(true);
-                currentOP.ClosePane();
-                Debug.Log("correct");
+                isCorrect = true;
             }
+            else // give the player lesser reward if material type is the same
+            {
+                ItemData tempData = ItemManager.Instance.GetItemData(interactingWeapon.ItemID);
+                CraftedItem tempCraftedItem = tempData.ObjectReference.GetComponent<CraftedItem>();
+
+                if (tempCraftedItem)
+                {
+
+                    PhysicalMaterial.Type tempType = tempCraftedItem.GetPhysicalMaterial();
+
+                    if (order.MaterialType == tempType)
+                    {
+
+                        int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
+                        reward /= reduction;
+                        isCorrect = true;
+
+                    }
+
+                }
+            }
+
+        }
+
+
+
+        if(isCorrect)
+        {
+
+            OrderEnd(true);
+            GameManager.Instance.AddPlayerGold(reward);
+            TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
+
+            if (orderCompleteSound)
+                AudioSource.PlayClipAtPoint(orderCompleteSound, transform.position);
+
+
+            interactingWeapon.LinkedController.SetModelActive(true);
+            Destroy(interactingWeapon.gameObject);
 
         }
         else
         {
-            Debug.Log("wrong?");
+            TextSpawnerManager.Instance.SpawnText("Not even close!", Color.red, transform);
+            if (wrongOrderSound)
+                AudioSource.PlayClipAtPoint(wrongOrderSound,transform.position);
         }
+
+
+        CloseOptions();
+
+
 
     }
 
     private void SpawnDetailsPanel()
     {
         Debug.Log("spawn detail");
-        string desc = "Name: " + o_name;
+        string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
 
-        if (currentOP)
-            currentOP.Destroy();
+		CloseOptions();
 
-        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
+        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite,desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
         op.transform.LookAt(Player.Instance.transform);
         op.SetEvent(OptionPane.ButtonType.Ok, CloseOptions);
 
         currentOP.ClosePane();
+		currentOP = op;
     }
 
 
 
-    protected override void OnTriggerPress()
+    protected override void OnTriggerRelease()
     {
+        base.OnTriggerRelease();
 
         if (currentInteractingController.UI == this)
         {

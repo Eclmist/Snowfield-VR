@@ -39,13 +39,20 @@ public abstract class AI : Actor
             currentFSM.ChangeState(state);
     }
 
-    public override void TakeDamage(int damage, Actor attacker)
+    public override void TakeDamage(float damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (variable.GetCurrentHealth() <= 0)
+        if (damage == 0)
+            TextSpawnerManager.Instance.SpawnText("Miss!", Color.red, transform);
+        else if (Mathf.Sign(damage) == 1)
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform);
+        else
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform);
+
+        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
-            UnEquipWeapons();
+            
         }
         else
         {
@@ -53,27 +60,11 @@ public abstract class AI : Actor
         }
     }
 
-    public void UnEquipWeapons()
-    {
-        if (leftHand != null && leftHand.Item != null)
-        {
-            if (variable.GetCurrentHealth() > 0)
-                Destroy(leftHand.Item.gameObject);
-            else
-                leftHand.Item.Unequip();
-        }
-        if (rightHand != null && rightHand.Item != null)
-        {
-            if (variable.GetCurrentHealth() > 0)
-                Destroy(rightHand.Item.gameObject);
-            else
-                rightHand.Item.Unequip();
-        }
-    }
+   
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {
-		currentFSM.StartLookAtRoutine (target, time, angle);
+        currentFSM.StartLookAtRoutine(target, time, angle);
     }
 
     public void SetNode(Node n)
@@ -82,10 +73,7 @@ public abstract class AI : Actor
     }
     public abstract void Interact(Actor actor);
 
-    public virtual float GetOutOfTimeDuration()
-    {
-        return 0;
-    }
+    
 
     public virtual void OutOfTownProgress()
     {
@@ -94,15 +82,11 @@ public abstract class AI : Actor
 
     public virtual void Spawn()
     {
-
         gameObject.SetActive(true);
-
     }
 
     public virtual void Despawn()
     {
-
-
         if (disablePS)
         {
             Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);

@@ -6,9 +6,9 @@ public abstract class InteractionsWithPlayer : MonoBehaviour {
 
     protected bool hasInteracted = false;
 
-    protected AdventurerAI currentAI;
+    protected FriendlyAI currentAI;
 
-    protected OptionPane currentPane;
+    protected IUI currentUI;
 
     public bool Interacted
     {
@@ -21,9 +21,9 @@ public abstract class InteractionsWithPlayer : MonoBehaviour {
             hasInteracted = value;
         }
     }
-    protected void Awake()
+    protected virtual void Awake()
     {
-        currentAI = GetComponent<AdventurerAI>();
+        currentAI = GetComponent<FriendlyAI>();
         if(!currentAI)
         {
             Destroy(this);
@@ -32,14 +32,16 @@ public abstract class InteractionsWithPlayer : MonoBehaviour {
     public bool IsInteracting {
         get
         {
-            return currentPane != null;
+            if (currentUI != null && currentUI.Equals(null))
+                currentUI = null;
+            return currentUI != null;
         }
     }
 
     public void StopInteraction()
     {
-        if (currentPane)
-            currentPane.ClosePane();
+        if (currentUI != null)
+            currentUI.ClosePane();
     }
 
     public abstract bool StartInteraction();

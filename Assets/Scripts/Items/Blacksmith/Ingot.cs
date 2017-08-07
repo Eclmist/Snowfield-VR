@@ -9,6 +9,7 @@ public class Ingot : BlacksmithItem {
 
     private Material initialMaterial;
     public Material forgingMaterial; // Material to lerp to when heated
+    private TempKillScript tempKill; // To show that ingot failed
     [SerializeField]
     protected MeshRenderer meshRenderer; // To modify the material
     [SerializeField]
@@ -41,6 +42,7 @@ public class Ingot : BlacksmithItem {
 		base.Start();
 
 		meshRenderer = GetComponent<MeshRenderer>();
+        tempKill = GetComponent<TempKillScript>();
 
 		if (meshRenderer == null)
         {
@@ -72,31 +74,43 @@ public class Ingot : BlacksmithItem {
 
     public void IncrementMorphStep()
     {
+		// If it is the very first hit
         if(currentMorphSteps == 0)
         {
 
 			preNumberOfHits = (int)Random.Range(2, 3);
 			// Generate morph chance
 			if (WeaponTierManager.Instance.WeaponClassList != null)
-				targetMorphSteps = Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits;
+				targetMorphSteps = (Random.Range(0, WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type)) + preNumberOfHits);
 				//targetMorphSteps = 1; // Random.Range(1,WeaponTierManager.Instance.GetNumberOfTiersInClass(physicalMaterial.type));
 			
         }
 
         currentMorphSteps++;
+
         if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
         {
-            ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
-            if(itemData != null)
+            if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRateForTier(physicalMaterial.type))
             {
-				FakeItem fakeItem = new FakeItem();
-				fakeItem.trueForm = itemData;
+                // succeeded
+                ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);
+                if(itemData != null)
+                {
+    				FakeItem fakeItem = new FakeItem();
+    				fakeItem.trueForm = itemData;
 
-                GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
-				Debug.Log(g.name);
-				g.AddComponent<FakeItem>();
-				g.GetComponent<FakeItem>().trueForm = itemData;
-                Destroy(this.gameObject);       
+                    GameObject g = Instantiate(itemData.ObjectReference.GetComponent<CraftedItem>().GetFakeself(), transform.position, transform.rotation);
+    				g.AddComponent<FakeItem>();
+    				g.GetComponent<FakeItem>().trueForm = itemData;
+                    Destroy(this.gameObject); 
+                }
+
+            }
+            else
+            {   
+                // Fail
+                tempKill.Kill();
+                Destroy(this.gameObject); 
             }
         }
     }

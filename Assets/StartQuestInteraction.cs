@@ -8,19 +8,20 @@ public class StartQuestInteraction : QuestInteraction
     public override bool StartInteraction()
     {
         hasInteracted = true;
-        QuestEntryGroup<StoryQuest> startableQuest = currentAI.QuestBook.GetStartableGroup();
-
-        if (startableQuest != null)
+        if (currentAI is AdventurerAI)
         {
-            OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
-                "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
-                transform.position, Player.Instance.transform, transform);
-            op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
-            currentQuestGroup = startableQuest;
-            currentPane = op;
-            return true;
+            QuestEntryGroup<StoryQuest> startableQuest = (currentAI as AdventurerAI).QuestBook.GetStartableGroup();
 
-
+            if (startableQuest != null)
+            {
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
+                    "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
+                    transform.position, Player.Instance.transform, transform);
+                op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
+                currentQuestGroup = startableQuest;
+                currentUI = op;
+                return true;
+            }
         }
         return false;
     }

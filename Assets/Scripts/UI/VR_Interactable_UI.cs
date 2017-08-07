@@ -12,9 +12,9 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 	private bool lastInteractable;
 
-	protected virtual void Update()
+	protected override void Update()
 	{
-		Debug.Log ("hit");
+	
 		if (lastInteractable != interactable)
 		{
 			lastInteractable = interactable;
@@ -23,7 +23,9 @@ public abstract class VR_Interactable_UI : VR_Interactable
 		if (currentInteractingController)
 		{
 			if (currentInteractingController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+			{
 				OnTriggerPress();
+			}
 			else if (currentInteractingController.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
 				OnTriggerHold();
 			else if (currentInteractingController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
@@ -38,7 +40,7 @@ public abstract class VR_Interactable_UI : VR_Interactable
 		if (interactable)
 		{
 			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
-
+			
 			if (vrController && currentInteractingController == null)
 			{
 				currentInteractingController = vrController;
