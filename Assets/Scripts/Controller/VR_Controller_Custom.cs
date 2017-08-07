@@ -174,6 +174,7 @@ public class VR_Controller_Custom : MonoBehaviour
                 overlappedInteractableObject.OnTriggerHold(this);
             if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
                 overlappedInteractableObject.OnGripHold(this);
+
             overlappedInteractableObject.OnFixedUpdateInteraction(this);
         }
     }

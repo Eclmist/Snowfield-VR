@@ -41,6 +41,8 @@ namespace Opening_Room
 		public GlitchCamera glitchScript;
 
 		public Light purpleLight;
+		public GameObject lightBar;
+		public AudioSource rumble;
 
 		public Animator cupboardAnimator;
 	}
@@ -194,9 +196,8 @@ namespace Opening_Room
 			sequenceObjects.computerTeleportationPoint.enabled = true;
 
 			yield return new WaitForSeconds(0.5F);
-
-			yield return StartCoroutine(WaitForKeyboard("Open message"));
 			sequenceObjects.outlineRen.enabled = true;
+			yield return StartCoroutine(WaitForKeyboard("Open message"));
 
 			sequenceObjects.Music.SetActive(true);
 
@@ -269,10 +270,11 @@ namespace Opening_Room
 			float glitchVal = 0;
 			sequenceObjects.glitchScript.enabled = true;
 
-
+			sequenceObjects.lightBar.SetActive(true);
+			sequenceObjects.rumble.Play();
 			while (glitchVal < 1)
 			{
-				glitchVal += Time.deltaTime / 10;
+				glitchVal += Time.deltaTime / 15;
 				sequenceObjects.glitchScript.SetGlitchAmount(glitchVal);
 				sequenceObjects.purpleLight.intensity = (glitchVal / 10) - Random.Range(0, 0.2F);
 
@@ -293,8 +295,9 @@ namespace Opening_Room
 
 			yield return new WaitForSeconds(0.3F);
 
-
+			sequenceObjects.rumble.Stop();
 			sequenceObjects.cupboardAnimator.enabled = true;
+			sequenceObjects.lightBar.SetActive(false);
 
 		}
 

@@ -17,9 +17,9 @@ public class Pen : GenericItem
 		pickupTime = Time.time;
 	}
 
-	protected override void OnTriggerHold()
+	public override void OnFixedUpdateInteraction(VR_Controller_Custom ctrl)
 	{
-		base.OnTriggerHold();
+		base.OnFixedUpdateInteraction(ctrl);
 
 		if (Time.time - pickupTime > holdTime)
 		{
