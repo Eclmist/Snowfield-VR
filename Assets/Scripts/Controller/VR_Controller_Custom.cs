@@ -64,6 +64,14 @@ public class VR_Controller_Custom : MonoBehaviour
 			return overlappedInteractableObject != null;
 		}
 	}
+
+	public VR_Interactable_Object CurrentItemInHand
+	{
+		get
+		{
+			return overlappedInteractableObject;
+		}
+	}
 	public Controller_Handle Handle
 	{
 		get

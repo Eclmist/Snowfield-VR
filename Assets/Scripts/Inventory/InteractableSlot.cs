@@ -20,11 +20,11 @@ public class InteractableSlot : VR_Interactable_UI
 
 	}
 
-    public int Index
-    {
-        get { return this.index; }
-        set { this.index = value; }
-    }
+	public int Index
+	{
+		get { return this.index; }
+		set { this.index = value; }
+	}
 
 	protected override void Update()
 	{
@@ -46,29 +46,13 @@ public class InteractableSlot : VR_Interactable_UI
 			stack.text = GetReferredSlot().CurrentStack.ToString();
 
 
-        }
-        else
-        {
-            image.color = new Color(0, 0, 0, 0);
-            stack.color = new Color(0, 0, 0, 0);
-        }
+		}
+		else
+		{
+			image.color = new Color(0, 0, 0, 0);
+			stack.color = new Color(0, 0, 0, 0);
+		}
 
-
-
-    }
-
-    // To get the index of the referenced slot,
-    // we take the (page number) * (number of slots per page) - (number of slots  - current index) - 1
-    private Inventory.InventorySlot GetReferredSlot()
-    {
-        int referencedIndex = (StoragePanel.Instance.CurrentPageNumber) * (StoragePanel.Instance.NumberOfSlotsPerPage) + index;
-        // - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
-
-        return StoragePanel.Instance._Inventory.InventoryItemsArr[referencedIndex];
-
-
-
-    }
 
 
 	}
@@ -80,53 +64,9 @@ public class InteractableSlot : VR_Interactable_UI
 		int referencedIndex = (StoragePanel.Instance.CurrentPageNumber) * (StoragePanel.Instance.NumberOfSlotsPerPage) + index;
 		// - (StoragePanel.Instance.NumberOfSlotsPerPage - (index + 1)) - 1;
 
-        Inventory.InventorySlot temp = GetReferredSlot();
-
-        if (temp.StoredItem != null)
-        {
-            temp.CurrentStack--;
-
-			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<GenericItem>();
-
-            instanceInteractable.OnTriggerPress(currentInteractingController);
-            if (temp.CurrentStack < 1)
-            {
-                temp.EmptySlot();
-            }
-        }
+		return StoragePanel.Instance._Inventory.InventoryItemsArr[referencedIndex];
 
 
-    }
-
-
-    private void AddToSlot(IStorable item)
-    {
-        Inventory.InventorySlot temp = GetReferredSlot();
-
-        if (temp.StoredItem == null)
-        {
-
-            temp.StoredItem = item;
-            temp.CurrentStack++;
-            currentInteractingController = null;
-
-        }
-        else if (temp.StoredItem.ItemID == item.ItemID)
-        {
-            if (temp.CurrentStack < temp.StoredItem.MaxStackSize)
-            {
-
-                temp.CurrentStack++;
-            }
-            else
-            {
-                //show red outline
-            }
-        }
-
-
-
-    }
 
 	}
 
@@ -137,33 +77,13 @@ public class InteractableSlot : VR_Interactable_UI
 
 		Inventory.InventorySlot temp = GetReferredSlot();
 
-            RemoveFromSlot();
-        }
-    }
+		if (temp.StoredItem != null)
+		{
+			temp.CurrentStack--;
 
-    protected override void OnTriggerRelease()
-    {
-
-        if (currentInteractingController.UI == this)
-        {
-
-            GenericItem g = currentInteractingController.GetComponentInChildren<GenericItem>();
-            Debug.Log(g);
-            if (g)
-            {
-                ItemData d = ItemManager.Instance.GetItemData(g.ItemID);
-                
-                if (d != null && (GetReferredSlot().StoredItem == null || GetReferredSlot().StoredItem.ItemID == d.ItemID))
-                {
-                    currentInteractingController.SetModelActive(true);
-                    AddToSlot(d);
-                    Destroy(g.gameObject);
-                }
-
-            }
-
-        }
-    }
+			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference, currentInteractingController.transform.position,
+				currentInteractingController.transform.rotation)
+				.GetComponent<GenericItem>();
 
 			instanceInteractable.OnTriggerPress(currentInteractingController);
 
@@ -220,7 +140,7 @@ public class InteractableSlot : VR_Interactable_UI
 
 	protected override void OnTriggerPress()
 	{
-		if (currentInteractingController.UI == this && !currentInteractingController.InteractedObject)
+		if (currentInteractingController.UI == this && !currentInteractingController.HasObject)
 		{
 			base.OnTriggerPress();
 			RemoveFromSlot();
@@ -229,14 +149,14 @@ public class InteractableSlot : VR_Interactable_UI
 
 	protected override void OnTriggerRelease()
 	{
-		
+
 		if (currentInteractingController.UI == this)
 		{
 			Debug.Log("hittttt");
 			GenericItem g = null;
-			if (currentInteractingController.InteractedObject is GenericItem)
+			if (currentInteractingController.CurrentItemInHand is GenericItem)
 			{
-				 g = currentInteractingController.InteractedObject as GenericItem;
+				g = currentInteractingController.CurrentItemInHand as GenericItem;
 			}
 			Debug.Log(g);
 			if (g)
@@ -257,22 +177,3 @@ public class InteractableSlot : VR_Interactable_UI
 	}
 
 }
-
-	public int Index
-	{
-		get { return this.index; }
-		set { this.index = value; }
-	}
-		}
-		else
-		{
-			image.color = new Color(0, 0, 0, 0);
-			stack.color = new Color(0, 0, 0, 0);
-		}
-		return StoragePanel.Instance._Inventory.InventoryItemsArr[referencedIndex];
-		if (temp.StoredItem != null)
-		{
-			temp.CurrentStack--;
-			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference, currentInteractingController.transform.position,
-				currentInteractingController.transform.rotation)
-				.GetComponent<GenericItem>();
