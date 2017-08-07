@@ -36,6 +36,16 @@ public class MonsterFSM : ActorFSM
                 target = Player.Instance;
             }
         }
+        //else
+        //{
+        //    Collider collidedObj = CheckObstacles();
+        //    if (collidedObj)
+        //    {
+        //        Debug.Log(collidedObj.gameObject.name);
+        //        target = collidedObj.GetComponent<FriendlyAI>();
+        //        ChangeState(FSMState.COMBAT);
+        //    }
+        //}
     }
 
     protected override void Awake()

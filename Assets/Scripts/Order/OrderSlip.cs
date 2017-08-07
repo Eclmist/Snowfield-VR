@@ -16,6 +16,9 @@ public class OrderSlip : VR_Interactable_UI
     private Order order;
     private AdventurerAI ai;
     [SerializeField] GameObject detailPane;
+    [SerializeField] AudioClip orderCompleteSound;
+    [SerializeField] AudioClip orderFadeInSound;
+    [SerializeField] AudioClip wrongOrderSound;
     OptionPane currentOP;
 
     public AdventurerAI OrderedAI
@@ -51,6 +54,15 @@ public class OrderSlip : VR_Interactable_UI
         slip.gameObject.SetActive(false);
         StartCoroutine(OrderCoroutine());
     }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        if (orderFadeInSound)
+            AudioSource.PlayClipAtPoint(orderFadeInSound,transform.position);
+    }
+
 
     public void ShowOrderInformation()
     {
@@ -112,31 +124,67 @@ public class OrderSlip : VR_Interactable_UI
     private void TryConfirmOrder()
     {
 
-        Debug.Log("try to confirm");
-       
+        bool isCorrect = false;
+
 
         if (interactingWeapon)
         {
             if (interactingWeapon.ItemID == order.ItemID)
             {
-                OrderEnd(true);
-				CloseOptions();
-				GameManager.Instance.AddPlayerGold(reward);
-				TextSpawnerManager.Instance.SpawnText("+"+ reward,Color.green,transform);
-				interactingWeapon.LinkedController.SetModelActive(true);
-				Destroy(interactingWeapon.gameObject);
-
-				
-
-
-				Debug.Log("correct");
+                isCorrect = true;
             }
+            else // give the player lesser reward if material type is the same
+            {
+                ItemData tempData = ItemManager.Instance.GetItemData(interactingWeapon.ItemID);
+                CraftedItem tempCraftedItem = tempData.ObjectReference.GetComponent<CraftedItem>();
+
+                if (tempCraftedItem)
+                {
+
+                    PhysicalMaterial.Type tempType = tempCraftedItem.GetPhysicalMaterial();
+
+                    if (order.MaterialType == tempType)
+                    {
+
+                        int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
+                        reward /= reduction;
+                        isCorrect = true;
+
+                    }
+
+                }
+            }
+
+        }
+
+
+
+        if(isCorrect)
+        {
+
+            OrderEnd(true);
+            GameManager.Instance.AddPlayerGold(reward);
+            TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
+
+            if (orderCompleteSound)
+                AudioSource.PlayClipAtPoint(orderCompleteSound, transform.position);
+
+
+            interactingWeapon.LinkedController.SetModelActive(true);
+            Destroy(interactingWeapon.gameObject);
 
         }
         else
         {
-            Debug.Log("wrong?");
+            TextSpawnerManager.Instance.SpawnText("Not even close!", Color.red, transform);
+            if (wrongOrderSound)
+                AudioSource.PlayClipAtPoint(wrongOrderSound,transform.position);
         }
+
+
+        CloseOptions();
+
+
 
     }
 
@@ -157,8 +205,9 @@ public class OrderSlip : VR_Interactable_UI
 
 
 
-    protected override void OnTriggerPress()
+    protected override void OnTriggerRelease()
     {
+        base.OnTriggerRelease();
 
         if (currentInteractingController.UI == this)
         {
