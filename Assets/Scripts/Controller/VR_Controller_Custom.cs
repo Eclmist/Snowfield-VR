@@ -56,7 +56,7 @@ public class VR_Controller_Custom : MonoBehaviour
         trackedObject = GetComponent<SteamVR_TrackedObject>();
         model = transform.Find("Model").gameObject;
     }
-
+		
     private void FixedUpdate()
     {
         device = SteamVR_Controller.Input((int)trackedObject.index);

@@ -26,7 +26,6 @@ public abstract class VR_Interactable_UI : MonoBehaviour
         if (currentInteractingController)
         {
             currentInteractingController.UI = this;
-            Debug.Log("interacring with an order");
         }
 
     }
@@ -52,7 +51,6 @@ public abstract class VR_Interactable_UI : MonoBehaviour
     protected virtual void OnApplicationMenuPress()
     {
         currentInteractingController.Vibrate(triggerPressVibration);
-        Debug.Log("App");
     }
 
     protected virtual void OnInteractableChange() { }
@@ -97,7 +95,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
 
             VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
 
-            if (vrController && currentInteractingController == vrController)
+            if (vrController && currentInteractingController == vrController) 
             {
                 OnControllerExit();
             }
@@ -113,6 +111,7 @@ public abstract class VR_Interactable_UI : MonoBehaviour
             lastInteractable = interactable;
             OnInteractableChange();
         }
+
         if (currentInteractingController)
         {
             if (currentInteractingController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))

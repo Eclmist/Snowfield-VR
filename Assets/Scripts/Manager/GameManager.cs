@@ -83,8 +83,6 @@ public class GameManager : MonoBehaviour {
             if(gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
             currentState = GameState.DAYMODE;
         }
-
-        Debug.Log(currentState);
     }
 
     private void PrepareForNight()
