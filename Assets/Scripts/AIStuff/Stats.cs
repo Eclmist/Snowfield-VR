@@ -52,7 +52,7 @@ public class Stats
         value = copyObject.Max;
         statsType = copyObject.Type;
     }
-    
+
 }
 
 [System.Serializable]
@@ -75,4 +75,11 @@ public class ActiveStats : Stats
 
     public ActiveStats(StatsType _type, float _maxValue) : base(_type, _maxValue) { }
 
+    public float Percentage
+    {
+        get
+        {
+            return currentValue / value;
+        }
+    }
 }

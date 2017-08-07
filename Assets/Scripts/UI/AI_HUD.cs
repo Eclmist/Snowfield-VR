@@ -33,16 +33,16 @@ public class AI_HUD : MonoBehaviour {
     private Material damagebarMatInstance;
 
 
-	private AdventurerAI actor = null;
+	private AI actor = null;
 
 	// Use this for initialization
 	protected void Start()
 	{
-		actor = transform.parent.GetComponent<AdventurerAI>();
+		actor = transform.parent.GetComponent<AI>();
 
 		if (actor == null)
 		{
-			Debug.LogError("HUD must be a child of Adventurer AI! Self destructing...");
+			Debug.LogError("HUD must be a child of AI! Self destructing...");
 			Destroy(this);
 			return;
 		}
@@ -72,8 +72,7 @@ public class AI_HUD : MonoBehaviour {
         levelText.text = "Lv: " + actor.Data.GetJob(JobType.COMBAT).Level;
 
         // Set healthbar color
-        float health01 = 1 - (float)actor.StatContainer.GetStat(Stats.StatsType.HEALTH).Current /
-            actor.StatContainer.GetStat(Stats.StatsType.HEALTH).Max;
+        float health01 = 1 - (float)actor.StatContainer.GetStat(Stats.StatsType.HEALTH).Percentage;
 
 		Color currentHealthbarColor = damagebarMatInstance.GetColor("_TintColor");
 

@@ -25,20 +25,15 @@ public class MonsterFSM : ActorFSM
     protected override void UpdatePetrolState()
     {
         base.UpdatePetrolState();
-        Vector3 playerPos = Player.Instance.transform.position;
-        playerPos.y = transform.position.y;
-        if(Vector3.Distance(transform.position,playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
+        if (currentState != FSMState.COMBAT)
         {
-            target = Player.Instance;
-            ChangeState(FSMState.COMBAT);
-        }
-        else
-        {
-            Collider collidedObj = CheckObstacles(LayerMask.NameToLayer("AI"));
-            if (collidedObj)
+            Vector3 playerPos = Player.Instance.transform.position;
+            playerPos.y = transform.position.y;
+
+            if (Vector3.Distance(transform.position, playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
             {
-                target = collidedObj.GetComponent<FriendlyAI>();
                 ChangeState(FSMState.COMBAT);
+                target = Player.Instance;
             }
         }
     }

@@ -9,9 +9,7 @@ public abstract class AI : Actor
 
     protected ActorFSM currentFSM;
 
-
-    [SerializeField]
-    protected ParticleSystem spawnPS, disablePS;
+    protected GameObject spawnPS, disablePS;
 
 
     public override void Notify(AI ai)
@@ -31,6 +29,9 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
+        spawnPS = transform.Find("SpawnParticle").gameObject;
+        disablePS = transform.Find("DeathParticle").gameObject;
+        Debug.Log(disablePS);
     }
 
     public void ChangeState(ActorFSM.FSMState state)
@@ -77,7 +78,15 @@ public abstract class AI : Actor
     }
     public abstract void Interact(Actor actor);
 
+    public void Stun()
+    {
+        currentFSM.SetStun(1);
+    }
     
+    public void SetVelocity(Vector3 vel)
+    {
+        currentFSM.SetVelocity(vel);
+    }
 
     public virtual void OutOfTownProgress()
     {
@@ -87,14 +96,25 @@ public abstract class AI : Actor
     public virtual void Spawn()
     {
         gameObject.SetActive(true);
+        if (spawnPS)
+        {
+            GameObject ps = Instantiate(spawnPS,spawnPS.transform.position,spawnPS.transform.rotation);
+            ps.SetActive(true);
+            Destroy(ps, 3);
+        }
     }
 
     public virtual void Despawn()
     {
+
         if (disablePS)
         {
-            Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);
-            gameObject.SetActive(false);
+            Debug.Log("hit");
+            GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
+            ps.SetActive(true);
+            Destroy(ps, 3);
+            
         }
+        gameObject.SetActive(false);
     }
 }
