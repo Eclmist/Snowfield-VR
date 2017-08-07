@@ -1,8 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+
+
+
+
+
 using UnityEngine;
 
+
+
+
+
 [RequireComponent(typeof(AudioSource))]
+
 
 public class GenericItem : VR_Interactable_Object, IDamage
 {
@@ -155,7 +164,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-	public int Damage
+	public float Damage
 
 
 	{
@@ -223,13 +232,9 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	}
 
-	float IDamage.Damage
-	{
-		get
-		{
-			throw new NotImplementedException();
-		}
-	}
+
+
+
 
 	public override void OnTriggerRelease(VR_Controller_Custom referenceCheck)
 	{
