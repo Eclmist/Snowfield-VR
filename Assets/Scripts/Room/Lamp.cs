@@ -28,15 +28,18 @@ namespace Opening_Room
 		{
 			base.OnTriggerRelease();
 
-			isTurnedOn = !isTurnedOn;
-			interactSound.volume /= 8;
-			interactSound.pitch *= 4;
+			if (interactable)
+			{
+				isTurnedOn = !isTurnedOn;
+				interactSound.volume /= 8;
+				interactSound.pitch *= 4;
 
-			interactSound.Play();
-			interactSound.volume *= 8;
-			interactSound.pitch /= 4;
+				interactSound.Play();
+				interactSound.volume *= 8;
+				interactSound.pitch /= 4;
 
-			UpdateLamp();
+				UpdateLamp();
+			}
 		}
 
 		public void TurnOn(bool on)

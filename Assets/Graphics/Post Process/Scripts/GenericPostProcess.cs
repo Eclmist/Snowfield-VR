@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-[ImageEffectAllowedInSceneView]
 [RequireComponent(typeof(Camera))]
 public class GenericPostProcess : MonoBehaviour
 {
-	[SerializeField] private Shader shader;
+	[SerializeField] protected Shader shader;
 
-	private Camera camera;
-	private Material mat;
+	protected Camera camera;
+	protected Material mat;
 
-	protected void Awake()
+	protected virtual void Start()
 	{
 		camera = GetComponent<Camera>();
 		mat = new Material(shader);
@@ -20,7 +18,7 @@ public class GenericPostProcess : MonoBehaviour
 		Debug.Assert(mat);
 	}
 
-	protected void OnRenderImage(RenderTexture source, RenderTexture destination)
+	protected virtual void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		Graphics.Blit(source, destination, mat);
 	}

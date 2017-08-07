@@ -116,14 +116,15 @@
 			return o;
 		}
 
-		half frag(v2f i) : SV_Target
+		half4 frag(v2f i) : SV_Target
 		{
 			float2 uv = float2(_SinTime.g, _SinTime.g);
 			int time = _Time * 200 * _GlitchSpeed;
 			time %= 20;
 
 			half noise = tex2D(_Fractal, i.uv + fixed2(0.12, 0.42) * time).r;
-			return max(0, lerp(float4(0, 0, 0, 0), noise, noise - _MaskCutoff).r * tex2D(_Perlin, i.uv + _Time.r));
+
+			return fixed4(max(0, lerp(float4(0, 0, 0, 0), noise, noise - _MaskCutoff).r * tex2D(_Perlin, i.uv + _Time.r)));
 
 		}
 			ENDCG

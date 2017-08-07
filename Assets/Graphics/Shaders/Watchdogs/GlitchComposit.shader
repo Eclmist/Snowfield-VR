@@ -76,15 +76,17 @@
 					linearDepth;
 
 				//return half4(fragPosY, 1,1,1 );
-				if (fragPos.y < _worldY && _worldY > 0)
+				if (fragPos.y < _worldY && _worldY > 0 && fragPos.y > _worldY - 0.3)
 				{
 					outline += pow(abs(colDown - col.r), 2.2);
 					outline += pow(abs(colUp - col.r), 2.2);
 					outline += pow(abs(colRight - col.r), 2.2);
 					outline += pow(abs(colLeft - col.r), 2.2);
+
+					outline *= fragPos.y - (_worldY - 0.3);
 				}
 
-				return col + glitch.r * _GlitchColor +min(0.8, (outline) * 100000) * fixed4(0, 1, 1, 1);
+				return col + glitch.r * _GlitchColor +min(0.8, (outline) * 100000000) * fixed4(0, 1, 1, 1);
 			}
 			ENDCG
 		}

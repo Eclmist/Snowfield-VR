@@ -190,16 +190,13 @@ namespace Opening_Room
 			yield return new WaitForSeconds(3);
 
 			sequenceObjects.message.SetActive(true);
-			sequenceObjects.outlineRen.enabled = true;
 
 			sequenceObjects.computerTeleportationPoint.enabled = true;
 
 			yield return new WaitForSeconds(0.5F);
 
 			yield return StartCoroutine(WaitForKeyboard("Open message"));
-
-			sequenceObjects.lamp.TurnOn(false);
-			sequenceObjects.lamp.interactable = false;
+			sequenceObjects.outlineRen.enabled = true;
 
 			sequenceObjects.Music.SetActive(true);
 
@@ -231,6 +228,9 @@ namespace Opening_Room
 
 			//sequenceObjects.tv.Play();
 			// Make crazy shit happen here
+
+			sequenceObjects.lamp.TurnOn(false);
+			sequenceObjects.lamp.interactable = false;
 
 			AudioFadeOut.FadeOut(sequenceObjects.BGM.GetComponent<AudioSource>(), 1);
 

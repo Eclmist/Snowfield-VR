@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-[ExecuteInEditMode]
 public class GlitchCamera : MonoBehaviour {
 
 	[SerializeField] Material glitchMat;
@@ -45,7 +44,7 @@ public class GlitchCamera : MonoBehaviour {
 	{
 		glitch2.enabled = false;
 		if (tempSecondaryCamera)
-		DestroyImmediate(tempSecondaryCamera.gameObject);
+			DestroyImmediate(tempSecondaryCamera.gameObject);
 	}
 
 	protected void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -90,7 +89,7 @@ public class GlitchCamera : MonoBehaviour {
 	{
 		glitchAmount = amount;
 		Shader.SetGlobalFloat("_MaskCutoff", 1 - glitchAmount * correctedMinMask);
-		mat.SetFloat("_worldY", amount * 30 - 1);
+		mat.SetFloat("_worldY", amount * 20 %7 - 1);
 
 
 		if (glitch2)
