@@ -45,9 +45,9 @@ public abstract class AI : Actor
         if (damage == 0)
             TextSpawnerManager.Instance.SpawnText("Miss!", Color.red, transform);
         else if (Mathf.Sign(damage) == 1)
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform,2);
         else
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform,2);
 
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
