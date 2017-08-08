@@ -23,9 +23,13 @@ public class Glitch2 : MonoBehaviour
     void Start()
     {
 		glitchMaterial = new Material(glitchShader);
+		glitchMaterial.SetFloat("flip_up", 0);
+
+		glitchMaterial.SetFloat("flip_down", 1);
+
 	}
 
-    void OnRenderImage(RenderTexture source, RenderTexture destination)
+	void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         float _aberration = Random.value / 10f;
 
@@ -59,13 +63,15 @@ public class Glitch2 : MonoBehaviour
 		}
 
 		if (Random.value < 0.05 * _intensity)
-        {
-            glitchMaterial.SetFloat("displace", Random.value * _intensity);
-            glitchMaterial.SetFloat("scale", 1 - Random.value * _intensity);
-            glitchMaterial.SetFloat("_aberration", _aberration * _amplitude * _intensity);
-        }
-        else
-            glitchMaterial.SetFloat("displace", 0);
+		{
+			glitchMaterial.SetFloat("displace", Random.value * _intensity);
+			glitchMaterial.SetFloat("scale", 1 - Random.value * _intensity);
+			glitchMaterial.SetFloat("_aberration", _aberration * _amplitude * _intensity);
+		}
+		else
+		{
+			glitchMaterial.SetFloat("displace", 0);
+		}
 
         Graphics.Blit(source, destination, glitchMaterial);
     }
