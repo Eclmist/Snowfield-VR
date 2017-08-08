@@ -61,7 +61,6 @@ public class CraftedItem : GenericItem
 	protected override void Update()
 	{
 		base.Update();
-		Debug.Log(colObject);
 		if (colObject == null || colObject.Equals(null))
 			removable = true;
 		else

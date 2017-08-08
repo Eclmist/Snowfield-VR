@@ -24,6 +24,21 @@ public class Ingot : BlacksmithItem {
     private int currentMorphSteps;
     private int targetMorphSteps;
 	private int preNumberOfHits = 3;
+	[SerializeField]
+	private bool onAnvil;
+	[SerializeField]
+	private bool isMorphable;
+
+	public bool IsMorphable
+	{
+		get { return this.isMorphable; }
+	}
+
+	public bool OnAnvil
+	{
+		get { return this.onAnvil; }
+		set { this.onAnvil = value; }
+	}
 
 	public int PreNumberOfHits
 	{
@@ -59,7 +74,13 @@ public class Ingot : BlacksmithItem {
         currentMorphSteps = 0;
     }
 
-    public void LateUpdate()
+	protected override void Update()
+	{
+		base.Update();
+		isMorphable = (currentTemperature > 0.8f && currentMorphSteps >= targetMorphSteps && onAnvil && currentMorphSteps > 0);
+	}
+
+	public void LateUpdate()
     {
 
         //if (Input.GetKeyDown(KeyCode.E))
@@ -88,7 +109,7 @@ public class Ingot : BlacksmithItem {
 
         currentMorphSteps++;
 
-        if(currentMorphSteps >= targetMorphSteps && currentTemperature > 0.8f)
+        if(isMorphable)
         {
             if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRateForTier(physicalMaterial.type))
             {
