@@ -49,7 +49,7 @@ public class AdventurerAI : FriendlyAI
     {
         if (leftHand != null && leftHand.Item != null)
         {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
+            if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(leftHand.Item.gameObject);
             else
             {
@@ -59,7 +59,7 @@ public class AdventurerAI : FriendlyAI
         }
         if (rightHand != null && rightHand.Item != null)
         {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
+            if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(rightHand.Item.gameObject);
             else
             {
@@ -190,10 +190,10 @@ public class AdventurerAI : FriendlyAI
     {
         base.Spawn();
         (currentFSM as AdventurerFSM).NewSpawn();
-        if (variable)
+        if (statsContainer)
         {
-            variable.ResetCurrentVariables();
-            variable.UpdateVariables();
+            statsContainer.ResetCurrentVariables();
+            statsContainer.UpdateVariables();
         }
     }
 
@@ -219,7 +219,7 @@ public class AdventurerAI : FriendlyAI
     public override void TakeDamage(float damage, Actor attacker)
     {
         base.TakeDamage(damage, attacker);
-        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+        if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 50, TownManager.Instance.GetRandomSpawnPoint());
         }

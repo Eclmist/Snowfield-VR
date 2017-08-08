@@ -29,7 +29,6 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
-        spawnPS = transform.Find("SpawnParticle").gameObject;
         disablePS = transform.Find("DeathParticle").gameObject;
     }
 
@@ -49,7 +48,7 @@ public abstract class AI : Actor
         else
             TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform,2);
 
-        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+        if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
             
@@ -95,18 +94,12 @@ public abstract class AI : Actor
     public virtual void Spawn()
     {
         gameObject.SetActive(true);
-        if (spawnPS)
-        {
-            GameObject ps = Instantiate(spawnPS,spawnPS.transform.position,spawnPS.transform.rotation);
-            ps.SetActive(true);
-            Destroy(ps, 3);
-        }
     }
 
     public virtual void Despawn()
     {
 
-        if (disablePS)
+        if (disablePS && statsContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
             ps.SetActive(true);
