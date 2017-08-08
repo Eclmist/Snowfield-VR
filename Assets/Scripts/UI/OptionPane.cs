@@ -109,11 +109,15 @@ public abstract class OptionPane : MonoBehaviour, IUI
 
     public virtual void ClosePane()
     {
-        if (anim)
-            anim.SetTrigger("Close");
 
+		Debug.Log("closing pane");
 
-		Destroy();
+		if (anim)
+			anim.SetTrigger("Close");
+		else
+			Destroy();
+
+		
     }
 
     public virtual void Destroy()

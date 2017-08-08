@@ -81,9 +81,7 @@ public class InteractableSlot : VR_Interactable_UI
 		{
 			temp.CurrentStack--;
 
-			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference, currentInteractingController.transform.position,
-				currentInteractingController.transform.rotation)
-				.GetComponent<GenericItem>();
+			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<GenericItem>();
 
 			instanceInteractable.OnTriggerPress(currentInteractingController);
 
@@ -140,7 +138,7 @@ public class InteractableSlot : VR_Interactable_UI
 
 	protected override void OnTriggerPress()
 	{
-		if (currentInteractingController.UI == this && !currentInteractingController.HasObject)
+		if (currentInteractingController.UI == this && currentInteractingController.CurrentItemInHand == null)
 		{
 			base.OnTriggerPress();
 			RemoveFromSlot();
@@ -149,7 +147,6 @@ public class InteractableSlot : VR_Interactable_UI
 
 	protected override void OnTriggerRelease()
 	{
-
 		if (currentInteractingController.UI == this)
 		{
 			Debug.Log("hittttt");

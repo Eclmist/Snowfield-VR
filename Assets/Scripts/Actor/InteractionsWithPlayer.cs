@@ -40,7 +40,9 @@ public abstract class InteractionsWithPlayer : MonoBehaviour {
 
     public void StopInteraction()
     {
-        if (currentUI != null)
+		if (currentUI != null && currentUI.Equals(null))
+			currentUI = null;
+		if (currentUI != null)
             currentUI.ClosePane();
     }
 

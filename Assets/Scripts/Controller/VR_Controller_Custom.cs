@@ -57,19 +57,17 @@ public class VR_Controller_Custom : MonoBehaviour
 
 	}
 
-	public bool HasObject
-	{
-		get
-		{
-			return overlappedInteractableObject != null;
-		}
-	}
 
 	public VR_Interactable_Object CurrentItemInHand
 	{
 		get
 		{
-			return overlappedInteractableObject;
+
+			if (overlappedInteractableObject && overlappedInteractableObject.LinkedController == this)
+				return overlappedInteractableObject;
+			else
+				return null;
+
 		}
 	}
 	public Controller_Handle Handle
@@ -104,7 +102,9 @@ public class VR_Controller_Custom : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		device = hand.controller;
+		SteamVR_Controller.Device checkDevice = hand.controller;
+		if (checkDevice != null)
+			device = checkDevice;
 		HandleFixedUpdateInput();
 	}
 

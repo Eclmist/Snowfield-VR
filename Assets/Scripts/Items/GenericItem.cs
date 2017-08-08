@@ -242,7 +242,8 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 		rigidBody.velocity = Vector3.zero;
 		rigidBody.angularVelocity = Vector3.zero;
-		rigidBody.AddForceAtPosition(currentReleaseVelocity, targetPositionPoint.transform.position, ForceMode.Impulse);
+		if (!float.IsNaN(currentReleaseVelocity.magnitude))
+			rigidBody.AddForceAtPosition(currentReleaseVelocity, targetPositionPoint.transform.position, ForceMode.Impulse);
 
 		gameObject.layer = LayerMask.NameToLayer("Interactable");
 		rigidBody.useGravity = true;
