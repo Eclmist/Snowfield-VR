@@ -111,8 +111,9 @@ public abstract class OptionPane : MonoBehaviour, IUI
     {
         if (anim)
             anim.SetTrigger("Close");
-        else
-            Destroy();
+
+
+		Destroy();
     }
 
     public virtual void Destroy()

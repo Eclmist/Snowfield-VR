@@ -72,7 +72,6 @@ public class OrderManager : MonoBehaviour
     public void StartRequest(AdventurerAI ai, Order order)
 
     {
-        Debug.Log(order);
 
         if (order != null)
 
