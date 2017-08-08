@@ -144,6 +144,10 @@ public abstract class ActorFSM : MonoBehaviour
         if (!animator.GetBool("Stun"))
             rigidBody.velocity = new Vector3(actualVelocity.x, rigidBody.velocity.y, actualVelocity.z);
         rigidBody.angularVelocity = Vector3.zero;
+        if (CanMove())
+            rigidBody.isKinematic = false;
+        else
+            rigidBody.isKinematic = true;
 
     }
     protected virtual void Update()
@@ -224,6 +228,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void SetVelocity(Vector3 vel)
     {
+        rigidBody.isKinematic = false;
         rigidBody.AddForce(vel, ForceMode.Impulse);
     }
     //if (backing)
@@ -294,7 +299,6 @@ public abstract class ActorFSM : MonoBehaviour
             }
             else
             {
-
                 ChangeState(FSMState.IDLE);
                 return;
             }
@@ -345,12 +349,15 @@ public abstract class ActorFSM : MonoBehaviour
         {
             Vector3 targetPoint = path[0].Position + pathNodeOffset[0];
             targetPoint.y = transform.position.y;
+
             if (path.Count == 1 && path[0].Occupied)
             {
                 animator.SetFloat("Speed", 0);
             }
             else
             {
+                float minDist = path.Count > 1 ? 1f : .5f;
+                
                 animator.SetFloat("Speed", movementSpeed);
                 if (CanMove())
                 {
@@ -359,7 +366,7 @@ public abstract class ActorFSM : MonoBehaviour
                 }
 
 
-                if (Vector3.Distance(transform.position, targetPoint) < .5f)
+                if (Vector3.Distance(transform.position, targetPoint) < minDist)
                 {
 
                     handledEvents.AddRange(path[0].Events);
@@ -380,7 +387,9 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual bool CanMove()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol");
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") ||
+            animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol")
+            || animator.GetBool("Stun");
     }
     public void SetNode(Node n)
     {
@@ -466,31 +475,34 @@ public abstract class ActorFSM : MonoBehaviour
     {
         RaycastHit Hit;
         //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
+        Vector3 useVec = eye.position;
+        useVec.y = (transform.position.y + eye.position.y) / 2;
         Vector3 right45 = (transform.forward + transform.right).normalized;
         Vector3 left45 = (transform.forward - transform.right).normalized;
 
-        if (Physics.Raycast(transform.position, right45, out Hit,
+        if (Physics.Raycast(useVec, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            float distanceExp = Vector3.Distance(Hit.point, transform.position) / minimumDistToAvoid;
+            Debug.Log("hitleft");
+            float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
 
-            return transform.forward - transform.right * distanceExp;
+            return -transform.right * (5 - distanceExp);
         }
-        else if (Physics.Raycast(transform.position, left45, out Hit,
+        else if (Physics.Raycast(useVec, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            float distanceExp = Vector3.Distance(Hit.point, transform.position) / minimumDistToAvoid;
+            Debug.Log("hitright");
+            float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward + transform.right * distanceExp;
+            return transform.right * (5 - distanceExp);
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir = dir * movementSpeed * animator.speed;
             dir.y = rigidBody.velocity.y;
             return dir;
         }

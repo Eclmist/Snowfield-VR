@@ -42,7 +42,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         float bonusValue = 0;
         foreach (Job job in Data.ListOfJobs)
         {
-            
+
             foreach (Stats bonusStat in job.BonusStats)
             {
                 if (bonusStat.Type == s)
@@ -87,7 +87,8 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public virtual void Attack(float damage, IDamagable target)
     {
-        target.TakeDamage(damage, this);
+        if (target.CanBeAttacked)
+            target.TakeDamage(damage, this);
     }
 
 
@@ -140,11 +141,11 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         }
     }
 
-    
+
     public virtual void Die()
     {
         variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
-        
+
     }
 
     public virtual void GainExperience(JobType jobType, int value)

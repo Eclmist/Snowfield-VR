@@ -108,7 +108,6 @@ public abstract class AI : Actor
 
         if (disablePS)
         {
-            Debug.Log("hit");
             GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
             ps.SetActive(true);
             Destroy(ps, 3);

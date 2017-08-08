@@ -52,14 +52,20 @@ public class AdventurerAI : FriendlyAI
             if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(leftHand.Item.gameObject);
             else
+            {
                 leftHand.Item.Unequip();
+                leftHand.Item = null;
+            }
         }
         if (rightHand != null && rightHand.Item != null)
         {
             if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
                 Destroy(rightHand.Item.gameObject);
             else
+            {
                 rightHand.Item.Unequip();
+                rightHand.Item = null;
+            }
         }
     }
 
@@ -215,8 +221,7 @@ public class AdventurerAI : FriendlyAI
         base.TakeDamage(damage, attacker);
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
-            AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 20, TownManager.Instance.GetRandomSpawnPoint());
-            UnEquipWeapons();
+            AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 50, TownManager.Instance.GetRandomSpawnPoint());
         }
     }
 

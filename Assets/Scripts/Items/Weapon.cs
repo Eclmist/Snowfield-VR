@@ -108,11 +108,6 @@ public class Weapon : Equipment
     }
 
 
-    public override void Equip(Transform parent)
-    {
-        base.Equip(parent);
-        charge = false;
-    }
     protected override void OnTriggerEnter(Collider collision)
     {
         base.OnTriggerEnter(collision);
@@ -128,6 +123,11 @@ public class Weapon : Equipment
     
     }
 
+    public override void Unequip()
+    {
+        base.Unequip();
+        charge = false;
+    }
     //void OnDrawGizmos()
     //{
     //	Gizmos.DrawSphere(transform.position, range);

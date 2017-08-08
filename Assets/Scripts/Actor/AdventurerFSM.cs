@@ -59,7 +59,6 @@ public class AdventurerFSM : FriendlyAiFSM
         {
             switch (state)
             {
-
                 case FSMState.COMBAT:
                     (currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
                     attackTimer = 20;
