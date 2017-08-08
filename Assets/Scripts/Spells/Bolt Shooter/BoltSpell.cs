@@ -19,8 +19,9 @@ public class BoltSpell : Spell {
         }
     }
 
-    protected override void Cast()
+    protected override void OnTriggerPress()
     {
-        Instantiate(spellPrefab);
+        Instantiate(spellPrefab, currentInteractingController.transform);
+        castCount--;
     }
 }

@@ -9,10 +9,7 @@ public class DragonCharge : Spell {
 
 	public override void OnUpdateInteraction(VR_Controller_Custom controller)
 	{
-		//transform.position = new Vector3(LinkedController.transform.position.x, LinkedController.transform.position.y, LinkedController.transform.position.z + zOffset);
-		//transform.rotation = LinkedController.transform.rotation;
-
-		
+		//Do nothing		
 	}
 
 

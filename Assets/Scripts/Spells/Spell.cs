@@ -22,15 +22,6 @@ public class Spell : VR_Interactable_Object
         get { return this.indicator; }
     }
 
-    protected virtual void Cast()
-    {
-
-    }
-
-    protected virtual void Release()
-    {
-
-    }
 
 	public override void OnUpdateInteraction(VR_Controller_Custom controller)
     {
@@ -41,19 +32,17 @@ public class Spell : VR_Interactable_Object
 
 	protected override void OnTriggerPress()
     {
-        Cast();
+        base.OnTriggerPress();
     }
 
    
 	protected override void OnTriggerHold()
     {
 		base.OnTriggerHold();
-
-		Debug.Log("Holding");
 	}
 
 	protected override void OnTriggerRelease()
     {
-        Release();
+        base.OnTriggerRelease();
     }
 }

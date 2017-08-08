@@ -12,12 +12,10 @@ public class DestroyParticle : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (!particleRef.IsAlive())
         {
             Destroy(this.gameObject);
-            Debug.Log("Destroy");
-
         }
     }
 }

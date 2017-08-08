@@ -35,7 +35,7 @@ public class FlameChargeSpell : Spell
 		}
 	}
 
-	protected override void Release()
+	protected override void OnTriggerRelease()
     {
         if (casted)
         {

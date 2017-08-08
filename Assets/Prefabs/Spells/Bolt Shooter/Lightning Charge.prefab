@@ -54,10 +54,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  interactSound: {fileID: 0}
   spellPrefab: {fileID: 1393149766130610, guid: 2d667d98266fd0649a4142675adfb41c,
     type: 2}
   indicator: {fileID: 1466320776756058}
-  castCount: 10
+  castCount: 5
 --- !u!198 &198497486082309802
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -115,7 +117,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 92782876
+  randomSeed: 1703881525
   InitialModule:
     serializedVersion: 3
     enabled: 1
