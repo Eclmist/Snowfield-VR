@@ -24,7 +24,7 @@ public class Equipment : CraftedItem {
         transform.localRotation = Quaternion.identity;
     }
 
-    public void Unequip()
+    public virtual void Unequip()
     {
         rigidBody.isKinematic = false;
         transform.parent = null;

@@ -20,6 +20,8 @@ public abstract class ActorFSM : MonoBehaviour
     }
 
     protected bool isHandlingAction = false;
+
+    protected Vector3 actualVelocity;
     [SerializeField]
     protected Transform eye;
 
@@ -40,6 +42,8 @@ public abstract class ActorFSM : MonoBehaviour
     [Range(0.5f, 5)]
     protected float movementSpeed = 1;
 
+    [SerializeField]
+    protected LayerMask aggroLayer;
     #region Avoidance
     [Header("Avoidance")]
     [SerializeField]
@@ -135,10 +139,20 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
+    protected virtual void FixedUpdate()
+    {
+        if (!animator.GetBool("Stun"))
+            rigidBody.velocity = new Vector3(actualVelocity.x, rigidBody.velocity.y, actualVelocity.z);
+        rigidBody.angularVelocity = Vector3.zero;
+        if (CanMove())
+            rigidBody.isKinematic = false;
+        else
+            rigidBody.isKinematic = true;
+
+    }
     protected virtual void Update()
     {
-        rigidBody.velocity = new Vector3(0, rigidBody.velocity.y, 0);
-        rigidBody.angularVelocity = Vector3.zero;
+        actualVelocity = Vector3.zero;
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
@@ -174,10 +188,49 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void UpdateAnyState()
     {
         if (target != null && target.Equals(null))
+        {
             target = null;
+        }
+
+        if (currentState != FSMState.COMBAT)
+        {
+            Collider[] cols = Physics.OverlapSphere(eye.position,
+                        CurrentAI.Collider.bounds.extents.x + minimumDistToAvoid,
+                        aggroLayer);
+            foreach (Collider col in cols)
+            {
+                IDamagable currentTarget = col.GetComponent<IDamagable>();
+                if (currentTarget != null)
+                {
+
+                    ChangeState(FSMState.COMBAT);
+                    target = currentTarget;
+                    break;
+                }
+            }
+        }
+
     }
 
+    public virtual void SetStun(int i)
+    {
 
+        switch (i)
+        {
+            case 1:
+                animator.SetBool("Stun", true);
+                break;
+            case 0:
+                animator.SetBool("Stun", false);
+                break;
+        }
+    }
+
+    public virtual void SetVelocity(Vector3 vel)
+    {
+        rigidBody.isKinematic = false;
+        rigidBody.AddForce(vel, ForceMode.Impulse);
+    }
     //if (backing)
     //{
     //    animator.SetFloat("Speed", movementSpeed);
@@ -198,7 +251,6 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void UpdateCombatState()
     {
-
         if (target != null && !target.Equals(null) && target.CanBeAttacked)
         {
 
@@ -206,33 +258,33 @@ public abstract class ActorFSM : MonoBehaviour
 
             if (target is Player)
                 tempAttackRange += 1;
+            Vector3 useVector = transform.position;
+            useVector.y = eye.position.y;
+            Vector3 dir = (target.transform.position - useVector).normalized;
 
-            Vector3 dir = target.transform.position - eye.transform.position;
-            float distance = float.MaxValue;
-            Ray ray = new Ray(eye.position, dir);
+            Ray ray = new Ray(useVector, dir);
             RaycastHit hit;
 
             //Debug.DrawRay(head.transform.position - head.right, _direction);
             if (target.Collider.Raycast(ray, out hit, detectionDistance))
             {
-                dir = target.transform.position - transform.position;
                 dir.Normalize();
                 dir.y = 0;
 
-                Debug.Log(dir.y);
                 float angle = Vector3.Angle(transform.forward, dir);
                 Vector3 tempPoint = hit.point;
-                tempPoint.y = eye.position.y;
-                distance = Vector3.Distance(eye.position, tempPoint);
+                tempPoint.y = transform.position.y;
+                float distance = Vector3.Distance(transform.position, tempPoint);
 
-                if (distance > tempAttackRange || Mathf.Abs(angle) > 30)
+                if (distance > tempAttackRange || Mathf.Abs(angle) > 15)
                 {
+
                     animator.SetBool("Attacking", false);
                     animator.SetFloat("Speed", movementSpeed);
                     if (CanMove())
                     {
-                        rigidBody.velocity = AvoidObstacles(target.transform.position);
                         LookAtPlayer(target.transform.position);
+                        actualVelocity = transform.forward * animator.speed * movementSpeed;
                         return;
                     }
                 }
@@ -242,7 +294,7 @@ public abstract class ActorFSM : MonoBehaviour
                     HandleCombatAction();
                 }
 
-                
+
 
             }
             else
@@ -297,20 +349,24 @@ public abstract class ActorFSM : MonoBehaviour
         {
             Vector3 targetPoint = path[0].Position + pathNodeOffset[0];
             targetPoint.y = transform.position.y;
+
             if (path.Count == 1 && path[0].Occupied)
             {
                 animator.SetFloat("Speed", 0);
             }
             else
             {
+                float minDist = path.Count > 1 ? 1f : .5f;
+                
                 animator.SetFloat("Speed", movementSpeed);
                 if (CanMove())
                 {
-                    rigidBody.velocity = AvoidObstacles(targetPoint);
+                    LookAtPlayer(targetPoint);
+                    actualVelocity = transform.forward * animator.speed * movementSpeed;
                 }
-                LookAtPlayer(targetPoint);
 
-                if (Vector3.Distance(transform.position, targetPoint) < .25f)
+
+                if (Vector3.Distance(transform.position, targetPoint) < minDist)
                 {
 
                     handledEvents.AddRange(path[0].Events);
@@ -331,7 +387,9 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual bool CanMove()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") || animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol");
+        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") ||
+            animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol")
+            || animator.GetBool("Stun");
     }
     public void SetNode(Node n)
     {
@@ -370,8 +428,9 @@ public abstract class ActorFSM : MonoBehaviour
         ChangePath(newPath);
     }
 
-    public virtual void CheckHit()
+    protected virtual void CheckHit()
     {
+
         float tempAttackRange = attackRange;
         if (target is Player)
             tempAttackRange += 1;
@@ -379,13 +438,12 @@ public abstract class ActorFSM : MonoBehaviour
         dir.Normalize();
         dir.y = 0;
         float angle = Vector3.Angle(transform.forward, dir);
+
         if (target != null)
         {
             Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
-            Vector3 temptarget = target.transform.position;
-            temptarget.y = transform.position.y;
 
-            if (Mathf.Abs(angle) < 30)
+            if (Mathf.Abs(angle) < 15)
             {
                 CurrentAI.Attack(currentUseWeapon, target);
             }
@@ -413,55 +471,38 @@ public abstract class ActorFSM : MonoBehaviour
     }
 
 
-
-    protected Collider CheckObstacles()
-    {
-        RaycastHit Hit;
-        //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
-        Vector3 right45 = (eye.forward + eye.right).normalized;
-        Vector3 left45 = (eye.forward - eye.right).normalized;
-
-        if (Physics.Raycast(eye.position, right45, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask) || Physics.Raycast(eye.position, left45, out Hit,
-            minimumDistToAvoid, ~avoidanceIgnoreMask))
-        {
-
-            return Hit.collider;
-        }
-        else
-            return null;
-    }
-
     protected Vector3 AvoidObstacles(Vector3 endPoint)
     {
         RaycastHit Hit;
         //Check that the vehicle hit with the obstacles within it's minimum distance to avoid
-        Vector3 right45 = (eye.forward + eye.right).normalized;
-        Vector3 left45 = (eye.forward - eye.right).normalized;
-        Debug.DrawLine(eye.position, eye.position + right45 * minimumDistToAvoid);
-        Debug.DrawLine(eye.position, eye.position + right45 * minimumDistToAvoid);
-        if (Physics.Raycast(eye.position, right45, out Hit,
+        Vector3 useVec = eye.position;
+        useVec.y = (transform.position.y + eye.position.y) / 2;
+        Vector3 right45 = (transform.forward + transform.right).normalized;
+        Vector3 left45 = (transform.forward - transform.right).normalized;
+
+        if (Physics.Raycast(useVec, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
+            Debug.Log("hitleft");
+            float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
 
-            return transform.forward - transform.right * movementSpeed * distanceExp;
+            return -transform.right * (5 - distanceExp);
         }
-        else if (Physics.Raycast(eye.position, left45, out Hit,
+        else if (Physics.Raycast(useVec, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            float distanceExp = Vector3.Distance(Hit.point, eye.position) / minimumDistToAvoid;
+            Debug.Log("hitright");
+            float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
-            return transform.forward + transform.right * movementSpeed * distanceExp;
+            return transform.right * (5 - distanceExp);
         }
 
         else
         {
             Vector3 dir = (endPoint - transform.position).normalized;
-            dir = dir * movementSpeed;
             dir.y = rigidBody.velocity.y;
             return dir;
         }

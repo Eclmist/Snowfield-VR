@@ -42,7 +42,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         float bonusValue = 0;
         foreach (Job job in Data.ListOfJobs)
         {
-            
+
             foreach (Stats bonusStat in job.BonusStats)
             {
                 if (bonusStat.Type == s)
@@ -74,16 +74,21 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         variable.ReduceHealth(value);
     }
 
-    public virtual void Attack(IDamage item, IDamagable target)
+    public virtual void Attack(IDamage item, IDamagable target, float scale = 1)
     {
         float damage = item != null ? item.Damage : 0;
         if (target != null)
-            target.TakeDamage(damage + variable.GetStat(Stats.StatsType.ATTACK).Current, this);
+        {
+            damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
+            float randomVal = Random.Range(0.8f, 1.2f);
+            target.TakeDamage(damage * randomVal, this);
+        }
     }
 
     public virtual void Attack(float damage, IDamagable target)
     {
-        target.TakeDamage(damage, this);
+        if (target.CanBeAttacked)
+            target.TakeDamage(damage, this);
     }
 
 
@@ -136,8 +141,12 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         }
     }
 
-    
-   
+
+    public virtual void Die()
+    {
+        variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
+
+    }
 
     public virtual void GainExperience(JobType jobType, int value)
     {
@@ -145,7 +154,10 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         {
             if (currentJob.Type == jobType)
             {
+                int level = currentJob.Level;
                 currentJob.GainExperience(value);
+                if (currentJob.Level != level)
+                    variable.UpdateVariables();
                 break;
             }
         }

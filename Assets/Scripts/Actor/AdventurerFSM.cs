@@ -15,24 +15,35 @@ public class AdventurerFSM : FriendlyAiFSM
         }
     }
 
-    
+
 
     protected override void UpdateAnyState()
     {
         base.UpdateAnyState();
-        if (WaveManager.Instance.HasMonster)
+        if (WaveManager.Instance.HasMonster && currentState != FSMState.COMBAT)
         {
             Monster mob = WaveManager.Instance.GetClosestMonster(transform.position);
-            if (mob != null && Vector3.Distance(transform.position, mob.transform.position) < detectionDistance)
+            if (mob != null)
             {
-                ChangeState(FSMState.COMBAT);
-                target = mob;
+                Vector3 useVector = transform.position;
+                useVector.y = eye.position.y;
+                Vector3 dir = (mob.transform.position - useVector).normalized;
+
+                Ray ray = new Ray(useVector, dir);
+                RaycastHit hit;
+
+                //Debug.DrawRay(head.transform.position - head.right, _direction);
+                if (mob.Collider.Raycast(ray, out hit, detectionDistance))
+                {
+                    ChangeState(FSMState.COMBAT);
+                    target = mob;
+                }
             }
         }
     }
 
 
-   
+
     [SerializeField]
     protected float attackTimer;
 
@@ -48,7 +59,6 @@ public class AdventurerFSM : FriendlyAiFSM
         {
             switch (state)
             {
-                
                 case FSMState.COMBAT:
                     (currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
                     attackTimer = 20;
@@ -60,13 +70,13 @@ public class AdventurerFSM : FriendlyAiFSM
         }
     }
 
-   
+
     protected override void UpdateCombatState()
     {
         attackTimer -= Time.deltaTime;
         if (attackTimer < 0)
             attackTimer = 0;
-        
+
         base.UpdateCombatState();
     }
 
@@ -97,5 +107,5 @@ public class AdventurerFSM : FriendlyAiFSM
         }
     }
 
-  
+
 }

@@ -9,9 +9,7 @@ public abstract class AI : Actor
 
     protected ActorFSM currentFSM;
 
-
-    [SerializeField]
-    protected ParticleSystem spawnPS, disablePS;
+    protected GameObject spawnPS, disablePS;
 
 
     public override void Notify(AI ai)
@@ -31,6 +29,8 @@ public abstract class AI : Actor
     {
         base.Awake();
         currentFSM = GetComponent<ActorFSM>();
+        spawnPS = transform.Find("SpawnParticle").gameObject;
+        disablePS = transform.Find("DeathParticle").gameObject;
     }
 
     public void ChangeState(ActorFSM.FSMState state)
@@ -45,9 +45,9 @@ public abstract class AI : Actor
         if (damage == 0)
             TextSpawnerManager.Instance.SpawnText("Miss!", Color.red, transform);
         else if (Mathf.Sign(damage) == 1)
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform,2);
         else
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform,2);
 
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
@@ -60,7 +60,11 @@ public abstract class AI : Actor
         }
     }
 
-   
+    public override void Die()
+    {
+        base.Die();
+        currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
+    }
 
     public virtual void LookAtObject(Transform target, float time, float angle)
     {
@@ -73,7 +77,15 @@ public abstract class AI : Actor
     }
     public abstract void Interact(Actor actor);
 
+    public void Stun()
+    {
+        currentFSM.SetStun(1);
+    }
     
+    public void SetVelocity(Vector3 vel)
+    {
+        currentFSM.SetVelocity(vel);
+    }
 
     public virtual void OutOfTownProgress()
     {
@@ -83,14 +95,24 @@ public abstract class AI : Actor
     public virtual void Spawn()
     {
         gameObject.SetActive(true);
+        if (spawnPS)
+        {
+            GameObject ps = Instantiate(spawnPS,spawnPS.transform.position,spawnPS.transform.rotation);
+            ps.SetActive(true);
+            Destroy(ps, 3);
+        }
     }
 
     public virtual void Despawn()
     {
+
         if (disablePS)
         {
-            Destroy(Instantiate(disablePS, transform.position, transform.rotation), 3);
-            gameObject.SetActive(false);
+            GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
+            ps.SetActive(true);
+            Destroy(ps, 3);
+            
         }
+        gameObject.SetActive(false);
     }
 }

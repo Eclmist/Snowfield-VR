@@ -25,12 +25,16 @@ public class MonsterFSM : ActorFSM
     protected override void UpdatePetrolState()
     {
         base.UpdatePetrolState();
-        Vector3 playerPos = Player.Instance.transform.position;
-        playerPos.y = transform.position.y;
-        if(Vector3.Distance(transform.position,playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
+        if (currentState != FSMState.COMBAT)
         {
-            target = Player.Instance;
-            ChangeState(FSMState.COMBAT);
+            Vector3 playerPos = Player.Instance.transform.position;
+            playerPos.y = transform.position.y;
+
+            if (Vector3.Distance(transform.position, playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
+            {
+                ChangeState(FSMState.COMBAT);
+                target = Player.Instance;
+            }
         }
         //else
         //{

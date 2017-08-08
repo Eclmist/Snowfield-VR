@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[RequireComponent(typeof(SphereCollider))]
 public class Treasure : MonoBehaviour, IDamagable {
 
 
@@ -11,6 +11,7 @@ public class Treasure : MonoBehaviour, IDamagable {
     protected void Awake()
     {
         col = GetComponent<Collider>();
+        col.isTrigger = true;
     }
 
     public Collider Collider
@@ -39,9 +40,9 @@ public class Treasure : MonoBehaviour, IDamagable {
 
     public void TakeDamage(float Damage,Actor actor)
     {
-        actor.TakeDamage(99999, null);
+       
         GameManager.Instance.AddTax((int)Damage);
-     
+        actor.Die();
     }
 	public new Transform transform
     {

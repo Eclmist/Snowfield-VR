@@ -38,7 +38,7 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-
+        worldNodes.Clear();
         //offset = transform.position;
         //CreateGrid();
     }

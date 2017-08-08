@@ -130,6 +130,8 @@ public class FriendlyAiFSM : ActorFSM
                 if (target is Player)
                 {
                     Player player = target as Player;
+                    if (player.CheckConversingWith(currentFriendlyAI))
+                    
                     if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
                     {
                         Debug.Log(currentFriendlyAI.IsInteractionAvailable());
