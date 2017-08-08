@@ -9,19 +9,39 @@ public class BoltSpell : Spell {
 
     protected override void Update()
     {
-        base.Update();
 
-        if (castCount <= 0)
-        {
-            var em = Indicator.GetComponent<ParticleSystem>().emission;
-            em.enabled = false;
-            Destroy(Indicator, 1);
-        }
-    }
+		//Debug.Log("castcount : " + castCount);
 
-    protected override void OnTriggerPress()
+		if (castCount <= 0)
+		{
+			var em = Indicator.GetComponent<ParticleSystem>().emission;
+			em.enabled = false;
+			Destroy(Indicator, 1);
+		}
+	}
+
+	//protected override void Start()
+	//{
+	//	transform.parent = null;
+	//	currentInteractingController.SetInteraction(null);
+	//}
+
+	protected override void OnTriggerPress()
     {
-        Instantiate(spellPrefab, currentInteractingController.transform);
-        castCount--;
-    }
+
+
+		//if (castCount > 0)
+		//{
+		//	if (spellPrefab != null)
+		//	{
+		//		Instantiate(spellPrefab, currentInteractingController.transform).transform.parent = null;
+		//		castCount--;
+
+		//	}
+
+
+		//}
+		Instantiate(spellPrefab, currentInteractingController.transform).transform.parent = null;
+	}
+
 }

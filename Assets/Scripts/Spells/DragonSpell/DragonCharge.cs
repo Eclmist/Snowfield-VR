@@ -15,7 +15,7 @@ public class DragonCharge : Spell {
 
 	protected override void Start()
 	{
-		transform.position = Player.Instance.transform.position + transform.forward * offset.z;
+		transform.position = Player.Instance.transform.position + Player.Instance.transform.forward * offset.z;
 		float yRot = Player.Instance.transform.rotation.eulerAngles.y;
 		var rot = transform.rotation;
 		rot.eulerAngles = new Vector3(transform.rotation.x,yRot,transform.rotation.z);

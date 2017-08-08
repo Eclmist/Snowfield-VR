@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Spell : VR_Interactable_Object
+public class Spell
 {
     [SerializeField]
     protected GameObject spellPrefab;
