@@ -113,7 +113,6 @@ public class OrderSlip : VR_Interactable_UI
 
     private void CloseOptions()
     {
-        Debug.Log("Closing option");
         if (currentOP)
         {
             currentOP.ClosePane();
@@ -172,17 +171,18 @@ public class OrderSlip : VR_Interactable_UI
 
             interactingWeapon.LinkedController.SetModelActive(true);
             Destroy(interactingWeapon.gameObject);
+			CloseOptions();
 
-        }
+		}
         else
         {
-            TextSpawnerManager.Instance.SpawnText("Not even close!", Color.red, transform);
+            TextSpawnerManager.Instance.SpawnText("Try again!", Color.red, transform);
             if (wrongOrderSound)
                 AudioSource.PlayClipAtPoint(wrongOrderSound,transform.position);
         }
 
 
-        CloseOptions();
+        
 
 
 
@@ -190,10 +190,8 @@ public class OrderSlip : VR_Interactable_UI
 
     private void SpawnDetailsPanel()
     {
-        Debug.Log("spawn detail");
         string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
 
-		CloseOptions();
 
         OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite,desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
         op.transform.LookAt(Player.Instance.transform);

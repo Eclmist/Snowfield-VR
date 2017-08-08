@@ -219,7 +219,6 @@ public abstract class ActorFSM : MonoBehaviour
                 dir.Normalize();
                 dir.y = 0;
 
-                Debug.Log(dir.y);
                 float angle = Vector3.Angle(transform.forward, dir);
                 Vector3 tempPoint = hit.point;
                 tempPoint.y = eye.position.y;
