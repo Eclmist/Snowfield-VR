@@ -14,7 +14,7 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 	protected override void Update()
 	{
-	
+
 		if (lastInteractable != interactable)
 		{
 			lastInteractable = interactable;
@@ -37,15 +37,23 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 	protected virtual void OnTriggerEnter(Collider other)
 	{
-		if (interactable)
+		if (interactable && currentInteractingController == null)
 		{
 			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
-			
-			if (vrController && currentInteractingController == null)
+
+			if (!vrController)
+			{
+				VR_Interactable_Object obj = other.GetComponentInParent<VR_Interactable_Object>();
+				if (obj)
+					vrController = obj.LinkedController;
+			}
+
+			if (vrController)
 			{
 				currentInteractingController = vrController;
 				OnControllerEnter();
 			}
+
 		}
 	}
 
@@ -56,6 +64,12 @@ public abstract class VR_Interactable_UI : VR_Interactable
 
 			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
 
+			if (!vrController)
+			{
+				VR_Interactable_Object obj = other.GetComponentInParent<VR_Interactable_Object>();
+				if (obj)
+					vrController = obj.LinkedController;
+			}
 			if (vrController && currentInteractingController == vrController)
 			{
 				OnControllerStay();
@@ -72,6 +86,13 @@ public abstract class VR_Interactable_UI : VR_Interactable
 		{
 
 			VR_Controller_Custom vrController = other.GetComponentInParent<VR_Controller_Custom>();
+
+			if (!vrController)
+			{
+				VR_Interactable_Object obj = other.GetComponentInParent<VR_Interactable_Object>();
+				if (obj)
+					vrController = obj.LinkedController;
+			}
 
 			if (vrController && currentInteractingController == vrController)
 			{

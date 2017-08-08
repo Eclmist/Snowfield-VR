@@ -134,7 +134,6 @@ public class FriendlyAiFSM : ActorFSM
                     
                     if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
                     {
-                        Debug.Log(currentFriendlyAI.IsInteractionAvailable());
                         if (player.CheckConversingWith(currentFriendlyAI))
                         {
                             waitTimer = 5;

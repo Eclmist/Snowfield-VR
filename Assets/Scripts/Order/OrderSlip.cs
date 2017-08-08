@@ -7,226 +7,229 @@ using System;
 public class OrderSlip : VR_Interactable_UI
 {
 
-    private string o_name;
-    private int reward;
-    private int duration;
-    private Sprite image;
-    private Action<bool, OrderSlip> callback;
-    private Text durationText;
-    private Order order;
-    private AdventurerAI ai;
-    [SerializeField] GameObject detailPane;
-    [SerializeField] AudioClip orderCompleteSound;
-    [SerializeField] AudioClip orderFadeInSound;
-    [SerializeField] AudioClip wrongOrderSound;
-    OptionPane currentOP;
+	private string o_name;
+	private int reward;
+	private int duration;
+	private Sprite image;
+	private Action<bool, OrderSlip> callback;
+	private Text durationText;
+	private Order order;
+	private AdventurerAI ai;
+	[SerializeField] GameObject detailPane;
+	[SerializeField] AudioClip orderCompleteSound;
+	[SerializeField] AudioClip orderFadeInSound;
+	[SerializeField] AudioClip wrongOrderSound;
+	OptionPane currentOP;
 
-    public AdventurerAI OrderedAI
-    {
-        get { return this.ai; }
-        set { this.ai = value; }
-    }
+	public AdventurerAI OrderedAI
+	{
+		get { return this.ai; }
+		set { this.ai = value; }
+	}
 
-    GameObject slip;
+	GameObject slip;
 
-    public int Reward
-    {
-        get
-        {
-            return reward;
-        }
-    }
-    // Use this for initialization
-    public void StartOrder(Order o, Action<bool, OrderSlip> _callback)
-    {
-        order = o;
+	public int Reward
+	{
+		get
+		{
+			return reward;
+		}
+	}
+	// Use this for initialization
+	public void StartOrder(Order o, Action<bool, OrderSlip> _callback)
+	{
+		order = o;
 
-        o_name = order.Name;
-        reward = order.GoldReward;
-        duration = order.Duration;
-        callback = _callback;
+		o_name = order.Name;
+		reward = order.GoldReward;
+		duration = order.Duration;
+		callback = _callback;
 
-        slip = transform.Find("Slip").gameObject;
-        slip.transform.Find("OrderName").GetComponent<Text>().text = o_name;
-        slip.transform.Find("OrderCost").GetComponent<Text>().text = reward.ToString();
-        durationText = slip.transform.Find("OrderDuration").GetComponent<Text>();
-        slip.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
-        slip.gameObject.SetActive(false);
-        StartCoroutine(OrderCoroutine());
-    }
+		slip = transform.Find("Slip").gameObject;
+		slip.transform.Find("OrderName").GetComponent<Text>().text = o_name;
+		slip.transform.Find("OrderCost").GetComponent<Text>().text = reward.ToString();
+		durationText = slip.transform.Find("OrderDuration").GetComponent<Text>();
+		slip.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
+		slip.gameObject.SetActive(false);
+		StartCoroutine(OrderCoroutine());
+	}
 
-    protected override void Start()
-    {
-        base.Start();
+	protected override void Start()
+	{
+		base.Start();
 
-        if (orderFadeInSound)
-            AudioSource.PlayClipAtPoint(orderFadeInSound,transform.position);
-    }
-
-
-    public void ShowOrderInformation()
-    {
-        slip.gameObject.SetActive(true);
-    }
+		if (orderFadeInSound)
+			AudioSource.PlayClipAtPoint(orderFadeInSound, transform.position);
+	}
 
 
-
-    private IEnumerator OrderCoroutine()
-    {
-        while (true)
-        {
-            durationText.text = duration.ToString();
-            yield return new WaitForSeconds(1);
-            duration--;
-            if (duration <= 0)
-            {
-                OrderEnd(false);
-            }
-        }
-    }
+	public void ShowOrderInformation()
+	{
+		slip.gameObject.SetActive(true);
+	}
 
 
 
-    private void OrderEnd(bool success)
-    {
-        StopAllCoroutines();
-        callback(success, this);
-        OrderBoard.Instance.RemoveFromBoard(this);
-    }
+	private IEnumerator OrderCoroutine()
+	{
+		while (true)
+		{
+			durationText.text = duration.ToString();
+			yield return new WaitForSeconds(1);
+			duration--;
+			if (duration <= 0)
+			{
+				OrderEnd(false);
+			}
+		}
+	}
 
-    Weapon interactingWeapon;
 
-    private void DisplayOptions()
-    {
-		CloseOptions();
 
-        OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
+	private void OrderEnd(bool success)
+	{
+		StopAllCoroutines();
+		callback(success, this);
+		OrderBoard.Instance.RemoveFromBoard(this);
+	}
+
+	Weapon interactingWeapon;
+
+	private void DisplayOptions()
+	{
+		CloseCurrentPane();
+
+		OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
+
 		currentOP = op;
 		op.transform.LookAt(Player.Instance.transform);
-        interactingWeapon = currentInteractingController.GetComponentInChildren<Weapon>();
-        
-        op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
-        op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
-        op.SetEvent(OptionPane.ButtonType.Cancel, CloseOptions);
-        
-    }
-
-    private void CloseOptions()
-    {
-        Debug.Log("Closing option");
-        if (currentOP)
-        {
-            currentOP.ClosePane();
-            currentOP.Destroy();
-        }
-    }
-
-    private void TryConfirmOrder()
-    {
-
-        bool isCorrect = false;
-
-
-        if (interactingWeapon)
-        {
-            if (interactingWeapon.ItemID == order.ItemID)
-            {
-                isCorrect = true;
-            }
-            else // give the player lesser reward if material type is the same
-            {
-                ItemData tempData = ItemManager.Instance.GetItemData(interactingWeapon.ItemID);
-                CraftedItem tempCraftedItem = tempData.ObjectReference.GetComponent<CraftedItem>();
-
-                if (tempCraftedItem)
-                {
-
-                    PhysicalMaterial.Type tempType = tempCraftedItem.GetPhysicalMaterial();
-
-                    if (order.MaterialType == tempType)
-                    {
-
-                        int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
-                        reward /= reduction;
-                        isCorrect = true;
-
-                    }
-
-                }
-            }
-
-        }
+		if (currentInteractingController.CurrentItemInHand is Weapon)
+			interactingWeapon = currentInteractingController.CurrentItemInHand as Weapon;
 
 
 
-        if(isCorrect)
-        {
+		op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
+		op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
+		op.SetEvent(OptionPane.ButtonType.Cancel, CloseCurrentPane);
 
-            OrderEnd(true);
-            GameManager.Instance.AddPlayerGold(reward);
-            TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
+	}
 
-            if (orderCompleteSound)
-                AudioSource.PlayClipAtPoint(orderCompleteSound, transform.position);
+	private void CloseCurrentPane()
+	{
+		if (currentOP)
+		{
+			currentOP.Destroy();
+		}
+	}
 
+	private void TryConfirmOrder()
+	{
 
-            interactingWeapon.LinkedController.SetModelActive(true);
-            Destroy(interactingWeapon.gameObject);
-
-        }
-        else
-        {
-            TextSpawnerManager.Instance.SpawnText("Not even close!", Color.red, transform);
-            if (wrongOrderSound)
-                AudioSource.PlayClipAtPoint(wrongOrderSound,transform.position);
-        }
+		bool isCorrect = false;
 
 
-        CloseOptions();
+		if (interactingWeapon)
+		{
+			if (interactingWeapon.ItemID == order.ItemID)
+			{
+				isCorrect = true;
+			}
+			else // give the player lesser reward if material type is the same
+			{
+				ItemData tempData = ItemManager.Instance.GetItemData(interactingWeapon.ItemID);
+				CraftedItem tempCraftedItem = tempData.ObjectReference.GetComponent<CraftedItem>();
+
+				if (tempCraftedItem)
+				{
+
+					PhysicalMaterial.Type tempType = tempCraftedItem.GetPhysicalMaterial();
+
+					if (order.MaterialType == tempType)
+					{
+
+						int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
+						reward /= reduction;
+						isCorrect = true;
+
+					}
+
+				}
+			}
+
+		}
 
 
 
-    }
+		if (isCorrect)
+		{
 
-    private void SpawnDetailsPanel()
-    {
-        Debug.Log("spawn detail");
-        string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
+			OrderEnd(true);
 
-		CloseOptions();
+			CloseCurrentPane();
 
-        OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite,desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
-        op.transform.LookAt(Player.Instance.transform);
-        op.SetEvent(OptionPane.ButtonType.Ok, CloseOptions);
+			GameManager.Instance.AddPlayerGold(reward);
+			TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
 
-        currentOP.ClosePane();
+			if (orderCompleteSound)
+				AudioSource.PlayClipAtPoint(orderCompleteSound, transform.position);
+
+
+
+			interactingWeapon.LinkedController.SetModelActive(true);
+			Destroy(interactingWeapon.gameObject);
+			currentInteractingController = null;
+		}
+		else
+		{
+			TextSpawnerManager.Instance.SpawnText("Try again!", Color.red, transform);
+			if (wrongOrderSound)
+				AudioSource.PlayClipAtPoint(wrongOrderSound, transform.position);
+		}
+
+
+
+	}
+
+	private void SpawnDetailsPanel()
+	{
+
+		CloseCurrentPane();
+
+		string desc = "Name: " + o_name + "\n\n" + "Material: " + order.MaterialType;
+
+		OptionPane op = UIManager.Instance.InstantiateDetailPane(detailPane, order.Sprite, desc, reward.ToString(), transform.position, Player.Instance.transform, transform);
+		op.transform.LookAt(Player.Instance.transform);
+		op.SetEvent(OptionPane.ButtonType.Ok, CloseCurrentPane);
+
+
 		currentOP = op;
-    }
+	}
 
 
 
-    protected override void OnTriggerRelease()
-    {
-        base.OnTriggerRelease();
+	protected override void OnTriggerRelease()
+	{
+		base.OnTriggerRelease();
 
-        if (currentInteractingController.UI == this)
-        {
-            DisplayOptions();
-        }
+		if (currentInteractingController.UI == this)
+		{
+			DisplayOptions();
+		}
 
-    }
+	}
 
 
-    protected override void OnControllerEnter()
-    {
-        base.OnControllerEnter();
+	protected override void OnControllerEnter()
+	{
+		base.OnControllerEnter();
 
-    }
+	}
 
-    protected override void OnControllerExit()
-    {
-        base.OnControllerExit();
-    }
+	protected override void OnControllerExit()
+	{
+		base.OnControllerExit();
+	}
 
 
 

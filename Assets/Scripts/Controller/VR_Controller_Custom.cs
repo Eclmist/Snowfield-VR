@@ -57,11 +57,17 @@ public class VR_Controller_Custom : MonoBehaviour
 
 	}
 
-	public VR_Interactable_Object InteractedObject
+
+	public VR_Interactable_Object CurrentItemInHand
 	{
 		get
 		{
-			return overlappedInteractableObject;
+
+			if (overlappedInteractableObject && overlappedInteractableObject.LinkedController == this)
+				return overlappedInteractableObject;
+			else
+				return null;
+
 		}
 	}
 	public Controller_Handle Handle
@@ -96,18 +102,15 @@ public class VR_Controller_Custom : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (device != null)
-			HandleFixedUpdateInput();
+		SteamVR_Controller.Device checkDevice = hand.controller;
+		if (checkDevice != null)
+			device = checkDevice;
+		HandleFixedUpdateInput();
 	}
 
 	private void Update()
 	{
-		SteamVR_Controller.Device currentDevice = hand.controller;
-		if (currentDevice != null)
-			device = hand.controller;
-
-		if (device != null)
-			HandleUpdateInput();
+		HandleUpdateInput();
 
 		if (overlappedInteractableObject == null || overlappedInteractableObject.LinkedController != this) //if controller not already held on to some object
 		{
@@ -156,7 +159,8 @@ public class VR_Controller_Custom : MonoBehaviour
 	private void HandleUpdateInput()
 	{
 
-		if (overlappedInteractableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+
+		if (overlappedInteractableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && listOfInteractingUI.Count == 0)
 			overlappedInteractableObject.OnTriggerPress(this);
 		if (overlappedInteractableObject != null && overlappedInteractableObject.LinkedController == this && device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
 			overlappedInteractableObject.OnTriggerRelease(this);
@@ -180,6 +184,7 @@ public class VR_Controller_Custom : MonoBehaviour
 				overlappedInteractableObject.OnTriggerHold(this);
 			if (device.GetPress(SteamVR_Controller.ButtonMask.Grip))
 				overlappedInteractableObject.OnGripHold(this);
+
 			overlappedInteractableObject.OnFixedUpdateInteraction(this);
 		}
 	}
@@ -190,9 +195,7 @@ public class VR_Controller_Custom : MonoBehaviour
 		VR_Interactable_UI interactableUI = collider.GetComponent<VR_Interactable_UI>();
 
 		if (interactableUI)
-		{
 			listOfInteractingUI.Add(interactableUI);
-		}
 
 	}
 
