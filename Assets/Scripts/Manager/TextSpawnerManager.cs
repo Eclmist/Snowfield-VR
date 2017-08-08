@@ -36,7 +36,7 @@ public class TextSpawnerManager : MonoBehaviour {
     }
 
 
-    public void SpawnText(string text, Color color, Transform t, float scale)
+    public void SpawnText(string text, Color color, Transform t, float scale, bool impact = false)
     {
         Collider c = t.GetComponent<Collider>();
         SpawnedText st;
@@ -49,7 +49,16 @@ public class TextSpawnerManager : MonoBehaviour {
         st.transform.localScale *= scale;
         st.SetText(text);
         st.SetColor(color);
-        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
+
+        float tempLength = st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length;
+
+        if (impact)
+        {
+            StartCoroutine(Shake(st.gameObject, tempLength, 0.5f));
+        }
+            
+
+        Destroy(st.gameObject, tempLength + 1);
 
     }
 
