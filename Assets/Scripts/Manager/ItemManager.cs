@@ -71,6 +71,20 @@ public class ItemManager : MonoBehaviour
             return null;
 
     }
+
+    public ItemData GetRandomItemByLevel(int level)
+    {
+        List<ItemData> tempData = new List<ItemData>();
+        tempData.AddRange(itemDataList);
+        tempData.RemoveAll(ItemData => ItemData.LevelUnlocked > level);
+        if (tempData.Count > 0)
+        {
+            int randomVar = Random.Range(0, tempData.Count);
+            return tempData[randomVar];
+        }
+        else
+            return null;
+    }
     public GameObject SpawnItem(int id, Transform trans)
     {
         if (id < itemDictionary.Count)

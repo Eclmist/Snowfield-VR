@@ -14,24 +14,15 @@ public class CraftedItem : GenericItem
 	[Tooltip("Intended Pivot of the sword")]
 	protected Transform pivot;
 
-	protected Vector3 offsetPosition;
-	protected Quaternion offsetRotation;
-
 	protected Collider colObject = null;
 	protected override void Start()
 	{
 		base.Start();
 		if (!pivot)
 		{
-			offsetPosition = Vector3.zero;
-			offsetRotation = Quaternion.identity;
+            pivot = transform;
 		}
-		else
-		{
-
-			offsetPosition = -pivot.localPosition;
-			offsetRotation = pivot.localRotation;
-		}
+		
 
 	}
 	protected virtual void UseItem()
@@ -61,7 +52,6 @@ public class CraftedItem : GenericItem
 	protected override void Update()
 	{
 		base.Update();
-		Debug.Log(colObject);
 		if (colObject == null || colObject.Equals(null))
 			removable = true;
 		else
@@ -128,10 +118,11 @@ public class CraftedItem : GenericItem
 	public override void OnUpdateInteraction(VR_Controller_Custom controller)
 	{
 		base.OnUpdateInteraction(controller);
-		transform.rotation = controller.transform.rotation * offsetRotation;
-		transform.position = controller.transform.position + transform.rotation * offsetPosition;
+		transform.rotation = controller.transform.rotation * pivot.localRotation;
+        transform.position = controller.transform.position + transform.rotation * -pivot.localPosition;
 
-	}
+
+    }
 
 	protected override void OnTriggerExit(Collider collision)
 	{

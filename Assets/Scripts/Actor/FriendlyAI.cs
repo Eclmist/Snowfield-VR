@@ -18,10 +18,7 @@ public abstract class FriendlyAI : AI {
         }
     }
 
-    public virtual float GetOutOfTimeDuration()
-    {
-        return 0;
-    }
+ 
 
     public bool Interacting
     {

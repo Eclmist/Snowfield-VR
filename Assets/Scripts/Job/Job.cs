@@ -61,11 +61,25 @@ public class Job {
     public void GainExperience(int experienceValue)
     {
         currentExperience += experienceValue;
-        if(currentExperience >= maxExperience)
+        while(currentExperience >= maxExperience)
         {
             level++;
             maxExperience = (int)Mathf.Pow(level / GameConstants.Instance.ExpConstant, 2);
         }
+    }
+    public void ReduceExperiencePercentage(float percentile)
+    {
+        int minExp = (int)Mathf.Pow((level - 1) / GameConstants.Instance.ExpConstant, 2);
+        int expReduced = (int)((maxExperience - minExp) / percentile);
+        ReduceExperience(expReduced);
+    }
+
+    protected void ReduceExperience(int experienceValue)
+    {
+        currentExperience -= experienceValue;
+        int minExp = (int)Mathf.Pow((level - 1) / GameConstants.Instance.ExpConstant, 2);
+        if (currentExperience < minExp)
+            currentExperience = minExp;
     }
 
     public void SetLevel(int _level)

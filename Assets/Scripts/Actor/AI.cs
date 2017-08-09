@@ -45,25 +45,20 @@ public abstract class AI : Actor
         if (damage == 0)
             TextSpawnerManager.Instance.SpawnText("Miss!", Color.red, transform);
         else if (Mathf.Sign(damage) == 1)
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform,2);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, transform, 2);
         else
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform,2);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.green, transform, 2);
 
-        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
-        {
-            currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
-            
-        }
-        else
-        {
-            currentFSM.DamageTaken(attacker);
-        }
+        currentFSM.DamageTaken(attacker);
+
     }
 
     public override void Die()
     {
-        base.Die();
         currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
+        float rng = UnityEngine.Random.Range(0, 1f);
+        if (rng > 1 - GameConstants.Instance.ItemDropRate)
+            DropItem();
     }
 
     public virtual void LookAtObject(Transform target, float time, float angle)
@@ -81,23 +76,19 @@ public abstract class AI : Actor
     {
         currentFSM.SetStun(1);
     }
-    
+
     public void SetVelocity(Vector3 vel)
     {
         currentFSM.SetVelocity(vel);
     }
 
-    public virtual void OutOfTownProgress()
-    {
-
-    }
-
+   
     public virtual void Spawn()
     {
         gameObject.SetActive(true);
         if (spawnPS)
         {
-            GameObject ps = Instantiate(spawnPS,spawnPS.transform.position,spawnPS.transform.rotation);
+            GameObject ps = Instantiate(spawnPS, spawnPS.transform.position, spawnPS.transform.rotation);
             ps.SetActive(true);
             Destroy(ps, 3);
         }
@@ -111,8 +102,18 @@ public abstract class AI : Actor
             GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
             ps.SetActive(true);
             Destroy(ps, 3);
-            
+
         }
         gameObject.SetActive(false);
+    }
+
+    protected virtual void DropItem()
+    {
+        ItemData data = ItemManager.Instance.GetRandomItemByLevel(Data.GetJob(JobType.COMBAT).Level);
+        if(data != null)
+        {
+            GameObject obj = Instantiate(data.ObjectReference, transform.position, transform.rotation);
+            obj.AddComponent<DroppedItem>();
+        }
     }
 }

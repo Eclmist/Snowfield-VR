@@ -62,7 +62,14 @@ public class GameManager : MonoBehaviour {
         if (!Instance)
         {
             Instance = this;
-            gameClock = new GameClock(secondsPerDay,startTime);
+            GameClock checkClock = (GameClock)SerializeManager.Load("GameClock");
+            if (checkClock != null)
+                gameClock = checkClock;
+            else
+            {
+                gameClock = new GameClock(secondsPerDay, startTime);
+                //MessageManager.Instance.SendMail("Welcome to SnowField",
+            }
         }
         else
         {
@@ -116,25 +123,20 @@ public class GameManager : MonoBehaviour {
     {
         currentTax += value;
     }
- //   private void RequestBoardUpdate()
- //   {
-	//	if (gameClock.SecondSinceStart > nextRequest && TownManager.Instance.CurrentTown != null)//update 
-	//	{
-	//		nextRequest = (nextRequest + (requestConstant / TownManager.Instance.CurrentTown.Population));
-	//		if (!OrderBoard.Instance.IsMaxedOut)
-	//			OrderManager.Instance.NewRequest();
-	//	}
-	//}
+
 	public void AddPlayerGold(int value)
     {
         Player.Instance.AddGold(value);
         if(Player.Instance.Gold < 0)
         {
-            //lose
+            Player.Instance.Die();
         }
     }
 
-
+    protected void OnDisable()
+    {
+        //SerializeManager.Save("GameClock", gameClock); 
+    }
 
 
 }

@@ -37,7 +37,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected FSMState nextState;
     protected List<Vector3> pathNodeOffset = new List<Vector3>();
     protected List<NodeEvent> handledEvents = new List<NodeEvent>();
-
+    
     [SerializeField]
     [Range(0.5f, 5)]
     protected float movementSpeed = 1;
@@ -153,6 +153,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void Update()
     {
         actualVelocity = Vector3.zero;
+        
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
@@ -483,7 +484,6 @@ public abstract class ActorFSM : MonoBehaviour
         if (Physics.Raycast(useVec, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            Debug.Log("hitleft");
             float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
@@ -493,15 +493,16 @@ public abstract class ActorFSM : MonoBehaviour
         else if (Physics.Raycast(useVec, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            Debug.Log("hitright");
             float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
+
             return transform.right * (5 - distanceExp);
         }
 
         else
         {
+
             Vector3 dir = (endPoint - transform.position).normalized;
             dir.y = rigidBody.velocity.y;
             return dir;
@@ -510,7 +511,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void DamageTaken(Actor attacker)
     {
-        if (!(target is Actor))
+        if (!(target is Actor) && currentState != FSMState.DEATH)
         {
             ChangeState(FSMState.COMBAT);
             target = attacker;
@@ -572,4 +573,6 @@ public abstract class ActorFSM : MonoBehaviour
 
     }
 
+
+    
 }

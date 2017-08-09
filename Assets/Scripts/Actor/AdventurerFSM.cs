@@ -52,20 +52,18 @@ public class AdventurerFSM : FriendlyAiFSM
 
         FSMState previousState = currentState;
         currentFriendlyAI.StopAllInteractions();
-        if (state != FSMState.COMBAT)
-            (currentFriendlyAI as AdventurerAI).UnEquipWeapons();
-        base.ChangeState(state);
-        if (previousState != currentState)
-        {
-            switch (state)
-            {
-                case FSMState.COMBAT:
-                    (currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
-                    attackTimer = 20;
-                    //animator.SetBool("KnockBack", true);//Wrong place
-                    //timer = 5;
-                    return;
 
+        base.ChangeState(state);
+        if (previousState != currentState && currentState != FSMState.DEATH)
+        {
+            if (currentState == FSMState.COMBAT)
+            {
+                (currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
+                attackTimer = 20;
+            }
+            else
+            {
+                (currentFriendlyAI as AdventurerAI).UnEquipWeapons();
             }
         }
     }

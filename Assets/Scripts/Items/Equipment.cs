@@ -20,8 +20,8 @@ public class Equipment : CraftedItem {
         rigidBody.isKinematic = true;
         itemCollider.isTrigger = true;
         transform.parent = parent;
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        transform.rotation = parent.rotation * pivot.localRotation;
+        transform.position = parent.position + transform.rotation * -pivot.localPosition;
     }
 
     public virtual void Unequip()

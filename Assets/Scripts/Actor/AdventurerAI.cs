@@ -10,7 +10,7 @@ public class AdventurerAI : FriendlyAI
     [SerializeField]
     private List<Equipment> inventory = new List<Equipment>();
 
-    
+
 
     [SerializeField]
     protected AdventurerAIData data;
@@ -28,14 +28,14 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-   
+
     protected override void Awake()
     {
         base.Awake();
         GetSlots();
     }
 
-    
+
     protected override void Start()
     {
         base.Start();
@@ -49,25 +49,16 @@ public class AdventurerAI : FriendlyAI
     {
         if (leftHand != null && leftHand.Item != null)
         {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
-                Destroy(leftHand.Item.gameObject);
-            else
-            {
-                leftHand.Item.Unequip();
-                leftHand.Item = null;
-            }
+            Destroy(leftHand.Item.gameObject);
+            leftHand.Item = null;
         }
         if (rightHand != null && rightHand.Item != null)
         {
-            if (variable.GetStat(Stats.StatsType.HEALTH).Current > 0)
-                Destroy(rightHand.Item.gameObject);
-            else
-            {
-                rightHand.Item.Unequip();
-                rightHand.Item = null;
-            }
+            Destroy(rightHand.Item.gameObject);
+            rightHand.Item = null;
         }
     }
+
 
     public QuestBook QuestBook
     {
@@ -79,13 +70,24 @@ public class AdventurerAI : FriendlyAI
 
     public bool EquipRandomWeapons()
     {
+        float currentDamage = -1;
+        Weapon currentWeapon = null;
         foreach (Equipment equip in inventory)
         {
             if (equip is Weapon)
             {
-                ChangeWield(Instantiate(equip));
-                return true;
+                if ((equip as Weapon).Damage > currentDamage)
+                {
+                    currentDamage = (equip as Weapon).Damage;
+                    currentWeapon = (equip as Weapon);
+                }
+
             }
+        }
+        if (currentWeapon != null)
+        {
+            ChangeWield(Instantiate(currentWeapon));
+            return true;
         }
         return false;
     }
@@ -150,7 +152,7 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-   
+
     //protected System.Collections.IEnumerator StartInteraction(OptionPane op)
     //{
     //    isInteracting = true;
@@ -184,7 +186,7 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-    
+
 
     public override void Spawn()
     {
@@ -197,7 +199,7 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-    public override float GetOutOfTimeDuration()
+    public virtual float GetOutOfTimeDuration()
     {
         float totalDuration = 25f;
         QuestEntry<StoryQuest> quest = QuestBook.GetFastestQuest();
@@ -207,7 +209,7 @@ public class AdventurerAI : FriendlyAI
         return totalDuration;
     }
 
-    public override void OutOfTownProgress()//This method is ran by the aimanager every "tick out of town"
+    public virtual void OutOfTownProgress()//This method is ran by the aimanager every "tick out of town"
     {
         QuestEntry<StoryQuest> quest = QuestBook.GetFastestQuest();
         if (quest != null)
@@ -221,7 +223,24 @@ public class AdventurerAI : FriendlyAI
         base.TakeDamage(damage, attacker);
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
-            AIManager.Instance.Spawn(this, data.GetJob(JobType.COMBAT).Level * 50, TownManager.Instance.GetRandomSpawnPoint());
+            AIManager.Instance.Respawn(this);
+        }
+    }
+
+    protected override void DropItem()
+    {
+        base.DropItem();
+        if (leftHand != null && leftHand.Item != null)
+        {
+            leftHand.Item.Unequip();
+            leftHand.Item.gameObject.AddComponent<DroppedItem>();
+            leftHand.Item = null;
+        }
+        if (rightHand != null && rightHand.Item != null)
+        {
+            rightHand.Item.Unequip();
+            rightHand.Item.gameObject.AddComponent<DroppedItem>();
+            rightHand.Item = null;
         }
     }
 

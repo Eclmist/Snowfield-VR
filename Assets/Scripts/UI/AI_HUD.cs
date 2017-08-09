@@ -38,7 +38,7 @@ public class AI_HUD : MonoBehaviour {
 	// Use this for initialization
 	protected void Start()
 	{
-		actor = transform.parent.GetComponent<AI>();
+		actor = transform.parent.GetComponentInParent<AI>();
 
 		if (actor == null)
 		{

@@ -72,13 +72,16 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     public virtual void TakeDamage(float value, Actor attacker)
     {
         variable.ReduceHealth(value);
+        if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+            Die();
     }
 
     public virtual void Attack(IDamage item, IDamagable target, float scale = 1)
     {
-        float damage = item != null ? item.Damage : 0;
-        if (target != null)
+        if (target != null && target.CanBeAttacked)
         {
+            float damage = item != null ? item.Damage : 0;
+        
             damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
             float randomVal = Random.Range(0.8f, 1.2f);
             target.TakeDamage(damage * randomVal, this);
@@ -87,8 +90,12 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public virtual void Attack(float damage, IDamagable target)
     {
-        if (target.CanBeAttacked)
+        if (target != null && target.CanBeAttacked)
+        {
             target.TakeDamage(damage, this);
+            
+        }
+        
     }
 
 
@@ -142,11 +149,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     }
 
 
-    public virtual void Die()
-    {
-        variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
-
-    }
+    public abstract void Die();
 
     public virtual void GainExperience(JobType jobType, int value)
     {

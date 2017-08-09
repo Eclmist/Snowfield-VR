@@ -126,6 +126,11 @@ public class Player : Actor
         }
     }
 
+    public override void Die()
+    {
+        //Lose here
+    }
+
     protected void OnDisable()
     {
         //SerializeManager.Save("PlayerData",data);
