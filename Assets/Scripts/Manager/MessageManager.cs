@@ -111,13 +111,14 @@ public class MessageManager : MonoBehaviour
     // Send a message to the player's inbox
     public void SendMail(string title, string message, AudioClip clip)
     {
+
         Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
 
-		if(interactableMesssage)
-			Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
-
-
+        if (interactableMesssage)
+        {
+            Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
+        }
 
     }
 
