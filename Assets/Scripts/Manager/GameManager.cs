@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         else
         {
             gameClock = new GameClock(secondsPerDay, startTime);
-            MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
+            MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\nXiaotian", null);
         }
         
     }
@@ -116,10 +116,10 @@ public class GameManager : MonoBehaviour
             {
                 AIManager.Instance.SpawnMerchant();
                 currentState = GameState.DAYMODE;
+                MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
 
-        //Debug.Log(currentState);
     }
 
     private void PrepareForNight()
