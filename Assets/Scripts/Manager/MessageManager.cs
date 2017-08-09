@@ -12,8 +12,11 @@ public class MessageManager : MonoBehaviour
     [System.Serializable]
     public class Mail
     {
+        [SerializeField]
         private string title;
+        [SerializeField]
         private string message;
+        [SerializeField]
         private AudioClip clip;
         private bool isRead;
 
@@ -63,6 +66,7 @@ public class MessageManager : MonoBehaviour
     [SerializeField] private InteractableMessage interactableMesssage;
     [SerializeField] private List<Mail> inbox = new List<Mail>();
     [SerializeField] private int totalUnreadMails;
+    [SerializeField] private AudioClip newMailSound;
 
 
     private Mail currentlyDisplayedMail;
@@ -111,13 +115,17 @@ public class MessageManager : MonoBehaviour
     // Send a message to the player's inbox
     public void SendMail(string title, string message, AudioClip clip)
     {
+
         Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
 
-		if(interactableMesssage)
-			Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
+        if (interactableMesssage)
+        {
+            Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
+        }
 
-
+        if (newMailSound)
+            AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.2f);
 
     }
 
