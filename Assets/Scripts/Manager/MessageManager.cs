@@ -12,8 +12,11 @@ public class MessageManager : MonoBehaviour
     [System.Serializable]
     public class Mail
     {
+        [SerializeField]
         private string title;
+        [SerializeField]
         private string message;
+        [SerializeField]
         private AudioClip clip;
         private bool isRead;
 
