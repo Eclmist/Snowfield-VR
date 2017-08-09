@@ -8,16 +8,27 @@ public class MailEventArea : MonoBehaviour {
     private float eventRadius;
     [SerializeField]
     private MessageManager.Mail mail;
+    private bool isTriggered = false;
 
 	
 	// Update is called once per frame
 	void Update ()
     {
-
-       if(Physics.OverlapSphere(transform.position, eventRadius,LayerMask.NameToLayer("Player")).Length > 0)
+        foreach(Collider col in Physics.OverlapSphere(transform.position, eventRadius))
         {
-            MessageManager.Instance.SendMail(mail.Title,mail.Message,mail.Clip);
+            if(col.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                MessageManager.Instance.SendMail(mail.Title, mail.Message, mail.Clip);
+                isTriggered = true;
+            }
+
+           
         }
+
+
+
+        if (isTriggered)
+            Destroy(gameObject);
 
 	}
 

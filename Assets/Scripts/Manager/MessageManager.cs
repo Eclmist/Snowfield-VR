@@ -125,7 +125,7 @@ public class MessageManager : MonoBehaviour
         }
 
         if (newMailSound)
-            AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.75f);
+            AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.2f);
 
     }
 
