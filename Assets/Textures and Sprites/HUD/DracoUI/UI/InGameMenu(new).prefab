@@ -61,7 +61,6 @@ GameObject:
   - component: {fileID: 65361192123099600}
   - component: {fileID: 114921073586395252}
   - component: {fileID: 82147549608043500}
-  - component: {fileID: 114935972437552292}
   m_Layer: 5
   m_Name: Exit
   m_TagString: Untagged
@@ -391,7 +390,6 @@ GameObject:
   - component: {fileID: 65766865224311550}
   - component: {fileID: 114814216152469758}
   - component: {fileID: 82537258050271348}
-  - component: {fileID: 114528994352070796}
   m_Layer: 5
   m_Name: Character
   m_TagString: Untagged
@@ -637,7 +635,6 @@ GameObject:
   - component: {fileID: 65018430548840984}
   - component: {fileID: 114208809510852790}
   - component: {fileID: 82873414112849526}
-  - component: {fileID: 114762879865767348}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -1760,7 +1757,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1841,7 +1838,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1922,7 +1919,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2003,7 +2000,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2452,9 +2449,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114601286697048252}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}
@@ -2597,9 +2591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -2694,9 +2685,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114695737833488358}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2837,9 +2825,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114796045366413222}
   normalColor: {r: 1, g: 1, b: 1, a: 0.822}
@@ -3104,9 +3089,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114747189860338944}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -3213,9 +3195,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114724208268280352}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3296,9 +3275,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114721346534865612}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3717,23 +3693,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114528994352070796
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1240483813369922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 0}
-  messageBody: {fileID: 114587368569313502}
-  interactableMesssage: {fileID: 0}
-  inbox: []
-  totalUnreadMails: 0
 --- !u!114 &114533345738471406
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4309,6 +4268,7 @@ MonoBehaviour:
     type: 2}
   inbox: []
   totalUnreadMails: 0
+  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114719683844792076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4321,9 +4281,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 114627849072369932}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -4656,23 +4613,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114762879865767348
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1356153424569166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 0}
-  messageBody: {fileID: 114587368569313502}
-  interactableMesssage: {fileID: 0}
-  inbox: []
-  totalUnreadMails: 0
 --- !u!114 &114766150071945644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4745,9 +4685,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
   sr: {fileID: 114008751097532908}
   scrollSensitivity: 2
   velocityMultiplier: 3
@@ -4790,9 +4727,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -5156,9 +5090,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.4
-  triggerExitVibration: 0
-  triggerPressVibration: 0.6
   useTransitions: 1
   targetGraphic: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 0.209}
@@ -5295,23 +5226,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114935972437552292
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1049832475598964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 0}
-  messageBody: {fileID: 114587368569313502}
-  interactableMesssage: {fileID: 0}
-  inbox: []
-  totalUnreadMails: 0
 --- !u!114 &114940505839137300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7022,7 +6936,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 168.55, y: -70.9}
+  m_AnchoredPosition: {x: 168.55, y: -70.899994}
   m_SizeDelta: {x: 337.1, y: 141.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224622113724908324
@@ -7200,7 +7114,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224607668259974}
   m_LocalRotation: {x: -0, y: -0.9992877, z: -0, w: 0.03773704}
-  m_LocalPosition: {x: 0, y: 0, z: -0.16157554}
+  m_LocalPosition: {x: 0, y: 0, z: -1.9187851}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 224131309351220570}
@@ -7211,7 +7125,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -175.675, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.3998723, y: 1.242}
+  m_AnchoredPosition: {x: 14.547749, y: 1.067}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224765393114255994

@@ -63,6 +63,7 @@ public class MessageManager : MonoBehaviour
     [SerializeField] private InteractableMessage interactableMesssage;
     [SerializeField] private List<Mail> inbox = new List<Mail>();
     [SerializeField] private int totalUnreadMails;
+    [SerializeField] private AudioClip newMailSound;
 
 
     private Mail currentlyDisplayedMail;
@@ -119,6 +120,9 @@ public class MessageManager : MonoBehaviour
         {
             Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
         }
+
+        if (newMailSound)
+            AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.75f);
 
     }
 
