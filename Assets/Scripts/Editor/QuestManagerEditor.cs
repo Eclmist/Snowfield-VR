@@ -82,7 +82,8 @@ public class QuestManagerEditor : Editor
 			{
 				GetSelectedQuest().Name = EditorGUILayout.TextField("Name", GetSelectedQuest().Name);
 				GetSelectedQuest().Reward = (GameObject)EditorGUILayout.ObjectField("Reward", GetSelectedQuest().Reward, typeof(GameObject), true);
-				GetSelectedQuest().Experience = EditorGUILayout.IntField("Experience", GetSelectedQuest().Experience);
+                GetSelectedQuest().ExpectedCrates = EditorGUILayout.IntField("Expected Crates", GetSelectedQuest().ExpectedCrates);
+                GetSelectedQuest().Experience = EditorGUILayout.IntField("Experience", GetSelectedQuest().Experience);
 				GetSelectedQuest().RequiredLevel = EditorGUILayout.IntField("Required Level", GetSelectedQuest().RequiredLevel);
 				GetSelectedQuest().JobType = instance.Storylines[selectedGridIndex].JobType;
 			}
@@ -120,12 +121,12 @@ public class QuestManagerEditor : Editor
 		{
 			StoryLine tempLine = new StoryLine(JobType.ALCHEMY);
 			tempLine.Quests = new List<StoryQuest>();
-			tempLine.Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0));
+			tempLine.Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0,0));
 			instance.Storylines.Add(tempLine);
 		}
 		if (GUILayout.Button("Add quest"))
 		{
-			instance.Storylines[selectedGridIndex].Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0));
+			instance.Storylines[selectedGridIndex].Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0,0));
 		}
 
 		if (GUILayout.Button("Delete Quest"))
@@ -189,7 +190,7 @@ public class QuestManagerEditor : Editor
 	{
 
 		if (instance.Storylines[selectedGridIndex].Count < 1)
-			instance.Storylines[selectedGridIndex].Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0));
+			instance.Storylines[selectedGridIndex].Add(new StoryQuest("New Quest", instance.Storylines[selectedGridIndex].JobType, null, 0, 0, 0,0));
 
 		List<string> temp = new List<string>();
 		quests = new string[instance.Storylines[selectedGridIndex].Count];
