@@ -3689,41 +3689,49 @@ MonoBehaviour:
     - name: Fedex Quest 1
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 100
       requiredLevel: 1
     - name: An Upgrade
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 200
       requiredLevel: 2
     - name: Find The Scammer
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 300
       requiredLevel: 3
     - name: Maya's Request 2
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 400
       requiredLevel: 4
     - name: Brink of Extinction
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 500
       requiredLevel: 5
     - name: Terror in The Sky
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 600
       requiredLevel: 6
     - name: Recycling Is Not A Crime
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 700
       requiredLevel: 7
     - name: The Caverns
       jobType: 0
       reward: {fileID: 0}
+      expectedCrates: 0
       experience: 800
       requiredLevel: 8
 --- !u!114 &114179039286324862
@@ -4678,11 +4686,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   critChance: 60.7
   hitSounds:
-  - {fileID: 8300000, guid: 44b20c8961a8708488e615a6beb6f05a, type: 3}
-  - {fileID: 8300000, guid: 9d590e95756c011408117aa01189a992, type: 3}
-  - {fileID: 8300000, guid: 200a183e7d6fd174ba1f4550919daa9e, type: 3}
-  - {fileID: 8300000, guid: e501a322d492b1244b86dc5d18161407, type: 3}
-  - {fileID: 8300000, guid: 01a47cc9dd064574b8b02ad157b8f3e1, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &114787635348074310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4882,6 +4890,13 @@ MonoBehaviour:
     prefab: {fileID: 1828534775533718, guid: 26f31dbd8fbfabe4292d6488a2553e7d, type: 2}
     levelUnlocked: 8
     icon: {fileID: 21300000, guid: 1f6d7be35bca30d4dad2d4f9425aab83, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 0
+  - ID: 8
+    prefab: {fileID: 1828534775533718, guid: 07bd5f090d30d91409c77da105345681, type: 2}
+    levelUnlocked: 8
+    icon: {fileID: 21300000, guid: 25e64347ab3cfc84ebf39b751a75efe3, type: 3}
     maxStackSize: 64
     jobType: 0
     cost: 0
