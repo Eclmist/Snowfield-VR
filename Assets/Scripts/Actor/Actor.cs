@@ -11,6 +11,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public abstract bool CheckConversingWith(Actor target);
 
+    [SerializeField]
     protected Collider thisCollider;
 
 
@@ -19,6 +20,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     protected virtual void Awake()
     {
         statsContainer = GetComponent<StatsContainer>();
+        if(!thisCollider)
         thisCollider = GetComponent<Collider>();
     }
 

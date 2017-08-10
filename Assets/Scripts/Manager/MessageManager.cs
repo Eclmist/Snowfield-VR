@@ -208,3 +208,4 @@ public class MessageManager : MonoBehaviour
 
         totalUnreadMails = count;
     }
+}
