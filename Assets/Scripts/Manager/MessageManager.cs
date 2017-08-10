@@ -96,16 +96,8 @@ public class MessageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SendMail("The adventure begins","Welcome to Snowfield!", null);
+            SendMail("Debug Mail","This is a debug mail.\n\nFrom:\nYue Peng", null);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-			SendMail("Chen Xiang", "Do spell structure", null);
-		}
-		else if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			SendMail("Third", "Third", null);
-		}
 
 		HandleMailEvents();
         UpdateUnreadCounter();
