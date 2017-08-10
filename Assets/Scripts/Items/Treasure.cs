@@ -38,11 +38,14 @@ public class Treasure : MonoBehaviour, IDamagable {
     }
 
 
-    public void TakeDamage(float Damage,Actor actor)
+    public void TakeDamage(float Damage,Actor actor, JobType damageType)
     {
        
         GameManager.Instance.AddTax((int)Damage);
-        actor.Die();
+        if(actor is Monster)
+        {
+            (actor as Monster).Despawn();
+        }
     }
 	public new Transform transform
     {

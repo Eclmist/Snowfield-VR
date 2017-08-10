@@ -151,20 +151,20 @@ public class Node : MonoBehaviour, IBundle<Node>
         set { bundleIndex = value; }
     }
 
-    //protected void OnDrawGizmos()
-    //{
+    protected void OnDrawGizmos()
+    {
 
-    //    if (!isSelected)
-    //        Gizmos.color = Color.white;
-    //    else
-    //        Gizmos.color = Color.red;
+        if (!isSelected)
+            Gizmos.color = Color.white;
+        else
+            Gizmos.color = Color.red;
 
-    //    Gizmos.DrawSphere(transform.position, GetComponent<SphereCollider>().radius);
+        Gizmos.DrawSphere(transform.position, GetComponent<SphereCollider>().radius);
 
-    //    foreach (Node n in neighbours)
-    //    {
-    //        Gizmos.DrawLine(transform.position, n.transform.position);
-    //    }
-    //}
+        foreach (Node n in neighbours)
+        {
+            Gizmos.DrawLine(transform.position, n.transform.position);
+        }
+    }
 
 }

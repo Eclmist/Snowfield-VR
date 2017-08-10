@@ -14,8 +14,8 @@ public class StoryQuest : Quest
         
     }
 
-    public StoryQuest(string name, JobType jobType, GameObject reward, int experience, int requiredLevel, int progressionIndex) 
-        : base(name, jobType, reward, experience)
+    public StoryQuest(string name, JobType jobType, GameObject reward,int expectedCrates, int experience, int requiredLevel, int progressionIndex) 
+        : base(name, jobType, reward, expectedCrates, experience)
     {
         this.requiredLevel = requiredLevel;
     }

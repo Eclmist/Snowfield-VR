@@ -7,7 +7,8 @@ public enum JobType
 {
     BLACKSMITH,
     ALCHEMY,
-    COMBAT
+    COMBAT,
+    MAGIC
 }
 
 [System.Serializable]

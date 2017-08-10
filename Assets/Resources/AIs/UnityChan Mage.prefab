@@ -6978,7 +6978,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!82 &82488160005304302
 AudioSource:
   m_ObjectHideFlags: 1
@@ -7235,14 +7235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 100
-    statsType: 0
-  - value: 2
-    statsType: 1
-  - value: 15
-    statsType: 2
-  allStats: []
+  baseHealth: 0
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114213524245367126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7674,7 +7672,7 @@ MonoBehaviour:
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 4294926335
-  animUseSlot: 0
+  animUseSlot: 1
   attackTimer: 0
 --- !u!114 &114696859292605014
 MonoBehaviour:

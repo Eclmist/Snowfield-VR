@@ -55,7 +55,6 @@ public class Weapon : Equipment
 		base.Update();
         if (modRen)
         {
-
             if (charge)
             {
                 if (emissiveSlider < 1)
@@ -117,7 +116,7 @@ public class Weapon : Equipment
             IDamagable target = collision.GetComponent<IDamagable>();
             if (target != null && target is Monster)
             {
-                target.TakeDamage(Damage, Player.Instance);
+                Player.Instance.Attack(this, target);
             }
         }
     

@@ -244,5 +244,19 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
+    public override void Attack(float damage, IDamagable target)
+    {
+        base.Attack(damage, target);
+        CombatManager.Instance.PlayRandomHitSoundAt(target.transform);
+
+    }
+
+    public override void Attack(IDamage item, IDamagable target, float scale = 1)
+    {
+        base.Attack(item, target, scale);
+        CombatManager.Instance.PlayRandomHitSoundAt(target.transform);
+    }
+
+
 
 }

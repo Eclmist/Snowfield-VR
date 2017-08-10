@@ -69,7 +69,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         }
     }
 
-    public virtual void TakeDamage(float value, Actor attacker)
+    public virtual void TakeDamage(float value, Actor attacker,JobType type)
     {
         variable.ReduceHealth(value);
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
@@ -81,21 +81,16 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         if (target != null && target.CanBeAttacked)
         {
             float damage = item != null ? item.Damage : 0;
-        
+
             damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
             float randomVal = Random.Range(0.8f, 1.2f);
-            target.TakeDamage(damage * randomVal, this);
+            DealDamage(damage * randomVal, target,JobType.COMBAT);
         }
     }
 
-    public virtual void Attack(float damage, IDamagable target)
+    public virtual void DealDamage(float damage, IDamagable target, JobType damageType)
     {
-        if (target != null && target.CanBeAttacked)
-        {
-            target.TakeDamage(damage, this);
-            
-        }
-        
+        target.TakeDamage(damage, this,damageType);
     }
 
 

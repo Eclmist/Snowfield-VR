@@ -9,7 +9,7 @@ public class GameConstants{
 
     private float respawnTimePerLevel = 5f, dropItemDespawnRate = 30f;
 
-    private float dropRate = 0.5f;
+    private float dropRate = 1f;
 
     public float ItemDropRate
     {

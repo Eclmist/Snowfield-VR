@@ -28,7 +28,7 @@ public class FriendlyAiFSM : ActorFSM
     {
         float val = Random.value;
         Node shopPoint = targetShop.GetRandomPoint(transform.position);
-        if (val > .5 && shopPoint != null)
+        if ((val > .5 || targetShop.InteractionNode.Occupied) && shopPoint != null)
         {
 
             ChangePath(shopPoint);
@@ -122,7 +122,7 @@ public class FriendlyAiFSM : ActorFSM
             endPos.y = transform.position.y;
             Vector3 dir = (target.transform.position - transform.position).normalized;
             dir.y = 0;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), Time.deltaTime * 5);
+
             float angle = Mathf.Abs(Vector3.Angle(transform.forward, dir));
 
             if (angle < 30)
@@ -159,6 +159,8 @@ public class FriendlyAiFSM : ActorFSM
                     break;
                 }
             }
+            else
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), Time.deltaTime * 5);
 
 
             yield return new WaitForEndOfFrame();

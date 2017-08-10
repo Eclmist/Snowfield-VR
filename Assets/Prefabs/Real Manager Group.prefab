@@ -1025,6 +1025,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1624916908844660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4983360862620798}
+  - component: {fileID: 114783056444696658}
+  m_Layer: 0
+  m_Name: CombatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1663969432262914
 GameObject:
   m_ObjectHideFlags: 1
@@ -2223,6 +2239,7 @@ Transform:
   - {fileID: 4190381487271226}
   - {fileID: 4499820016490340}
   - {fileID: 4160059734729524}
+  - {fileID: 4983360862620798}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2341,6 +2358,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4721422464862536}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4983360862620798
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1624916908844660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4986202520064436
 Transform:
@@ -3828,14 +3858,8 @@ MonoBehaviour:
   vivePosition: {fileID: 0}
   data:
     jobList:
-    - currentJobType: 2
-      additionalStatsPerLevel:
-      - value: 10
-        statsType: 0
-      - value: 1
-        statsType: 1
-      - value: 0.1
-        statsType: 2
+    - currentJobType: 0
+      additionalStatsPerLevel: []
     gold: 2000
   inCombatZone: 0
 --- !u!114 &114289551214572104
@@ -4096,7 +4120,7 @@ MonoBehaviour:
   - {fileID: 114055723710975712, guid: a1b34f9d176467242a749f3b951547f1, type: 2}
   - {fileID: 114637017769914016, guid: 81fcc431d55055b4f9f7c027c6e82404, type: 2}
   merchants: []
-  timeBetweenAISpawn: 10
+  timeBetweenAISpawn: 1
 --- !u!114 &114423353566450574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4154,10 +4178,16 @@ MonoBehaviour:
   groups:
   - monsters:
     - {fileID: 114339431620472744, guid: 990f436bbac1e834ba30af595b847856, type: 2}
-    cost: 2
+    - {fileID: 114141139559156536, guid: 2b1a549b448051e489ecf50e54f5c7b4, type: 2}
+    - {fileID: 114402190457396630, guid: 7f61fbdfe3dbc214cbc4e596ccc27254, type: 2}
+    - {fileID: 114339431620472744, guid: 990f436bbac1e834ba30af595b847856, type: 2}
+    - {fileID: 114402190457396630, guid: 7f61fbdfe3dbc214cbc4e596ccc27254, type: 2}
+    - {fileID: 114120943504851036, guid: 6ae87969e53256f45956111977fc07ce, type: 2}
+    - {fileID: 114141139559156536, guid: 2b1a549b448051e489ecf50e54f5c7b4, type: 2}
+    cost: 1
   - monsters:
     - {fileID: 114402190457396630, guid: 7f61fbdfe3dbc214cbc4e596ccc27254, type: 2}
-    cost: 1
+    cost: 2
   - monsters:
     - {fileID: 114339431620472744, guid: 990f436bbac1e834ba30af595b847856, type: 2}
     - {fileID: 114339431620472744, guid: 990f436bbac1e834ba30af595b847856, type: 2}
@@ -4171,7 +4201,7 @@ MonoBehaviour:
     - {fileID: 114120943504851036, guid: 6ae87969e53256f45956111977fc07ce, type: 2}
     cost: 0
   maxCost: 10
-  timeBetweenEachMonsterSpawn: 0.5
+  timeBetweenEachMonsterSpawn: 1
   timeBetweenEachGroupSpawn: 5
   monstersInTheScene: []
 --- !u!114 &114471030434532532
@@ -4635,6 +4665,24 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114783056444696658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1624916908844660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad9824a37249214e927323b1e0ef7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  critChance: 60.7
+  hitSounds:
+  - {fileID: 8300000, guid: 44b20c8961a8708488e615a6beb6f05a, type: 3}
+  - {fileID: 8300000, guid: 9d590e95756c011408117aa01189a992, type: 3}
+  - {fileID: 8300000, guid: 200a183e7d6fd174ba1f4550919daa9e, type: 3}
+  - {fileID: 8300000, guid: e501a322d492b1244b86dc5d18161407, type: 3}
+  - {fileID: 8300000, guid: 01a47cc9dd064574b8b02ad157b8f3e1, type: 3}
 --- !u!114 &114787635348074310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4766,7 +4814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponClassList:
   - type: 0
-    successRate: 85.9
+    successRate: 0
     itemList: []
 --- !u!114 &114842777325050438
 MonoBehaviour:

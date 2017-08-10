@@ -16,7 +16,8 @@ public abstract class Quest
     [SerializeField]
     private GameObject reward;
 
-
+    [SerializeField]
+    private int expectedCrates;
 
     [SerializeField]
     private int experience;
@@ -35,7 +36,7 @@ public abstract class Quest
 
 
 
-    public Quest(string name, JobType jobType, GameObject reward, int experience)
+    public Quest(string name, JobType jobType, GameObject reward, int expectedCrates, int experience)
 
     {
 
@@ -44,6 +45,8 @@ public abstract class Quest
         this.jobType = jobType;
 
         this.reward = reward;
+
+        this.expectedCrates = expectedCrates;
 
         this.experience = experience;
 
@@ -83,6 +86,12 @@ public abstract class Quest
 
         set { this.reward = value; }
 
+    }
+
+    public int ExpectedCrates
+    {
+        get { return this.expectedCrates; }
+        set { this.expectedCrates = value; }
     }
 
 
