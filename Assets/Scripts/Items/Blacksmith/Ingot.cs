@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Ingot : BlacksmithItem {
 
+    #region tutorial
+    public static bool pickedUpIngot = false;
+    public static bool isHotEnough = false;
+    public static bool isPlacedOnAnvil= false;
+    #endregion
+    
     [SerializeField][Range(1,10)]
     private int oreComposition;
 
@@ -78,6 +84,10 @@ public class Ingot : BlacksmithItem {
 	{
 		base.Update();
 		isMorphable = (currentTemperature > 0.8f && currentMorphSteps >= targetMorphSteps && onAnvil && currentMorphSteps > 0);
+
+        pickedUpIngot = (LinkedController != null);
+        isHotEnough = currentTemperature >= 0.95f;
+        isPlacedOnAnvil = onAnvil;
 	}
 
 	public void LateUpdate()
