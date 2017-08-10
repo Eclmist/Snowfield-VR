@@ -45,7 +45,7 @@ public class AdventurerAI : FriendlyAI
 
 
 
-    public void UnEquipWeapons()
+    public void DestroyHandsWeapon()
     {
         if (leftHand != null && leftHand.Item != null)
         {
@@ -218,9 +218,9 @@ public class AdventurerAI : FriendlyAI
         //Can get misc items here
     }
 
-    public override void TakeDamage(float damage, Actor attacker)
+    public override void TakeDamage(float damage, Actor attacker, JobType type)
     {
-        base.TakeDamage(damage, attacker);
+        base.TakeDamage(damage, attacker,type);
         if (variable.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             AIManager.Instance.Respawn(this);
@@ -244,9 +244,9 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-    public override void Attack(float damage, IDamagable target)
+    public override void DealDamage(float damage, IDamagable target,JobType damageType)
     {
-        base.Attack(damage, target);
+        base.DealDamage(damage, target,damageType);
         CombatManager.Instance.PlayRandomHitSoundAt(target.transform);
 
     }

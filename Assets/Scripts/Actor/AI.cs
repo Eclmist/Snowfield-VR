@@ -39,13 +39,12 @@ public abstract class AI : Actor
             currentFSM.ChangeState(state);
     }
 
-    public override void TakeDamage(float damage, Actor attacker)
+    public override void TakeDamage(float damage, Actor attacker,JobType type)
     {
 
+        damage = CombatManager.Instance.GetDamageDealt(damage, transform);
 
-        damage = CombatManager.Instance.GetDamageDealt(damage,transform);
-
-        base.TakeDamage(damage, attacker);
+        base.TakeDamage(damage, attacker, type);
 
         currentFSM.DamageTaken(attacker);
 
@@ -53,10 +52,11 @@ public abstract class AI : Actor
 
     public override void Die()
     {
-        currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
         float rng = UnityEngine.Random.Range(0, 1f);
         if (rng > 1 - GameConstants.Instance.ItemDropRate)
             DropItem();
+        Collider.enabled = false;
+        currentFSM.ChangeState(ActorFSM.FSMState.DEATH);
     }
 
     public virtual void LookAtObject(Transform target, float time, float angle)
@@ -80,10 +80,11 @@ public abstract class AI : Actor
         currentFSM.SetVelocity(vel);
     }
 
-   
+
     public virtual void Spawn()
     {
         gameObject.SetActive(true);
+        Collider.enabled = true;
         if (spawnPS)
         {
             GameObject ps = Instantiate(spawnPS, spawnPS.transform.position, spawnPS.transform.rotation);
@@ -94,7 +95,6 @@ public abstract class AI : Actor
 
     public virtual void Despawn()
     {
-
         if (disablePS)
         {
             GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
@@ -108,7 +108,7 @@ public abstract class AI : Actor
     protected virtual void DropItem()
     {
         ItemData data = ItemManager.Instance.GetRandomItemByLevel(Data.GetJob(JobType.COMBAT).Level);
-        if(data != null)
+        if (data != null)
         {
             GameObject obj = Instantiate(data.ObjectReference, transform.position, transform.rotation);
             obj.AddComponent<DroppedItem>();
