@@ -12,6 +12,8 @@ public class AIManager : MonoBehaviour
     private List<AI> typeOfAI = new List<AI>();
     [SerializeField]
     private List<MerchantAI> merchants = new List<MerchantAI>();
+	private TextAsset genericNameParts;
+	private string[] nameParts;
     public static AIManager Instance;
 
     [SerializeField]
@@ -30,7 +32,12 @@ public class AIManager : MonoBehaviour
             Debug.Log("There should only be one instance of AImanager running");
             Destroy(this);
         }
-    }
+
+
+		LoadNameParts();
+
+
+	}
 
     protected void Start()
     {
@@ -76,7 +83,7 @@ public class AIManager : MonoBehaviour
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        AdventurerAIData newData = new AdventurerAIData(newAI.Data, newAI.name, myPath);//Random name gen
+        AdventurerAIData newData = new AdventurerAIData(newAI.Data, GetRandomUniqueName(), myPath);//Random name gen
         return newData;
     }
 
@@ -135,4 +142,30 @@ public class AIManager : MonoBehaviour
         else
             return null;
     }
+
+	private void LoadNameParts()
+	{
+		genericNameParts =  Resources.Load("GenericNameParts") as TextAsset;
+
+		if (genericNameParts == null)
+			Debug.LogError("Cannot find textfile containing names");
+		else
+		{
+			nameParts = genericNameParts.text.Split('\n');
+		}
+	}
+
+	private string GetRandomUniqueName()
+	{
+		Debug.Log(nameParts.Length);
+		string tempName = "UnityChan";
+
+		if (nameParts.Length > 0)
+			tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
+				+ nameParts[Random.Range(0, nameParts.Length)]
+				+ ((int)(Random.Range(1,99)));
+
+		return tempName;
+
+	}
 }
