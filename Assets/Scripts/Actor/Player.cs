@@ -102,7 +102,8 @@ public class Player : Actor
         {
             Instance = this;
             PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
-            
+			thisCollider = vivePosition.GetComponentInChildren<Collider>();
+			Debug.Log(thisCollider);
             if (_data != null)
             {
                 data = _data;

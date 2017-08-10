@@ -19,6 +19,7 @@ public class MessageManager : MonoBehaviour
         [SerializeField]
         private AudioClip clip;
         private bool isRead;
+		private bool isSent;
 
         public Mail(string title, string message, AudioClip clip)
         {
@@ -55,11 +56,17 @@ public class MessageManager : MonoBehaviour
             set { this.isRead = value; }
         }
 
+		public bool IsSent
+		{
+			get { return this.isSent; }
+			set { this.isSent = value; }
+		}
+
     }
 
     public static MessageManager Instance;
 
-    
+	[SerializeField] private GameObject MailInterface;
     [SerializeField] private GridLayoutGroup glp;
     [SerializeField] private Text messageTitle;
     [SerializeField] private Text messageBody;
@@ -98,11 +105,24 @@ public class MessageManager : MonoBehaviour
         {
             SendMail("Debug Mail","This is a debug mail.\n\nFrom:\nYue Peng", null);
         }
+		if (Input.GetKeyDown(KeyCode.Alpha2))
+		{
+			DisplayMailInterface();
+		}
 
-		HandleMailEvents();
-        UpdateUnreadCounter();
+		UpdateUnreadCounter();
 
     }
+
+	// Call this function when displaying the UI or else mail would not update
+	public void DisplayMailInterface()
+	{
+		foreach(Mail m in inbox)
+		{
+			CreateInteractableMail(m);
+		}
+	}
+
   
     // Send a message to the player's inbox
     public void SendMail(string title, string message, AudioClip clip)
@@ -110,11 +130,12 @@ public class MessageManager : MonoBehaviour
 
         Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
+		
+		if(MailInterface.activeSelf)
+		{
+			CreateInteractableMail(temp);
+		}
 
-        if (interactableMesssage)
-        {
-            Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
-        }
 
         if (newMailSound)
             AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.2f);
@@ -134,9 +155,6 @@ public class MessageManager : MonoBehaviour
 
         mail.IsRead = true;
 
-
-
-
     }
 
     // Select the mail and display it on the main message view
@@ -152,11 +170,22 @@ public class MessageManager : MonoBehaviour
 
 	}
 
-    public void DisplayInbox()
-    {
-
-    }
-
+	private void CreateInteractableMail(Mail m)
+	{
+		if(!m.IsSent)
+		{
+			if(interactableMesssage)
+			{
+				m.IsSent = true;
+				Instantiate(interactableMesssage, glp.transform, false).CreateMail(m);
+			}
+			else
+			{
+				Debug.LogError("Cannot not find interactableMessage prefab");
+			}
+			
+		}
+	}
 
     private void UpdateUnreadCounter()
     {
@@ -172,11 +201,7 @@ public class MessageManager : MonoBehaviour
     }
 
 
-    // Determines when to send mails throughout the game
-    private void HandleMailEvents()
-    {
 
-    }
 
 
 

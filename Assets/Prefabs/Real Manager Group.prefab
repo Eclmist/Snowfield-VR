@@ -940,6 +940,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1527268362535840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4507688433893784}
+  - component: {fileID: 114783229376077242}
+  m_Layer: 0
+  m_Name: MessageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1531365814877354
 GameObject:
   m_ObjectHideFlags: 1
@@ -2004,6 +2020,19 @@ Transform:
   m_Father: {fileID: 4721422464862536}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4507688433893784
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527268362535840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4515322800423234
 Transform:
   m_ObjectHideFlags: 1
@@ -2240,6 +2269,7 @@ Transform:
   - {fileID: 4499820016490340}
   - {fileID: 4160059734729524}
   - {fileID: 4983360862620798}
+  - {fileID: 4507688433893784}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4691,6 +4721,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 200a183e7d6fd174ba1f4550919daa9e, type: 3}
   - {fileID: 8300000, guid: e501a322d492b1244b86dc5d18161407, type: 3}
   - {fileID: 8300000, guid: 01a47cc9dd064574b8b02ad157b8f3e1, type: 3}
+--- !u!114 &114783229376077242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1527268362535840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MailInterface: {fileID: 0}
+  glp: {fileID: 0}
+  messageTitle: {fileID: 0}
+  messageBody: {fileID: 0}
+  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
+    type: 2}
+  inbox: []
+  totalUnreadMails: 0
+  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114787635348074310
 MonoBehaviour:
   m_ObjectHideFlags: 1

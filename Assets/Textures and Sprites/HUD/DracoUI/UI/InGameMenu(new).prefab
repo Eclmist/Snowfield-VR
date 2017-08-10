@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 114481881174751106}
   - component: {fileID: 114443891494047372}
   m_Layer: 0
-  m_Name: ScrollRect
+  m_Name: ScrollRectGLP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -408,9 +408,8 @@ GameObject:
   - component: {fileID: 114440525060614098}
   - component: {fileID: 225403259849112188}
   - component: {fileID: 114356282841292314}
-  - component: {fileID: 114735673737642322}
   m_Layer: 0
-  m_Name: Message
+  m_Name: Mail Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4480,25 +4479,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Stanley
---- !u!114 &114735673737642322
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1245608720328644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
-  messageBody: {fileID: 114587368569313502}
-  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
-    type: 2}
-  inbox: []
-  totalUnreadMails: 0
-  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114747189860338944
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -234,6 +234,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
 		if (val > 0)
 		{
+			if(device != null)
 			device.TriggerHapticPulse((ushort)(val * 3999));
 		}
 	}
