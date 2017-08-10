@@ -7,9 +7,8 @@ using Valve.VR.InteractionSystem;
 [System.Serializable]
 public struct ReferenceEventObjects
 {
-    public GameObject furnace;
+	public GameObject furnace;
 }
-
 
 [System.Serializable]
 public class LevelEvent
@@ -23,11 +22,13 @@ public class LevelEvent
 public class Nagano : MonoBehaviour
 {
 
-    [SerializeField] private AudioClip notificationSound;
+
+	[SerializeField] private ReferenceEventObjects referenceEventObjects;
+	[SerializeField] private AudioClip notificationSound;
     private Valve.VR.InteractionSystem.Player player;
     private static bool currentEventCompleted = false;
     [SerializeField] private List<LevelEvent> events;
-    public  LevelEvent currentEvent;
+    private  LevelEvent currentEvent;
 
     private float timer = 0;
 
@@ -79,23 +80,28 @@ public class Nagano : MonoBehaviour
 
     private void ShowControllerHints(Valve.VR.EVRButtonId btn, string text, bool glowbtn = true)
     {
-
         foreach (Hand hand in player.hands)
         {
             ControllerButtonHints.ShowTextHint(hand, btn, text, glowbtn);
             AudioSource.PlayClipAtPoint(notificationSound, hand.transform.position);
         }
-
-
-
     }
 
-    //----------- Level Events -----------------------------------------------------------------------------------------------------------//
+	private void HideAllControllerHints()
+	{
+		foreach (Hand hand in player.hands)
+		{
+			ControllerButtonHints.HideAllTextHints(hand);
+		}
+	}
 
 
-    #region Blacksmith Tutorial Sequence
-        
-    private bool blacksmithCoroutineRunning = false;
+	//----------- Level Events -----------------------------------------------------------------------------------------------------------//
+
+
+	#region Blacksmith Tutorial Sequence
+
+	private bool blacksmithCoroutineRunning = false;
     private bool enteredBlacksmithArea = false;
 
     public void EnterBlackSmithArea()
@@ -107,18 +113,25 @@ public class Nagano : MonoBehaviour
     {
 
         if (!blacksmithCoroutineRunning)
-            StartCoroutine(PickUpIngotRoutine());
+		{
+			blacksmithCoroutineRunning = true;
+			StartCoroutine(HeadToBlackSmithAreaRoutine());
+		}
+            
     }
 
     // The starting of the blacksmith tutorial sequence
     private IEnumerator HeadToBlackSmithAreaRoutine()
     {
-        while (!enteredBlacksmithArea)
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad, "Head next door");
+
+		while (!enteredBlacksmithArea)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_DPad_Up, "Head next door");
+           
             yield return null;
         }
 
+		HideAllControllerHints();
         StartCoroutine(PickUpIngotRoutine());
     }
 
@@ -126,66 +139,79 @@ public class Nagano : MonoBehaviour
     private IEnumerator PickUpIngotRoutine()
     {
         blacksmithCoroutineRunning = true;
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Grab the ingot");
 
-        while (!Ingot.pickedUpIngot)
+		while (Ingot.pickedUpIngot == false)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Grab the ingot");
+			
             yield return null;
         }
 
-        StartCoroutine(HeatUpIngotRoutine());
+		HideAllControllerHints();
+		StartCoroutine(HeatUpIngotRoutine());
 
-        //HideAllControllerHints();
+ 
     }
 
     private IEnumerator HeatUpIngotRoutine()
     {
-        while (!Ingot.isHotEnough)
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Place ingot in furnace");
+
+		while (!Ingot.isHotEnough)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Place ingot in furnace");
+            
             yield return null;
         }
 
-        StartCoroutine(PlaceOnAnvilRoutine());
+		HideAllControllerHints();
+		StartCoroutine(PlaceOnAnvilRoutine());
 
-        //HideAllControllerHints();
     }
 
 
     private IEnumerator PlaceOnAnvilRoutine()
     {
-        while (!Ingot.isPlacedOnAnvil)
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Place ingot on anvil");
+
+		while (!Ingot.isPlacedOnAnvil)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Place ingot on anvil");
+            
             yield return null;
         }
 
-        StartCoroutine(HammerIngotRoutine());
+		HideAllControllerHints();
+		StartCoroutine(HammerIngotRoutine());
     }
 
     private IEnumerator HammerIngotRoutine()
     {
-        while (!FakeItem.isForming)
+
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Hammer it");
+		while (!FakeItem.isForming)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Hammer it");
+            
             yield return null;
         }
 
 
         MessageManager.Instance.SendMail("Blacksmithing", "Woah! I heard that you can make really cool weapons. I'll pay you a visit!\n\nFrom:\n???", null);
-        StartCoroutine(ReadMailRoutine());
+
+		HideAllControllerHints();
+		StartCoroutine(ReadMailRoutine());
 
     }
 
     private IEnumerator ReadMailRoutine()
     {
-        while(!FakeItem.isForming)
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_Dashboard_Back, "Check your mail");
+		while (!FakeItem.isForming)
         {
-            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Check your mail");
+           
             yield return null;
         }
 
-        CompleteCurrentEvent();
+		HideAllControllerHints();
+		CompleteCurrentEvent();
     }
 
 

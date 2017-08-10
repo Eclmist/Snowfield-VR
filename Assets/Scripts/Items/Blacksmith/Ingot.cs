@@ -84,10 +84,12 @@ public class Ingot : BlacksmithItem {
 	{
 		base.Update();
 		isMorphable = (currentTemperature > 0.8f && currentMorphSteps >= targetMorphSteps && onAnvil && currentMorphSteps > 0);
-
-        pickedUpIngot = (LinkedController != null);
-        isHotEnough = currentTemperature >= 0.95f;
-        isPlacedOnAnvil = onAnvil;
+		if (LinkedController != null)
+			pickedUpIngot = true;
+		if (currentTemperature >= 0.95f)
+			isHotEnough = true;
+		if (onAnvil)
+			isPlacedOnAnvil = true;
 	}
 
 	public void LateUpdate()
