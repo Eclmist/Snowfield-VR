@@ -293,7 +293,6 @@ GameObject:
   - component: {fileID: 65160984795247128}
   - component: {fileID: 114719683844792076}
   - component: {fileID: 82669691395350486}
-  - component: {fileID: 114718821256169476}
   m_Layer: 5
   m_Name: Inbox
   m_TagString: Untagged
@@ -409,6 +408,7 @@ GameObject:
   - component: {fileID: 114440525060614098}
   - component: {fileID: 225403259849112188}
   - component: {fileID: 114356282841292314}
+  - component: {fileID: 114735673737642322}
   m_Layer: 0
   m_Name: Message
   m_TagString: Untagged
@@ -3888,7 +3888,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: fvfdgvdfgdfgfdgfdgfdg
+  m_Text: 
 --- !u!114 &114600275711798690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4250,25 +4250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
---- !u!114 &114718821256169476
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1217471485176872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glp: {fileID: 114481881174751106}
-  messageTitle: {fileID: 114865633112886394}
-  messageBody: {fileID: 114587368569313502}
-  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
-    type: 2}
-  inbox: []
-  totalUnreadMails: 0
-  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114719683844792076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4499,6 +4480,25 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Stanley
+--- !u!114 &114735673737642322
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1245608720328644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glp: {fileID: 114481881174751106}
+  messageTitle: {fileID: 114865633112886394}
+  messageBody: {fileID: 114587368569313502}
+  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
+    type: 2}
+  inbox: []
+  totalUnreadMails: 0
+  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114747189860338944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4939,7 +4939,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Some title
+  m_Text: 
 --- !u!114 &114879887480174440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7113,8 +7113,8 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1224607668259974}
-  m_LocalRotation: {x: -0, y: -0.9992877, z: -0, w: 0.03773704}
-  m_LocalPosition: {x: 0, y: 0, z: -1.9187851}
+  m_LocalRotation: {x: -0, y: -0.709268, z: -0, w: 0.704939}
+  m_LocalPosition: {x: 0, y: 0, z: 7.199}
   m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
   m_Children:
   - {fileID: 224131309351220570}
@@ -7122,10 +7122,10 @@ RectTransform:
   - {fileID: 224524299505779772}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -175.675, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.351006, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.547749, y: 1.067}
+  m_AnchoredPosition: {x: 1.884, y: 1.256}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224765393114255994
