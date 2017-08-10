@@ -207,7 +207,9 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual bool CheckForTargets()
     {
-        Collider[] cols = Physics.OverlapSphere(eye.position,
+        Vector3 subVec = transform.position;
+        subVec.y = eye.position.y;
+        Collider[] cols = Physics.OverlapCapsule(subVec,transform.position,
                         CurrentAI.Collider.bounds.extents.x + minimumDistToAvoid,
                         aggroLayer);
         foreach (Collider col in cols)
@@ -221,6 +223,8 @@ public abstract class ActorFSM : MonoBehaviour
         }
         return false;
     }
+
+    
     public virtual void SetStun(int i)
     {
 
@@ -286,7 +290,7 @@ public abstract class ActorFSM : MonoBehaviour
                 tempPoint.y = transform.position.y;
                 float distance = Vector3.Distance(transform.position, tempPoint);
 
-                if (distance > tempAttackRange || Mathf.Abs(angle) > 15)
+                if (distance > tempAttackRange || Mathf.Abs(angle) > 30)
                 {
 
                     animator.SetBool("Attacking", false);
@@ -440,19 +444,17 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual void CheckHit()
     {
-
         float tempAttackRange = attackRange;
         if (target is Player)
             tempAttackRange += 1;
-        Vector3 dir = target.transform.position - transform.position;
-        dir.Normalize();
+        Vector3 dir = (target.transform.position - transform.position).normalized;
         dir.y = 0;
         float angle = Vector3.Angle(transform.forward, dir);
 
         if (target != null)
         {
             Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
-            if (Mathf.Abs(angle) < 15)
+            if (Mathf.Abs(angle) < 30 )
             {
                 CurrentAI.Attack(currentUseWeapon, target);
             }
@@ -496,7 +498,7 @@ public abstract class ActorFSM : MonoBehaviour
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
 
-            return -transform.right * (5 - distanceExp);
+            return -transform.right * (1 - distanceExp) * 5;
         }
         else if (Physics.Raycast(useVec, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
@@ -505,7 +507,7 @@ public abstract class ActorFSM : MonoBehaviour
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
 
-            return transform.right * (5 - distanceExp);
+            return transform.right * (1 - distanceExp) * 5;
         }
 
         else
@@ -535,11 +537,11 @@ public abstract class ActorFSM : MonoBehaviour
 
         Vector3 lookAtTarget = AvoidObstacles(endPoint);
         lookAtTarget.y = 0; //Force no y change;
-
+        float lerpSpeed = lookAtTarget.magnitude * 5;
         if (lookAtTarget != Vector3.zero)
             transform.rotation = Quaternion.Slerp(transform.rotation,
                 Quaternion.LookRotation(lookAtTarget, Vector3.up),
-                5 * Time.deltaTime);//hardcorded 10
+                lerpSpeed * Time.deltaTime);//hardcorded 10
     }
 
     //protected Vector3 GetReversePoint()

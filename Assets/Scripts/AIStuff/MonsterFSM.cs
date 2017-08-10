@@ -35,7 +35,6 @@ public class MonsterFSM : ActorFSM
         if (!hasTarget)
         {
             Vector3 playerPos = Player.Instance.transform.position;
-            playerPos.y = transform.position.y;
 
             if (Vector3.Distance(transform.position, playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
             {
