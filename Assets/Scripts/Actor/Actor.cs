@@ -14,11 +14,11 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     protected Collider thisCollider;
 
 
-    protected StatsContainer variable;
+    protected StatsContainer statsContainer;
 
     protected virtual void Awake()
     {
-        variable = GetComponent<StatsContainer>();
+        statsContainer = GetComponent<StatsContainer>();
         thisCollider = GetComponent<Collider>();
     }
 
@@ -33,7 +33,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         get
         {
-            return variable;
+            return statsContainer;
         }
     }
 
@@ -65,13 +65,13 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         get
         {
-            return gameObject.activeSelf && variable.GetStat(Stats.StatsType.HEALTH).Current > 0;
+            return gameObject.activeSelf && statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0;
         }
     }
 
     public virtual void TakeDamage(float value, Actor attacker)
     {
-        variable.ReduceHealth(value);
+        statsContainer.ReduceHealth(value);
     }
 
     public virtual void Attack(IDamage item, IDamagable target, float scale = 1)
@@ -79,7 +79,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         float damage = item != null ? item.Damage : 0;
         if (target != null)
         {
-            damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
+            damage = damage + statsContainer.GetStat(Stats.StatsType.ATTACK).Current * scale;
             float randomVal = Random.Range(0.8f, 1.2f);
             target.TakeDamage(damage * randomVal, this);
         }
@@ -144,7 +144,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public virtual void Die()
     {
-        variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
+        statsContainer.ReduceHealth(statsContainer.GetStat(Stats.StatsType.HEALTH).Current);
 
     }
 
@@ -157,7 +157,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
                 int level = currentJob.Level;
                 currentJob.GainExperience(value);
                 if (currentJob.Level != level)
-                    variable.UpdateVariables();
+                    statsContainer.UpdateVariables();
                 break;
             }
         }

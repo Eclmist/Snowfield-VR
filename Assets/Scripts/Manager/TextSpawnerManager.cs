@@ -36,7 +36,7 @@ public class TextSpawnerManager : MonoBehaviour {
     }
 
 
-    public void SpawnText(string text, Color color, Transform t, float scale, bool impact = false)
+    public void SpawnText(string text, Color color, Transform t, float scale)
     {
         Collider c = t.GetComponent<Collider>();
         SpawnedText st;
@@ -49,17 +49,63 @@ public class TextSpawnerManager : MonoBehaviour {
         st.transform.localScale *= scale;
         st.SetText(text);
         st.SetColor(color);
+        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
 
-        float tempLength = st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length;
+    }
 
-        if (impact)
+
+    // Generates a text that stays at a position 
+    public void SpawnSoundEffect(string text, Color color, Transform t, Vector3 offset, float duration, float scale = 1)
+    {
+
+        
+        SpawnedText st = Instantiate(textPrefab,t.position + offset,Quaternion.identity);
+        
+
+        st.transform.localScale *= scale;
+        st.SetText(text);
+        st.SetColor(color);
+        st.GetComponentInChildren<Animator>().enabled = false;
+        st.GetComponentInChildren<Outline>().enabled = true;
+        StartCoroutine(Shake(st.gameObject, duration, 0.07f));
+
+    }
+
+
+    private IEnumerator Shake(GameObject g, float shakeDuration, float shakeIntensity)
+    {
+
+        float timeElapsed = 0.0f;
+
+        Vector3 originalPos = g.transform.position;
+
+        while (timeElapsed < shakeDuration)
         {
-            StartCoroutine(Shake(st.gameObject, tempLength, 0.5f));
+
+            timeElapsed += Time.deltaTime;
+
+
+            // As the shake approaches the end, the smooth value increases
+            // The smooth value will be multiplied to the shake intensity
+            // This will slowly take away the shake intensty over time so it doesn't look like it snaps
+            float percentComplete = timeElapsed / shakeDuration;
+            float smooth = 1.0f - Mathf.Clamp(percentComplete, 0.0f, 1.0f);
+
+            // Multiplying by ( *2 - 1 ) gets a range from -1 to 1
+            float x = Random.value * 2.0f - 1.0f;
+            float y = Random.value * 2.0f - 1.0f;
+
+            x *= shakeIntensity * smooth;
+            y *= shakeIntensity * smooth;
+
+            g.transform.position = new Vector3(x + originalPos.x, y + originalPos.y, originalPos.z);
+
+
+            yield return new WaitForEndOfFrame();
         }
-            
 
-        Destroy(st.gameObject, tempLength + 1);
-
+        g.transform.position = originalPos;
+        Destroy(g);
     }
 
 
@@ -120,3 +166,18 @@ public class TextSpawnerManager : MonoBehaviour {
 
 
 }
+
+    public void SpawnText(string text, Color color, Transform t, float scale)
+    {
+        Collider c = t.GetComponent<Collider>();
+        SpawnedText st;
+
+        if (c)
+            st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
+        else
+            st = Instantiate(textPrefab, (t.position + t.up * +offset.y), t.rotation);
+
+        st.transform.localScale *= scale;
+        st.SetText(text);
+        st.SetColor(color);
+        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
