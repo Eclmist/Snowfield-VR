@@ -172,16 +172,35 @@ public class Nagano : MonoBehaviour
         }
 
 
-        MessageManager.Instance.SendMail("Blacksmithing", "Congratulations! You have just completed the blacksmithing tutorial.", null);
-        
-            
+        MessageManager.Instance.SendMail("Blacksmithing", "Woah! I heard that you can make really cool weapons. I'll pay you a visit!\n\nFrom:\n???", null);
+        StartCoroutine(ReadMailRoutine());
+
+    }
+
+    private IEnumerator ReadMailRoutine()
+    {
+        while(!FakeItem.isForming)
+        {
+            ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Check your mail");
+            yield return null;
+        }
+
+        CompleteCurrentEvent();
     }
 
 
     #endregion
 
+    #region Selling Tutorial Sequence
+
+    public void SellingTutorialEvent()
+    {
+
+    }
 
 
+
+    #endregion
 
 
 
