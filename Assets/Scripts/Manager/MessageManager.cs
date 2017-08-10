@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class MessageManager : MonoBehaviour
 {
 
-
     [System.Serializable]
     public class Mail
     {
@@ -130,11 +129,11 @@ public class MessageManager : MonoBehaviour
 
         Mail temp = new Mail(title,message, clip);
         inbox.Add(temp);
-		
-		if(MailInterface.activeSelf)
-		{
-			CreateInteractableMail(temp);
-		}
+
+        if (interactableMesssage)
+        {
+            Instantiate(interactableMesssage, glp.transform, false).CreateMail(temp);
+        }
 
 
         if (newMailSound)
@@ -222,3 +221,10 @@ public class MessageManager : MonoBehaviour
 
 }
 
+
+        inbox.Add(temp);
+		
+		if(MailInterface.activeSelf)
+		{
+			CreateInteractableMail(temp);
+		}

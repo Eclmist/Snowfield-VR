@@ -58,38 +58,40 @@ public abstract class ActorFSM : MonoBehaviour
     }
     public virtual void ChangeState(FSMState state)
     {
-        isHandlingAction = false;
-        StopAllCoroutines();
-        pathFound = false;
-        currentState = state;
-        rigidBody.isKinematic = false;
-        animator.speed = 1;
-        animator.SetFloat("Speed", 0);
-        animator.SetBool("Attacking", false);
-
-        if (state != FSMState.EVENTHANDLING)
+        if (state != currentState)
         {
-            foreach (NodeEvent e in handledEvents)
+            isHandlingAction = false;
+            StopAllCoroutines();
+            pathFound = false;
+            currentState = state;
+            animator.speed = 1;
+            animator.SetFloat("Speed", 0);
+            animator.SetBool("Attacking", false);
+
+            if (state != FSMState.EVENTHANDLING)
             {
-                e.CurrentNode.Occupied = false;
+                foreach (NodeEvent e in handledEvents)
+                {
+                    e.CurrentNode.Occupied = false;
+                }
+                handledEvents.Clear();
             }
-            handledEvents.Clear();
+
+            switch (state)
+            {
+                case FSMState.DEATH:
+                    animator.SetBool("Death", true);
+                    return;
+                case FSMState.PETROL:
+                    petrolWaitThreshold = 5;
+                    animator.SetFloat("Speed", movementSpeed);
+                    SetNodeOffset();
+                    return;
+
+                default:
+                    return;
+            }
         }
-
-        switch (state)
-        {
-            case FSMState.DEATH:
-                animator.SetBool("Death", true);
-                return;
-            case FSMState.PETROL:
-                animator.SetFloat("Speed", movementSpeed);
-                SetNodeOffset();
-                return;
-
-            default:
-                return;
-        }
-
     }
     public virtual void NewSpawn()
     {
@@ -153,6 +155,7 @@ public abstract class ActorFSM : MonoBehaviour
     protected virtual void Update()
     {
         actualVelocity = Vector3.zero;
+
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
         {
             UpdateFSMState();
@@ -194,24 +197,30 @@ public abstract class ActorFSM : MonoBehaviour
 
         if (currentState != FSMState.COMBAT)
         {
-            Collider[] cols = Physics.OverlapSphere(eye.position,
-                        CurrentAI.Collider.bounds.extents.x + minimumDistToAvoid,
-                        aggroLayer);
-            foreach (Collider col in cols)
+            if (CheckForTargets())
             {
-                IDamagable currentTarget = col.GetComponent<IDamagable>();
-                if (currentTarget != null)
-                {
-
-                    ChangeState(FSMState.COMBAT);
-                    target = currentTarget;
-                    break;
-                }
+                ChangeState(FSMState.COMBAT);
             }
         }
 
     }
 
+    protected virtual bool CheckForTargets()
+    {
+        Collider[] cols = Physics.OverlapSphere(eye.position,
+                        CurrentAI.Collider.bounds.extents.x + minimumDistToAvoid,
+                        aggroLayer);
+        foreach (Collider col in cols)
+        {
+            IDamagable currentTarget = col.GetComponent<IDamagable>();
+            if (currentTarget != null && currentTarget.CanBeAttacked)
+            {
+                target = currentTarget;
+                return true;
+            }
+        }
+        return false;
+    }
     public virtual void SetStun(int i)
     {
 
@@ -247,6 +256,7 @@ public abstract class ActorFSM : MonoBehaviour
     //}
 
     protected abstract void UpdateIdleState();
+
 
 
     protected virtual void UpdateCombatState()
@@ -285,29 +295,21 @@ public abstract class ActorFSM : MonoBehaviour
                     {
                         LookAtPlayer(target.transform.position);
                         actualVelocity = transform.forward * animator.speed * movementSpeed;
-                        return;
                     }
                 }
                 else
                 {
                     animator.SetFloat("Speed", 0);
                     HandleCombatAction();
+
                 }
-
-
-
-            }
-            else
-            {
-                ChangeState(FSMState.IDLE);
                 return;
             }
+
         }
-        else
-        {
+        if (!CheckForTargets())
             ChangeState(FSMState.IDLE);
-            return;
-        }
+
 
     }
 
@@ -338,11 +340,12 @@ public abstract class ActorFSM : MonoBehaviour
         }
     }
 
+    protected float petrolWaitThreshold = 5f;
+
     protected virtual void UpdatePetrolState()
     {
         if (path.Count == 0)
         {
-
             ChangeState(nextState);
         }
         else
@@ -353,11 +356,18 @@ public abstract class ActorFSM : MonoBehaviour
             if (path.Count == 1 && path[0].Occupied)
             {
                 animator.SetFloat("Speed", 0);
+                petrolWaitThreshold -= Time.deltaTime;
+                if (petrolWaitThreshold <= 0f)
+                    ChangeState(nextState);
+
+
             }
             else
             {
+                petrolWaitThreshold = 5;
+
                 float minDist = path.Count > 1 ? 1f : .5f;
-                
+
                 animator.SetFloat("Speed", movementSpeed);
                 if (CanMove())
                 {
@@ -387,9 +397,9 @@ public abstract class ActorFSM : MonoBehaviour
 
     protected virtual bool CanMove()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") ||
+        return (animator.GetCurrentAnimatorStateInfo(0).IsName("Petrol") ||
             animator.GetAnimatorTransitionInfo(0).IsName("Idle -> Petrol")
-            || animator.GetBool("Stun");
+            || animator.GetBool("Stun")) && currentState != FSMState.DEATH;
     }
     public void SetNode(Node n)
     {
@@ -442,14 +452,13 @@ public abstract class ActorFSM : MonoBehaviour
         if (target != null)
         {
             Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
-
             if (Mathf.Abs(angle) < 15)
             {
                 CurrentAI.Attack(currentUseWeapon, target);
             }
             else if (target is Actor)
             {
-                CurrentAI.Attack(0, target);
+                CurrentAI.DealDamage(0, target, JobType.COMBAT);
             }
 
         }
@@ -495,11 +504,13 @@ public abstract class ActorFSM : MonoBehaviour
             float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
+
             return transform.right * (5 - distanceExp);
         }
 
         else
         {
+
             Vector3 dir = (endPoint - transform.position).normalized;
             dir.y = rigidBody.velocity.y;
             return dir;
@@ -508,7 +519,7 @@ public abstract class ActorFSM : MonoBehaviour
 
     public virtual void DamageTaken(Actor attacker)
     {
-        if (!(target is Actor))
+        if (!(target is Actor) && currentState != FSMState.DEATH)
         {
             ChangeState(FSMState.COMBAT);
             target = attacker;
@@ -569,5 +580,7 @@ public abstract class ActorFSM : MonoBehaviour
         isHandlingAction = false;
 
     }
+
+
 
 }

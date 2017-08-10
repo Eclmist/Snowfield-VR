@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
             gameClock = new GameClock(secondsPerDay, startTime);
             //MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\nXiaotian", null);
         }
-        
+
     }
 
 
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            
+
         }
         else
         {
@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        
+
     }
 
     private void GameHandle()
@@ -114,7 +114,8 @@ public class GameManager : MonoBehaviour
         {
             if (gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
             {
-                AIManager.Instance.SpawnMerchant();
+                if (!WaveManager.Instance.HasMonster)
+                    AIManager.Instance.SpawnMerchant();
                 currentState = GameState.DAYMODE;
 
 				if(currentTax != 0)
@@ -151,7 +152,7 @@ public class GameManager : MonoBehaviour
         Player.Instance.AddGold(value);
         if (Player.Instance.Gold < 0)
         {
-            //lose
+            Player.Instance.Die();
         }
     }
 

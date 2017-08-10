@@ -77,7 +77,6 @@ public class Player : Actor
             data.Gold = value;
         }
     }
-
     
     public override void Notify(AI ai)
     {//Unimplemented .. test code
@@ -127,6 +126,19 @@ public class Player : Actor
         }
     }
 
+    public virtual void CastSpell(float value, IDamagable target)
+    {
+        if (target != null && target.CanBeAttacked)
+        {
+            float randomVal = UnityEngine.Random.Range(0.8f, 1.2f);
+            DealDamage(value * randomVal, target, JobType.MAGIC);
+        }
+    }
+    public override void Die()
+    {
+        //Lose here
+    }
+
     protected void OnDisable()
     {
         //SerializeManager.Save("PlayerData",data);
@@ -139,6 +151,17 @@ public class Player : Actor
         Gold += value;
     }
 
+    public int EXPBottles
+    {
+        get
+        {
+            return data.EXPBottles;
+        }
+        set
+        {
+            data.EXPBottles = value;
+        }
+    }
 
     //void OnDrawGizmos()
     //{

@@ -6977,7 +6977,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!82 &82488160005304302
 AudioSource:
   m_ObjectHideFlags: 1
@@ -7108,6 +7108,7 @@ MonoBehaviour:
   rightHand: {fileID: 0}
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
+  - {fileID: 114076423136048150, guid: 7458ca3f24ef4cc4e8324639381c1dd9, type: 2}
   data:
     jobList:
     - currentJobType: 2
@@ -7233,14 +7234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 100
-    statsType: 0
-  - value: 2
-    statsType: 1
-  - value: 15
-    statsType: 2
-  allStats: []
+  baseHealth: 0
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114213524245367126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7667,12 +7666,12 @@ MonoBehaviour:
   movementSpeed: 3
   aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
   minimumDistToAvoid: 1
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 4294926335
-  animUseSlot: 0
+  animUseSlot: 1
   attackTimer: 0
 --- !u!114 &114696859292605014
 MonoBehaviour:

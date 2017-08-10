@@ -95,14 +95,36 @@ public class AdventurerAIData : ActorData
 }
 
 [System.Serializable]
+public class MonsterData : ActorData
+{
+    [SerializeField]
+    protected int expPerLevel;
+
+    public int EXPGainedWhenKilled
+    {
+        get
+        {
+            return expPerLevel * GetJob(JobType.COMBAT).Level;
+        }
+    }
+
+    public MonsterData(ActorData data, string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
+    {
+        
+    }
+
+}
+
+[System.Serializable]
 public class PlayerData : ActorData
 { 
     [SerializeField]
-    protected int gold;
+    protected int gold, expBottles;
 
     public PlayerData(ActorData data, string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         gold = 0;
+        expBottles = 0;
     }
 
     public int Gold
@@ -115,6 +137,18 @@ public class PlayerData : ActorData
         set
         {
             gold = value;
+        }
+    }
+
+    public int EXPBottles
+    {
+        get
+        {
+            return expBottles;
+        }
+        set
+        {
+            expBottles = value;
         }
     }
 
