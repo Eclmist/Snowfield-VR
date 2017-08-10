@@ -116,7 +116,9 @@ public class GameManager : MonoBehaviour
             {
                 AIManager.Instance.SpawnMerchant();
                 currentState = GameState.DAYMODE;
-                MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
+
+				if(currentTax != 0)
+					MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
 
