@@ -483,7 +483,6 @@ public abstract class ActorFSM : MonoBehaviour
         if (Physics.Raycast(useVec, right45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            Debug.Log("hitleft");
             float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
@@ -493,7 +492,6 @@ public abstract class ActorFSM : MonoBehaviour
         else if (Physics.Raycast(useVec, left45, out Hit,
             minimumDistToAvoid, ~avoidanceIgnoreMask))
         {
-            Debug.Log("hitright");
             float distanceExp = Vector3.Distance(Hit.point, useVec) / minimumDistToAvoid;
             // 5 if near, 0 if far
             //distanceExp = 5 - distanceExp * 5;
