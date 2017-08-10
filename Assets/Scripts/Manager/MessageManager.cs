@@ -14,7 +14,7 @@ public class MessageManager : MonoBehaviour
     {
         [SerializeField]
         private string title;
-        [SerializeField]
+        [SerializeField][TextArea]
         private string message;
         [SerializeField]
         private AudioClip clip;
