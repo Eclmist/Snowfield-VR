@@ -14,7 +14,20 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     [SerializeField]
     protected Collider thisCollider;
 
+    [SerializeField]//unserialize this
+    protected bool inSanctuary = false;
 
+    public bool InSanctuary
+    {
+        get
+        {
+            return inSanctuary;
+        }
+        set
+        {
+            inSanctuary = value;
+        }
+    }
     protected StatsContainer statsContainer;
 
     protected virtual void Awake()
@@ -67,7 +80,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         get
         {
-            return gameObject.activeSelf && statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0;
+            return gameObject.activeSelf && statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0 && !inSanctuary;
         }
     }
 

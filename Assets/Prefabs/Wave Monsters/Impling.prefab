@@ -1510,6 +1510,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   data:
     jobList:
     - currentJobType: 2
@@ -1539,7 +1541,7 @@ MonoBehaviour:
   movementSpeed: 4
   aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 40960
   minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2

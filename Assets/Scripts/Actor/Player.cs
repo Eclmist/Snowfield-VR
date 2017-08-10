@@ -19,9 +19,6 @@ public class Player : Actor
     [SerializeField]
     protected PlayerData data;
 
-    
-    [SerializeField]
-    protected bool inCombatZone = true;
     protected float currentGroundHeight = 1;
 
     public float CurrentGroundHeight
@@ -31,18 +28,6 @@ public class Player : Actor
         }
         set {
             currentGroundHeight = value;
-        }
-    }
-
-    public bool InCombatZone
-    {
-        get
-        {
-            return inCombatZone;
-        }
-        set
-        {
-            inCombatZone = value;
         }
     }
 
@@ -56,13 +41,6 @@ public class Player : Actor
         set
         {
             data = (PlayerData)value;
-        }
-    }
-    public override bool CanBeAttacked
-    {
-        get
-        {
-            return base.CanBeAttacked && inCombatZone;
         }
     }
 
@@ -101,7 +79,6 @@ public class Player : Actor
         {
             Instance = this;
             PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
-			thisCollider = vivePosition.GetComponentInChildren<Collider>();
 			Debug.Log(thisCollider);
             if (_data != null)
             {
