@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
+	public static bool nightApproaching= false;
+	public static bool firstGame = false;
 
     #region ClockRegion
     [SerializeField]
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
         else
         {
             gameClock = new GameClock(secondsPerDay, startTime);
-            //MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\nXiaotian", null);
+			firstGame = true;
         }
 
     }
@@ -129,8 +131,7 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.NIGHTMODE;
         WaveManager.Instance.SpawnWave(gameClock.Day);
-        //if (gameClock.Day == 1)
-           // MessageManager.Instance.SendMail("Defend The Town","All of our guards got banned from hacking and we are really short-handed right now. If those monsters get to the heart of the town, somebody's gotta pay for damages. I'm just saying...\n\nFrom:\nMayor",null);
+		nightApproaching = true;
 
     }
 

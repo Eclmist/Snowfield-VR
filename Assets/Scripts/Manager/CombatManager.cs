@@ -47,7 +47,7 @@ public class CombatManager : MonoBehaviour
 
         
         if(isCrit)
-            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.magenta, target, 6,true);
+            TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, target, 6,true);
         else
             TextSpawnerManager.Instance.SpawnText(Mathf.Round(damage).ToString(), Color.white, target, 2);
 

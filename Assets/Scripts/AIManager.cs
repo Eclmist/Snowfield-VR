@@ -159,11 +159,16 @@ public class AIManager : MonoBehaviour
 	{
 		Debug.Log(nameParts.Length);
 		string tempName = "UnityChan";
+		bool hasNumber = false;
 
-		if (nameParts.Length > 0)
+		if (Random.Range(0, 5) == 0)
+			hasNumber = true;
+
 			tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
-				+ nameParts[Random.Range(0, nameParts.Length)]
-				+ ((int)(Random.Range(1,99)));
+				+ nameParts[Random.Range(0, nameParts.Length)];
+
+		if (hasNumber)
+			tempName += ((int)(Random.Range(1, 99)));
 
 		return tempName;
 
