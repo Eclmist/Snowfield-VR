@@ -269,8 +269,7 @@ public abstract class ActorFSM : MonoBehaviour
 
 			float tempAttackRange = attackRange;
 
-			if (target is Player)
-				tempAttackRange += 1;
+		
 			Vector3 useVector = transform.position;
 			useVector.y = eye.position.y;
 			Vector3 dir = (target.transform.position - useVector).normalized;

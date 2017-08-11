@@ -110,4 +110,9 @@ public class VR_Button : VR_Interactable_UI
 	{
 		events.onTriggerRelease.AddListener(newAction);
 	}
+
+	public void OnDisable()
+	{
+		currentInteractingController = null;
+	}
 }

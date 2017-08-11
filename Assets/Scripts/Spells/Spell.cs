@@ -3,81 +3,100 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Spell : VR_Interactable
+public abstract class Spell : MonoBehaviour
 {
+    //[SerializeField]
+    //protected GameObject spellPrefab;
+    //[SerializeField]
+    //protected GameObject indicator;
+
+    //protected GameObject spellGO;
+
+    //public GameObject SpellPrefab
+    //{
+    //    get { return this.spellPrefab; }
+    //}
+
+    //public GameObject Indicator
+    //{
+    //    get { return this.indicator; }
+    //}
+
+
+    //public override void OnUpdateInteraction(VR_Controller_Custom controller)
+    //   {
+    //	base.OnUpdateInteraction(controller);
+    //       transform.position = LinkedController.transform.position;
+    //       transform.rotation = LinkedController.transform.rotation;
+    //   }
+
+    //protected override void OnTriggerPress()
+    //   {
+    //       base.OnTriggerPress();
+    //   }
+
+
+    //protected override void OnTriggerHold()
+    //   {
+    //	base.OnTriggerHold();
+    //}
+
+    //protected override void OnTriggerRelease()
+    //   {
+    //       base.OnTriggerRelease();
+    //   }
+
+    protected SpellHandler handler;
+
     [SerializeField]
-    protected GameObject spellPrefab;
-    [SerializeField]
-    protected GameObject indicator;
+    protected float manaCost;
 
-    protected GameObject spellGO;
-    //protected bool isCasted;
-
-    public GameObject SpellPrefab
+    public virtual void InitializeSpell(SpellHandler _handler)
     {
-        get { return this.spellPrefab; }
+        handler = _handler;
     }
 
-    public GameObject Indicator
+    public virtual void Update()
     {
-        get { return this.indicator; }
+        if (handler.LinkedController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerPress();
+        }
+        if (handler.LinkedController.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerHold();
+        }
+        if (handler.LinkedController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerRelease();
+        }
+        if (handler.LinkedController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+        {
+            OnGripPress();
+        }
     }
 
-    protected virtual void Cast()
+    public virtual void OnGripPress()
     {
-        //if (!isCasted)
-        //{
-        //    var em = indicator.GetComponent<ParticleSystem>().emission;
-        //    em.enabled = false;
-
-        //    spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
-
-        //    isCasted = true;
-        //}
-        //else
-        //{
-        //    var em = spellGO.GetComponent<ParticleSystem>().emission;
-            
-        //    var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
-
-        //    em.enabled = false;
-        //    emsmoke.enabled = false;
-
-        //    Destroy(spellGO, 3);
-        //    Destroy(indicator, 3);
-        //}
+        var emindicator = this.gameObject.GetComponent<ParticleSystem>().emission;
+        emindicator.enabled = false;
+        handler.DecastSpell();
+        Destroy(this.gameObject, 0.5f);
     }
 
-    protected virtual void Hold()
-    {
-        Debug.Log("Holding");
-    }
-
-    protected virtual void Release()
+    public virtual void OnTriggerPress()
     {
 
     }
 
-	public virtual void OnUpdateInteraction(VR_Controller_Custom controller)
+    public virtual void OnTriggerHold()
     {
-        transform.position = LinkedController.transform.position;
-        transform.rotation = LinkedController.transform.rotation;
+
     }
 
-	protected override void OnTriggerPress()
+    public virtual void OnTriggerRelease()
     {
-        Cast();
+
     }
 
-   
-	protected override void OnTriggerHold()
-    {
-       
-        Hold();
-    }
-
-	protected override void OnTriggerRelease()
-    {
-        Release();
-    }
 }

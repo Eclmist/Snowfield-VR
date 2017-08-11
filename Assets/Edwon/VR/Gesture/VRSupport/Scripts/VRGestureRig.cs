@@ -60,8 +60,8 @@ namespace Edwon.VR
         IInput inputRight = null;
 
         Transform perpTransform;
-        public CaptureHand leftCapture;
-        public CaptureHand rightCapture;
+        public static CaptureHand leftCapture;
+        public static CaptureHand rightCapture;
 
         //current NeuralNetwork
         //current Recognizer?
