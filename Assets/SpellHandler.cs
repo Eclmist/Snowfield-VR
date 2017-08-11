@@ -37,7 +37,13 @@ public class SpellHandler : VR_Interactable_Object
 
     }
 
-    public override void OnTriggerRelease(VR_Controller_Custom controller)
+	public override void OnUpdateInteraction(VR_Controller_Custom controller)
+	{
+		transform.position = controller.transform.position;
+		transform.rotation = controller.transform.rotation;
+	}
+
+	public override void OnTriggerRelease(VR_Controller_Custom controller)
     {
 
     }

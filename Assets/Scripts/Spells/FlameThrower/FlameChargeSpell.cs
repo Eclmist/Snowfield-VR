@@ -19,6 +19,8 @@ public class FlameChargeSpell : Spell
     public override void InitializeSpell(SpellHandler handler)
     {
         base.InitializeSpell(handler);
+		transform.position = handler.transform.position;
+		transform.rotation = handler.transform.rotation;
         transform.parent = handler.transform;
     }
 
@@ -34,6 +36,7 @@ public class FlameChargeSpell : Spell
 
     public override void OnTriggerHold()
     {
+		Debug.Log(handler.Castor.StatContainer);
         if (!casted && (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= 1))
         {
             flamethrower.SetActive(true);

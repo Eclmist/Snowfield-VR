@@ -73,7 +73,7 @@ public class SpellController : MonoBehaviour
             Spell spell = SpellManager.Instance.GetSpell(gestureName);
             if (spell)
             {
-                SpellHandler handler = Instantiate(spellHandlerPrefab);
+                SpellHandler handler = Instantiate(spellHandlerPrefab,transform.position,transform.rotation);
                 handler.CastSpell(spell, controllerRef, Player.Instance);
             }
         }
