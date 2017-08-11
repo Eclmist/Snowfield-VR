@@ -6,8 +6,6 @@ public class CharacterRigDefiner : MonoBehaviour {
 
     [SerializeField]
     private List<Renderer> hairMaterials = new List<Renderer>();
-    [SerializeField]
-    private List<Renderer> eyeMaterials = new List<Renderer>();
 
 
     public List<Material> HairMat
@@ -24,17 +22,5 @@ public class CharacterRigDefiner : MonoBehaviour {
         }
     }
 
-    public List<Material> EyeMaterial
-    {
-        get
-        {
-            List<Material> matList = new List<Material>();
-            foreach (Renderer ren in eyeMaterials)
-            {
-                matList.Add(ren.material);
-            }
-
-            return matList;
-        }
-    }
+   
 }

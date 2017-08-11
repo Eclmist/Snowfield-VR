@@ -28,7 +28,7 @@ public class Nagano : MonoBehaviour
 	private Valve.VR.InteractionSystem.Player player;
 	private static bool currentEventCompleted = false;
 	[SerializeField] private List<LevelEvent> events;
-	private LevelEvent currentEvent;
+	[Header("CURRENT RUNNING EVENT")][SerializeField]private LevelEvent currentEvent;
 
 	private float timer = 0;
 
@@ -104,7 +104,7 @@ public class Nagano : MonoBehaviour
 	{
 		if(GameManager.firstGame)
 		{
-			GameManager.firstGame = false;
+
 			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
 			CompleteCurrentEvent();
 		}
@@ -209,8 +209,8 @@ public class Nagano : MonoBehaviour
 
 
 		MessageManager.Instance.SendMail("Blacksmithing", "Woah! I heard that you can make really cool weapons. I'll pay you a visit!\n\nFrom:\nXiaotian", null);
-
-		HideAllControllerHints();
+        AIManager.Instance.InstantiateNewAdventurerAI(AIManager.Instance.CreateNewAdventurerAI(Color.white, "Xiaotian", 1.2f));
+        HideAllControllerHints();
 		StartCoroutine(ReadMailRoutine());
 
 	}
@@ -258,7 +258,8 @@ public class Nagano : MonoBehaviour
 
 		HideAllControllerHints();
 		MessageManager.Instance.SendMail("Thank You!","That's a fine looking sword! I shall recommend it to all my friends.\n\nFrom:\nXiaotian",null);
-		CompleteCurrentEvent();
+        AIManager.Instance.StartSpawningAllAdventurerAIs();
+        CompleteCurrentEvent();
 	}
 
 

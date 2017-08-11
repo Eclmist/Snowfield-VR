@@ -3290,7 +3290,7 @@ GameObject:
   - component: {fileID: 114973613043938206}
   - component: {fileID: 114063959534245970}
   - component: {fileID: 114499537450990500}
-  - component: {fileID: 114383679869693000}
+  - component: {fileID: 114164356123570462}
   m_Layer: 13
   m_Name: UnityChan White
   m_TagString: Untagged
@@ -3687,7 +3687,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1952351548838010}
   m_LocalRotation: {x: -0, y: 0.99710155, z: -0, w: 0.07608233}
-  m_LocalPosition: {x: 0.12621689, y: -0.071208, z: 7.62278}
+  m_LocalPosition: {x: 14.959053, y: -0.14799976, z: -6.715828}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4704412647268872}
@@ -7443,6 +7443,21 @@ MonoBehaviour:
   - {fileID: 114538520777781298}
   debug: 1
   threshold: 0.01
+--- !u!114 &114164356123570462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1952351548838010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22649165e9f32d4792356379e9f7242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hairMaterials:
+  - {fileID: 137419600800589530}
+  - {fileID: 137691145825839052}
+  - {fileID: 137380856876305216}
 --- !u!114 &114168595228409450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8046,24 +8061,6 @@ MonoBehaviour:
   - {fileID: 114826084185258692}
   debug: 1
   threshold: 0.01
---- !u!114 &114383679869693000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1952351548838010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53fc67c8ddf5b7341b90f4c1b3a2e485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hairMaterials:
-  - {fileID: 137419600800589530}
-  - {fileID: 137691145825839052}
-  - {fileID: 137380856876305216}
-  eyeMaterials:
-  - {fileID: 23876745551250332}
-  - {fileID: 23064449111004628}
 --- !u!114 &114389810368722082
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -39,7 +39,11 @@ public class AIManager : MonoBehaviour
     protected void Start()
     {
         GenerateBaseAIs();
-        StartSpawningAllAdventurerAIs();
+        if (!GameManager.firstGame)
+        {
+            Debug.Log("hit");
+            StartSpawningAllAdventurerAIs();
+        }
     }
 
     public void GenerateBaseAIs()
@@ -49,7 +53,7 @@ public class AIManager : MonoBehaviour
         {
             for (int i = 0; i < TownManager.Instance.CurrentTown.Population; i++)
             {
-                CreateNewAdventurerAI(randomColorGenerator(), randomColorGenerator(),GetRandomUniqueName(), Random.Range(1.1f,1.3f));
+                CreateNewAdventurerAI(randomColorGenerator(), GetRandomUniqueName(), Random.Range(1.1f, 1.3f));
             }
         }
         else
@@ -81,10 +85,6 @@ public class AIManager : MonoBehaviour
                 m.SetColor("_Color", data.CustomizeInfo.HairColor);
             }
 
-            foreach (Material m in def.EyeMaterial)
-            {
-                m.SetColor("_Color", data.CustomizeInfo.EyeColor);
-            }
 
             adventurerAI.transform.localScale = Vector3.one * data.CustomizeInfo.Scale;
 
@@ -99,12 +99,12 @@ public class AIManager : MonoBehaviour
         return adventurerAI;
     }
 
-    public AdventurerAIData CreateNewAdventurerAI(Color hairColor, Color eyeColor, string name = null, float scale = 1.3f)
+    public AdventurerAIData CreateNewAdventurerAI(Color hairColor, string name = null, float scale = 1.3f)
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
 
-        AdventurerAIData.CharacterInformation ci = new AdventurerAIData.CharacterInformation(scale, hairColor, eyeColor);
+        AdventurerAIData.CharacterInformation ci = new AdventurerAIData.CharacterInformation(scale, hairColor);
 
         AdventurerAIData newData = new AdventurerAIData(ci, newAI.Data, name, myPath);//Random name gen
         listOfAIData.Add(newData);
@@ -192,21 +192,21 @@ public class AIManager : MonoBehaviour
         }
     }
 
-	private string GetRandomUniqueName()
-	{
-		string tempName = "UnityChan";
-		bool hasNumber = false;
+    private string GetRandomUniqueName()
+    {
+        string tempName = "UnityChan";
+        bool hasNumber = false;
 
-		if (Random.Range(0, 5) == 0)
-			hasNumber = true;
+        if (Random.Range(0, 5) == 0)
+            hasNumber = true;
 
-			tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
-				+ nameParts[Random.Range(0, nameParts.Length)];
+        tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
+            + nameParts[Random.Range(0, nameParts.Length)];
 
-		if (hasNumber)
-			tempName += ((int)(Random.Range(1, 99)));
+        if (hasNumber)
+            tempName += ((int)(Random.Range(1, 99)));
 
-		return tempName;
+        return tempName;
 
     }
 

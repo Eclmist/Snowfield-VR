@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-	public static bool nightApproaching= false;
-	public static bool firstGame = false;
+    public static bool nightApproaching = false;
+    public static bool firstGame = false;
 
     #region ClockRegion
     [SerializeField]
@@ -62,18 +62,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    protected void Start()
-    {
-        GameClock checkClock = (GameClock)SerializeManager.Load("GameClock");
-        if (checkClock != null)
-            gameClock = checkClock;
-        else
-        {
-            gameClock = new GameClock(secondsPerDay, startTime);
-			firstGame = true;
-        }
-
-    }
 
 
     protected void Awake()
@@ -81,6 +69,16 @@ public class GameManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
+            GameClock checkClock = (GameClock)SerializeManager.Load("GameClock");
+            if (checkClock != null)
+            {
+                gameClock = checkClock;
+            }
+            else
+            {
+                gameClock = new GameClock(secondsPerDay, startTime);
+                firstGame = true;
+            }
 
         }
         else
@@ -90,7 +88,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 
     protected void Update()
     {
@@ -121,8 +119,8 @@ public class GameManager : MonoBehaviour
                     AIManager.Instance.InstantiateMerchant();
                 currentState = GameState.DAYMODE;
 
-				if(currentTax != 0)
-					MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
+                if (currentTax != 0)
+                    MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
 
@@ -132,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.NIGHTMODE;
         WaveManager.Instance.SpawnWave(gameClock.Day);
-		nightApproaching = true;
+        nightApproaching = true;
 
     }
 
