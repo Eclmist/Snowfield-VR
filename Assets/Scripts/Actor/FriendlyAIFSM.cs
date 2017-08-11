@@ -129,7 +129,7 @@ public class FriendlyAiFSM : ActorFSM
             {
                 if (target is Player)
                 {
-                    Player player = target as Player;
+					Player player = target as Player;
                     if (player.CheckConversingWith(currentFriendlyAI))
                     
                     if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
@@ -172,4 +172,9 @@ public class FriendlyAiFSM : ActorFSM
 
         isHandlingAction = false;
     }
+
+	private void OnAnimatorIK(int layerIndex)
+	{
+		animator.SetLookAtPosition(target.transform.position);
+	}
 }
