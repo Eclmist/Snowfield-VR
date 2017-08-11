@@ -22,7 +22,9 @@ GameObject:
   - component: {fileID: 114300993275269924}
   - component: {fileID: 114013843851933188}
   - component: {fileID: 114195913759609072}
-  m_Layer: 0
+  - component: {fileID: 114956225502095788}
+  - component: {fileID: 114934251465906456}
+  m_Layer: 15
   m_Name: InputModule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4488228610698646}
   - component: {fileID: 114338239202735322}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ControllerHoverHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4142006134233938}
   - component: {fileID: 114831753066719056}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: DebugUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +73,7 @@ GameObject:
   - component: {fileID: 4793945251312962}
   - component: {fileID: 135773222621127064}
   - component: {fileID: 54320130262691946}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: HeadCollider
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -86,7 +88,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4385562256540640}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: NoSteamVRFallbackObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4336811712739548}
   - component: {fileID: 114756270773781972}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: ControllerButtonHints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +119,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4017875325413130}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: SteamVRObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +139,7 @@ GameObject:
   - component: {fileID: 132187970798695402}
   - component: {fileID: 114199792014317140}
   - component: {fileID: 114837994423511424}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: _Stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +157,8 @@ GameObject:
   - component: {fileID: 114772166764073332}
   - component: {fileID: 54603124750173006}
   - component: {fileID: 114886217916729724}
-  m_Layer: 26
+  - component: {fileID: 114355935937915980}
+  m_Layer: 15
   m_Name: Hand2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,9 +175,13 @@ GameObject:
   - component: {fileID: 4880974264115696}
   - component: {fileID: 20973612531325144}
   - component: {fileID: 114036266192207270}
-  m_Layer: 0
+  - component: {fileID: 114594478827526852}
+  - component: {fileID: 114055317288887768}
+  - component: {fileID: 114258374562594620}
+  - component: {fileID: 114654980936453966}
+  m_Layer: 15
   m_Name: FallbackObjects
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,7 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4152144759706714}
   - component: {fileID: 135056088420710252}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: Attach_ControllerTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4189359258868640}
   - component: {fileID: 114214747599954678}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ControllerHoverHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +228,7 @@ GameObject:
   - component: {fileID: 4054367487715374}
   - component: {fileID: 33884730461756712}
   - component: {fileID: 23099183972016404}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +246,7 @@ GameObject:
   - component: {fileID: 23858141838208242}
   - component: {fileID: 33369637254854984}
   - component: {fileID: 114461986264730174}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: PlayVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +261,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4156828889267408}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: '[Status]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4931465561215174}
   - component: {fileID: 135811704058081568}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: Attach_ControllerTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +299,7 @@ GameObject:
   - component: {fileID: 114520262155675150}
   - component: {fileID: 114076833246344092}
   - component: {fileID: 114820345691343028}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: VRCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -309,7 +316,7 @@ GameObject:
   - component: {fileID: 4606287138758902}
   - component: {fileID: 114385486103434864}
   - component: {fileID: 54998628798321628}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: FallbackHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4429361974505800}
   - component: {fileID: 114831225246987510}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: '[SteamVR]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4661541147294070}
   - component: {fileID: 114146482954486746}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Player (MainScene)
   m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -359,7 +366,8 @@ GameObject:
   - component: {fileID: 114805396872487874}
   - component: {fileID: 54546645325097786}
   - component: {fileID: 114602947365878988}
-  m_Layer: 26
+  - component: {fileID: 114103861826219458}
+  m_Layer: 15
   m_Name: Hand1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4859005008079890}
   - component: {fileID: 114732884980781484}
-  m_Layer: 26
+  m_Layer: 15
   m_Name: ControllerButtonHints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4593349517749542}
   - component: {fileID: 114696515548027438}
-  m_Layer: 8
+  m_Layer: 15
   m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +415,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4310102642653208}
   - component: {fileID: 81703746951791790}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: FollowHead
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -425,7 +433,7 @@ GameObject:
   - component: {fileID: 136404771715578144}
   - component: {fileID: 114509097562739166}
   - component: {fileID: 54611908821393162}
-  m_Layer: 27
+  m_Layer: 15
   m_Name: BodyCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,7 +869,7 @@ Camera:
   m_GameObject: {fileID: 1504160406501886}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -882,8 +890,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 0
-  m_HDR: 0
-  m_AllowMSAA: 1
+  m_HDR: 1
+  m_AllowMSAA: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -1069,7 +1077,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1047965317737502}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9e05292e0d62b542ac5bba92674a86d, type: 3}
   m_Name: 
@@ -1088,6 +1096,18 @@ MonoBehaviour:
   speed: 4
   shiftSpeed: 16
   showInstructions: 1
+--- !u!114 &114055317288887768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1504160406501886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: dbf4a95682ba0184386a7f1c75bd94d7, type: 2}
 --- !u!114 &114076833246344092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1105,6 +1125,19 @@ MonoBehaviour:
   downsample: 1
   blurIteration: 4
   offset: {x: 0.002, y: 0.002}
+--- !u!114 &114103861826219458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820063239611696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb148b10d046f141adc872e9be75149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 0}
+  offset: {x: -0.07, y: -0.05, z: 0.08}
 --- !u!114 &114146482954486746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1146,7 +1179,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1047965317737502}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -1185,6 +1218,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highLightMaterial: {fileID: 2100000, guid: 7b939e5e799d98a469f594828ebab52e, type: 2}
   fireHapticsOnHightlight: 1
+--- !u!114 &114258374562594620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1504160406501886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd294edf9b3c759449abde690d31e2c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: e69621cd053fe4148bc009f9a99b079c, type: 3}
+  replacement: {fileID: 4800000, guid: a8c68191404e72b419fdfa66f9167664, type: 3}
+  blur: {fileID: 4800000, guid: 9c1ddeca4c3e2554dba2b43f9789a25c, type: 3}
+  downsample: 1
+  blurIteration: 4
+  offset: {x: 0.002, y: 0.002}
 --- !u!114 &114300993275269924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1212,6 +1262,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highLightMaterial: {fileID: 2100000, guid: 7b939e5e799d98a469f594828ebab52e, type: 2}
   fireHapticsOnHightlight: 1
+--- !u!114 &114355935937915980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417805208827910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb148b10d046f141adc872e9be75149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 0}
+  offset: {x: -0.07, y: -0.05, z: 0.08}
 --- !u!114 &114385486103434864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1287,6 +1350,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: dbf4a95682ba0184386a7f1c75bd94d7, type: 2}
+--- !u!114 &114594478827526852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1504160406501886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd294edf9b3c759449abde690d31e2c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: e69621cd053fe4148bc009f9a99b079c, type: 3}
+  replacement: {fileID: 4800000, guid: a8c68191404e72b419fdfa66f9167664, type: 3}
+  blur: {fileID: 4800000, guid: 9c1ddeca4c3e2554dba2b43f9789a25c, type: 3}
+  downsample: 1
+  blurIteration: 4
+  offset: {x: 0.002, y: 0.002}
 --- !u!114 &114602947365878988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1299,6 +1379,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handle: 0
+--- !u!114 &114654980936453966
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1504160406501886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: dbf4a95682ba0184386a7f1c75bd94d7, type: 2}
 --- !u!114 &114696515548027438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1472,6 +1564,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handle: 1
+--- !u!114 &114934251465906456
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1047965317737502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e569dc832500047bf4350b4dae9b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+  controlMethod: 0
+  submitButtonName: Fire1
+  gazeUseTimedClick: 0
+  gazeClickTimer: 2
+  gazeClickTimerDelay: 1
+  gazeTimedClickProgressImage: {fileID: 0}
+  worldSpaceMouseSensitivity: 1
+  usedHand: 1
+--- !u!114 &114956225502095788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1047965317737502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e569dc832500047bf4350b4dae9b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+  controlMethod: 0
+  submitButtonName: Fire1
+  gazeUseTimedClick: 0
+  gazeClickTimer: 2
+  gazeClickTimerDelay: 1
+  gazeTimedClickProgressImage: {fileID: 0}
+  worldSpaceMouseSensitivity: 1
+  usedHand: 1
 --- !u!124 &124345582822565776
 Behaviour:
   m_ObjectHideFlags: 1
