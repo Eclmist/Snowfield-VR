@@ -28,7 +28,7 @@ public class FriendlyAiFSM : ActorFSM
     {
         float val = Random.value;
         Node shopPoint = targetShop.GetRandomPoint(transform.position);
-        if (val > .5 && shopPoint != null)
+        if ((val > .5 || targetShop.InteractionNode.Occupied) && shopPoint != null)
         {
 
             ChangePath(shopPoint);
@@ -117,7 +117,7 @@ public class FriendlyAiFSM : ActorFSM
 
         while (isHandlingAction)
         {
-            LookAtPlayer(actor.transform.position);
+
             Vector3 endPos = target.transform.position;
             endPos.y = transform.position.y;
             Vector3 dir = (target.transform.position - transform.position).normalized;
@@ -127,37 +127,30 @@ public class FriendlyAiFSM : ActorFSM
 
             if (angle < 30)
             {
-                if (target is Player)
+
+                Player player = target as Player;
+
+
+                if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
                 {
-                    Player player = target as Player;
                     if (player.CheckConversingWith(currentFriendlyAI))
-                    
-                    if (currentFriendlyAI.IsInteractionAvailable() || currentFriendlyAI.Interacting)
                     {
-                        if (player.CheckConversingWith(currentFriendlyAI))
-                        {
-                            waitTimer = 5;
+                        waitTimer = 5;
 
-                            if (!currentFriendlyAI.Interacting)
-                            {
-                                currentFriendlyAI.StartInteraction();
-                            }
-                        }
-                        else
+                        if (!currentFriendlyAI.Interacting)
                         {
-                            waitTimer -= Time.deltaTime;
-                            if (waitTimer <= 0)
-                            {
-                                currentFriendlyAI.StopAllInteractions();
-                                break;
-                            }
-
+                            currentFriendlyAI.StartInteraction();
                         }
                     }
                     else
                     {
-                        currentFriendlyAI.StopAllInteractions();
-                        break;
+                        waitTimer -= Time.deltaTime;
+                        if (waitTimer <= 0)
+                        {
+                            currentFriendlyAI.StopAllInteractions();
+                            break;
+                        }
+
                     }
                 }
                 else
@@ -166,6 +159,10 @@ public class FriendlyAiFSM : ActorFSM
                     break;
                 }
             }
+            else
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir, Vector3.up), Time.deltaTime * 5);
+
+
             yield return new WaitForEndOfFrame();
 
         }

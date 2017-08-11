@@ -1011,14 +1011,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 50
-    statsType: 0
-  - value: 50
-    statsType: 1
-  - value: 5
-    statsType: 2
-  allStats: []
+  baseHealth: 50
+  baseHealthRegen: 1
+  baseAttack: 10
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114339431620472744
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1042,6 +1040,7 @@ MonoBehaviour:
         statsType: 1
       - value: 10
         statsType: 2
+    expPerLevel: 100000
 --- !u!114 &114709402411241018
 MonoBehaviour:
   m_ObjectHideFlags: 1

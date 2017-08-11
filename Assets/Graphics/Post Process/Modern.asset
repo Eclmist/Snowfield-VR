@@ -35,16 +35,16 @@ MonoBehaviour:
       fxaaSettings:
         preset: 4
       taaSettings:
-        jitterSpread: 1
+        jitterSpread: 0.1
         sharpen: 0
         stationaryBlending: 0.99
-        motionBlending: 0.746
+        motionBlending: 0.687
   ambientOcclusion:
     m_Enabled: 0
     m_Settings:
       intensity: 1.3
       radius: 0.31
-      sampleCount: 10
+      sampleCount: 16
       downsampling: 1
       forceForwardCompatibility: 0
       ambientOnly: 0

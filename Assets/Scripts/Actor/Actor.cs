@@ -11,14 +11,29 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
     public abstract bool CheckConversingWith(Actor target);
 
+    [SerializeField]
     protected Collider thisCollider;
 
+    [SerializeField]//unserialize this
+    protected bool inSanctuary = false;
 
-    protected StatsContainer variable;
+    public bool InSanctuary
+    {
+        get
+        {
+            return inSanctuary;
+        }
+        set
+        {
+            inSanctuary = value;
+        }
+    }
+    protected StatsContainer statsContainer;
 
     protected virtual void Awake()
     {
-        variable = GetComponent<StatsContainer>();
+        statsContainer = GetComponent<StatsContainer>();
+        if(!thisCollider)
         thisCollider = GetComponent<Collider>();
     }
 
@@ -33,7 +48,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         get
         {
-            return variable;
+            return statsContainer;
         }
     }
 
@@ -65,30 +80,32 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         get
         {
-            return gameObject.activeSelf && variable.GetStat(Stats.StatsType.HEALTH).Current > 0;
+            return gameObject.activeSelf && statsContainer.GetStat(Stats.StatsType.HEALTH).Current > 0 && !inSanctuary;
         }
     }
 
-    public virtual void TakeDamage(float value, Actor attacker)
+    public virtual void TakeDamage(float value, Actor attacker,JobType type)
     {
-        variable.ReduceHealth(value);
+        statsContainer.ReduceHealth(value);
+        if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
+            Die();
     }
 
     public virtual void Attack(IDamage item, IDamagable target, float scale = 1)
     {
-        float damage = item != null ? item.Damage : 0;
-        if (target != null)
+        if (target != null && target.CanBeAttacked)
         {
-            damage = damage + variable.GetStat(Stats.StatsType.ATTACK).Current * scale;
+            float damage = item != null ? item.Damage : 0;
+
+            damage = damage + statsContainer.GetStat(Stats.StatsType.ATTACK).Current * scale;
             float randomVal = Random.Range(0.8f, 1.2f);
-            target.TakeDamage(damage * randomVal, this);
+            DealDamage(damage * randomVal, target,JobType.COMBAT);
         }
     }
 
-    public virtual void Attack(float damage, IDamagable target)
+    public virtual void DealDamage(float damage, IDamagable target, JobType damageType)
     {
-        if (target.CanBeAttacked)
-            target.TakeDamage(damage, this);
+        target.TakeDamage(damage, this,damageType);
     }
 
 
@@ -142,11 +159,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     }
 
 
-    public virtual void Die()
-    {
-        variable.ReduceHealth(variable.GetStat(Stats.StatsType.HEALTH).Current);
-
-    }
+    public abstract void Die();
 
     public virtual void GainExperience(JobType jobType, int value)
     {
@@ -157,7 +170,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
                 int level = currentJob.Level;
                 currentJob.GainExperience(value);
                 if (currentJob.Level != level)
-                    variable.UpdateVariables();
+                    statsContainer.UpdateVariables();
                 break;
             }
         }
