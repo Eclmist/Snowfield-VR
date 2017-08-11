@@ -118,6 +118,32 @@ public class WeaponTierManager : MonoBehaviour {
         return null;
     }
 
+    public ItemData GetRandomWeaponInTypeClass(PhysicalMaterial.Type type)
+    {
+        WeaponClass tempClass = null;
+
+        foreach(WeaponClass wc in weaponClassList)
+        {
+            if (wc.Type == type)
+            {
+                tempClass = wc;
+                break;
+            }      
+        }
+
+
+        if (tempClass != null)
+        {
+            if(tempClass.TierList.Count > 0)
+            {
+                return tempClass.TierList[Random.Range(0, tempClass.TierList.Count)];
+            }  
+        }
+
+        return null;
+
+    }
+
     public float GetSuccessRateForTier(PhysicalMaterial.Type type)
     {
     	foreach(WeaponClass wc in weaponClassList)

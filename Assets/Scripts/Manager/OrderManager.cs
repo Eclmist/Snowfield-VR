@@ -5,45 +5,18 @@ using UnityEngine;
 public class OrderManager : MonoBehaviour
 
 {
-    public static OrderManager Instance;
-
-    public int baseGoldMultiplier;
-
-    public int baseDurationMultiplier;
-
+    public static OrderManager Instance;  
     [SerializeField]
-    private List<OrderTemplate> templateList;
+    private int baseDuration;
+    [SerializeField][Range(1,10)]
+    private int levelToDurationMultiplier;
 
-    private List<OrderTemplate> availableTemplatesForCurrentLevel;
-
-    public List<OrderTemplate> TemplateList
-
-    {
-        get { return this.templateList; }
-
-        set { this.templateList = value; }
-    }
 
     // Use this for initialization
 
     private void Awake()
-
     {
-        //LoadTemplates();
-
-        if (!Instance)
-
-        {
-            Instance = this;
-
-            availableTemplatesForCurrentLevel = new List<OrderTemplate>();
-
-            //PopulateLists();
-
-            if (templateList.Count < 1)
-
-                Debug.Log("Template list is empty");
-        }
+        Instance = this;
     }
 
     private void Start()
@@ -51,8 +24,12 @@ public class OrderManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+       
+    }
 
-    
+
 
     public void CompletedOrder(bool success, int reward)
 
@@ -70,7 +47,6 @@ public class OrderManager : MonoBehaviour
 
 
     public void StartRequest(AdventurerAI ai, Order order)
-
     {
 
         if (order != null)
@@ -86,10 +62,6 @@ public class OrderManager : MonoBehaviour
 		Player currentPlayer = Player.Instance;
 
         Order newOrder = null;
-
-        // Get a random template
-
-        OrderTemplate currentTemplate = templateList[Random.Range(0, templateList.Count)];
 
         // Generate order based on job type
 
@@ -122,26 +94,29 @@ public class OrderManager : MonoBehaviour
 						break;
 
 					case JobType.BLACKSMITH:
-	
-						ItemData refData = ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID);
-						PhysicalMaterial currentMaterial = null;
-						CraftedItem tempCraftedItem = refData.ObjectReference.GetComponent<CraftedItem>();
 
-						if (tempCraftedItem)
-							currentMaterial = BlacksmithManager.Instance.GetPhysicalMaterialInfo(tempCraftedItem.GetPhysicalMaterial());
+                        Ingot tempIngot = ItemManager.Instance.GetRandomUnlockedIngot();
+                        Debug.Log(tempIngot.name);
+                        ItemData refData = WeaponTierManager.Instance.GetRandomWeaponInTypeClass(tempIngot.PhysicalMaterial.type);
+                        Debug.Log("Current order is: " + refData.ObjectReference.name);
+                        PhysicalMaterial currentMaterial = null;
+                        CraftedItem tempCraftedItem = refData.ObjectReference.GetComponent<CraftedItem>();
 
-						newOrder = new Order(ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).ObjectReference.name
+                        if (tempCraftedItem)
+                            currentMaterial = BlacksmithManager.Instance.GetPhysicalMaterialInfo(tempCraftedItem.GetPhysicalMaterial());
 
-					, ItemManager.Instance.GetItemData(currentTemplate.ReferenceItemID).Icon
+                        newOrder = new Order(refData.ObjectReference.name
 
-					, job.Level * baseDurationMultiplier * currentTemplate.Duration
+                    , refData.Icon
 
-					, job.Level * currentTemplate.BaseGold * currentMaterial.CostMultiplier * baseGoldMultiplier,
+                    , ((job.Level * levelToDurationMultiplier) + baseDuration)
 
-					currentTemplate.ReferenceItemID,
-					currentMaterial.type);
+                    , job.Level  * currentMaterial.CostMultiplier ,
 
-						break;
+                    refData.ItemID,
+                    currentMaterial.type);
+
+                        break;
 
 					case JobType.COMBAT:
 
@@ -150,30 +125,11 @@ public class OrderManager : MonoBehaviour
 
 				}
 
-
-				
             }
         }
 
 		return newOrder;
 	}
 
-
-    // Filter templateList by JobTpye
-
-    private List<OrderTemplate> GetTemplatesForJobType(JobType jobType)
-
-    {
-        List<OrderTemplate> requestedList = new List<OrderTemplate>();
-
-        foreach (OrderTemplate ot in availableTemplatesForCurrentLevel)
-
-        {
-            if (ot.JobType == jobType)
-
-                requestedList.Add(ot);
-        }
-
-        return requestedList;
-    }
+   
 }

@@ -15,6 +15,7 @@ public class ItemManager : MonoBehaviour
 
     private Dictionary<int, GameObject> itemDictionary = new Dictionary<int, GameObject>();
     private Dictionary<int, ItemData> itemDataDictionary = new Dictionary<int, ItemData>();
+    public List<ItemData> ingotItemDataList = new List<ItemData>();
 
 
     public List<ItemData> ItemDataList
@@ -32,6 +33,11 @@ public class ItemManager : MonoBehaviour
         get { return this.itemDataDictionary; }
     }
 
+    public List<ItemData> IngotItemDataList
+    {
+        get { return this.ingotItemDataList; }
+    }
+
     public int NumberOfItems
     {
         get { return this.itemDictionary.Count; }
@@ -44,6 +50,7 @@ public class ItemManager : MonoBehaviour
 
     void Start()
     {
+        // Populate reference dictionaries and lists
         foreach (ItemData data in itemDataList)
         {
             itemDictionary.Add(data.ItemID, data.ObjectReference);
@@ -53,7 +60,14 @@ public class ItemManager : MonoBehaviour
             if (gs != null)
             {
                 gs.ItemID = data.ItemID;
+
+                if (gs is Ingot)
+                {
+                    ingotItemDataList.Add(data);
+                }
+
             }
+
         }
     }
 
@@ -70,6 +84,25 @@ public class ItemManager : MonoBehaviour
         else
             return null;
 
+    }
+
+    public Ingot GetRandomUnlockedIngot()
+    {
+        List<ItemData> tempData = new List<ItemData>();
+        tempData.AddRange(ingotItemDataList);
+        tempData.RemoveAll(ItemData => ItemData.LevelUnlocked > Player.Instance.Data.GetJob(ItemData.JobType).Level);
+
+        if (ingotItemDataList.Count > 0)
+        {
+            int randomVar = Random.Range(0, tempData.Count);
+            return tempData[randomVar].ObjectReference.GetComponent<Ingot>();
+        }
+        else
+        {
+            return null;
+        }
+
+        
     }
 
     public ItemData GetRandomItemByLevel(int level)
