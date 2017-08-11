@@ -46,6 +46,6 @@ public abstract class Spell : MonoBehaviour
     //       base.OnTriggerRelease();
     //   }
 
-    public abstract void InitializeSpell(Actor castor, Transform referenceCastTransform);
+    public abstract void InitializeSpell(Actor castor, VR_Controller_Custom referenceCastTransform);
     
 }

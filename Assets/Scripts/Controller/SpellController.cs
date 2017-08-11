@@ -4,54 +4,79 @@ using UnityEngine;
 using Edwon.VR.Gesture;
 using Edwon.VR;
 
-public class SpellController : VR_Interactable_Object
+public class SpellController : MonoBehaviour
 {
+	protected VR_Controller_Custom controllerRef;
 
-    protected VRGestureRig rig;
+	protected CaptureHand handRef;
 
-    protected Transform leftHand;
-    protected Transform rightHand;
+	[SerializeField]
+	protected SpellHandler spellHandlerPrefab;
+	protected float timer = 0f;
+	protected void Start()
+	{
+		//if (rig == null)
+		//{
+		//	Debug.Log("there is no VRGestureRig in the scene, please add one");
+		//}
 
-    protected Spell currentSpell;
+		controllerRef = GetComponent<VR_Controller_Custom>();
+		if (!controllerRef)
+		{
+			Debug.Log("No Controller");
+			Destroy(this);
+		}
+	}
 
-    protected override void Start()
-    {
-        rig = FindObjectOfType<VRGestureRig>();
-        if (rig == null)
-        {
-            Debug.Log("there is no VRGestureRig in the scene, please add one");
-        }
+	protected void Update()
+	{
+		if (handRef == null)
+		{
+			if (controllerRef.Handle == VR_Controller_Custom.Controller_Handle.LEFT)
+				handRef = VRGestureRig.leftCapture;
+			else if (controllerRef.Handle == VR_Controller_Custom.Controller_Handle.RIGHT)
+				handRef = VRGestureRig.rightCapture;
+		}
+		else if(controllerRef.Device != null)
+		{
+			if (controllerRef.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger) && controllerRef.InteractedObject == null)
+				timer += Time.deltaTime;
+			else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+				timer = 0;
 
-        rightHand = rig.handRight;
-        leftHand = rig.handLeft;
+			if (timer > 1 && handRef.HandState != CaptureHand.State.ACTIVATED)
+			{
+				handRef.HandState = CaptureHand.State.ACTIVATED;
+			}
+			else if(timer < 1 && handRef.HandState != CaptureHand.State.DEACTIVATED)
+			{
+				handRef.HandState = CaptureHand.State.DEACTIVATED;
+			}
+		}
 
-        currentInteractingController = GetComponent<VR_Controller_Custom>();
-        if (!currentInteractingController)
-        {
-            Debug.Log("No Controller");
-            Destroy(this);
-        }
-    }
+	}
+	void OnEnable()
+	{
+		GestureRecognizer.GestureDetectedEvent += OnGestureDetected;
+	}
 
-    void OnEnable()
-    {
-        GestureRecognizer.GestureDetectedEvent += OnGestureDetected;
-    }
+	void OnDisable()
+	{
+		GestureRecognizer.GestureDetectedEvent -= OnGestureDetected;
+	}
 
-    void OnDisable()
-    {
-        GestureRecognizer.GestureDetectedEvent -= OnGestureDetected;
-    }
+	void OnGestureDetected(string gestureName, double confidence, Handedness hand, bool isDouble = false)
+	{
 
-    void OnGestureDetected(string gestureName, double confidence, Handedness hand, bool isDouble = false)
-    {
+		if ((hand == Handedness.Left && controllerRef.Handle == VR_Controller_Custom.Controller_Handle.LEFT) || (hand == Handedness.Right && controllerRef.Handle == VR_Controller_Custom.Controller_Handle.RIGHT))
+		{
+			//Spell spell = SpellManager.Instance.GetSpell(gestureName);
+			//if (spell)
+			//{
+			//	SpellHandler handler = Instantiate(spellHandlerPrefab);
+			//	handler.CastSpell(spell, controllerRef, Player.Instance);
+			//}
+		}
+	}
 
-        if ((hand == Handedness.Left && currentInteractingController.Handle == VR_Controller_Custom.Controller_Handle.LEFT) || (hand == Handedness.Right && currentInteractingController.Handle == VR_Controller_Custom.Controller_Handle.RIGHT))
-        {
-            Spell spell = SpellManager.Instance.GetSpell(gestureName);
-
-            Spell spellInstance = Instantiate(spell, currentInteractingController.transform).GetComponent<Spell>();
-            currentInteractingController.SetInteraction(this);
-        }
-    }
 }

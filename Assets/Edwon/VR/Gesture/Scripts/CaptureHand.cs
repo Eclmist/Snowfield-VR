@@ -6,202 +6,227 @@ using System;
 
 namespace Edwon.VR.Gesture
 {
-    public enum VRGestureCaptureState {EnteringCapture, ReadyToCapture, Capturing };
+	public enum VRGestureCaptureState { EnteringCapture, ReadyToCapture, Capturing };
 
-    public class CaptureHand {
+	public class CaptureHand
+	{
 
-        public VRGestureRig rig;
-        IInput input;
-        Transform playerHead;
-        Transform playerHand;
-        Transform perpTransform;
+		public enum State
+		{
+			ACTIVATED,
+			DEACTIVATED
+		}
 
-        Handedness hand;
+		public VRGestureRig rig;
+		IInput input;
+		Transform playerHead;
+		Transform playerHand;
+		Transform perpTransform;
 
-        //Maybe have two states.
-        //One that is: Record, Detect, Idle, Edit, Train
-        //Another that is EnteringCapture, ReadyToCapture, Capturing
-        public VRGestureCaptureState state;
+		Handedness hand;
 
-        GestureTrail myTrail;
-        List<Vector3> currentCapturedLine;
+		//Maybe have two states.
+		//One that is: Record, Detect, Idle, Edit, Train
+		//Another that is EnteringCapture, ReadyToCapture, Capturing
+		public VRGestureCaptureState state;
+		protected State currentState = State.DEACTIVATED;
 
-        float nextRenderTime = 0;
-        float renderRateLimit = Config.CAPTURE_RATE;
+		public State HandState
+		{
+			set
+			{
+				currentState = value;
+				if (currentState == CaptureHand.State.ACTIVATED)
+				{
+					state = VRGestureCaptureState.ReadyToCapture;
+				}
+				
+			}
+			get
+			{
+				return currentState;
+			}
+		}
 
-        public string lastGesture;
-        public DateTime lastDetected;
+		GestureTrail myTrail;
+		List<Vector3> currentCapturedLine;
 
-        public delegate void StartCapture();
-        public event StartCapture StartCaptureEvent;
-        public delegate void ContinueCapture(Vector3 capturePoint);
-        public event ContinueCapture ContinueCaptureEvent;
-        public delegate void StopCapture();
-        public event StopCapture StopCaptureEvent;
+		float nextRenderTime = 0;
+		float renderRateLimit = Config.CAPTURE_RATE;
 
-        public CaptureHand (VRGestureRig _rig, Transform _perp, Handedness _hand, GestureTrail _myTrail = null)
-        {
-            rig = _rig;
-            hand = _hand;
-            playerHand = rig.GetHand(hand);
-            playerHead = rig.head;
-            perpTransform = _perp;
-            input = rig.GetInput(hand);
-            currentCapturedLine = new List<Vector3>();
-            if (_myTrail != null)
-            {
-                myTrail = _myTrail;
-                myTrail.AssignHand(this);
-            }
+		public string lastGesture;
+		public DateTime lastDetected;
 
-            Start();
-        }
+		public delegate void StartCapture();
+		public event StartCapture StartCaptureEvent;
+		public delegate void ContinueCapture(Vector3 capturePoint);
+		public event ContinueCapture ContinueCaptureEvent;
+		public delegate void StopCapture();
+		public event StopCapture StopCaptureEvent;
 
-        public bool CheckForSync(string gesture)
-        {
-            TimeSpan lapse = DateTime.Now.Subtract(lastDetected);
-            TimeSpan limit = new TimeSpan(0, 0, 0, 0, 500);
+		public CaptureHand(VRGestureRig _rig, Transform _perp, Handedness _hand, GestureTrail _myTrail = null)
+		{
+			rig = _rig;
+			hand = _hand;
+			playerHand = rig.GetHand(hand);
+			playerHead = rig.head;
+			perpTransform = _perp;
+			input = rig.GetInput(hand);
+			currentCapturedLine = new List<Vector3>();
+			if (_myTrail != null)
+			{
+				myTrail = _myTrail;
+				myTrail.AssignHand(this);
+			}
 
-            //if gesture starts with an R or an L.
-            if(gesture.Contains("L--") || gesture.Contains("R--"))
-            {
-                //strip the gesture
-                gesture = gesture.Substring(2);
-                lastGesture = lastGesture.Substring(2);
-            }
+			Start();
+		}
+
+		public bool CheckForSync(string gesture)
+		{
+			TimeSpan lapse = DateTime.Now.Subtract(lastDetected);
+			TimeSpan limit = new TimeSpan(0, 0, 0, 0, 500);
+
+			//if gesture starts with an R or an L.
+			if (gesture.Contains("L--") || gesture.Contains("R--"))
+			{
+				//strip the gesture
+				gesture = gesture.Substring(2);
+				lastGesture = lastGesture.Substring(2);
+			}
 
 
-            if (gesture == lastGesture && lapse.CompareTo(limit) <= 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+			if (gesture == lastGesture && lapse.CompareTo(limit) <= 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
-        public void SetRecognizedGesture(string newGesture)
-        {
-            lastGesture = newGesture;
-            lastDetected = DateTime.Now;
-        }
+		public void SetRecognizedGesture(string newGesture)
+		{
+			lastGesture = newGesture;
+			lastDetected = DateTime.Now;
+		}
 
-        // Use this for initialization
-        void Start() {
-            if(myTrail != null)
-            {
-                //myTrail.AssignHand(this);
-            }
-            
-        }
+		// Use this for initialization
+		void Start()
+		{
+			if (myTrail != null)
+			{
+				//myTrail.AssignHand(this);
+			}
 
-        public void LineCaught(List<Vector3> capturedLine)
-        {
-            rig.LineCaught(capturedLine, hand);
-            //This should send out an EVENT.
-            //Remove dependency from Instance.
-        }
+		}
 
-        //This will get points in relation to a users head.
-        public Vector3 getLocalizedPoint(Vector3 myDumbPoint)
-        {
-            perpTransform.position = playerHead.position;
-            perpTransform.rotation = Quaternion.Euler(0, playerHead.eulerAngles.y, 0);
-            return perpTransform.InverseTransformPoint(myDumbPoint);
-        }
+		public void LineCaught(List<Vector3> capturedLine)
+		{
+			rig.LineCaught(capturedLine, hand);
+			//This should send out an EVENT.
+			//Remove dependency from Instance.
+		}
 
-        #region UPDATE
-        // Update is called once per frame
-        public void Update()
-        {
-            //get the position from the left anchor.
-            //draw a point.
+		//This will get points in relation to a users head.
+		public Vector3 getLocalizedPoint(Vector3 myDumbPoint)
+		{
+			perpTransform.position = playerHead.position;
+			perpTransform.rotation = Quaternion.Euler(0, playerHead.eulerAngles.y, 0);
+			return perpTransform.InverseTransformPoint(myDumbPoint);
+		}
 
-            if (rig != null)
-            {
+		#region UPDATE
+		// Update is called once per frame
+		public void Update()
+		{
+			//get the position from the left anchor.
+			//draw a point.
 
-                if (rig.uiState == VRGestureUIState.Recording || rig.uiState == VRGestureUIState.ReadyToRecord)
-                {
-                    UpdateRecord();
-                }
-                else if (rig.uiState == VRGestureUIState.Detecting || rig.uiState == VRGestureUIState.ReadyToDetect)
-                {
-                    UpdateRecord();
-                }
-                else
-                {
-                    myTrail.ClearTrail();
-                }
-            }
-        }
+			if (rig != null)
+			{
 
-        void UpdateRecord()
-        {
-            // get input
-            if(input == null)
-            {
-                input = rig.GetInput(hand);
-            }
+				if (rig.uiState == VRGestureUIState.Recording || rig.uiState == VRGestureUIState.ReadyToRecord)
+				{
+					UpdateRecord();
+				}
+				else if ((rig.uiState == VRGestureUIState.Detecting || rig.uiState == VRGestureUIState.ReadyToDetect))
+				{
+					UpdateRecord();
+				}
+				else
+				{
+					myTrail.ClearTrail();
+				}
+			}
+		}
 
-            // if not pressing gesture button stop recording
-            if (!input.GetButton(rig.gestureButton))
-            {
-                state = VRGestureCaptureState.ReadyToCapture;
-                if (input.GetButtonUp(rig.gestureButton))
-                {
-                    StopRecording();
-                }
-            }
+		void UpdateRecord()
+		{
 
-            // if pressed button start recording
-            if (input.GetButtonDown(rig.gestureButton) && state == VRGestureCaptureState.ReadyToCapture)
-            {
-                state = VRGestureCaptureState.Capturing;
-                StartRecording();
-            }
+			// get input
+			if (input == null)
+			{
+				input = rig.GetInput(hand);
+			}
 
-            // if capturing, capture points
-            if (state == VRGestureCaptureState.Capturing)
-            {
-                CapturePoint();
-            }
+			// if not pressing gesture button stop recording
+			if (state == VRGestureCaptureState.Capturing && currentState == State.DEACTIVATED)
+			{
+				state = VRGestureCaptureState.EnteringCapture;
+				StopRecording();
+			}
 
-        }
+			// if pressed button start recording
+			if (state == VRGestureCaptureState.ReadyToCapture)
+			{
+				state = VRGestureCaptureState.Capturing;
+				StartRecording();
+			}
 
-        void StartRecording()
-        {
-            nextRenderTime = Time.time + renderRateLimit / 1000;
-            if (StartCaptureEvent != null)
-            {
-                StartCaptureEvent();
-            }
-            CapturePoint();
-        }
+			// if capturing, capture points
+			if (state == VRGestureCaptureState.Capturing)
+			{
+				CapturePoint();
+				Debug.Log("capturing");
+			}
 
-        void CapturePoint()
-        {
-            Vector3 rightHandPoint = playerHand.position;
-            Vector3 localizedPoint = getLocalizedPoint(rightHandPoint);
-            currentCapturedLine.Add(localizedPoint);
-            if (ContinueCaptureEvent != null)
-                ContinueCaptureEvent(rightHandPoint);
-        }
+		}
 
-        void StopRecording()
-        {
-            if (currentCapturedLine.Count > 0)
-            {
-                LineCaught(currentCapturedLine);
-                currentCapturedLine.RemoveRange(0, currentCapturedLine.Count);
-                currentCapturedLine.Clear();
+		void StartRecording()
+		{
+			nextRenderTime = Time.time + renderRateLimit / 1000;
+			if (StartCaptureEvent != null)
+			{
+				StartCaptureEvent();
+			}
+			CapturePoint();
+		}
 
-                if (StopCaptureEvent != null)
-                    StopCaptureEvent();
-            }
+		void CapturePoint()
+		{
+			Vector3 rightHandPoint = playerHand.position;
+			Vector3 localizedPoint = getLocalizedPoint(rightHandPoint);
+			currentCapturedLine.Add(localizedPoint);
+			if (ContinueCaptureEvent != null)
+				ContinueCaptureEvent(rightHandPoint);
+		}
 
-        }
+		void StopRecording()
+		{
+			if (currentCapturedLine.Count > 0)
+			{
+				LineCaught(currentCapturedLine);
+				currentCapturedLine.RemoveRange(0, currentCapturedLine.Count);
+				currentCapturedLine.Clear();
 
-        #endregion
-    }
+				if (StopCaptureEvent != null)
+					StopCaptureEvent();
+			}
+
+		}
+
+		#endregion
+	}
 }
