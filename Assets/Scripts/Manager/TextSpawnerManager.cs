@@ -54,7 +54,7 @@ public class TextSpawnerManager : MonoBehaviour {
 
         if (impact)
         {
-            StartCoroutine(Shake(st.gameObject, tempLength, 0.5f));
+            StartCoroutine(Shake(st.gameObject, tempLength, 0.1f));
         }
             
 

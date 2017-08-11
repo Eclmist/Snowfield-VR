@@ -105,7 +105,7 @@ public class Nagano : MonoBehaviour
 		if(GameManager.firstGame)
 		{
 			GameManager.firstGame = false;
-			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\nXiaotian", null);
+			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
 			CompleteCurrentEvent();
 		}
 			
@@ -209,7 +209,7 @@ public class Nagano : MonoBehaviour
 		}
 
 
-		MessageManager.Instance.SendMail("Blacksmithing", "Woah! I heard that you can make really cool weapons. I'll pay you a visit!\n\nFrom:\n???", null);
+		MessageManager.Instance.SendMail("Blacksmithing", "Woah! I heard that you can make really cool weapons. I'll pay you a visit!\n\nFrom:\nXiaotian", null);
 
 		HideAllControllerHints();
 		StartCoroutine(ReadMailRoutine());
@@ -258,7 +258,7 @@ public class Nagano : MonoBehaviour
 		}
 
 		HideAllControllerHints();
-		MessageManager.Instance.SendMail("Thank You!","That's a fine looking sword! I shall recommend it to all my friends.\n\nFrom:\n???",null);
+		MessageManager.Instance.SendMail("Thank You!","That's a fine looking sword! I shall recommend it to all my friends.\n\nFrom:\nXiaotian",null);
 		CompleteCurrentEvent();
 	}
 
