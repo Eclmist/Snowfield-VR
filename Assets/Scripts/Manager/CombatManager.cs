@@ -11,6 +11,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip> hitSounds;
 
+	[SerializeField] private float hitSoundVol = 0.2F;
 
     public static CombatManager Instance;
 
@@ -23,7 +24,7 @@ public class CombatManager : MonoBehaviour
     public void PlayRandomHitSoundAt(Transform t)
     {
         if(hitSounds.Count > 0)
-            AudioSource.PlayClipAtPoint(hitSounds[Random.Range(0,hitSounds.Count)],t.position,0.75f);
+            AudioSource.PlayClipAtPoint(hitSounds[Random.Range(0,hitSounds.Count)],t.position, hitSoundVol);
     }
 
     public float GetDamageDealt(float damage,Transform target)

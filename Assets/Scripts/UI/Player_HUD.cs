@@ -14,6 +14,7 @@ public class Player_HUD : MonoBehaviour
 	[SerializeField] private float rightThreshold = 0.95F;
 
 	[SerializeField] private float opacityLerpSpeed = 30;
+	[SerializeField] private Animator animator;
 
 	private CanvasGroup canvasGroup;
 	
@@ -36,6 +37,14 @@ public class Player_HUD : MonoBehaviour
 		{
 			targetOpacity = 1;
 			targetRotation = Quaternion.LookRotation(VRCamera.transform.position - HUD.transform.position, -VRCamera.transform.up);
+			
+			if (animator && animator.enabled == false)
+				animator.enabled = true;
+		}
+		else
+		{
+			if (animator && animator.enabled == true)
+				animator.enabled = false;
 		}
 
 		HUD.transform.rotation = Quaternion.Lerp(HUD.transform.rotation, targetRotation, Time.deltaTime * opacityLerpSpeed);

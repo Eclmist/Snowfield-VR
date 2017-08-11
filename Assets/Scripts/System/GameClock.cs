@@ -36,6 +36,7 @@ public class GameClock {
         }
     }
 
+	// returns 0-1 float, 0 being midnight and 0.5 being noon
     public float TimeOfDay
     {
         get
