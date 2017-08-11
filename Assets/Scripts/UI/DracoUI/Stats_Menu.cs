@@ -25,13 +25,14 @@ public class Stats_Menu : MonoBehaviour {
     {
         ActiveStats health = Player.Instance.StatContainer.GetStat(Stats.StatsType.HEALTH);
         ActiveStats attack = Player.Instance.StatContainer.GetStat(Stats.StatsType.ATTACK);
-        if (health != null)
+		ActiveStats mana = Player.Instance.StatContainer.GetStat(Stats.StatsType.MANA);
+		if (health != null)
         {
             statTxt.health.text = health.Current + "/" + health.Max;
         }
-        statTxt.mana.text = "/";
+        statTxt.mana.text = mana.Current + "/" + mana.Max;
 
         if(attack != null)
-        statTxt.damage.text = attack.ToString();
+        statTxt.damage.text = attack.Current.ToString();
 	}
 }

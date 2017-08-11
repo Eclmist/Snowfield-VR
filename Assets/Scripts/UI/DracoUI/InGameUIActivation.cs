@@ -5,7 +5,6 @@ using UnityEngine;
 public class InGameUIActivation : MonoBehaviour
 {
 
-
     [SerializeField]
     private GameObject menu;
 
@@ -13,10 +12,12 @@ public class InGameUIActivation : MonoBehaviour
     private Vector3 offset = new Vector3(0, 0, 0.1f);
 
     private VR_Controller_Custom currentInteractingCtrl;
-    
+	private InGameMenuArea iGMA;
+
     // Use this for initialization
     protected void Start()
     {
+		iGMA = menu.GetComponent<InGameMenuArea>();
         currentInteractingCtrl = GetComponent<VR_Controller_Custom>();
     }
 
@@ -28,6 +29,7 @@ public class InGameUIActivation : MonoBehaviour
             {
                 if (menu != null)
                 {
+					iGMA.Deactivate();
                     menu.SetActive(false);
                 }
 
@@ -38,7 +40,7 @@ public class InGameUIActivation : MonoBehaviour
 
                 menu.SetActive(true);
                 menu.transform.position = currentInteractingCtrl.transform.position + localOffset;
-                menu.transform.rotation = Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y, Quaternion.identity.z);
+                menu.transform.rotation = Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y +180, Quaternion.identity.z);
                 
             }
 
@@ -46,7 +48,8 @@ public class InGameUIActivation : MonoBehaviour
             {
                 if (menu != null && currentInteractingCtrl.UI == null)
                 {
-                    menu.SetActive(false);
+					iGMA.Deactivate();
+					menu.SetActive(false);
                 }
             }
 

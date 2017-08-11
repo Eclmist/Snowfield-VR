@@ -39,7 +39,10 @@ public class InGameMenuArea : MonoBehaviour
     public void MailActivation(bool active)
     {
         if (prefabs.mailScreen != null)
-            prefabs.mailScreen.SetActive(active);
+		{
+			prefabs.mailScreen.SetActive(active);
+			MessageManager.Instance.DisplayMailInterface();
+		}
     }
 
     public void Deactivate()
