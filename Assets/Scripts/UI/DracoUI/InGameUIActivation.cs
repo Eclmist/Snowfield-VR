@@ -13,9 +13,7 @@ public class InGameUIActivation : MonoBehaviour
     private Vector3 offset = new Vector3(0, 0, 0.1f);
 
     private VR_Controller_Custom currentInteractingCtrl;
-
-    private static GameObject InGameMenu;
-
+    
     // Use this for initialization
     protected void Start()
     {
@@ -28,9 +26,9 @@ public class InGameUIActivation : MonoBehaviour
         {
             if (currentInteractingCtrl.Device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu))
             {
-                if (InGameMenu != null)
+                if (menu != null)
                 {
-                    Destroy(InGameMenu);
+                    menu.SetActive(false);
                 }
 
                 Vector3 localOffset = Vector3.zero;
@@ -38,15 +36,17 @@ public class InGameUIActivation : MonoBehaviour
                 localOffset += transform.up * offset.y;
                 localOffset += transform.forward * offset.z;
 
-                InGameMenu = Instantiate(menu, currentInteractingCtrl.transform.position + localOffset,
-                    Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y, Quaternion.identity.z));
+                menu.SetActive(true);
+                menu.transform.position = currentInteractingCtrl.transform.position + localOffset;
+                menu.transform.rotation = Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y, Quaternion.identity.z);
+                
             }
 
             else if (currentInteractingCtrl.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
             {
-                if (InGameMenu != null && currentInteractingCtrl.UI == null)
+                if (menu != null && currentInteractingCtrl.UI == null)
                 {
-                    Destroy(InGameMenu);
+                    menu.SetActive(false);
                 }
             }
 
