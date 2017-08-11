@@ -1552,7 +1552,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1740550513959888
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -2241,7 +2241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4160059734729524
 Transform:
@@ -2254,7 +2254,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4167092781042954
 Transform:
@@ -2280,7 +2280,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4190381487271226
 Transform:
@@ -2324,7 +2324,7 @@ Transform:
   - {fileID: 4055285339873920}
   - {fileID: 4093211993329544}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4197761213675902
 Transform:
@@ -2350,7 +2350,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4207041009283394
 Transform:
@@ -2431,7 +2431,7 @@ Transform:
   - {fileID: 4685538961288824}
   - {fileID: 4416032514386190}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4275779838792814
 Transform:
@@ -2734,7 +2734,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4515322800423234
 Transform:
@@ -2760,7 +2760,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4528744547449398
 Transform:
@@ -2799,7 +2799,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4549838987699544
 Transform:
@@ -2841,7 +2841,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4575736634272900
 Transform:
@@ -2854,7 +2854,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4582201801633170
 Transform:
@@ -3071,6 +3071,7 @@ Transform:
   - {fileID: 4049432402865598}
   - {fileID: 4956753486798834}
   - {fileID: 4297964238813406}
+  - {fileID: 4763061073116016}
   - {fileID: 4986202520064436}
   - {fileID: 4575736634272900}
   - {fileID: 4539342014869266}
@@ -3135,8 +3136,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4986202520064436}
-  m_RootOrder: 0
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4769781933696436
 Transform:
@@ -3332,10 +3333,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4763061073116016}
+  m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4988060189791054
 Transform:
@@ -5324,7 +5324,7 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-    startDelay: 9.2
+    startDelay: 7
     enabled: 1
   - invokableEventUpdate:
       m_PersistentCalls:
@@ -5361,6 +5361,14 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
     startDelay: 3.7
+    enabled: 1
+  currentEvent:
+    invokableEventUpdate:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    startDelay: 0
     enabled: 1
 --- !u!114 &114136839843194192
 MonoBehaviour:
@@ -5549,109 +5557,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1435421754c538c429807dd123334606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseGoldMultiplier: 1
-  baseDurationMultiplier: 10
-  templateList:
-  - baseGold: 1000
-    duration: 300
-    jobType: 0
-    referenceItemID: 6
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 7
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 8
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 9
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 10
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 11
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 12
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 13
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 14
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 15
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 16
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 17
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 18
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 19
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 20
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 21
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 22
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 23
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 24
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 25
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 26
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 27
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 28
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 29
-  - baseGold: 1500
-    duration: 300
-    jobType: 0
-    referenceItemID: 30
+  baseDuration: 290
+  levelToDurationMultiplier: 10
 --- !u!114 &114271319997919680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5818,7 +5725,7 @@ MonoBehaviour:
   secondsPerDay: 300
   nightTime: 0.75
   dayTime: 0.25
-  startTime: 0
+  startTime: 0.283
 --- !u!114 &114336769365519044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8023,6 +7930,7 @@ MonoBehaviour:
     maxStackSize: 64
     jobType: 0
     cost: 0
+  ingotItemDataList: []
 --- !u!114 &114852010624526960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8093,7 +8001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allStats: []
   baseHealth: 5000
   baseHealthRegen: 0
   baseAttack: 0

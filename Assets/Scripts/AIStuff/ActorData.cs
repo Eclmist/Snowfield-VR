@@ -82,13 +82,12 @@ public class AdventurerAIData : ActorData
     {
 
         protected float scale;
-        protected Color eyeColor;
         protected Color hairColor;
 
-        public CharacterInformation(float _scale, Color _eyeColor, Color _hairColor)
+        public CharacterInformation(float _scale, Color _hairColor)
         {
             scale = _scale;
-            eyeColor = _eyeColor;
+
             hairColor = _hairColor;
         }
 
@@ -97,14 +96,6 @@ public class AdventurerAIData : ActorData
             get
             {
                 return scale;
-            }
-        }
-
-        public Color EyeColor
-        {
-            get
-            {
-                return eyeColor;
             }
         }
 

@@ -746,7 +746,7 @@ GameObject:
   - component: {fileID: 114657687292189872}
   - component: {fileID: 114313937571029454}
   - component: {fileID: 114272849559029288}
-  - component: {fileID: 114521208507246892}
+  - component: {fileID: 114728291304215194}
   m_Layer: 13
   m_Name: UnityChan Normal
   m_TagString: Untagged
@@ -5353,7 +5353,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1248315538865536}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6334478, y: 1, z: 0.36477634}
+  m_LocalPosition: {x: 15.067329, y: -0.14799976, z: -5.302807}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4543767099361508}
@@ -6676,25 +6676,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotType: 1
   slotItem: {fileID: 0}
---- !u!114 &114521208507246892
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1248315538865536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53fc67c8ddf5b7341b90f4c1b3a2e485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hairMaterials:
-  - {fileID: 137616004804954654}
-  - {fileID: 137271913577044410}
-  - {fileID: 137974907032522306}
-  - {fileID: 137146165054153058}
-  eyeMaterials:
-  - {fileID: 23503704676779406}
-  - {fileID: 23713158204944658}
 --- !u!114 &114521397434262804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6914,6 +6895,22 @@ MonoBehaviour:
   - {fileID: 114734457783877476}
   debug: 1
   threshold: 0.01
+--- !u!114 &114728291304215194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1248315538865536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22649165e9f32d4792356379e9f7242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hairMaterials:
+  - {fileID: 137616004804954654}
+  - {fileID: 137271913577044410}
+  - {fileID: 137974907032522306}
+  - {fileID: 137146165054153058}
 --- !u!114 &114731882420397986
 MonoBehaviour:
   m_ObjectHideFlags: 1
