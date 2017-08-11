@@ -82,7 +82,7 @@ public abstract class OptionPane : MonoBehaviour, IUI
 
     public VR_Button GetButton(int i)
     {
-        if (buttons.Length >= 1 && buttons.Length <= i && buttons[i])
+        if (buttons.Length >= 1 && i < buttons.Length && buttons[i])
             return buttons[i];
         else
             return null;

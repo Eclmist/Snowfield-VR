@@ -86,6 +86,7 @@ public class Player : Actor
             }
             else
             {
+				data = new PlayerData(data, "Player", null);
 				Job j = Data.AddJob(JobType.BLACKSMITH);
                 Stats s = new Stats(Stats.StatsType.ATTACK, 2);
                 j.AddStats(s);

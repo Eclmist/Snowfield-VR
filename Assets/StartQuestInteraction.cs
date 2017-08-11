@@ -19,8 +19,11 @@ public class StartQuestInteraction : QuestInteraction
                     "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name + " \n(Requires " + expectedCrateNumber + " EXPCrates)",
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
-                if (expectedCrateNumber > Player.Instance.EXPBottles)
-                    op.GetButton(0).interactable = false;
+				if (expectedCrateNumber > Player.Instance.EXPBottles)
+				{
+					op.GetButton(0).GetComponent<Collider>().enabled = false;
+					Debug.Log("Checked");
+				}
 
                 currentQuestGroup = startableQuest;
                 currentUI = op;

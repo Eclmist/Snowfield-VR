@@ -36,30 +36,6 @@ public class QuestManager : MonoBehaviour
 
 
 
-    // Call this function when visiting the store
-
-    //// Gives the AI a reason to visit the store
-    //public bool GotLobang(List<StoryHunt> list)
-    //{
-
-    //    bool temp = false;
-
-    //    foreach (StoryHunt hunt in list)
-    //    {
-    //        StoryLine line = GetStoryLine(hunt.StoryType);
-
-    //        if (hunt.IsCompleted && hunt.ProgressionIndex + 1 < line.Count
-    //         && line[hunt.ProgressionIndex + 1].RequiredLevel <= Player.Instance.GetJob(hunt.JobType).Level)
-    //        {
-    //            temp = true;
-    //            break;
-    //        }
-
-    //    }
-
-    //    return temp;
-    //}
-
     public void Clear()
     {
         storylines[0].Clear();

@@ -62,12 +62,7 @@ public class VR_Controller_Custom : MonoBehaviour
 	{
 		get
 		{
-
-			if (overlappedInteractableObject && overlappedInteractableObject.LinkedController == this)
-				return overlappedInteractableObject;
-			else
-				return null;
-
+			return overlappedInteractableObject;
 		}
 	}
 	public Controller_Handle Handle
@@ -234,8 +229,8 @@ public class VR_Controller_Custom : MonoBehaviour
 
 		if (val > 0)
 		{
-			if(device != null)
-			device.TriggerHapticPulse((ushort)(val * 3999));
+			if (device != null)
+				device.TriggerHapticPulse((ushort)(val * 3999));
 		}
 	}
 
