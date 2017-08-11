@@ -98,6 +98,21 @@ public class Nagano : MonoBehaviour
 
 	//----------- Level Events -----------------------------------------------------------------------------------------------------------//
 
+	#region Welcome event
+	
+	public void WelcomeEvent()
+	{
+		if(GameManager.firstGame)
+		{
+			GameManager.firstGame = false;
+			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\nXiaotian", null);
+			CompleteCurrentEvent();
+		}
+			
+	}
+
+
+	#endregion
 
 	#region Blacksmith Tutorial Sequence
 
@@ -253,7 +268,16 @@ public class Nagano : MonoBehaviour
 
 	#region Post-tutorial Sequence
 
+	public void TownUnderAttackEvent()
+	{
+		if (GameManager.nightApproaching && GameManager.Instance.GameClock.Day == 1)
+		{
+			MessageManager.Instance.SendMail("Defend The Town", "All of our guards got banned from hacking and we are really short-handed right now. If those monsters get to the heart of the town, somebody's gotta pay for damages. I'm just saying...\n\nFrom:\nMayor", null);
 
+			CompleteCurrentEvent();
+		}
+			
+	}
 
 
 	#endregion
