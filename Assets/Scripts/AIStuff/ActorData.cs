@@ -77,12 +77,61 @@ public class ActorData
 [System.Serializable]
 public class AdventurerAIData : ActorData
 {
+    [System.Serializable]
+    public class CharacterInformation
+    {
 
+        protected float scale;
+        protected Color eyeColor;
+        protected Color hairColor;
+
+        public CharacterInformation(float _scale, Color _eyeColor, Color _hairColor)
+        {
+            scale = _scale;
+            eyeColor = _eyeColor;
+            hairColor = _hairColor;
+        }
+
+        public float Scale
+        {
+            get
+            {
+                return scale;
+            }
+        }
+
+        public Color EyeColor
+        {
+            get
+            {
+                return eyeColor;
+            }
+        }
+
+        public Color HairColor
+        {
+            get
+            {
+                return hairColor;
+            }
+        }
+    }
     private QuestBook questBook;
 
-    public AdventurerAIData(ActorData data,string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
+    private CharacterInformation characterCustomizeInfo;
+
+    public CharacterInformation CustomizeInfo
+    {
+        get
+        {
+            return characterCustomizeInfo;
+        }
+    }
+
+    public AdventurerAIData(CharacterInformation _ci, ActorData data,string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         questBook = new QuestBook();
+        characterCustomizeInfo = _ci;
     }
 
     public QuestBook QuestBook

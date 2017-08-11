@@ -6,14 +6,14 @@ using UnityEngine.Events;
 public class AIManager : MonoBehaviour
 {
 
-    private List<AdventurerAIData> listOfAIData;
+    private List<AdventurerAIData> listOfAIData = new List<AdventurerAIData>(), instantiatedAIData = new List<AdventurerAIData>();
 
     [SerializeField]
     private List<AI> typeOfAI = new List<AI>();
     [SerializeField]
     private List<MerchantAI> merchants = new List<MerchantAI>();
-	private TextAsset genericNameParts;
-	private string[] nameParts;
+    private TextAsset genericNameParts;
+    private string[] nameParts;
     public static AIManager Instance;
 
     [SerializeField]
@@ -33,59 +33,95 @@ public class AIManager : MonoBehaviour
             Destroy(this);
         }
 
-
-		LoadNameParts();
-
-
-	}
+        LoadNameParts();
+    }
 
     protected void Start()
     {
-        HandleAdventurerAI();
+        GenerateBaseAIs();
+        StartSpawningAllAdventurerAIs();
     }
 
-    protected void HandleAdventurerAI()
+    public void GenerateBaseAIs()
     {
-        listOfAIData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
-        if (listOfAIData == null)
+        List<AdventurerAIData> aiData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
+        if (aiData == null)
         {
-            listOfAIData = new List<AdventurerAIData>();
-        }
-
-        if (listOfAIData.Count < TownManager.Instance.CurrentTown.Population)
-        {
-            for (int i = listOfAIData.Count; i < TownManager.Instance.CurrentTown.Population; i++)
+            for (int i = 0; i < TownManager.Instance.CurrentTown.Population; i++)
             {
-                listOfAIData.Add(CreateNewAdventurerAI());
+                CreateNewAdventurerAI(randomColorGenerator(), randomColorGenerator(),GetRandomUniqueName(), Random.Range(1.1f,1.3f));
             }
         }
-        else if (listOfAIData.Count > TownManager.Instance.CurrentTown.Population)
-        {
-            while (listOfAIData.Count > TownManager.Instance.CurrentTown.Population)
-            {
-                listOfAIData.RemoveAt(listOfAIData.Count - 1);
-            }
-        }
+        else
+            listOfAIData = aiData;
+    }
 
+    public void StartSpawningAllAdventurerAIs()
+    {
         int timePeriod = 0;
         foreach (AdventurerAIData data in listOfAIData)
         {
             timePeriod += timeBetweenAISpawn;
-            AI newActor = ((GameObject)Resources.Load(data.Path)).GetComponent<AI>();
-            AI ai = Instantiate(newActor).GetComponent<AI>();
-            ai.Data = data;
-            ai.gameObject.SetActive(false);
-            StartCoroutine(SpawnCoroutine(ai, timePeriod, TownManager.Instance.GetRandomSpawnPoint()));
+            InstantiateNewAdventurerAI(data, timePeriod);
         }
     }
 
-    protected AdventurerAIData CreateNewAdventurerAI()
+    public AdventurerAI InstantiateNewAdventurerAI(AdventurerAIData data, float time = 0)
+    {
+        AdventurerAI adventurerAI = null;
+        if (listOfAIData.Contains(data) && !instantiatedAIData.Contains(data))
+        {
+            adventurerAI = Instantiate(((GameObject)Resources.Load(data.Path))).GetComponent<AdventurerAI>();
+            instantiatedAIData.Add(data);
+            adventurerAI.Data = data;
+            CharacterRigDefiner def = adventurerAI.GetComponent<CharacterRigDefiner>();
+            Debug.Log(def.HairMat.Count);
+            foreach (Material m in def.HairMat)
+            {
+                m.SetColor("_Color", data.CustomizeInfo.HairColor);
+            }
+
+            foreach (Material m in def.EyeMaterial)
+            {
+                m.SetColor("_Color", data.CustomizeInfo.EyeColor);
+            }
+
+            adventurerAI.transform.localScale = Vector3.one * data.CustomizeInfo.Scale;
+
+            if (time > 0)
+                adventurerAI.gameObject.SetActive(false);
+
+            StartCoroutine(SpawnCoroutine(adventurerAI, time, TownManager.Instance.GetRandomSpawnPoint()));
+        }
+        Debug.Assert(adventurerAI != null, "AI already exist or data has not been created");
+
+
+        return adventurerAI;
+    }
+
+    public AdventurerAIData CreateNewAdventurerAI(Color hairColor, Color eyeColor, string name = null, float scale = 1.3f)
     {
         AI newAI = GetRandomAIType();
         string myPath = "AIs\\" + newAI.name;
-        AdventurerAIData newData = new AdventurerAIData(newAI.Data, GetRandomUniqueName(), myPath);//Random name gen
+
+        AdventurerAIData.CharacterInformation ci = new AdventurerAIData.CharacterInformation(scale, hairColor, eyeColor);
+
+        AdventurerAIData newData = new AdventurerAIData(ci, newAI.Data, name, myPath);//Random name gen
+        listOfAIData.Add(newData);
+        Debug.Log("created");
         return newData;
     }
+
+
+    protected Color randomColorGenerator()
+    {
+        float r, g, b;
+        r = Random.Range(0, 1f);
+        g = Random.Range(0, 1f);
+        b = Random.Range(0, 1f);
+        return new Color(r, g, b);
+    }
+
 
     public void Spawn(AI currentAI, float timeToSpawn, Node spawnNode, UnityAction invokingEvent = null, float intervalBetweenInvoke = 0)
     {
@@ -118,7 +154,8 @@ public class AIManager : MonoBehaviour
         //SerializeManager.Save("AIData", listOfAIData);
     }
 
-    public void SpawnMerchant()
+
+    public void InstantiateMerchant()
     {
         if (merchants.Count > 0)
         {
@@ -143,31 +180,31 @@ public class AIManager : MonoBehaviour
             return null;
     }
 
-	private void LoadNameParts()
-	{
-		genericNameParts =  Resources.Load("GenericNameParts") as TextAsset;
+    private void LoadNameParts()
+    {
+        genericNameParts = Resources.Load("GenericNameParts") as TextAsset;
 
-		if (genericNameParts == null)
-			Debug.LogError("Cannot find textfile containing names");
-		else
-		{
-			nameParts = genericNameParts.text.Split('\n');
-		}
-	}
+        if (genericNameParts == null)
+            Debug.LogError("Cannot find textfile containing names");
+        else
+        {
+            nameParts = genericNameParts.text.Split('\n');
+        }
+    }
 
-	private string GetRandomUniqueName()
-	{
-		Debug.Log(nameParts.Length);
-		string tempName = "UnityChan";
+    private string GetRandomUniqueName()
+    {
+        Debug.Log(nameParts.Length);
+        string tempName = "UnityChan";
 
-		if (nameParts.Length > 0)
-			tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
-				+ nameParts[Random.Range(0, nameParts.Length)]
-				+ ((int)(Random.Range(1,99)));
+        if (nameParts.Length > 0)
+            tempName = nameParts[Random.Range(0, nameParts.Length)] + nameParts[Random.Range(0, nameParts.Length)]
+                + nameParts[Random.Range(0, nameParts.Length)]
+                + ((int)(Random.Range(1, 99)));
 
-		return tempName;
+        return tempName;
 
-	}
+    }
 
     public void Respawn(AI ai)
     {

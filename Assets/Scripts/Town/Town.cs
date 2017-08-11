@@ -8,8 +8,8 @@ public class Town : MonoBehaviour
 
     [SerializeField]
     [Range(1, 30)]
-    [Tooltip("Max number of AI in town")]
-    private int population = 1;
+    [Tooltip("Number of AI in town that are generated at start")]
+    private int basePopulation = 1;
 
     [SerializeField]
     private List<Shop> allShops = new List<Shop>();
@@ -61,13 +61,13 @@ public class Town : MonoBehaviour
     {
         get
         {
-            return population;
+            return basePopulation;
         }
     }
 
     public Town(int _difficulty)
     {
-        population = _difficulty;
+        basePopulation = _difficulty;
     }
 
     public List<Shop> Shops
