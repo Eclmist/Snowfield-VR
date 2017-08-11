@@ -4,19 +4,18 @@ using UnityEngine;
 using Edwon.VR.Gesture;
 using Edwon.VR;
 
-public class SpellController : MonoBehaviour {
+public class SpellController : VR_Interactable_Object
+{
 
     protected VRGestureRig rig;
 
     protected Transform leftHand;
     protected Transform rightHand;
 
-	protected VR_Controller_Custom vrController;
-
     protected Spell currentSpell;
 
-    void Start()
-	{
+    protected override void Start()
+    {
         rig = FindObjectOfType<VRGestureRig>();
         if (rig == null)
         {
@@ -26,29 +25,33 @@ public class SpellController : MonoBehaviour {
         rightHand = rig.handRight;
         leftHand = rig.handLeft;
 
-        vrController = GetComponent<VR_Controller_Custom>();
+        currentInteractingController = GetComponent<VR_Controller_Custom>();
+        if (!currentInteractingController)
+        {
+            Debug.Log("No Controller");
+            Destroy(this);
+        }
     }
 
-	void OnEnable()
-	{
-		GestureRecognizer.GestureDetectedEvent += OnGestureDetected;
-	}
+    void OnEnable()
+    {
+        GestureRecognizer.GestureDetectedEvent += OnGestureDetected;
+    }
 
-	void OnDisable()
-	{
-		GestureRecognizer.GestureDetectedEvent -= OnGestureDetected;
-	}
+    void OnDisable()
+    {
+        GestureRecognizer.GestureDetectedEvent -= OnGestureDetected;
+    }
 
-	void OnGestureDetected(string gestureName, double confidence, Handedness hand, bool isDouble = false)
-	{
+    void OnGestureDetected(string gestureName, double confidence, Handedness hand, bool isDouble = false)
+    {
 
-        if ((hand == Handedness.Left && vrController.Handle == VR_Controller_Custom.Controller_Handle.LEFT) || (hand == Handedness.Right && vrController.Handle == VR_Controller_Custom.Controller_Handle.RIGHT))
+        if ((hand == Handedness.Left && currentInteractingController.Handle == VR_Controller_Custom.Controller_Handle.LEFT) || (hand == Handedness.Right && currentInteractingController.Handle == VR_Controller_Custom.Controller_Handle.RIGHT))
         {
             Spell spell = SpellManager.Instance.GetSpell(gestureName);
-            Spell spellInstance = Instantiate(spell, vrController.transform).GetComponent<Spell>();
-			vrController.SetInteraction(spellInstance);
-			spellInstance.LinkedController = vrController;
 
+            Spell spellInstance = Instantiate(spell, currentInteractingController.transform).GetComponent<Spell>();
+            currentInteractingController.SetInteraction(this);
         }
     }
 }
