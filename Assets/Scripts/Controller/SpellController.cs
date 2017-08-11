@@ -70,13 +70,13 @@ public class SpellController : MonoBehaviour
 
 		if ((hand == Handedness.Left && controllerRef.Handle == VR_Controller_Custom.Controller_Handle.LEFT) || (hand == Handedness.Right && controllerRef.Handle == VR_Controller_Custom.Controller_Handle.RIGHT))
 		{
-			//Spell spell = SpellManager.Instance.GetSpell(gestureName);
-			//if (spell)
-			//{
-			//	SpellHandler handler = Instantiate(spellHandlerPrefab);
-			//	handler.CastSpell(spell, controllerRef, Player.Instance);
-			//}
-		}
+            Spell spell = SpellManager.Instance.GetSpell(gestureName);
+            if (spell)
+            {
+                SpellHandler handler = Instantiate(spellHandlerPrefab);
+                handler.CastSpell(spell, controllerRef, Player.Instance);
+            }
+        }
 	}
 
 }

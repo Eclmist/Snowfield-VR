@@ -2,61 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public class FlameChargeSpell : Spell
-//{
-//    protected bool hasFlag = false;
-//	protected bool casted = false;
+public class FlameChargeSpell : Spell
+{
+    protected bool hasFlag = false;
+    protected bool casted = false;
 
-//	[SerializeField]
-//	protected GameObject 
+    protected GameObject flamethrower;
+    protected GameObject smoke;
 
-//	protected override void OnTriggerHold()
-//	{
-//		Debug.Log("I'm Holding in Charge");
+    protected void Start()
+    {
+        flamethrower = transform.GetChild(0).gameObject;
+        smoke = transform.GetChild(0).GetChild(0).gameObject;
+    }
 
-//		base.OnTriggerHold();
+    public override void InitializeSpell(SpellHandler handler)
+    {
+        base.InitializeSpell(handler);
+        transform.parent = handler.transform;
+    }
 
-//		if (!casted)
-//		{
-//			if (!hasFlag)
-//			{
-//				spellGO = Instantiate(spellPrefab, currentInteractingController.transform);
+    public override void Update()
+    {
+        base.Update();
 
-//				hasFlag = true;
-//			}
-//			else
-//			{
-//				var em = spellGO.GetComponent<ParticleSystem>().emission;
+        if (casted)
+        {
+            handler.Castor.StatContainer.ReduceMana(manaCost * Time.deltaTime);
+        }
+    }
 
-//				var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+    public override void OnTriggerHold()
+    {
+        if (!casted && (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= 1))
+        {
+            flamethrower.SetActive(true);
 
-//				em.enabled = true;
-//				emsmoke.enabled = true;
+            var em = flamethrower.GetComponent<ParticleSystem>().emission;
+            var emsmoke = smoke.GetComponent<ParticleSystem>().emission;
 
-//				casted = true;
-//			}
-//		}
-//	}
+            em.enabled = true;
+            emsmoke.enabled = true;
 
-//	protected override void OnTriggerRelease()
-//	{
-//		if (casted)
-//		{
-//			var em = spellGO.GetComponent<ParticleSystem>().emission;
+            casted = true;
+        }
+    }
 
-//			var emsmoke = spellGO.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().emission;
+    public override void OnTriggerRelease()
+    {
+        if (casted)
+        {
+            var em = flamethrower.GetComponent<ParticleSystem>().emission;
 
-//			var emindicator = indicator.GetComponent<ParticleSystem>().emission;
+            var emsmoke = smoke.GetComponent<ParticleSystem>().emission;
 
-//			emindicator.enabled = false;
-//			em.enabled = false;
-//			emsmoke.enabled = false;
+            var emindicator = this.gameObject.GetComponent<ParticleSystem>().emission;
 
-//			Destroy(indicator, 0.1f);
-//			Destroy(spellGO, 0.5f);
+            emindicator.enabled = false;
+            em.enabled = false;
+            emsmoke.enabled = false;
 
-//			casted = false;
-//		}
+            Destroy(this, 0.5f);
 
-//	}
-//}
+            casted = false;
+
+            handler.DecastSpell();
+        }
+    }
+}

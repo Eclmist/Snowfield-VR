@@ -46,6 +46,57 @@ public abstract class Spell : MonoBehaviour
     //       base.OnTriggerRelease();
     //   }
 
-    public abstract void InitializeSpell(Actor castor, VR_Controller_Custom referenceCastTransform);
-    
+    protected SpellHandler handler;
+
+    [SerializeField]
+    protected float manaCost;
+
+    public virtual void InitializeSpell(SpellHandler _handler)
+    {
+        handler = _handler;
+    }
+
+    public virtual void Update()
+    {
+        if (handler.LinkedController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerPress();
+        }
+        if (handler.LinkedController.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerHold();
+        }
+        if (handler.LinkedController.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+        {
+            OnTriggerRelease();
+        }
+        if (handler.LinkedController.Device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
+        {
+            OnGripPress();
+        }
+    }
+
+    public virtual void OnGripPress()
+    {
+        var emindicator = this.gameObject.GetComponent<ParticleSystem>().emission;
+        emindicator.enabled = false;
+        handler.DecastSpell();
+        Destroy(this.gameObject, 0.5f);
+    }
+
+    public virtual void OnTriggerPress()
+    {
+
+    }
+
+    public virtual void OnTriggerHold()
+    {
+
+    }
+
+    public virtual void OnTriggerRelease()
+    {
+
+    }
+
 }

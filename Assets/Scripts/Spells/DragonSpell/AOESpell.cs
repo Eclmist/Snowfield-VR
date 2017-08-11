@@ -16,7 +16,7 @@ public class AOESpell : MonoBehaviour
     [SerializeField]
     protected float colliderEnableTime;
 
-    protected Collider col;
+    protected BoxCollider col;
 
     //Cooldown timer for collider to be enable
     protected float cooldown;
@@ -27,14 +27,15 @@ public class AOESpell : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-		
-		transform.parent = null;
-
-		transform.position = new Vector3(Player.Instance.transform.position.x + 2, Player.Instance.transform.position.y, Player.Instance.transform.position.z);
-
         Destroy(this.gameObject, destroyTime);
 
-        col = GetComponent<BoxCollider>();
+        col = this.gameObject.GetComponent<BoxCollider>();
+
+        col.enabled = false;
+
+        transform.parent = null;
+
+		transform.position = new Vector3(Player.Instance.transform.position.x + 2, Player.Instance.transform.position.y, Player.Instance.transform.position.z);
     }
 
     // Update is called once per frame
@@ -44,6 +45,10 @@ public class AOESpell : MonoBehaviour
         {
             cooldown += Time.deltaTime;
             CheckCooldown();
+        }
+        else
+        {
+            col.size.Set(col.size.x + (1 * Time.deltaTime), col.size.y, col.size.z + (1 * Time.deltaTime));
         }
     }
 

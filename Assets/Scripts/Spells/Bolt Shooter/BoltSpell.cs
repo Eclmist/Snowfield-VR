@@ -2,46 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoltSpell/* : Spell*/ {
+public class BoltSpell : Spell {
+
+    [SerializeField]
+    private GameObject bolt;
 
     [SerializeField]
     private int castCount;
 
- //   protected override void Update()
- //   {
+    protected void Start()
+    {
+        transform.parent = null;
+    }
 
-	//	//Debug.Log("castcount : " + castCount);
+    public override void Update()
+    {
+        base.Update();
 
-	//	if (castCount <= 0)
-	//	{
-	//		var em = Indicator.GetComponent<ParticleSystem>().emission;
-	//		em.enabled = false;
-	//		Destroy(Indicator, 1);
-	//	}
-	//}
+        if (castCount <= 0)
+        {
+            var em = this.gameObject.GetComponent<ParticleSystem>().emission;
+            em.enabled = false;
+            Destroy(this.gameObject, 1);
 
-	////protected override void Start()
-	////{
-	////	transform.parent = null;
-	////	currentInteractingController.SetInteraction(null);
-	////}
+            handler.DecastSpell();
+        }
+    }
 
-	//protected override void OnTriggerPress()
- //   {
-
-
-	//	//if (castCount > 0)
-	//	//{
-	//	//	if (spellPrefab != null)
-	//	//	{
-	//	//		Instantiate(spellPrefab, currentInteractingController.transform).transform.parent = null;
-	//	//		castCount--;
-
-	//	//	}
-
-
-	//	//}
-	//	Instantiate(spellPrefab, currentInteractingController.transform).transform.parent = null;
-	//}
+    public override void OnTriggerPress()
+    {
+        if (castCount > 0)
+        {
+            if (bolt != null)
+            {
+                Instantiate(bolt, this.gameObject.transform).transform.parent = null;
+                castCount--;
+            }
+        }
+    }
 
 }
