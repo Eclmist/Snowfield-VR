@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellCollider : MonoBehaviour {
+public class SpellCollider : MonoBehaviour
+{
 
     [SerializeField]
     protected int DPS;
@@ -32,10 +33,13 @@ public class SpellCollider : MonoBehaviour {
         if (seconds >= 0.5f)
         {
             Monster mob = other.GetComponent<Monster>();
-            if(mob)
-                mob.TakeDamage(DPS / 2, Player.Instance);
+            if (mob)
+            {
+                Player.Instance.CastSpell(DPS / 2, mob);
 
-            seconds = 0;
+
+                seconds = 0;
+            }
         }
     }
 

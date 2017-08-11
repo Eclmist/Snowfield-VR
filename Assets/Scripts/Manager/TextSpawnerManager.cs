@@ -3,40 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextSpawnerManager : MonoBehaviour {
+public class TextSpawnerManager : MonoBehaviour
+{
 
-    [SerializeField]
-    private SpawnedText textPrefab;
-    [SerializeField]
-    private Vector3 offset = new Vector3(0f,0.2f,0f);
+	[SerializeField]
+	private SpawnedText textPrefab;
+	[SerializeField]
+	private Vector3 offset = new Vector3(0f, 0.2f, 0f);
 
 
-    public static TextSpawnerManager Instance;
+	public static TextSpawnerManager Instance;
 
-    void Awake()
+	void Awake()
+	{
+		Instance = this;
+	}
+
+
+    // Generates a text that stays at a position 
+    public void SpawnSoundEffect(string text, Color color, Transform t, Vector3 offset, float duration, float scale = 1)
     {
-        Instance = this;
-    }
-	
-    // Generates a text that floats above the given transform and fades away
-    public void SpawnText(string text, Color color, Transform t)
-    {
-        Collider c = t.GetComponent<Collider>();
-        SpawnedText st;
 
-        if(c)
-            st = Instantiate(textPrefab, (t.position + t.up * (c.bounds.size.y) + offset), t.rotation);
-        else
-            st = Instantiate(textPrefab, (t.position + t.up * + offset.y), t.rotation);
+        
+        SpawnedText st = Instantiate(textPrefab,t.position + offset,Quaternion.identity);
+        
 
+        st.transform.localScale *= scale;
         st.SetText(text);
         st.SetColor(color);
-        Destroy(st.gameObject, st.GetComponentInChildren<Animator>().GetCurrentAnimatorClipInfo(0).Length);
+        st.GetComponentInChildren<Animator>().enabled = false;
+        st.GetComponentInChildren<Outline>().enabled = true;
+        StartCoroutine(Shake(st.gameObject, duration, 0.07f));
 
     }
 
 
-    public void SpawnText(string text, Color color, Transform t, float scale, bool impact = false)
+    public void SpawnText(string text, Color color, Transform t, float scale = 1, bool impact = false)
     {
         Collider c = t.GetComponent<Collider>();
         SpawnedText st;
@@ -59,24 +61,6 @@ public class TextSpawnerManager : MonoBehaviour {
             
 
         Destroy(st.gameObject, tempLength + 1);
-
-    }
-
-
-    // Generates a text that stays at a position 
-    public void SpawnSoundEffect(string text, Color color, Transform t, Vector3 offset, float duration, float scale = 1)
-    {
-
-        
-        SpawnedText st = Instantiate(textPrefab,t.position + offset,Quaternion.identity);
-        
-
-        st.transform.localScale *= scale;
-        st.SetText(text);
-        st.SetColor(color);
-        st.GetComponentInChildren<Animator>().enabled = false;
-        st.GetComponentInChildren<Outline>().enabled = true;
-        StartCoroutine(Shake(st.gameObject, duration, 0.07f));
 
     }
 
@@ -116,7 +100,4 @@ public class TextSpawnerManager : MonoBehaviour {
         g.transform.position = originalPos;
         Destroy(g);
     }
-
-
-
 }

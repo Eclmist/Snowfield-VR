@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamagable
 {
-    void TakeDamage(float damage, Actor attacker);
+    void TakeDamage(float damage, Actor attacker, JobType damageType);
 
     bool CanBeAttacked
     {

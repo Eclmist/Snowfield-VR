@@ -88,7 +88,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1017963938422368
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -670,7 +670,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1324244507002218
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -1430,7 +1430,7 @@ Transform:
   m_LocalScale: {x: 100.000046, y: 100.00002, z: 100.00004}
   m_Children: []
   m_Father: {fileID: 4736752991971616}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4083526442190530
 Transform:
@@ -1734,12 +1734,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1960495089487990}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.490677, y: 2.6656125, z: -16.341091}
+  m_LocalPosition: {x: 14.175632, y: -0.12456441, z: -7.5606003}
   m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_Children:
   - {fileID: 4520931055720958}
   - {fileID: 4102250266574276}
-  - {fileID: 4736752991971616}
+  - {fileID: 4483385160417904}
   - {fileID: 4454012645180912}
   - {fileID: 4883354452213266}
   m_Father: {fileID: 0}
@@ -1791,14 +1791,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1017963938422368}
-  m_LocalRotation: {x: -0.54032016, y: 0.45612958, z: 0.45612952, w: 0.5403202}
-  m_LocalPosition: {x: -0.051, y: 0.581, z: -0.023}
-  m_LocalScale: {x: 43.416576, y: -43.41666, z: 50.091568}
+  m_LocalRotation: {x: -0.54032016, y: 0.45612955, z: 0.4561295, w: 0.54032016}
+  m_LocalPosition: {x: -0.102000095, y: 1.1620001, z: 0.25399968}
+  m_LocalScale: {x: 86.8332, y: -86.83337, z: 100.183205}
   m_Children:
   - {fileID: 4045994628809228}
   - {fileID: 4706560441751422}
-  m_Father: {fileID: 4736752991971616}
-  m_RootOrder: 1
+  m_Father: {fileID: 4379004749616712}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 80.341}
 --- !u!4 &4489567797892144
 Transform:
@@ -1970,6 +1970,7 @@ Transform:
   m_Children:
   - {fileID: 4839304106860524}
   - {fileID: 4880592632592500}
+  - {fileID: 4736752991971616}
   m_Father: {fileID: 4643438672272112}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2146,15 +2147,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1324244507002218}
-  m_LocalRotation: {x: -0.00000008940697, y: -0, z: 0.000000074505806, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.3}
+  m_LocalRotation: {x: -0.22355387, y: 0.000000016656063, z: 0.00000007262019, w: 0.9746916}
+  m_LocalPosition: {x: 0, y: -1.7533553, z: 0.8317812}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 224791915487041850}
-  - {fileID: 4483385160417904}
   - {fileID: 4082295836054484}
   - {fileID: 4867513697899556}
-  m_Father: {fileID: 4379004749616712}
+  m_Father: {fileID: 4603493098771898}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4740193255421548
@@ -2265,7 +2265,7 @@ Transform:
   m_Children:
   - {fileID: 224716752777156862}
   m_Father: {fileID: 4736752991971616}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4872071337344968
 Transform:
@@ -2534,7 +2534,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c2448e451fcc71c4cb5cb3269d7dc7ee, type: 2}
+  - {fileID: 2100000, guid: c8d59a11c0281b54fb7eb6e5e41b4b56, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2914,6 +2914,7 @@ MonoBehaviour:
         statsType: 1
       - value: 3
         statsType: 2
+    expPerLevel: 100000
 --- !u!114 &114175500503086892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3174,14 +3175,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 500
-    statsType: 0
-  - value: 10
-    statsType: 1
-  - value: 10
-    statsType: 2
-  allStats: []
+  baseHealth: 0
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114585616044709886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3282,7 +3281,7 @@ MonoBehaviour:
   aggroLayer:
     serializedVersion: 2
     m_Bits: 8192
-  minimumDistToAvoid: 0.25
+  minimumDistToAvoid: 1
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 4294950911
@@ -10127,7 +10126,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.026, y: 1.169}
+  m_AnchoredPosition: {x: -0.025999999, y: 1.169}
   m_SizeDelta: {x: 0.02, y: 0.005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224792469650160050

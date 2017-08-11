@@ -5,34 +5,43 @@ using System.Collections;
 
 public class StatsContainer : MonoBehaviour
 {
-    [SerializeField]
-    private List<Stats> baseStats = new List<Stats>();
-    [SerializeField]
-    private List<ActiveStats> allStats = new List<ActiveStats>();
-
+    private ActiveStats[] allStats;
+    private float[] baseStats;
+    private bool activated = false;
     private Actor actor;
 
-    
+    [SerializeField]
+    private float baseHealth, baseHealthRegen, baseAttack, baseMana, baseManaRegen, baseMagic;
+
+
+    private ActiveStats health, healthRegen, attack, mana, manaRegen, magic;
 
     protected virtual void Start()
     {
         actor = GetComponent<Actor>();
-        foreach(Stats stat in baseStats)
-        {
-            ActiveStats newStat = new ActiveStats(stat.Type, stat.Max);
-            allStats.Add(newStat);
-        }
+        ActivateStats();
+
         if (actor == null)
         {
             Debug.Log("No actor");
             Destroy(this);
         }
-
-        
-
-        ResetCurrentVariables();
         UpdateVariables();
     }
+
+    protected void ActivateStats()
+    {
+        activated = true;
+        health = new ActiveStats(Stats.StatsType.HEALTH, baseHealth);
+        healthRegen = new ActiveStats(Stats.StatsType.HEALTHREGENERATION, baseHealthRegen);
+        attack = new ActiveStats(Stats.StatsType.ATTACK, baseAttack);
+        mana = new ActiveStats(Stats.StatsType.MANA, baseMana);
+        magic = new ActiveStats(Stats.StatsType.MAGIC, baseMagic);
+        manaRegen = new ActiveStats(Stats.StatsType.MANAREGENERATION, baseManaRegen);
+        allStats = new ActiveStats[] { health, healthRegen, attack, mana, magic, manaRegen };
+        baseStats = new float[] { baseHealth, baseHealthRegen, baseAttack, baseMana, baseMagic, baseManaRegen };
+    }
+
 
     public ActiveStats GetStat(Stats.StatsType type)
     {
@@ -51,26 +60,21 @@ public class StatsContainer : MonoBehaviour
         HandleStatsInteraction();
     }
 
-    
+
     protected void HandleStatsInteraction()
     {
-        ActiveStats health = GetStat(Stats.StatsType.HEALTH);
-        ActiveStats healthRegeneration = GetStat(Stats.StatsType.HEALTHREGENERATION);
-        ActiveStats mana = GetStat(Stats.StatsType.MANA);
-        ActiveStats manaRegeneration = GetStat(Stats.StatsType.MANAREGENERATION);
-
-        if (health != null && healthRegeneration != null && health.Current > 0)
+        if (health != null && healthRegen != null && health.Current > 0)
         {
             if (health.Current < health.Max)
             {
-                health.Current += healthRegeneration.Current * Time.deltaTime;
+                health.Current += healthRegen.Current * Time.deltaTime;
                 if (health.Current > health.Max)
                     health.Current = health.Max;
             }
 
-            if (mana!= null && manaRegeneration != null && mana.Current < mana.Max)
+            if (mana != null && manaRegen != null && mana.Current < mana.Max)
             {
-                mana.Current += manaRegeneration.Current * Time.deltaTime;
+                mana.Current += manaRegen.Current * Time.deltaTime;
                 if (mana.Current > mana.Max)
                     mana.Current = mana.Max;
             }
@@ -101,29 +105,28 @@ public class StatsContainer : MonoBehaviour
         }
     }
 
-   
+
     public void ResetCurrentVariables()
     {
-        foreach (ActiveStats stat in allStats)
-        {
-            stat.Current = stat.Max;
-        }
+        if (activated)
+            foreach (ActiveStats stat in allStats)
+            {
+                stat.Current = stat.Max;
+            }
     }
 
     public void UpdateVariables()
     {
-        for (int i = 0; i < allStats.Count; i++)
+        if (activated)
         {
-            allStats[i].Max = baseStats[i].Max + actor.GetBonusStatValueFromJob(allStats[i].Type);
-            allStats[i].Current = allStats[i].Max;
+            for (int i = 0; i < allStats.Length; i++)
+            {
+                allStats[i].Max = baseStats[i] + actor.GetBonusStatValueFromJob(allStats[i].Type);
+            }
+            ResetCurrentVariables();
         }
     }
 
-    public void AddStats(Stats _baseState)
-    {
-        baseStats.Add(_baseState);
-        ActiveStats newStat = new ActiveStats(_baseState.Type, _baseState.Max);
-        allStats.Add(newStat);
-    }
+
 
 }

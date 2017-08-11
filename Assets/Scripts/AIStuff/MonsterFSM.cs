@@ -22,36 +22,28 @@ public class MonsterFSM : ActorFSM
         animator.SetBool("Attacking", true);
     }
 
-    protected override void UpdatePetrolState()
-    {
-        base.UpdatePetrolState();
-        if (currentState != FSMState.COMBAT)
-        {
-            Vector3 playerPos = Player.Instance.transform.position;
-            playerPos.y = transform.position.y;
-
-            if (Vector3.Distance(transform.position, playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
-            {
-                ChangeState(FSMState.COMBAT);
-                target = Player.Instance;
-            }
-        }
-        //else
-        //{
-        //    Collider collidedObj = CheckObstacles();
-        //    if (collidedObj)
-        //    {
-        //        Debug.Log(collidedObj.gameObject.name);
-        //        target = collidedObj.GetComponent<FriendlyAI>();
-        //        ChangeState(FSMState.COMBAT);
-        //    }
-        //}
-    }
 
     protected override void Awake()
     {
         base.Awake();
         currentMonster = GetComponent<Monster>();
+    }
+
+    protected override bool CheckForTargets()
+    {
+        bool hasTarget = base.CheckForTargets();
+        if (!hasTarget)
+        {
+            Vector3 playerPos = Player.Instance.transform.position;
+
+            if (Vector3.Distance(transform.position, playerPos) <= detectionDistance && Player.Instance.CanBeAttacked)
+            {
+                hasTarget = true;
+                target = Player.Instance;
+            }
+
+        }
+        return hasTarget;
     }
     protected override void UpdateIdleState()
     {

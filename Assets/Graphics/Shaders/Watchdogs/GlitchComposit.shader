@@ -48,11 +48,14 @@
 			sampler2D _CameraDepthTexture;
 			float4 _GlitchColor;
 			half _worldY;
+			half4 _MainTex_ST;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
-				fixed4 glitch = tex2D(_GlitchTex, i.uv);
+				fixed2 fixedUV = UnityStereoScreenSpaceUVAdjust(i.uv, _MainTex_ST);
+
+				fixed4 col = tex2D(_MainTex, fixedUV);
+				fixed4 glitch = tex2D(_GlitchTex, fixedUV);
 
 				fixed colLeft = tex2D(_MainTex, i.uv + fixed2(0.0008, 0)).r;
 				fixed colRight = tex2D(_MainTex, i.uv + fixed2(-0.0008, 0)).r;
@@ -66,7 +69,7 @@
 
 				//return depth + depthLeft + depthUp;
 
-				float rawDepth = DecodeFloatRG(tex2D(_CameraDepthTexture, i.uv_depth));
+				float rawDepth = DecodeFloatRG(tex2D(_CameraDepthTexture, UnityStereoScreenSpaceUVAdjust(i.uv_depth, _MainTex_ST)));
 				float linearDepth = Linear01Depth(rawDepth);
 
 

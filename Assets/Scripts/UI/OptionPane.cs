@@ -80,6 +80,13 @@ public abstract class OptionPane : MonoBehaviour, IUI
 		alreadySetContent = true;
 	}
 
+    public VR_Button GetButton(int i)
+    {
+        if (buttons.Length >= 1 && buttons.Length <= i && buttons[i])
+            return buttons[i];
+        else
+            return null;
+    }
 	public virtual void SetContents(string title, string message, string message2 = null, Sprite icon = null)
 	{
 		if (paneElements.title)

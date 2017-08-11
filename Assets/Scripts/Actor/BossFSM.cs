@@ -129,7 +129,7 @@ public class BossFSM : MonsterFSM
         Vector3 colBounds = CurrentAI.Collider.bounds.extents;
         colBounds.x = 0;
         Collider[] collider = Physics.OverlapSphere(transform.position +
-            transform.forward * colBounds.z, colBounds.z + attackRange ,aggroLayer);
+            transform.forward * colBounds.z, attackRange ,aggroLayer);
         foreach(Collider col in collider)
         {
             IDamagable thisTarget = col.GetComponent<IDamagable>();

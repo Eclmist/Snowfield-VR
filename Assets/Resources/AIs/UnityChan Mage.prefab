@@ -2352,7 +2352,6 @@ GameObject:
   - component: {fileID: 224994045486459474}
   - component: {fileID: 223911770361525002}
   - component: {fileID: 114538622884608632}
-  - component: {fileID: 114876494932476430}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -6493,7 +6492,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1614371202211268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.600536, y: 1.8479714, z: 0.41190338}
+  m_LocalPosition: {x: -0.3471527, y: -0.05606711, z: 7.3466187}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4821706783687900}
@@ -6978,7 +6977,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!82 &82488160005304302
 AudioSource:
   m_ObjectHideFlags: 1
@@ -7107,8 +7106,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   inventory:
   - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
+  - {fileID: 114076423136048150, guid: 7458ca3f24ef4cc4e8324639381c1dd9, type: 2}
   data:
     jobList:
     - currentJobType: 2
@@ -7234,14 +7236,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 100
-    statsType: 0
-  - value: 2
-    statsType: 1
-  - value: 15
-    statsType: 2
-  allStats: []
+  baseHealth: 10
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114213524245367126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7668,12 +7668,12 @@ MonoBehaviour:
   movementSpeed: 3
   aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16384
   minimumDistToAvoid: 1
   avoidanceIgnoreMask:
     serializedVersion: 2
     m_Bits: 4294926335
-  animUseSlot: 0
+  animUseSlot: 1
   attackTimer: 0
 --- !u!114 &114696859292605014
 MonoBehaviour:
@@ -7725,22 +7725,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6928c1ec45c4242b66d81adb4c5d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114876494932476430
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1617873548880114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &114895153171285136
 MonoBehaviour:
   m_ObjectHideFlags: 1

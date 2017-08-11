@@ -14,12 +14,13 @@ public class MessageManager : MonoBehaviour
     {
         [SerializeField]
         private string title;
-        [SerializeField][TextArea]
+        [SerializeField]
+        [TextArea]
         private string message;
         [SerializeField]
         private AudioClip clip;
         private bool isRead;
-		private bool isSent;
+        private bool isSent;
 
         public Mail(string title, string message, AudioClip clip)
         {
@@ -56,24 +57,32 @@ public class MessageManager : MonoBehaviour
             set { this.isRead = value; }
         }
 
-		public bool IsSent
-		{
-			get { return this.isSent; }
-			set { this.isSent = value; }
-		}
+        public bool IsSent
+        {
+            get { return this.isSent; }
+            set { this.isSent = value; }
+        }
 
     }
 
     public static MessageManager Instance;
 
-	[SerializeField] private GameObject MailInterface;
-    [SerializeField] private GridLayoutGroup glp;
-    [SerializeField] private Text messageTitle;
-    [SerializeField] private Text messageBody;
-    [SerializeField] private InteractableMessage interactableMesssage;
-    [SerializeField] private List<Mail> inbox = new List<Mail>();
-    [SerializeField] private int totalUnreadMails;
-    [SerializeField] private AudioClip newMailSound;
+    [SerializeField]
+    private GameObject MailInterface;
+    [SerializeField]
+    private GridLayoutGroup glp;
+    [SerializeField]
+    private Text messageTitle;
+    [SerializeField]
+    private Text messageBody;
+    [SerializeField]
+    private InteractableMessage interactableMesssage;
+    [SerializeField]
+    private List<Mail> inbox = new List<Mail>();
+    [SerializeField]
+    private int totalUnreadMails;
+    [SerializeField]
+    private AudioClip newMailSound;
 
 
     private Mail currentlyDisplayedMail;
@@ -103,42 +112,42 @@ public class MessageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SendMail("Debug Mail","This is a debug mail.\n\nFrom:\nYue Peng", null);
+            SendMail("Debug Mail", "This is a debug mail.\n\nFrom:\nYue Peng", null);
         }
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			DisplayMailInterface();
-		}
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            DisplayMailInterface();
+        }
 
-		UpdateUnreadCounter();
+        UpdateUnreadCounter();
 
     }
 
-	// Call this function when displaying the UI or else mail would not update
-	public void DisplayMailInterface()
-	{
-		foreach(Mail m in inbox)
-		{
-			CreateInteractableMail(m);
-		}
-	}
+    // Call this function when displaying the UI or else mail would not update
+    public void DisplayMailInterface()
+    {
+        foreach (Mail m in inbox)
+        {
+            CreateInteractableMail(m);
+        }
+    }
 
-  
+
     // Send a message to the player's inbox
     public void SendMail(string title, string message, AudioClip clip)
     {
 
-        Mail temp = new Mail(title,message, clip);
+        Mail temp = new Mail(title, message, clip);
         inbox.Add(temp);
-		
-		if(MailInterface.activeSelf)
-		{
-			CreateInteractableMail(temp);
-		}
+
+        if (MailInterface.activeSelf)
+        {
+            CreateInteractableMail(temp);
+        }
 
 
         if (newMailSound)
-            AudioSource.PlayClipAtPoint(newMailSound,Player.Instance.transform.position,0.2f);
+            AudioSource.PlayClipAtPoint(newMailSound, Player.Instance.transform.position, 0.2f);
 
     }
 
@@ -160,32 +169,32 @@ public class MessageManager : MonoBehaviour
     // Select the mail and display it on the main message view
     public void DisplayMail(Mail mail)
     {
-		if(messageBody)
-			messageBody.text = mail.Message;
+        if (messageBody)
+            messageBody.text = mail.Message;
 
-		if (messageTitle)
-			messageTitle.text = mail.Title;
+        if (messageTitle)
+            messageTitle.text = mail.Title;
 
-		//Debug.Log(messageTitle == null);
+        //Debug.Log(messageTitle == null);
 
-	}
+    }
 
-	private void CreateInteractableMail(Mail m)
-	{
-		if(!m.IsSent)
-		{
-			if(interactableMesssage)
-			{
-				m.IsSent = true;
-				Instantiate(interactableMesssage, glp.transform, false).CreateMail(m);
-			}
-			else
-			{
-				Debug.LogError("Cannot not find interactableMessage prefab");
-			}
-			
-		}
-	}
+    private void CreateInteractableMail(Mail m)
+    {
+        if (!m.IsSent)
+        {
+            if (interactableMesssage)
+            {
+                m.IsSent = true;
+                Instantiate(interactableMesssage, glp.transform, false).CreateMail(m);
+            }
+            else
+            {
+                Debug.LogError("Cannot not find interactableMessage prefab");
+            }
+
+        }
+    }
 
     private void UpdateUnreadCounter()
     {
@@ -199,26 +208,4 @@ public class MessageManager : MonoBehaviour
 
         totalUnreadMails = count;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-

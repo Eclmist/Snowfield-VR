@@ -173,4 +173,10 @@ public class AIManager : MonoBehaviour
 		return tempName;
 
 	}
+
+    public void Respawn(AI ai)
+    {
+        ai.Data.GetJob(JobType.COMBAT).ReduceExperiencePercentage(.1f);
+        Spawn(ai, ai.Data.GetJob(JobType.COMBAT).Level * GameConstants.Instance.RespawnTimer, TownManager.Instance.GetRandomSpawnPoint());
+    }
 }

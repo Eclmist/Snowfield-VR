@@ -49,7 +49,8 @@
 				o.uv = v.uv;
 				return o;
 			}
-			
+				half4 _MainTex_ST;
+
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float2 ooo = (i.uv - 0.5) * 2.0;
@@ -58,7 +59,7 @@
 				uv.y = (1 - ooo.x * ooo.x) * sqrt(_intensity) *ooo.y;
 
 
-				float4 normal = tex2D(_dispTex, uv);
+				float4 normal = tex2D(_dispTex, UnityStereoScreenSpaceUVAdjust(uv, _MainTex_ST));
 				//return normal;
 
 				if (i.uv.y < flip_up)
@@ -81,9 +82,9 @@
 				uvG = float2(i.uv.x + mov, i.uv.y + mov);
 				uvB = float2(i.uv.x - abs(mov / 2), i.uv.y + abs(mov / 2));
 
-				float sumR = tex2D(_MainTex, uvR).r;
-				float sumG = tex2D(_MainTex, uvG).g;
-				float sumB = tex2D(_MainTex, uvB).b;
+				float sumR = tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(uvR, _MainTex_ST)).r;
+				float sumG = tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(uvG, _MainTex_ST)).g;
+				float sumB = tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(uvB, _MainTex_ST)).b;
 				return fixed4(sumR, sumG, sumB, 1);
 			}
 			ENDCG

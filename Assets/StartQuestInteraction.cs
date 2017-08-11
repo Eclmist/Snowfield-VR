@@ -14,10 +14,14 @@ public class StartQuestInteraction : QuestInteraction
 
             if (startableQuest != null)
             {
+                int expectedCrateNumber = QuestManager.Instance.GetQuest(startableQuest).ExpectedCrates;
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
-                    "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name,
+                    "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest).Name + " \n(Requires " + expectedCrateNumber + " EXPCrates)",
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
+                if (expectedCrateNumber > Player.Instance.EXPBottles)
+                    op.GetButton(0).interactable = false;
+
                 currentQuestGroup = startableQuest;
                 currentUI = op;
                 return true;
