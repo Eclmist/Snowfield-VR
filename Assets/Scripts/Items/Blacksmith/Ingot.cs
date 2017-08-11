@@ -123,7 +123,7 @@ public class Ingot : BlacksmithItem {
 
         if(isMorphable)
         {
-            if(Random.Range(1,100) >= WeaponTierManager.Instance.GetSuccessRateForTier(physicalMaterial.type))
+            if(Random.Range(1,100) <= WeaponTierManager.Instance.GetSuccessRateForTier(physicalMaterial.type))
             {
                 // succeeded
                 ItemData itemData = WeaponTierManager.Instance.GetWeapon(physicalMaterial.type, targetMorphSteps - preNumberOfHits);

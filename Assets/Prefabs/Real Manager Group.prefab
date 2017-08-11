@@ -1619,6 +1619,22 @@ GameObject:
   m_NavMeshLayer: 3
   m_StaticEditorFlags: 8
   m_IsActive: 1
+--- !u!1 &1804711636719692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4401234954185182}
+  - component: {fileID: 114133786554812300}
+  m_Layer: 0
+  m_Name: Nagano Event Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1813734843066444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1630,6 +1646,22 @@ GameObject:
   - component: {fileID: 114594280407833360}
   m_Layer: 0
   m_Name: TextSpawnerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1817057410379428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4182650468536258}
+  - component: {fileID: 114661286617219990}
+  m_Layer: 0
+  m_Name: MessageManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2105,7 +2137,7 @@ Transform:
   m_Children:
   - {fileID: 224765202291354616}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4053909061026886
 Transform:
@@ -2209,7 +2241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4160059734729524
 Transform:
@@ -2222,7 +2254,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4167092781042954
 Transform:
@@ -2236,6 +2268,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4833202073757662}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4182650468536258
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1817057410379428}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4190381487271226
 Transform:
@@ -2279,7 +2324,7 @@ Transform:
   - {fileID: 4055285339873920}
   - {fileID: 4093211993329544}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4197761213675902
 Transform:
@@ -2305,7 +2350,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4207041009283394
 Transform:
@@ -2386,7 +2431,7 @@ Transform:
   - {fileID: 4685538961288824}
   - {fileID: 4416032514386190}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4275779838792814
 Transform:
@@ -2438,7 +2483,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4299335892015810
 Transform:
@@ -2558,7 +2603,20 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 1
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4401234954185182
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1804711636719692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.4916596, y: 3.4511168, z: 5.4470773}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4411618722511980
 Transform:
@@ -2676,7 +2734,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4515322800423234
 Transform:
@@ -2702,7 +2760,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4528744547449398
 Transform:
@@ -2741,7 +2799,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4549838987699544
 Transform:
@@ -2783,7 +2841,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4575736634272900
 Transform:
@@ -2796,7 +2854,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4582201801633170
 Transform:
@@ -2809,7 +2867,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4590069975447624
 Transform:
@@ -3005,6 +3063,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4401234954185182}
   - {fileID: 4969272630641418}
   - {fileID: 4391709230553954}
   - {fileID: 4727347525383006}
@@ -3023,6 +3082,7 @@ Transform:
   - {fileID: 4499820016490340}
   - {fileID: 4236599844746632}
   - {fileID: 4202098916449428}
+  - {fileID: 4182650468536258}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3049,7 +3109,7 @@ Transform:
   - {fileID: 4718807609648704}
   - {fileID: 4515322800423234}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4750751803946376
 Transform:
@@ -3236,7 +3296,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4969272630641418
 Transform:
@@ -3261,7 +3321,7 @@ Transform:
   - {fileID: 4897862607727090}
   - {fileID: 4769781933696436}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4986202520064436
 Transform:
@@ -3275,7 +3335,7 @@ Transform:
   m_Children:
   - {fileID: 4763061073116016}
   m_Father: {fileID: 4721422464862536}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4988060189791054
 Transform:
@@ -3361,7 +3421,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 417e639b66cd3a24e9c5312be99ce3bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3969,7 +4029,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 417e639b66cd3a24e9c5312be99ce3bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5215,6 +5275,93 @@ MonoBehaviour:
   - {fileID: 114632684278449886}
   - {fileID: 114831187186884266}
   isOccupied: 0
+--- !u!114 &114133786554812300
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1804711636719692}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cf6788461f4b04c9954bfb3cfa31f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceEventObjects:
+    furnace: {fileID: 0}
+  notificationSound: {fileID: 8300000, guid: b8b7b8139a30425408accd06a12a3330, type: 3}
+  events:
+  - invokableEventUpdate:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114133786554812300}
+          m_MethodName: WelcomeEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    startDelay: 0
+    enabled: 1
+  - invokableEventUpdate:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114133786554812300}
+          m_MethodName: BlacksmithTutorialEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    startDelay: 9.2
+    enabled: 1
+  - invokableEventUpdate:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114133786554812300}
+          m_MethodName: SellingTutorialEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    startDelay: 3.7
+    enabled: 1
+  - invokableEventUpdate:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 114133786554812300}
+          m_MethodName: TownUnderAttackEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    startDelay: 3.7
+    enabled: 1
 --- !u!114 &114136839843194192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5467,6 +5614,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   height: 1.75
   dink: {fileID: 0}
   vivePosition: {fileID: 0}
@@ -5481,7 +5630,7 @@ MonoBehaviour:
       - value: 0.1
         statsType: 2
     gold: 2000
-  inCombatZone: 0
+    expBottles: 0
 --- !u!114 &114289551214572104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6310,6 +6459,26 @@ MonoBehaviour:
   - {fileID: 114343490417086442}
   - {fileID: 114894626153842272}
   isOccupied: 0
+--- !u!114 &114661286617219990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1817057410379428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c370c40f63ef544b107e04803ded3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MailInterface: {fileID: 0}
+  glp: {fileID: 0}
+  messageTitle: {fileID: 0}
+  messageBody: {fileID: 0}
+  interactableMesssage: {fileID: 114375687709206040, guid: bb654d06357a3dd4d878adde29d15159,
+    type: 2}
+  inbox: []
+  totalUnreadMails: 0
+  newMailSound: {fileID: 8300000, guid: a54c0986053b76c4ba6a12059fa8bb23, type: 3}
 --- !u!114 &114686473553295882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7506,22 +7675,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponClassList:
   - type: 0
-    successRate: 85.9
+    successRate: 92.7
     itemList: []
   - type: 1
-    successRate: 0
+    successRate: 100
     itemList: []
   - type: 2
-    successRate: 0
+    successRate: 92.4
     itemList: []
   - type: 3
-    successRate: 0
+    successRate: 100
     itemList: []
   - type: 4
-    successRate: 0
+    successRate: 30.4
     itemList: []
   - type: 5
-    successRate: 0
+    successRate: 27.4
     itemList: []
 --- !u!114 &114842777325050438
 MonoBehaviour:
@@ -7823,14 +7992,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 2000
-    statsType: 0
-  - value: 20
-    statsType: 1
-  - value: 100
-    statsType: 2
-  allStats: []
+  baseHealth: 0
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114894589747460882
 MonoBehaviour:
   m_ObjectHideFlags: 1

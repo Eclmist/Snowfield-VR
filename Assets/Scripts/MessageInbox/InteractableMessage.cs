@@ -13,10 +13,7 @@ public class InteractableMessage : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        //if (title.text.Length >= 20)
-        //    title.text = storedMail.Title.Substring(0, 15) + "...";
-        //else
-        //    title.text = storedMail.Title;
+		enabled = true;
 
     }
 
@@ -48,7 +45,5 @@ public class InteractableMessage : MonoBehaviour {
     {
         if(storedMail != null)
             MessageManager.Instance.DisplayMail(storedMail);
-
-		Debug.Log("you are viewing me");
     }
 }
