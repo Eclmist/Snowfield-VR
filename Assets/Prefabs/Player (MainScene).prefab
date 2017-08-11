@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 114772166764073332}
   - component: {fileID: 54603124750173006}
   - component: {fileID: 114886217916729724}
+  - component: {fileID: 114036568663318372}
   m_Layer: 15
   m_Name: Hand2
   m_TagString: Untagged
@@ -341,6 +342,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4661541147294070}
   - component: {fileID: 114146482954486746}
+  - component: {fileID: 114362361298855350}
+  - component: {fileID: 114707485152301548}
   m_Layer: 15
   m_Name: Player (MainScene)
   m_TagString: Untagged
@@ -359,6 +362,7 @@ GameObject:
   - component: {fileID: 114805396872487874}
   - component: {fileID: 54546645325097786}
   - component: {fileID: 114602947365878988}
+  - component: {fileID: 114826505639861010}
   m_Layer: 15
   m_Name: Hand1
   m_TagString: Untagged
@@ -1088,6 +1092,18 @@ MonoBehaviour:
   speed: 4
   shiftSpeed: 16
   showInstructions: 1
+--- !u!114 &114036568663318372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417805208827910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellHandlerPrefab: {fileID: 0}
 --- !u!114 &114076833246344092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1212,6 +1228,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highLightMaterial: {fileID: 2100000, guid: 7b939e5e799d98a469f594828ebab52e, type: 2}
   fireHapticsOnHightlight: 1
+--- !u!114 &114362361298855350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771120410679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe16da6304c66f94d868eac6f65e2908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainHand: 1
+  gestureButton: 0
+  menuButton: 0
+  uiState: 0
+  uiStateLast: 0
+  displayGestureTrail: 1
+  playerID: 0
+  head: {fileID: 4743751599607530}
+  handLeft: {fileID: 4612847225143286}
+  handRight: {fileID: 4386511788017312}
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  spawnControllerModels: 0
+  useCustomControllerModels: 0
+  handLeftModel: {fileID: 0}
+  handRightModel: {fileID: 0}
 --- !u!114 &114385486103434864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1321,6 +1364,21 @@ MonoBehaviour:
   mouseScale: {x: 1, y: 1}
   curvedRange: {x: 1, y: 2}
   inputMethod: 0
+--- !u!114 &114707485152301548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771120410679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b47c2980b93bc48844a54641dab5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 1820063239611696}
+  right: {fileID: 1417805208827910}
+  objects: []
+  assignAllBeforeIdentified: 0
 --- !u!114 &114732884980781484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1415,6 +1473,18 @@ MonoBehaviour:
   _head: {fileID: 4743751599607530}
   _ears: {fileID: 0}
   wireframe: 0
+--- !u!114 &114826505639861010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820063239611696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellHandlerPrefab: {fileID: 0}
 --- !u!114 &114831225246987510
 MonoBehaviour:
   m_ObjectHideFlags: 1
