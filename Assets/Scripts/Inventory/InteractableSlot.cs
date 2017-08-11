@@ -81,8 +81,8 @@ public class InteractableSlot : VR_Interactable_UI
 		{
 			temp.CurrentStack--;
 
-			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference).GetComponent<GenericItem>();
-
+			GenericItem instanceInteractable = Instantiate(temp.StoredItem.ObjectReference,transform.position, temp.StoredItem.ObjectReference.transform.rotation).GetComponent<GenericItem>();
+			instanceInteractable.OnUpdateInteraction(currentInteractingController);
 			instanceInteractable.OnTriggerPress(currentInteractingController);
 
 			if (temp.CurrentStack < 1)
@@ -149,11 +149,11 @@ public class InteractableSlot : VR_Interactable_UI
 	{
 		if (currentInteractingController.UI == this)
 		{
-			Debug.Log("hittttt");
 			GenericItem g = null;
 			if (currentInteractingController.CurrentItemInHand is GenericItem)
 			{
 				g = currentInteractingController.CurrentItemInHand as GenericItem;
+				Debug.Log("0");
 			}
 			Debug.Log(g);
 			if (g)
@@ -165,9 +165,12 @@ public class InteractableSlot : VR_Interactable_UI
 					currentInteractingController.SetModelActive(true);
 					AddToSlot(d);
 					Destroy(g.gameObject);
+					Debug.Log("1");
 				}
+				Debug.Log("2");
 
 			}
+			Debug.Log("3");
 			base.OnTriggerRelease();
 
 		}

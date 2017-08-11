@@ -157,7 +157,6 @@ public class AIManager : MonoBehaviour
 
 	private string GetRandomUniqueName()
 	{
-		Debug.Log(nameParts.Length);
 		string tempName = "UnityChan";
 		bool hasNumber = false;
 

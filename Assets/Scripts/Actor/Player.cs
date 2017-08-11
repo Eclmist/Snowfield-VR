@@ -79,13 +79,14 @@ public class Player : Actor
         {
             Instance = this;
             PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
-			Debug.Log(thisCollider);
+
             if (_data != null)
             {
                 data = _data;
             }
             else
             {
+				data = new PlayerData(data, "Player", null);
 				Job j = Data.AddJob(JobType.BLACKSMITH);
                 Stats s = new Stats(Stats.StatsType.ATTACK, 2);
                 j.AddStats(s);

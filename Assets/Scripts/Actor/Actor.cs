@@ -57,7 +57,6 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
         float bonusValue = 0;
         foreach (Job job in Data.ListOfJobs)
         {
-
             foreach (Stats bonusStat in job.BonusStats)
             {
                 if (bonusStat.Type == s)
