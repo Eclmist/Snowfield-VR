@@ -140,7 +140,7 @@ public class Nagano : MonoBehaviour
 	{
 		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad, "Head next door");
 
-		while (!enteredBlacksmithArea)
+		while (enteredBlacksmithArea == false)
 		{
 
 			yield return null;
@@ -153,7 +153,6 @@ public class Nagano : MonoBehaviour
 
 	private IEnumerator PickUpIngotRoutine()
 	{
-		blacksmithCoroutineRunning = true;
 		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger, "Grab the ingot");
 
 		while (Ingot.pickedUpIngot == false)

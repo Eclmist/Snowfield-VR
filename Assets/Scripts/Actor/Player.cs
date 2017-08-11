@@ -79,7 +79,7 @@ public class Player : Actor
         {
             Instance = this;
             PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
-			Debug.Log(thisCollider);
+
             if (_data != null)
             {
                 data = _data;

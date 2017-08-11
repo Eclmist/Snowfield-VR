@@ -42,7 +42,6 @@ public class Hammer : BlacksmithItem
 			if (source)
 				source.PlayOneShot(source.clip, collision.relativeVelocity.magnitude / 3);
 
-			Debug.Log("Hit On Collision enter" + collision.gameObject.name);
 
 			timeSinceLastHit = 0;
 

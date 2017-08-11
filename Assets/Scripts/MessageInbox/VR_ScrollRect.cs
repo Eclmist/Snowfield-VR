@@ -45,8 +45,6 @@ public class VR_ScrollRect : VR_Interactable_UI {
 
 		sr.verticalNormalizedPosition = targetPos; // * scrollSensitivity;
 
-		Debug.Log ("supposed pos normalized" + targetPos);
-		Debug.Log ("actual pos normalized" + sr.verticalNormalizedPosition);
 
 	}
 

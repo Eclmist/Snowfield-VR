@@ -149,7 +149,6 @@ public class InteractableSlot : VR_Interactable_UI
 	{
 		if (currentInteractingController.UI == this)
 		{
-			Debug.Log("hittttt");
 			GenericItem g = null;
 			if (currentInteractingController.CurrentItemInHand is GenericItem)
 			{
