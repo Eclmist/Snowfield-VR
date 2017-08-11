@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
 
     protected void Update()
     {
@@ -117,7 +118,7 @@ public class GameManager : MonoBehaviour
             if (gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
             {
                 if (!WaveManager.Instance.HasMonster)
-                    AIManager.Instance.SpawnMerchant();
+                    AIManager.Instance.InstantiateMerchant();
                 currentState = GameState.DAYMODE;
 
 				if(currentTax != 0)
