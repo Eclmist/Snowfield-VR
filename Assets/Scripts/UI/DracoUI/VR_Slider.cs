@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class VR_Slider : VR_Button {
 
     [SerializeField] [Range(0, 1)] protected float vibrationThreshold = 0.05F;

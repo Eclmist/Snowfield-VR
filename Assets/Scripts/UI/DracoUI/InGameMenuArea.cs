@@ -8,6 +8,7 @@ public struct InGameMenuPrefabs
     public GameObject characterScreen;
     public GameObject settingsScreen;
     public GameObject quitPrompt;
+    public GameObject mailScreen;
 }
 
 
@@ -33,6 +34,23 @@ public class InGameMenuArea : MonoBehaviour
     { 
         if(prefabs.quitPrompt != null)
             prefabs.quitPrompt.SetActive(active);
+    }
+
+    public void MailActivation(bool active)
+    {
+        if (prefabs.mailScreen != null)
+		{
+			prefabs.mailScreen.SetActive(active);
+			MessageManager.Instance.DisplayMailInterface();
+		}
+    }
+
+    public void Deactivate()
+    {
+        CharacterActivation(false);
+        SettingsActivation(false);
+        QuitGamePrompt(false);
+        MailActivation(false);
     }
 
     public void QuitGame()
