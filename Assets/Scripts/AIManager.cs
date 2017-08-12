@@ -22,6 +22,13 @@ public class AIManager : MonoBehaviour, ICanSerialize
 
 	public static bool canSpawnAI = true;
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "AIData";
+        }
+    }
 
     protected void Awake()
     {
@@ -49,7 +56,7 @@ public class AIManager : MonoBehaviour, ICanSerialize
 
     public void GenerateBaseAIs()
     {
-        List<AdventurerAIData> aiData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
+        List<AdventurerAIData> aiData = (List<AdventurerAIData>)SerializeManager.Load(SerializedFileName);
         if (aiData == null)
         {
             for (int i = 0; i < TownManager.Instance.CurrentTown.Population; i++)
@@ -153,7 +160,7 @@ public class AIManager : MonoBehaviour, ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save("AIData", listOfAIData);
+        //SerializeManager.Save( SerializedFileName, listOfAIData);
     }
 
 

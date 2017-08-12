@@ -60,6 +60,20 @@ public class ItemData : IComparable {
         get { return this.cost; }
     }
 
+    protected GenericItem genericItem;
+
+    public GenericItem GenericItem
+    {
+        get
+        {
+            return genericItem;
+        }
+        set
+        {
+            genericItem = value;
+        }
+    }
+
 	public int CompareTo(object obj)
 	{
 		Weapon currentWeapon = ObjectReference.GetComponent<Weapon>();

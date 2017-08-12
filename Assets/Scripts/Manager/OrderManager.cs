@@ -31,13 +31,13 @@ public class OrderManager : MonoBehaviour
 
 
 
-    public void CompletedOrder(bool success, int reward)
+    public void CompletedOrder(bool success, Order order)
 
     {
         if (success)
-
         {
-            GameManager.Instance.AddPlayerGold(reward);
+            order.AIData.Inventory.AddToInventory(ItemManager.Instance.GetItemData(order.ItemID));
+            GameManager.Instance.AddPlayerGold(order.GoldReward);
         }
     }
 
@@ -46,12 +46,14 @@ public class OrderManager : MonoBehaviour
 
 
 
-    public void StartRequest(AdventurerAIData ai, Order order)
+    public void StartRequest(Order order, AdventurerAIData aidata)
     {
 
         if (order != null)
-
-            OrderBoard.Instance.SpawnOnBoard(order, ai);
+        {
+            order.AIData = aidata;
+            OrderBoard.Instance.SpawnOnBoard(order);
+        }
     }
 
        

@@ -14,18 +14,12 @@ public class OrderSlip : VR_Interactable_UI
 	private Action<bool, OrderSlip> callback;
 	private Text durationText;
 	private Order order;
-	private AdventurerAIData ai;
 	[SerializeField] GameObject detailPane;
 	[SerializeField] AudioClip orderCompleteSound;
 	[SerializeField] AudioClip orderFadeInSound;
 	[SerializeField] AudioClip wrongOrderSound;
 	OptionPane currentOP;
 
-	public AdventurerAIData OrderedAI
-	{
-		get { return this.ai; }
-		set { this.ai = value; }
-	}
 
 	GameObject slip;
 

@@ -29,7 +29,8 @@ public class OrderInteraction : InteractionsWithPlayer
 
     public void StartOrderYesDelegate()
     {
-        OrderManager.Instance.StartRequest(currentAI.Data as AdventurerAIData, currentOrder);
+
+        OrderManager.Instance.StartRequest(currentOrder, currentAI.Data as AdventurerAIData);
     }
 
     public void StartOrderNoDelegate()

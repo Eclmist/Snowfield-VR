@@ -83,6 +83,7 @@ public class AdventurerAIData : ActorData
 
         protected float scale;
         protected Color hairColor;
+        
 
         public CharacterInformation(float _scale, Color _hairColor)
         {
@@ -118,11 +119,21 @@ public class AdventurerAIData : ActorData
             return characterCustomizeInfo;
         }
     }
+    protected Inventory inventory;
+
+    public Inventory Inventory
+    {
+        get
+        {
+            return inventory;
+        }
+    }
 
     public AdventurerAIData(CharacterInformation _ci, ActorData data,string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         questBook = new QuestBook();
         characterCustomizeInfo = _ci;
+        inventory = new Inventory();
     }
 
     public QuestBook QuestBook

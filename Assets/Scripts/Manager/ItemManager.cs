@@ -55,6 +55,7 @@ public class ItemManager : MonoBehaviour
             if (gs != null)
             {
                 gs.ItemID = data.ItemID;
+                data.GenericItem = gs;
 
                 if (gs is Ingot)
                 {

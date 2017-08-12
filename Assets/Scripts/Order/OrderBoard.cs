@@ -103,13 +103,12 @@ public class OrderBoard : MonoBehaviour,ICanSerialize
 	}
 
 
-	public void SpawnOnBoard(Order o, AdventurerAIData ai)
+	public void SpawnOnBoard(Order o)
 	{
 		if (orderList.Count < maxNumberOfOrders)
 		{
 			Slot acquiredSlot = GetAvailableSlot();
 			OrderSlip g = Instantiate(orderG, acquiredSlot.slotPosition + transform.forward * offsetZ, transform.rotation).GetComponentInChildren<OrderSlip>();
-            g.OrderedAI = ai;
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);
@@ -121,7 +120,7 @@ public class OrderBoard : MonoBehaviour,ICanSerialize
 	public void CloseOrder(bool success, OrderSlip slip)
 	{
 		orderList.Remove(slip);
-		OrderManager.Instance.CompletedOrder(success, slip.Reward);
+		OrderManager.Instance.CompletedOrder(success, slip.OrderData);
 	}
 
 	private void GenerateSlots()
@@ -209,7 +208,7 @@ public class OrderBoard : MonoBehaviour,ICanSerialize
         {
             foreach(Order tempOrder in tempOrderList)
             {
-                SpawnOnBoard(tempOrder,tempOrder.AIData);
+                SpawnOnBoard(tempOrder);
             }
         }
     }

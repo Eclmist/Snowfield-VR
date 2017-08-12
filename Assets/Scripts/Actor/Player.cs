@@ -31,6 +31,15 @@ public class Player : Actor,ICanSerialize
         }
     }
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "PlayerData";
+        }
+    }
+
+
     public override ActorData Data
     {
         get
@@ -78,7 +87,7 @@ public class Player : Actor,ICanSerialize
         if (!Instance)
         {
             Instance = this;
-            PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
+            PlayerData _data = (PlayerData)SerializeManager.Load(SerializedFileName);
             if (_data != null)
             {
                 data = _data;
@@ -118,10 +127,10 @@ public class Player : Actor,ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save("PlayerData",data);
+        //SerializeManager.Save(SerializedFileName,data);
     }
 
-    
+
 
     public void AddGold(int value)
     {
