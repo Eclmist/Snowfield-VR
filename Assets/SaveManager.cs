@@ -24,7 +24,7 @@ public class SaveManager : MonoBehaviour {
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             Save();
         }

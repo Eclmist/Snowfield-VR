@@ -82,14 +82,17 @@ public class AdventurerAIData : ActorData
     {
 
         protected float scale;
-        protected Color hairColor;
+
+        protected float r, g, b;
         
 
         public CharacterInformation(float _scale, Color _hairColor)
         {
             scale = _scale;
 
-            hairColor = _hairColor;
+            r = _hairColor.r;
+            g = _hairColor.g;
+            b = _hairColor.b;
         }
 
         public float Scale
@@ -104,7 +107,7 @@ public class AdventurerAIData : ActorData
         {
             get
             {
-                return hairColor;
+                return new Color(r, g, b);
             }
         }
     }
@@ -119,6 +122,8 @@ public class AdventurerAIData : ActorData
             return characterCustomizeInfo;
         }
     }
+
+    [SerializeField]
     protected Inventory inventory;
 
     public Inventory Inventory

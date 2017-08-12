@@ -96,7 +96,7 @@ public class OrderBoard : MonoBehaviour,ICanSerialize
 			{
 				Destroy(s.refOrder.gameObject);
 				s.isTaken = false;
-                Debug.Log("removed");
+
 				break;
 			}
 		}

@@ -143,8 +143,7 @@ public class ItemManager : MonoBehaviour
     {
         
         if (id < itemDataDictionary.Count && id >= 0)
-        {
-            Debug.Log("hit");
+        { 
             return itemDataDictionary[id];
         }
         else
