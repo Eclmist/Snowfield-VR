@@ -9,9 +9,9 @@ public class Inventory
     {
         private int currentStack;
 
-        private IStorable storedItem;
+        private ItemData storedItem;
 
-        public InventorySlot(IStorable item, int quantity)
+        public InventorySlot(ItemData item, int quantity)
         {
             currentStack = quantity;
             storedItem = item;
@@ -29,7 +29,7 @@ public class Inventory
             set { this.currentStack = value; }
         }
 
-        public IStorable StoredItem
+        public ItemData StoredItem
         {
             get { return this.storedItem; }
             set { this.storedItem = value; }
@@ -67,11 +67,6 @@ public class Inventory
 
     }
 
-    //public InventorySlot this[int index]  
-    //{
-    //    get { return this.inventoryItems[index]; }
-    //}
-
 
 
 
@@ -84,12 +79,9 @@ public class Inventory
     }
 
 
-    //public InventorySlot this[int index]  
-    //{
-    //    get { return this.inventoryItems[index]; }
-    //}
 
-    public void AddToInventory(IStorable item, int quantity = 1)
+
+    public void AddToInventory(ItemData item, int quantity = 1)
     {
         foreach (InventorySlot slot in InventoryItemsArr)
         {

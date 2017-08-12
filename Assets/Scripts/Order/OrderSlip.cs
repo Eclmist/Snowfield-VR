@@ -14,14 +14,14 @@ public class OrderSlip : VR_Interactable_UI
 	private Action<bool, OrderSlip> callback;
 	private Text durationText;
 	private Order order;
-	private AdventurerAI ai;
+	private AdventurerAIData ai;
 	[SerializeField] GameObject detailPane;
 	[SerializeField] AudioClip orderCompleteSound;
 	[SerializeField] AudioClip orderFadeInSound;
 	[SerializeField] AudioClip wrongOrderSound;
 	OptionPane currentOP;
 
-	public AdventurerAI OrderedAI
+	public AdventurerAIData OrderedAI
 	{
 		get { return this.ai; }
 		set { this.ai = value; }
@@ -36,6 +36,16 @@ public class OrderSlip : VR_Interactable_UI
 			return reward;
 		}
 	}
+
+    public Order OrderData
+    {
+        get
+        {
+            return this.order;
+        }
+    }
+
+
 	// Use this for initialization
 	public void StartOrder(Order o, Action<bool, OrderSlip> _callback)
 	{
@@ -52,7 +62,6 @@ public class OrderSlip : VR_Interactable_UI
 		durationText = slip.transform.Find("OrderDuration").GetComponent<Text>();
 		slip.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
 		slip.gameObject.SetActive(false);
-		StartCoroutine(OrderCoroutine());
 	}
 
 	protected override void Start()
@@ -61,28 +70,26 @@ public class OrderSlip : VR_Interactable_UI
 
 		if (orderFadeInSound)
 			AudioSource.PlayClipAtPoint(orderFadeInSound, transform.position);
+
+        order.EndTime = Time.realtimeSinceStartup + duration;
 	}
 
+    protected override void Update()
+    {
+        base.Update();
+        durationText.text = duration.ToString();
+        duration = (int)order.EndTime - (int)Time.realtimeSinceStartup;
+        if(duration<=0)
+        {
+            OrderEnd(false);
+        }
 
-	public void ShowOrderInformation()
+    }
+
+
+    public void ShowOrderInformation()
 	{
 		slip.gameObject.SetActive(true);
-	}
-
-
-
-	private IEnumerator OrderCoroutine()
-	{
-		while (true)
-		{
-			durationText.text = duration.ToString();
-			yield return new WaitForSeconds(1);
-			duration--;
-			if (duration <= 0)
-			{
-				OrderEnd(false);
-			}
-		}
 	}
 
 
