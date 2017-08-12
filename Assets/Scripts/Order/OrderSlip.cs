@@ -20,6 +20,7 @@ public class OrderSlip : VR_Interactable_UI
 	[SerializeField] AudioClip orderFadeInSound;
 	[SerializeField] AudioClip wrongOrderSound;
 	OptionPane currentOP;
+    private float endTime;
 
 	public AdventurerAI OrderedAI
 	{
@@ -52,7 +53,6 @@ public class OrderSlip : VR_Interactable_UI
 		durationText = slip.transform.Find("OrderDuration").GetComponent<Text>();
 		slip.transform.Find("OrderImage").GetComponent<Image>().sprite = o.Sprite;
 		slip.gameObject.SetActive(false);
-		StartCoroutine(OrderCoroutine());
 	}
 
 	protected override void Start()
@@ -61,28 +61,26 @@ public class OrderSlip : VR_Interactable_UI
 
 		if (orderFadeInSound)
 			AudioSource.PlayClipAtPoint(orderFadeInSound, transform.position);
+
+        endTime = Time.realtimeSinceStartup + duration;
 	}
 
+    protected override void Update()
+    {
+        base.Update();
+        durationText.text = duration.ToString();
+        duration = (int)endTime - (int)Time.realtimeSinceStartup;
+        if(duration<=0)
+        {
+            OrderEnd(false);
+        }
 
-	public void ShowOrderInformation()
+    }
+
+
+    public void ShowOrderInformation()
 	{
 		slip.gameObject.SetActive(true);
-	}
-
-
-
-	private IEnumerator OrderCoroutine()
-	{
-		while (true)
-		{
-			durationText.text = duration.ToString();
-			yield return new WaitForSeconds(1);
-			duration--;
-			if (duration <= 0)
-			{
-				OrderEnd(false);
-			}
-		}
 	}
 
 
