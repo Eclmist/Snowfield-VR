@@ -1412,6 +1412,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1266354909833290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4351306650398986}
+  - component: {fileID: 114646426338804554}
+  m_Layer: 0
+  m_Name: Wind Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1273044194361950
 GameObject:
   m_ObjectHideFlags: 0
@@ -5872,6 +5888,19 @@ Transform:
   m_Father: {fileID: 4190381487271226}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4351306650398986
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266354909833290}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4721422464862536}
+  m_RootOrder: 25
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4353723276273468
 Transform:
   m_ObjectHideFlags: 1
@@ -6748,6 +6777,7 @@ Transform:
   - {fileID: 4182650468536258}
   - {fileID: 224180511549854202}
   - {fileID: 4877384857183836}
+  - {fileID: 4351306650398986}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11117,7 +11147,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.0017089844, y: 0}
+  savedTextUV0: {x: 0.02734375, y: 0}
   savedFill: 0
 --- !u!114 &114047002088241300
 MonoBehaviour:
@@ -11574,7 +11604,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.0017089844, y: 0}
+  savedTextUV0: {x: 0.02734375, y: 0}
   savedFill: 0
 --- !u!114 &114111889515619162
 MonoBehaviour:
@@ -15233,6 +15263,19 @@ MonoBehaviour:
   audio:
   - {fileID: 82480592089935212}
   - {fileID: 82871633511657530}
+--- !u!114 &114646426338804554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1266354909833290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9acdfe5b378ff384c9dcefb1f216f748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wind: {x: 0.85, y: 0.075, z: 0.4, w: 0.5}
+  windFrequency: 0.75
 --- !u!114 &114649438210032474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15784,7 +15827,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.0021972656, y: 0.006591797}
+  savedTextUV0: {x: 0.03515625, y: 0.10546875}
   savedFill: 0
 --- !u!114 &114723135218551454
 MonoBehaviour:
@@ -17971,7 +18014,7 @@ MonoBehaviour:
   savedUp: {x: -0.00000007996981, y: -1, z: -0.00000005527937}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0, y: 0.0009765625}
+  savedTextUV0: {x: 0, y: 0.53564453}
   savedFill: 0
 --- !u!114 &114846684629436736
 MonoBehaviour:

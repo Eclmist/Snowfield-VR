@@ -123,7 +123,7 @@ public class Nagano : MonoBehaviour,ICanSerialize
 		foreach (Hand hand in player.hands)
 		{
 			ControllerButtonHints.ShowTextHint(hand, btn, text, glowbtn);
-			AudioSource.PlayClipAtPoint(notificationSound, hand.transform.position);
+			AudioSource.PlayClipAtPoint(notificationSound, hand.transform.position, 0.1F);
 		}
 	}
 

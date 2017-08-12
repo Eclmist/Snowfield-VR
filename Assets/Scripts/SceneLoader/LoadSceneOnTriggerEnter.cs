@@ -6,7 +6,6 @@ public class LoadSceneOnTriggerEnter : MonoBehaviour {
 
 	public int sceneIndexToLoad;
 
-
 	// Use this for initialization
 	protected void OnTriggerEnter(Collider other)
 	{
@@ -15,5 +14,4 @@ public class LoadSceneOnTriggerEnter : MonoBehaviour {
 			LoadScene.Instance.Load(sceneIndexToLoad);
 		}
 	}
-
 }
