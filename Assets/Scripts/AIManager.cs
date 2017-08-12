@@ -65,7 +65,14 @@ public class AIManager : MonoBehaviour, ICanSerialize
             }
         }
         else
+        {
             listOfAIData = aiData;
+            foreach(AdventurerAIData d in listOfAIData)
+            {
+                d.Inventory.FetchAllStoredItemsFromID();
+            }
+        }
+           
     }
 
     

@@ -8,8 +8,9 @@ public class Inventory
     public class InventorySlot
     {
         private int currentStack;
-
+        [System.NonSerialized]
         private ItemData storedItem;
+        private int itemID;
 
         public InventorySlot(ItemData item, int quantity)
         {
@@ -34,6 +35,13 @@ public class Inventory
             get { return this.storedItem; }
             set { this.storedItem = value; }
         }
+
+        public int ItemID
+        {
+            get { return this.itemID; }
+            set { this.itemID = value; }
+        }
+
 
         public void EmptySlot()
         {
@@ -112,7 +120,13 @@ public class Inventory
         }
     }
 
-
+    public void FetchAllStoredItemsFromID()
+    {
+        foreach(InventorySlot s in inventoryItemsArr)
+        {
+            s.StoredItem = ItemManager.Instance.GetItemData(s.ItemID);
+        }
+    }
 
 
 }
