@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public class ItemData : IStorable, IComparable {
+public class ItemData : IComparable {
 
     [SerializeField]
     private int ID;
