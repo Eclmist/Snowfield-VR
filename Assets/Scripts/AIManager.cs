@@ -26,6 +26,7 @@ public class AIManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
+			//Collide
         }
         else
         {
