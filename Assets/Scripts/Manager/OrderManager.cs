@@ -46,7 +46,7 @@ public class OrderManager : MonoBehaviour
 
 
 
-    public void StartRequest(AdventurerAI ai, Order order)
+    public void StartRequest(AdventurerAIData ai, Order order)
     {
 
         if (order != null)

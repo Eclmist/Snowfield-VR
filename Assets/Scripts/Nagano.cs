@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,7 +27,7 @@ public class LevelEvent
 }
 
 
-public class Nagano : MonoBehaviour
+public class Nagano : MonoBehaviour,ICanSerialize
 {
 
     
@@ -36,7 +37,6 @@ public class Nagano : MonoBehaviour
 	private static bool currentEventCompleted = false;
 	[SerializeField] private List<LevelEvent> events;
 	[Header("CURRENT RUNNING EVENT")][SerializeField]private LevelEvent currentEvent;
-    private const string serializedName = "NaganoCurrentEvent";
     private int previousIndex = -1;
 
 	private float timer = 0;
@@ -44,7 +44,7 @@ public class Nagano : MonoBehaviour
     #region ISerializable
     public void Save()
     {
-        SerializeManager.Save(serializedName, currentEvent.EventIndex);
+        SerializeManager.Save(SerializedFileName, currentEvent.EventIndex);
     }
     #endregion
 
@@ -58,7 +58,7 @@ public class Nagano : MonoBehaviour
                 events[i].EventIndex = i;
         }
 
-        object o = SerializeManager.Load(serializedName);
+        object o = SerializeManager.Load(SerializedFileName);
 
         if(o!=null)
             previousIndex = (int)o;
@@ -272,7 +272,15 @@ public class Nagano : MonoBehaviour
 	private bool sellingRoutineStarted = false;
 	private int startingNumberOfOrders;
 
-	public void SellingTutorialEvent()
+    public string SerializedFileName
+    {
+        get
+        {
+            return "NaganoCurrentEvent";
+        }
+    }
+
+    public void SellingTutorialEvent()
 	{
 		if(OrderBoard.Instance.CurrentNumberOfOrders > 0 && !sellingRoutineStarted)
 		{

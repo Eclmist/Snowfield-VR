@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class Order {
 
     private string name;
@@ -12,6 +13,7 @@ public class Order {
     private int id;
 	private PhysicalMaterial.Type materialType;
     private float endTime;
+    private AdventurerAIData aiData;
 
     public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id)
     {
@@ -69,6 +71,11 @@ public class Order {
         set { this.endTime = value; }
     }
 
+    public AdventurerAIData AIData
+    {
+        get { return this.aiData; }
+        set { this.aiData = value; }
+    }
 
 
 

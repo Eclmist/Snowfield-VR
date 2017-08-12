@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StoragePanel : MonoBehaviour {
+public class StoragePanel : MonoBehaviour,ICanSerialize{
 
     public static StoragePanel Instance;
 
@@ -46,7 +47,15 @@ public class StoragePanel : MonoBehaviour {
         get { return this.inventory; }
     }
 
-    #region ISerializable
+    public string SerializedFileName
+    {
+        get
+        {
+            return "StoragePanelIndexList";
+        }
+    }
+
+    #region ICanSerialize
     public void Save()
     {
         List<int> indexList = new List<int>();
@@ -55,13 +64,13 @@ public class StoragePanel : MonoBehaviour {
             indexList.Add(s.StoredItem.ItemID);
         }
 
-        SerializeManager.Save("StoragePanelIndexList", indexList);
+        SerializeManager.Save(SerializedFileName, indexList);
     }
 
     public void Load()
     {
         List<int> indexList = new List<int>();
-        object o = SerializeManager.Load("StoragePanelIndexList");
+        object o = SerializeManager.Load(SerializedFileName);
         if( o!= null)
         {
             indexList = (List<int>)o;
@@ -83,11 +92,13 @@ public class StoragePanel : MonoBehaviour {
 
     private void Start()
 	{
-        Load();
+        
         inventory = new Inventory();
         glp = slotPanel.GetComponent<GridLayoutGroup>();
 		InitializeInteractableSlots ();
-	}
+
+        Load();
+    }
 
     
 	void Update()
