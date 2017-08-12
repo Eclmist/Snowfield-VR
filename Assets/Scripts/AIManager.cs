@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AIManager : MonoBehaviour
+public class AIManager : MonoBehaviour, ICanSerialize
 {
 
     private List<AdventurerAIData> listOfAIData = new List<AdventurerAIData>(), instantiatedAIData = new List<AdventurerAIData>();
@@ -28,7 +28,6 @@ public class AIManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-			//Collide
         }
         else
         {
@@ -62,6 +61,7 @@ public class AIManager : MonoBehaviour
             listOfAIData = aiData;
     }
 
+    
     public void StartSpawningAllAdventurerAIs()
     {
         int timePeriod = 0;
@@ -151,7 +151,7 @@ public class AIManager : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    public void Save()
     {
         //SerializeManager.Save("AIData", listOfAIData);
     }

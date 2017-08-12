@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : Actor
+public class Player : Actor,ICanSerialize
 {
 
     public float height = 1.75f;//Default hardcoded player heigh
@@ -116,7 +116,7 @@ public class Player : Actor
         //Lose here
     }
 
-    protected void OnDisable()
+    public void Save()
     {
         //SerializeManager.Save("PlayerData",data);
     }

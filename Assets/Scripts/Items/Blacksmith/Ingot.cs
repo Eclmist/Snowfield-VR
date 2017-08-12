@@ -74,7 +74,6 @@ public class Ingot : BlacksmithItem {
         {
             ingotDeformer = GetComponent<IngotDeformer>();
 			initialMaterial = Instantiate(meshRenderer.material);
-            currentTemperature = 0; // Assume 0 to be room temperature for ez calculations
         }
 
         currentMorphSteps = 0;
@@ -148,8 +147,18 @@ public class Ingot : BlacksmithItem {
         }
     }
 
+    public override GenericItemSceneData GetSceneData()
+    {
+        GenericItemSceneData data = base.GetSceneData();
+        return new IngotSceneData(data.ID,data.Position, data.Rotation, currentTemperature);
+    }
 
-
+    public override void SetupObject(GenericItemSceneData data)
+    {
+        base.SetupObject(data);
+        Debug.Log(((IngotSceneData)data).Temperature);
+        currentTemperature = ((IngotSceneData)data).Temperature;
+    }
     //--------------- Properties -----------------//
 
     public int OreComposition

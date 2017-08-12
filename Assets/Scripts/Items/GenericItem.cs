@@ -413,11 +413,16 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	}
 
+    public virtual GenericItemSceneData GetSceneData()
+    {
+        return new GenericItemSceneData(itemID, transform.position, transform.rotation);
+    }
 
-
-
-
-	//public abstract void UpdatePosition();
-
+    public virtual void SetupObject(GenericItemSceneData data)
+    {
+        transform.position = data.Position;
+        transform.rotation = data.Rotation;
+        itemID = data.ID;
+    }
 
 }
