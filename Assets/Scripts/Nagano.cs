@@ -16,33 +16,66 @@ public class LevelEvent
     public UnityEvent invokableEventUpdate;
     [Range(0, 100)] public float startDelay;
     public bool enabled = true;
+    private int eventIndex;
+
+    public int EventIndex
+    {
+        get { return this.eventIndex; }
+        set { this.eventIndex = value; }
+    }
 }
 
 
 public class Nagano : MonoBehaviour
 {
 
-
+    
 	[SerializeField] private ReferenceEventObjects referenceEventObjects;
 	[SerializeField] private AudioClip notificationSound;
 	private Valve.VR.InteractionSystem.Player player;
 	private static bool currentEventCompleted = false;
 	[SerializeField] private List<LevelEvent> events;
 	[Header("CURRENT RUNNING EVENT")][SerializeField]private LevelEvent currentEvent;
+    private const string serializedName = "NaganoCurrentEvent";
+    private int previousIndex = -1;
 
 	private float timer = 0;
 
-	private void Awake()
+    #region ISerializable
+    public void Save()
+    {
+        SerializeManager.Save(serializedName, currentEvent.EventIndex);
+    }
+    #endregion
+
+
+    private void Awake()
 	{
+
+        if(events.Count > 0)
+        {
+            for (int i = 0; i < events.Count; i++)
+                events[i].EventIndex = i;
+        }
+
+        object o = SerializeManager.Load(serializedName);
+
+        if(o!=null)
+            previousIndex = (int)o;
+
+
 		if (enabled)
 			AIManager.canSpawnAI = false;
+
+        
 	}
 
 	// Use this for initialization
 	private void Start()
 	{
 		player = Valve.VR.InteractionSystem.Player.instance;
-		currentEvent = null;
+        currentEvent = null;
+        
 	}
 
 	// Update is called once per frame
@@ -52,7 +85,7 @@ public class Nagano : MonoBehaviour
 
 		while (currentEvent == null)
 		{
-			if (events.Count <= 0) //No more events, can kill level blueprint already
+			if (events.Count <= 0)
 			{
 				enabled = false;
 				return;
@@ -61,7 +94,7 @@ public class Nagano : MonoBehaviour
 			currentEvent = events[0];
 			events.RemoveAt(0);
 
-			if (!currentEvent.enabled)
+			if (!currentEvent.enabled || currentEvent.EventIndex < previousIndex)
 				currentEvent = null;
 		}
 
@@ -83,6 +116,7 @@ public class Nagano : MonoBehaviour
 	{
 		currentEventCompleted = true;
 	}
+
 
 	private void ShowControllerHints(Valve.VR.EVRButtonId btn, string text, bool glowbtn = true)
 	{
@@ -110,7 +144,6 @@ public class Nagano : MonoBehaviour
 	{
 		if(GameManager.firstGame)
 		{
-
 			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
 			CompleteCurrentEvent();
 		}
@@ -132,7 +165,7 @@ public class Nagano : MonoBehaviour
 
 	public void BlacksmithTutorialEvent()
 	{
-
+        
 		if (!blacksmithCoroutineRunning)
 		{
 			blacksmithCoroutineRunning = true;

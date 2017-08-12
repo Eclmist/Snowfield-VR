@@ -46,8 +46,44 @@ public class StoragePanel : MonoBehaviour {
         get { return this.inventory; }
     }
 
+    #region ISerializable
+    public void Save()
+    {
+        List<int> indexList = new List<int>();
+        foreach(Inventory.InventorySlot s in inventory.InventoryItemsArr)
+        {
+            indexList.Add(s.StoredItem.ItemID);
+        }
+
+        SerializeManager.Save("StoragePanelIndexList", indexList);
+    }
+
+    public void Load()
+    {
+        List<int> indexList = new List<int>();
+        object o = SerializeManager.Load("StoragePanelIndexList");
+        if( o!= null)
+        {
+            indexList = (List<int>)o;
+        }
+
+        if(indexList.Count > 0)
+        {
+            foreach(int i in indexList)
+            {
+                inventory.AddToInventory(ItemManager.Instance.ItemDataDictionary[i]);
+            }
+        }
+        
+    }
+
+
+    #endregion
+
+
     private void Start()
 	{
+        Load();
         inventory = new Inventory();
         glp = slotPanel.GetComponent<GridLayoutGroup>();
 		InitializeInteractableSlots ();
