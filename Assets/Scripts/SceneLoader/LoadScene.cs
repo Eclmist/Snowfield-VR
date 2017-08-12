@@ -11,6 +11,7 @@ namespace SceneLoader
 		public static LoadScene Instance;
 
 		private AsyncOperation ao;
+		private AsyncOperation uao;
 		private bool coroutineStarted = false;
 
 
@@ -25,45 +26,32 @@ namespace SceneLoader
 
 		}
 
-		private int targetIndex;
-
 		//TODO: Samuel: Make some overloads for this function
 		public void Load(int index)
 		{
-			targetIndex = index;
-			FadeCamera.Fade(Color.white, 1, 1, LoadCallback);
-		}
-
-		private void LoadCallback()
-		{
-			// Load the loading screen scene
-			SceneManager.LoadSceneAsync(1);
-
-			if (!coroutineStarted)
-				StartCoroutine(LoadLevelAsync(targetIndex));
+			StartCoroutine(LoadLevelAsync(index));
 		}
 
 		IEnumerator LoadLevelAsync(int index)
 		{
 			coroutineStarted = true;
 
+			SteamVR_Fade.Start(Color.clear, 0);
+			SteamVR_Fade.Start(Color.white, 2);
+
 			ao = SceneManager.LoadSceneAsync(index);
 			ao.allowSceneActivation = false;
 
+			yield return new WaitForSeconds(3);
+			ao.allowSceneActivation = true;
+
 			while (!ao.isDone)
 			{
-				LoadingScreen.progress = ao.progress;
-
-				if (ao.progress >= 0.9F)
-				{
-					if (Input.anyKeyDown)
-					ao.allowSceneActivation = true;
-				
-				}
-
 				yield return null;
 			}
 
+			SteamVR_Fade.Start(Color.white, 0);
+			SteamVR_Fade.Start(Color.clear, 2);
 			coroutineStarted = false;
 		}
 	}

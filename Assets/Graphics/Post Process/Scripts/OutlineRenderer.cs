@@ -59,7 +59,7 @@ public class OutlineRenderer : MonoBehaviour
 		tempSecondaryCamera.clearFlags = CameraClearFlags.SolidColor;
 		tempSecondaryCamera.backgroundColor = Color.black;
 		tempSecondaryCamera.cullingMask = LayerMask.GetMask("Interactable", "Player");
-		tempSecondaryCamera.useOcclusionCulling = false;
+		tempSecondaryCamera.farClipPlane = 20;
 		//make the temporary rendertexture
 
 		//set the camera's target texture when rendering
