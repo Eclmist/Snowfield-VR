@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AIManager : MonoBehaviour
+public class AIManager : MonoBehaviour, ICanSerialize
 {
 
     private List<AdventurerAIData> listOfAIData = new List<AdventurerAIData>(), instantiatedAIData = new List<AdventurerAIData>();
@@ -20,15 +20,21 @@ public class AIManager : MonoBehaviour
     [Range(0, 50)]
     protected int timeBetweenAISpawn;
 
-	public static bool canSpawnAI = true;
+    public static bool canSpawnAI = true;
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "AIData";
+        }
+    }
 
     protected void Awake()
     {
         if (!Instance)
         {
             Instance = this;
-			//Collide
         }
         else
         {
@@ -43,14 +49,13 @@ public class AIManager : MonoBehaviour
     {
         GenerateBaseAIs();
         if (canSpawnAI)
-        {
             StartSpawningAllAdventurerAIs();
-        }
+
     }
 
     public void GenerateBaseAIs()
     {
-        List<AdventurerAIData> aiData = (List<AdventurerAIData>)SerializeManager.Load("AIData");
+        List<AdventurerAIData> aiData = (List<AdventurerAIData>)SerializeManager.Load(SerializedFileName);
         if (aiData == null)
         {
             for (int i = 0; i < TownManager.Instance.CurrentTown.Population; i++)
@@ -59,8 +64,16 @@ public class AIManager : MonoBehaviour
             }
         }
         else
+        {
             listOfAIData = aiData;
+            foreach (AdventurerAIData d in listOfAIData)
+            {
+                d.Inventory.FetchAllStoredItemsFromID();
+            }
+        }
+
     }
+
 
     public void StartSpawningAllAdventurerAIs()
     {
@@ -80,8 +93,8 @@ public class AIManager : MonoBehaviour
             adventurerAI = Instantiate(((GameObject)Resources.Load(data.Path))).GetComponent<AdventurerAI>();
             instantiatedAIData.Add(data);
             adventurerAI.Data = data;
+            adventurerAI.name = data.Name;
             CharacterRigDefiner def = adventurerAI.GetComponent<CharacterRigDefiner>();
-            Debug.Log(def.HairMat.Count);
             foreach (Material m in def.HairMat)
             {
                 m.SetColor("_Color", data.CustomizeInfo.HairColor);
@@ -110,7 +123,6 @@ public class AIManager : MonoBehaviour
 
         AdventurerAIData newData = new AdventurerAIData(ci, newAI.Data, name, myPath);//Random name gen
         listOfAIData.Add(newData);
-        Debug.Log("created");
         return newData;
     }
 
@@ -151,9 +163,9 @@ public class AIManager : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    public void Save()
     {
-        //SerializeManager.Save("AIData", listOfAIData);
+        SerializeManager.Save(SerializedFileName, listOfAIData);
     }
 
 
@@ -208,6 +220,13 @@ public class AIManager : MonoBehaviour
         if (hasNumber)
             tempName += ((int)(Random.Range(1, 99)));
 
+        foreach (AdventurerAIData data in listOfAIData)
+        {
+            if (data.Name.Equals(tempName))
+            {
+                return GetRandomUniqueName();
+            }
+        }
         return tempName;
 
     }
@@ -216,5 +235,15 @@ public class AIManager : MonoBehaviour
     {
         ai.Data.GetJob(JobType.COMBAT).ReduceExperiencePercentage(.1f);
         Spawn(ai, ai.Data.GetJob(JobType.COMBAT).Level * GameConstants.Instance.RespawnTimer, TownManager.Instance.GetRandomSpawnPoint());
+    }
+
+    public AdventurerAIData GetAIData(string name)
+    {
+        foreach (AdventurerAIData data in listOfAIData)
+        {
+            if (data.Name.Equals(name))
+                return data;
+        }
+        return null;
     }
 }

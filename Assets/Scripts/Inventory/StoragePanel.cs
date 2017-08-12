@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StoragePanel : MonoBehaviour,ICanSerialize{
+public class StoragePanel : MonoBehaviour, ICanSerialize
+{
 
     public static StoragePanel Instance;
 
     private void Awake()
     {
-        Instance = this;   
+        Instance = this;
     }
 
 
@@ -22,9 +23,9 @@ public class StoragePanel : MonoBehaviour,ICanSerialize{
     private int currentPageNumber = 0;
     //private List<InventorySlot> slotReferenceList = new List<InventorySlot>();
     [SerializeField]
-	private GameObject interactiveSlot;
-	[SerializeField]
-	private GameObject slotPanel;	// Contains the gridLayoutGroup
+    private GameObject interactiveSlot;
+    [SerializeField]
+    private GameObject slotPanel;	// Contains the gridLayoutGroup
     private GridLayoutGroup glp;
 
     public int NumberOfSlotsPerPage
@@ -51,39 +52,30 @@ public class StoragePanel : MonoBehaviour,ICanSerialize{
     {
         get
         {
-            return "StoragePanelIndexList";
+            return "StoragePanel";
         }
     }
 
     #region ICanSerialize
     public void Save()
     {
-        List<int> indexList = new List<int>();
-        foreach(Inventory.InventorySlot s in inventory.InventoryItemsArr)
-        {
-            indexList.Add(s.StoredItem.ItemID);
-        }
 
-        SerializeManager.Save(SerializedFileName, indexList);
+
+        SerializeManager.Save(SerializedFileName, inventory);
     }
 
     public void Load()
     {
-        List<int> indexList = new List<int>();
-        object o = SerializeManager.Load(SerializedFileName);
-        if( o!= null)
+        Inventory o = (Inventory)SerializeManager.Load(SerializedFileName);
+        if (o != null)
         {
-            indexList = (List<int>)o;
+            inventory = o;
+            inventory.FetchAllStoredItemsFromID();
         }
-
-        if(indexList.Count > 0)
+        else
         {
-            foreach(int i in indexList)
-            {
-                inventory.AddToInventory(ItemManager.Instance.ItemDataDictionary[i]);
-            }
+            inventory = new Inventory();
         }
-        
     }
 
 
@@ -91,33 +83,24 @@ public class StoragePanel : MonoBehaviour,ICanSerialize{
 
 
     private void Start()
-	{
-        
-        inventory = new Inventory();
-        glp = slotPanel.GetComponent<GridLayoutGroup>();
-		InitializeInteractableSlots ();
-
+    {
         Load();
+        
+        glp = slotPanel.GetComponent<GridLayoutGroup>();
+        InitializeInteractableSlots();
     }
 
-    
-	void Update()
-	{
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            inventory.AddToInventory(ItemManager.Instance.GetItemData(6), 1);
-        }
-	}
 
-    
+
+
 
     // Create the intereactable slots
-	private void InitializeInteractableSlots()
-	{
-		for(int i = 0;i<numberOfSlots; i++)
-		{
-			GameObject g = Instantiate (interactiveSlot);
-            g.transform.SetParent(glp.transform,false);
+    private void InitializeInteractableSlots()
+    {
+        for (int i = 0; i < numberOfSlots; i++)
+        {
+            GameObject g = Instantiate(interactiveSlot);
+            g.transform.SetParent(glp.transform, false);
             g.transform.localPosition = Vector3.zero;
             g.transform.localScale = Vector3.one;
 
@@ -128,24 +111,24 @@ public class StoragePanel : MonoBehaviour,ICanSerialize{
 
         }
 
-	}
+    }
 
 
     public void DisplayNextPage()
     {
-        if (currentPageNumber < numberOfPages-1)
+        if (currentPageNumber < numberOfPages - 1)
             currentPageNumber++;
     }
 
     public void DisplayPrevPage()
     {
-        if(currentPageNumber > 0 )
+        if (currentPageNumber > 0)
         {
             currentPageNumber--;
         }
     }
-    
-    
+
+
 
 
 }

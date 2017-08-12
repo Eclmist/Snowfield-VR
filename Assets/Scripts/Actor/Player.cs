@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : Actor
+public class Player : Actor,ICanSerialize
 {
 
     public float height = 1.75f;//Default hardcoded player heigh
@@ -30,6 +30,15 @@ public class Player : Actor
             currentGroundHeight = value;
         }
     }
+
+    public string SerializedFileName
+    {
+        get
+        {
+            return "PlayerData";
+        }
+    }
+
 
     public override ActorData Data
     {
@@ -78,7 +87,7 @@ public class Player : Actor
         if (!Instance)
         {
             Instance = this;
-            PlayerData _data = (PlayerData)SerializeManager.Load("PlayerData");
+            PlayerData _data = (PlayerData)SerializeManager.Load(SerializedFileName);
             if (_data != null)
             {
                 data = _data;
@@ -116,12 +125,12 @@ public class Player : Actor
         //Lose here
     }
 
-    protected void OnDisable()
+    public void Save()
     {
-        //SerializeManager.Save("PlayerData",data);
+        //SerializeManager.Save(SerializedFileName,data);
     }
 
-    
+
 
     public void AddGold(int value)
     {

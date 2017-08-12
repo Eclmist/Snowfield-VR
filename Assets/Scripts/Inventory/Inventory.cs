@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Inventory
 {
     [System.Serializable]
     public class InventorySlot
     {
         private int currentStack;
-
+        [System.NonSerialized]
         private ItemData storedItem;
+
+        [SerializeField]
+        private int itemID;
 
         public InventorySlot(ItemData item, int quantity)
         {
@@ -32,8 +36,24 @@ public class Inventory
         public ItemData StoredItem
         {
             get { return this.storedItem; }
-            set { this.storedItem = value; }
+            set
+            {
+                ItemData data = value;
+                if (data == null)
+                    itemID = -1;
+                else
+                    itemID = data.ItemID;
+
+                this.storedItem = value;
+            }
         }
+
+        public int ItemID
+        {
+            get { return this.itemID; }
+            set { this.itemID = value; }
+        }
+
 
         public void EmptySlot()
         {
@@ -43,7 +63,7 @@ public class Inventory
         }
 
     }
-
+    [SerializeField]
     private InventorySlot[] inventoryItemsArr;
     private const int maxNumberOfSlots = 100;
 
@@ -55,6 +75,7 @@ public class Inventory
         for (int i = 0; i < maxNumberOfSlots; i++)
         {
             inventoryItemsArr[i] = new InventorySlot();
+            inventoryItemsArr[i].ItemID = -1;
         }
     }
 
@@ -83,16 +104,17 @@ public class Inventory
 
     public void AddToInventory(ItemData item, int quantity = 1)
     {
+        
         foreach (InventorySlot slot in InventoryItemsArr)
         {
             InventorySlot tempSlot = slot;
 
-
             //fill up the slot with the existing item
-            if (tempSlot.StoredItem == null || item.ItemID == tempSlot.StoredItem.ItemID)
+            if (tempSlot.StoredItem == null || item.ItemID == tempSlot.ItemID)
             {
                 if (tempSlot.StoredItem == null)
                     tempSlot.StoredItem = item;
+
 
                 int currentVal = tempSlot.CurrentStack + quantity;
                 if (currentVal <= tempSlot.StoredItem.MaxStackSize)
@@ -112,17 +134,23 @@ public class Inventory
         }
     }
 
-
+    public void FetchAllStoredItemsFromID()
+    {
+        foreach (InventorySlot s in inventoryItemsArr)
+        {
+            s.StoredItem = ItemManager.Instance.GetItemData(s.ItemID);
+        }
+    }
 
 
 }
 
 
 
-    
 
 
-    
+
+
 
 
 

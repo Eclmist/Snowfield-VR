@@ -5,10 +5,11 @@ using UnityEngine;
 public class OrderManager : MonoBehaviour
 
 {
-    public static OrderManager Instance;  
+    public static OrderManager Instance;
     [SerializeField]
     private int baseDuration;
-    [SerializeField][Range(1,10)]
+    [SerializeField]
+    [Range(1, 10)]
     private int levelToDurationMultiplier;
 
 
@@ -26,18 +27,21 @@ public class OrderManager : MonoBehaviour
 
     private void Update()
     {
-       
+
     }
 
 
 
-    public void CompletedOrder(bool success, int reward)
+    public void CompletedOrder(bool success, Order order)
 
     {
         if (success)
-
         {
-            GameManager.Instance.AddPlayerGold(reward);
+            AdventurerAIData data = AIManager.Instance.GetAIData(order.AIData);
+            if (data != null)
+                data.Inventory.AddToInventory(ItemManager.Instance.GetItemData(order.ItemID));
+
+            GameManager.Instance.AddPlayerGold(order.GoldReward);
         }
     }
 
@@ -46,20 +50,22 @@ public class OrderManager : MonoBehaviour
 
 
 
-    public void StartRequest(AdventurerAIData ai, Order order)
+    public void StartRequest(Order order, string aiName)
     {
 
         if (order != null)
-
-            OrderBoard.Instance.SpawnOnBoard(order, ai);
+        {
+            order.AIData = aiName;
+            OrderBoard.Instance.SpawnOnBoard(order);
+        }
     }
 
-       
+
 
     public Order GenerateOrder()
     {
-		// TO DO
-		Player currentPlayer = Player.Instance;
+        // TO DO
+        Player currentPlayer = Player.Instance;
 
         Order newOrder = null;
 
@@ -77,11 +83,11 @@ public class OrderManager : MonoBehaviour
 
         totalExperienceValue = 0;
 
-		foreach (Job job in Player.Instance.JobList)
+        foreach (Job job in Player.Instance.JobList)
 
         {
 
-			totalExperienceValue += job.Experience;
+            totalExperienceValue += job.Experience;
 
             if (totalExperienceValue >= randomValue)
 
@@ -89,11 +95,11 @@ public class OrderManager : MonoBehaviour
                 switch (job.Type)
 
                 {
-					case JobType.ALCHEMY:
-	
-						break;
+                    case JobType.ALCHEMY:
 
-					case JobType.BLACKSMITH:
+                        break;
+
+                    case JobType.BLACKSMITH:
 
                         Ingot tempIngot = ItemManager.Instance.GetRandomUnlockedIngot();
                         Debug.Log(tempIngot.name);
@@ -105,31 +111,27 @@ public class OrderManager : MonoBehaviour
                         if (tempCraftedItem)
                             currentMaterial = BlacksmithManager.Instance.GetPhysicalMaterialInfo(tempCraftedItem.GetPhysicalMaterial());
 
-                        newOrder = new Order(refData.ObjectReference.name
+                        newOrder = new Order(((job.Level * levelToDurationMultiplier) + baseDuration)
 
-                    , refData.Icon
-
-                    , ((job.Level * levelToDurationMultiplier) + baseDuration)
-
-                    , job.Level  * currentMaterial.CostMultiplier ,
+                    , job.Level * currentMaterial.CostMultiplier,
 
                     refData.ItemID,
                     currentMaterial.type);
 
                         break;
 
-					case JobType.COMBAT:
+                    case JobType.COMBAT:
 
-						break;
-					
+                        break;
 
-				}
+
+                }
 
             }
         }
 
-		return newOrder;
-	}
+        return newOrder;
+    }
 
-   
+
 }

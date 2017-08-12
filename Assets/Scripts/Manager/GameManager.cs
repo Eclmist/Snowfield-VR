@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour,ICanSerialize
 {
 
     public static GameManager Instance;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         if (!Instance)
         {
             Instance = this;
-            GameClock checkClock = (GameClock)SerializeManager.Load("GameClock");
+            GameClock checkClock = (GameClock)SerializeManager.Load(SerializedFileName);
             if (checkClock != null)
             {
                 gameClock = checkClock;
@@ -89,6 +89,13 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "GameClock";
+        }
+    }
 
     protected void Update()
     {
@@ -156,10 +163,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    protected void OnDisable()
+    public void Save()
     {
-        //SerializeManager.Save("GameClock", gameClock);
+        //SerializeManager.Save(SerializedFileName, gameClock);
     }
-
 
 }

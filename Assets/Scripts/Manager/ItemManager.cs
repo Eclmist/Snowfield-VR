@@ -46,11 +46,6 @@ public class ItemManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
-
-    void Start()
-    {
-        // Populate reference dictionaries and lists
         foreach (ItemData data in itemDataList)
         {
             itemDictionary.Add(data.ItemID, data.ObjectReference);
@@ -60,6 +55,7 @@ public class ItemManager : MonoBehaviour
             if (gs != null)
             {
                 gs.ItemID = data.ItemID;
+                data.GenericItem = gs;
 
                 if (gs is Ingot)
                 {
@@ -70,6 +66,7 @@ public class ItemManager : MonoBehaviour
 
         }
     }
+
 
     public ItemData GetRandomUnlockedItem()
     {
@@ -144,8 +141,9 @@ public class ItemManager : MonoBehaviour
 
     public ItemData GetItemData(int id)
     {
-        if (id < itemDataDictionary.Count)
-        {
+        
+        if (id < itemDataDictionary.Count && id >= 0)
+        { 
             return itemDataDictionary[id];
         }
         else

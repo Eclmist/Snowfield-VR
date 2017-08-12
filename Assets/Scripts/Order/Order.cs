@@ -4,47 +4,42 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class Order {
+public class Order
+{
 
-    private string name;
-    private Sprite sprite;
     private int duration;//i feel like having an actual time here would be better 
     private int goldReward;
     private int id;
-	private PhysicalMaterial.Type materialType;
-    private float endTime;
-    private AdventurerAIData aiData;
+    private PhysicalMaterial.Type materialType;
+    private float elapsedTime;
+    private string aiData;
 
-    public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id)
+    public Order(int _duration, int _goldReward, int _id)
     {
-        name = _name;
-        sprite = _sprite;
         duration = _duration;
         goldReward = _goldReward;
         id = _id;
     }
 
-	public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id,PhysicalMaterial.Type type)
-	{
-		name = _name;
-		sprite = _sprite;
-		duration = _duration;
-		goldReward = _goldReward;
-		id = _id;
-		materialType = type;
-	}
-
-
-	public string Name
+    public Order(int _duration, int _goldReward, int _id, PhysicalMaterial.Type type)
     {
-        get{ return this.name; }
+
+        duration = _duration;
+        goldReward = _goldReward;
+        id = _id;
+        materialType = type;
+    }
+
+
+    public string Name
+    {
+        get { return ItemManager.Instance.GetItemData(ItemID).ObjectReference.name; }
     }
 
     public Sprite Sprite
     {
-        get { return this.sprite; }
+        get { return ItemManager.Instance.GetItemData(ItemID).Icon; }
     }
-
     public int Duration
     {
         get { return this.duration; }
@@ -60,18 +55,18 @@ public class Order {
         get { return this.id; }
     }
 
-	public PhysicalMaterial.Type MaterialType
-	{
-		get { return this.materialType; }
-	}
-
-    public float EndTime
+    public PhysicalMaterial.Type MaterialType
     {
-        get { return this.endTime; }
-        set { this.endTime = value; }
+        get { return this.materialType; }
     }
 
-    public AdventurerAIData AIData
+    public float ElapsedTime
+    {
+        get { return elapsedTime; }
+        set { elapsedTime = value; }
+    }
+
+    public string AIData
     {
         get { return this.aiData; }
         set { this.aiData = value; }

@@ -60,7 +60,7 @@ public class AdventurerFSM : FriendlyAiFSM
 		{
 			if (currentState == FSMState.COMBAT)
 			{
-				(currentFriendlyAI as AdventurerAI).EquipRandomWeapons();
+				(currentFriendlyAI as AdventurerAI).EquipStrongestWeapon();
 				attackTimer = 20;
 			}
 			else
