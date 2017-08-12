@@ -39,9 +39,7 @@ public class InteractableSlot : VR_Interactable_UI
 		{
 			image.color = new Color(1, 1, 1, 1);
 			stack.color = new Color(1, 1, 1, 1);
-			//temp = image.color;
-			//temp.a = 1;
-			//image.color = temp;
+
 			image.sprite = GetReferredSlot().StoredItem.Icon;
 			stack.text = GetReferredSlot().CurrentStack.ToString();
 
@@ -95,7 +93,7 @@ public class InteractableSlot : VR_Interactable_UI
 	}
 
 
-	private void AddToSlot(IStorable item)
+	private void AddToSlot(ItemData item)
 	{
 		Inventory.InventorySlot temp = GetReferredSlot();
 
@@ -124,15 +122,6 @@ public class InteractableSlot : VR_Interactable_UI
 
 	}
 
-	//protected override void OnTriggerEnter(Collider other)
-	//{
-	//    storagePanel.NumberOfHoveredSlots++;
-	//}
-
-	//protected override void OnTriggerExit(Collider other)
-	//{
-	//    storagePanel.NumberOfHoveredSlots--;
-	//}
 
 
 
