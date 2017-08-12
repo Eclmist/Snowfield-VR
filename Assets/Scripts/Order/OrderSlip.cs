@@ -20,7 +20,6 @@ public class OrderSlip : VR_Interactable_UI
 	[SerializeField] AudioClip orderFadeInSound;
 	[SerializeField] AudioClip wrongOrderSound;
 	OptionPane currentOP;
-    private float endTime;
 
 	public AdventurerAI OrderedAI
 	{
@@ -62,14 +61,14 @@ public class OrderSlip : VR_Interactable_UI
 		if (orderFadeInSound)
 			AudioSource.PlayClipAtPoint(orderFadeInSound, transform.position);
 
-        endTime = Time.realtimeSinceStartup + duration;
+        order.EndTime = Time.realtimeSinceStartup + duration;
 	}
 
     protected override void Update()
     {
         base.Update();
         durationText.text = duration.ToString();
-        duration = (int)endTime - (int)Time.realtimeSinceStartup;
+        duration = (int)order.EndTime - (int)Time.realtimeSinceStartup;
         if(duration<=0)
         {
             OrderEnd(false);

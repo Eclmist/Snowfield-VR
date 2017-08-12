@@ -11,7 +11,8 @@ public class Order {
     private int goldReward;
     private int id;
 	private PhysicalMaterial.Type materialType;
-    
+    private float endTime;
+
     public Order(string _name, Sprite _sprite, int _duration, int _goldReward, int _id)
     {
         name = _name;
@@ -61,6 +62,12 @@ public class Order {
 	{
 		get { return this.materialType; }
 	}
+
+    public float EndTime
+    {
+        get { return this.endTime; }
+        set { this.endTime = value; }
+    }
 
 
 
