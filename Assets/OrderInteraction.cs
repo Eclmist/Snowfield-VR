@@ -11,7 +11,7 @@ public class OrderInteraction : InteractionsWithPlayer
     {
         hasInteracted = true;
 
-        if (!OrderBoard.Instance.IsMaxedOut && currentAI is AdventurerAI)
+        if (!OrderBoard.Instance.IsMaxedOut && currentAI.Data is AdventurerAIData)
         {
             currentOrder = OrderManager.Instance.GenerateOrder();
             if (currentOrder != null)
@@ -29,7 +29,8 @@ public class OrderInteraction : InteractionsWithPlayer
 
     public void StartOrderYesDelegate()
     {
-        OrderManager.Instance.StartRequest(currentAI as AdventurerAI, currentOrder);
+
+        OrderManager.Instance.StartRequest(currentOrder, currentAI.Data as AdventurerAIData);
     }
 
     public void StartOrderNoDelegate()

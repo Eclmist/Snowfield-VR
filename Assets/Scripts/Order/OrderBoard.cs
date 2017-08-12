@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderBoard : MonoBehaviour
+public class OrderBoard : MonoBehaviour,ICanSerialize
 {
     [SerializeField]
     private List<Transform> t;
@@ -68,14 +69,24 @@ public class OrderBoard : MonoBehaviour
 		}
 	}
 
-	// Use this for initialization
-	private void Start()
+    public string SerializedFileName
+    {
+        get
+        {
+            return "OrderBoard";
+        }
+    }
+
+    // Use this for initialization
+    private void Start()
 	{
 		maxNumberOfOrders = rowElements * colElements;
 		slots = new Slot[maxNumberOfOrders];
 		boxCollider = GetComponent<BoxCollider>();
 		GenerateSlots2();
-	}
+
+        Load();
+    }
 
 	public void RemoveFromBoard(OrderSlip order)
 	{
@@ -92,13 +103,12 @@ public class OrderBoard : MonoBehaviour
 	}
 
 
-	public void SpawnOnBoard(Order o, AdventurerAI ai)
+	public void SpawnOnBoard(Order o)
 	{
 		if (orderList.Count < maxNumberOfOrders)
 		{
 			Slot acquiredSlot = GetAvailableSlot();
 			OrderSlip g = Instantiate(orderG, acquiredSlot.slotPosition + transform.forward * offsetZ, transform.rotation).GetComponentInChildren<OrderSlip>();
-            g.OrderedAI = ai;
 			acquiredSlot.isTaken = true;
 			acquiredSlot.refOrder = g;
 			orderList.Add(g);
@@ -110,7 +120,7 @@ public class OrderBoard : MonoBehaviour
 	public void CloseOrder(bool success, OrderSlip slip)
 	{
 		orderList.Remove(slip);
-		OrderManager.Instance.CompletedOrder(success, slip.Reward);
+		OrderManager.Instance.CompletedOrder(success, slip.OrderData);
 	}
 
 	private void GenerateSlots()
@@ -171,7 +181,35 @@ public class OrderBoard : MonoBehaviour
 		return null;
 	}
 
+    public void Save()
+    {
+        List<Order> currentListOfOrders = new List<Order>();
+        
+        foreach(Slot s in slots)
+        {
+            if(s.isTaken)
+            {
+                currentListOfOrders.Add(s.refOrder.OrderData);
+            }
+        }
 
 
+        SerializeManager.Save(SerializedFileName, currentListOfOrders);
+    }
 
+    public void Load()
+    {
+        List<Order> tempOrderList = new List<Order>();
+        object o = SerializeManager.Load(SerializedFileName);
+        if (o != null)
+            tempOrderList = (List<Order>)o;
+
+        if(tempOrderList.Count > 0)
+        {
+            foreach(Order tempOrder in tempOrderList)
+            {
+                SpawnOnBoard(tempOrder);
+            }
+        }
+    }
 }

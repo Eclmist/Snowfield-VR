@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour,ICanSerialize
         if (!Instance)
         {
             Instance = this;
-            GameClock checkClock = (GameClock)SerializeManager.Load("GameClock");
+            GameClock checkClock = (GameClock)SerializeManager.Load(SerializedFileName);
             if (checkClock != null)
             {
                 gameClock = checkClock;
@@ -89,6 +89,13 @@ public class GameManager : MonoBehaviour,ICanSerialize
     }
 
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "GameClock";
+        }
+    }
 
     protected void Update()
     {
@@ -158,7 +165,7 @@ public class GameManager : MonoBehaviour,ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save("GameClock", gameClock);
+        //SerializeManager.Save(SerializedFileName, gameClock);
     }
 
 }

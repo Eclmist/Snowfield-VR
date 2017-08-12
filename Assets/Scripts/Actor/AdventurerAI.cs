@@ -8,11 +8,6 @@ public class AdventurerAI : FriendlyAI
     //private List<Relation> actorRelations = new List<Relation>();
 
     [SerializeField]
-    private List<Equipment> inventory = new List<Equipment>();
-
-
-
-    [SerializeField]
     protected AdventurerAIData data;
 
     public override ActorData Data
@@ -68,22 +63,27 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-    public bool EquipRandomWeapons()
+    public bool EquipStrongestWeapon()
     {
         float currentDamage = -1;
         Weapon currentWeapon = null;
-        foreach (Equipment equip in inventory)
+        foreach (Inventory.InventorySlot slot in data.Inventory.InventoryItemsArr)
         {
-            if (equip is Weapon)
+            ItemData data = slot.StoredItem;
+            if (data == null)
+                break;
+            else if (data.GenericItem is Weapon)
             {
-                if ((equip as Weapon).Damage > currentDamage)
+
+                if ((data.GenericItem as Weapon).Damage > currentDamage)
                 {
-                    currentDamage = (equip as Weapon).Damage;
-                    currentWeapon = (equip as Weapon);
+                    currentDamage = (data.GenericItem as Weapon).Damage;
+                    currentWeapon = (data.GenericItem as Weapon);
                 }
 
             }
         }
+
         if (currentWeapon != null)
         {
             ChangeWield(Instantiate(currentWeapon));
@@ -220,7 +220,7 @@ public class AdventurerAI : FriendlyAI
 
     public override void TakeDamage(float damage, Actor attacker, JobType type)
     {
-        base.TakeDamage(damage, attacker,type);
+        base.TakeDamage(damage, attacker, type);
         if (statsContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             AIManager.Instance.Respawn(this);
@@ -244,9 +244,9 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-    public override void DealDamage(float damage, IDamagable target,JobType damageType)
+    public override void DealDamage(float damage, IDamagable target, JobType damageType)
     {
-        base.DealDamage(damage, target,damageType);
+        base.DealDamage(damage, target, damageType);
         CombatManager.Instance.PlayRandomHitSoundAt(target.transform);
 
     }

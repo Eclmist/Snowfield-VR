@@ -9,6 +9,13 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
         Load();
     }
 
+    public string SerializedFileName
+    {
+        get
+        {
+            return "SceneDataInfo";
+        }
+    }
     public void Save()
     {
         List<GenericItemSceneData> allData = new List<GenericItemSceneData>();
@@ -18,12 +25,14 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
             if (item.isActiveAndEnabled && !GetComponent<DroppedItem>())
                 allData.Add(item.GetSceneData());
         }
-        SerializeManager.Save("SceneDataInfo", allData);
+        SerializeManager.Save(SerializedFileName, allData);
     }
+
+    
 
     public void Load()
     {
-        List<GenericItemSceneData> allData = (List<GenericItemSceneData>)SerializeManager.Load("SceneDataInfo");
+        List<GenericItemSceneData> allData = (List<GenericItemSceneData>)SerializeManager.Load(SerializedFileName);
         if (allData != null)
             foreach (GenericItemSceneData data in allData)
             {

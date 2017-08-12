@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public class ItemData : IStorable, IComparable {
+public class ItemData : IComparable {
 
     [SerializeField]
     private int ID;
@@ -58,6 +58,20 @@ public class ItemData : IStorable, IComparable {
     public int Cost
     {
         get { return this.cost; }
+    }
+
+    protected GenericItem genericItem;
+
+    public GenericItem GenericItem
+    {
+        get
+        {
+            return genericItem;
+        }
+        set
+        {
+            genericItem = value;
+        }
     }
 
 	public int CompareTo(object obj)
