@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 114772166764073332}
   - component: {fileID: 54603124750173006}
   - component: {fileID: 114886217916729724}
-  - component: {fileID: 114355935937915980}
+  - component: {fileID: 114350389200846922}
   m_Layer: 15
   m_Name: Hand2
   m_TagString: Untagged
@@ -225,6 +225,8 @@ GameObject:
   - component: {fileID: 114036266192207270}
   - component: {fileID: 114161132442480140}
   - component: {fileID: 114939243126948612}
+  - component: {fileID: 114258374562594620}
+  - component: {fileID: 114654980936453966}
   m_Layer: 0
   m_Name: FallbackObjects
   m_TagString: MainCamera
@@ -394,6 +396,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4661541147294070}
   - component: {fileID: 114146482954486746}
+  - component: {fileID: 114874284301540376}
+  - component: {fileID: 114857814440275270}
   m_Layer: 15
   m_Name: Player (MainScene)
   m_TagString: Player
@@ -413,6 +417,7 @@ GameObject:
   - component: {fileID: 54546645325097786}
   - component: {fileID: 114602947365878988}
   - component: {fileID: 114103861826219458}
+  - component: {fileID: 114789627668412822}
   m_Layer: 15
   m_Name: Hand1
   m_TagString: Untagged
@@ -805,7 +810,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1771120410679574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7049043, y: 1, z: -1.22}
+  m_LocalPosition: {x: 0.7049043, y: 1, z: -0.0044680657}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4017875325413130}
@@ -1483,6 +1488,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highLightMaterial: {fileID: 2100000, guid: 7b939e5e799d98a469f594828ebab52e, type: 2}
   fireHapticsOnHightlight: 1
+--- !u!114 &114350389200846922
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417805208827910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellHandlerPrefab: {fileID: 0}
 --- !u!114 &114377290625523260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1705,6 +1722,18 @@ MonoBehaviour:
   controllerPrefab: {fileID: 168468, guid: 3f39fc63a93686e4a8e9168ee73f24d9, type: 2}
   showDebugText: 0
   spewDebugText: 0
+--- !u!114 &114789627668412822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820063239611696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellHandlerPrefab: {fileID: 0}
 --- !u!114 &114805396872487874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1789,6 +1818,48 @@ MonoBehaviour:
   menuOffset: 40
   scaleLimits: {x: 0.1, y: 5}
   scaleRate: 0.5
+--- !u!114 &114857814440275270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771120410679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b47c2980b93bc48844a54641dab5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 1820063239611696}
+  right: {fileID: 1417805208827910}
+  objects: []
+  assignAllBeforeIdentified: 0
+--- !u!114 &114874284301540376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1771120410679574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe16da6304c66f94d868eac6f65e2908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainHand: 1
+  gestureButton: 0
+  menuButton: 0
+  uiState: 0
+  uiStateLast: 0
+  displayGestureTrail: 1
+  playerID: 0
+  head: {fileID: 4310102642653208}
+  handLeft: {fileID: 4612847225143286}
+  handRight: {fileID: 4386511788017312}
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  spawnControllerModels: 0
+  useCustomControllerModels: 0
+  handLeftModel: {fileID: 0}
+  handRightModel: {fileID: 0}
 --- !u!114 &114886217916729724
 MonoBehaviour:
   m_ObjectHideFlags: 1

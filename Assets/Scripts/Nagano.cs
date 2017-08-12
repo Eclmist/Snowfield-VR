@@ -32,6 +32,12 @@ public class Nagano : MonoBehaviour
 
 	private float timer = 0;
 
+	private void Awake()
+	{
+		if (enabled)
+			AIManager.canSpawnAI = false;
+	}
+
 	// Use this for initialization
 	private void Start()
 	{
