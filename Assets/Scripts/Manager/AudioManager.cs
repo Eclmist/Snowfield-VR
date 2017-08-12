@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
 
-    [SerializeField]
+
+	[Tooltip("0 being midnight and 0.5 being noon")]
+	[SerializeField] [Range(0, 1)] private float dayStartAt;
+
+	[Tooltip("0 being midnight and 0.5 being noon")]
+	[SerializeField]
+	[Range(0, 1)]
+	private float nightStartAt;
+
+	[SerializeField]
     protected AudioSource ambient;
 
     [SerializeField]
@@ -14,70 +23,75 @@ public class AudioManager : MonoBehaviour {
     protected AudioSource nightTime;
 
     protected bool dayIsPlaying = false;
-    protected bool nightIsPlaying = false;
+
 
     protected void Awake()
     {
-        ambient.Play();
-        dayTime.Play();
-    }
+		ambient.Play();
+		//StartCoroutine(FadeIn(ambient));
+	}
 
     protected void Update()
     {
-        //if (timeline == day && !dayIsPlaying)    //**Future Implementation
-        //{
-        //    if (nightIsPlaying)
-        //    {
-        //        StartCoroutine(FadeOut(nightTime));
-        //        dayTime.Play();
-        //        StartCoroutine(FadeIn(dayTime));
-        //    }
-        //}
-        //else if (timeline == night && !nightIsPlaying)
-        //{
-        //    if (dayIsPlaying)
-        //    {
-        //        StartCoroutine(FadeOut(ambient));
-        //        StartCoroutine(FadeOut(dayTime));
-        //        nightTime.Play();
-        //        StartCoroutine(FadeIn(nightTime));
-        //    }
-        //}
+		if (GameManager.Instance)
+		{
 
-        Debug();
-    }
+			// if daytime
+			if (GameManager.Instance.GameClock.TimeOfDay > dayStartAt && GameManager.Instance.GameClock.TimeOfDay < nightStartAt)
+			{
+				if (!dayIsPlaying)
+				{
+					dayIsPlaying = true;
+					StartCoroutine(FadeOut(nightTime));
+					StartCoroutine(StartPlayingAfterRandomTime(dayTime));
+				}
+			}
+			else
+			{
+				if (dayIsPlaying)
+				{
+					dayIsPlaying = false;
+					StartCoroutine(FadeOut(dayTime));
+					StartCoroutine(StartPlayingAfterRandomTime(nightTime));
+				}
 
-    protected IEnumerator FadeIn(AudioSource audio)
+			}
+		}
+
+		//Debug();
+	}
+
+	protected IEnumerator StartPlayingAfterRandomTime(AudioSource audio)
+	{
+		yield return new WaitForSeconds(Random.Range(5, 30));
+
+		yield return StartCoroutine(FadeIn(audio));
+	}
+
+
+
+	protected IEnumerator FadeIn(AudioSource audio)
     {
-        audio.volume = 0.0f;
+		audio.Play();
 
-        while (audio.volume < 1)
+		while (audio.volume < 1)
         {
-            audio.volume += 0.01f;
+            audio.volume += Time.deltaTime;
 
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
         }
     }
 
     protected IEnumerator FadeOut(AudioSource audio)
     {
-        while (audio.volume > 0)
+		while (audio.volume > 0)
         {
-            audio.volume -= 0.02f;
+            audio.volume -= Time.deltaTime;
 
-            yield return new WaitForSeconds(0.01f);
-        }
+			yield return null;
+		}
 
-        if(audio == dayTime)
-        {
-            dayIsPlaying = false;
-        }
-        else if(audio == nightTime)
-        {
-            nightIsPlaying = false;
-        }
-
-        audio.Stop();
+		audio.Stop();
     }
 
     protected void Debug()

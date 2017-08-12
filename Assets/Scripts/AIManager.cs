@@ -20,12 +20,15 @@ public class AIManager : MonoBehaviour
     [Range(0, 50)]
     protected int timeBetweenAISpawn;
 
+	public static bool canSpawnAI = true;
+
 
     protected void Awake()
     {
         if (!Instance)
         {
             Instance = this;
+			//Collide
         }
         else
         {
@@ -39,9 +42,8 @@ public class AIManager : MonoBehaviour
     protected void Start()
     {
         GenerateBaseAIs();
-        if (!GameManager.firstGame)
+        if (canSpawnAI)
         {
-            Debug.Log("hit");
             StartSpawningAllAdventurerAIs();
         }
     }

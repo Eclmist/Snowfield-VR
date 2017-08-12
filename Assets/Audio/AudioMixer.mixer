@@ -29,6 +29,7 @@ AudioMixerController:
     - d9e5b7c8ed3ddad4caaedcba2962fe37
     - d2a1ec72ef7b0b541b165798ef436889
     - 6dbee5e964d0f3d4890b59d9c599f163
+    - b32314671dce10d41aac0f6a4631dd12
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -44,6 +45,7 @@ AudioMixerGroupController:
   - {fileID: 243848294139104064}
   - {fileID: 243664500400643508}
   - {fileID: 243241513758497740}
+  - {fileID: 243665365418476270}
   m_Volume: 4dc7f4a191d78ba44bf581d5038c6983
   m_Pitch: b731f913fc25ba14fa36a999a4a90955
   m_Effects:
@@ -112,6 +114,23 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!243 &243665365418476270
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: DeathParticleSound
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: b32314671dce10d41aac0f6a4631dd12
+  m_Children: []
+  m_Volume: 5df9daab9522dfe4f8aa22b0cff2155b
+  m_Pitch: e8c2787c2a6806e4c88a66a3efb2d52c
+  m_Effects:
+  - {fileID: 244381176541754538}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &243848294139104064
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -151,6 +170,19 @@ AudioMixerEffectController:
   m_EffectID: 7250c6aefca7d8d43acef4525528b414
   m_EffectName: Attenuation
   m_MixLevel: c20fb2bf9d8865247971acfcfaa18123
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &244381176541754538
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_EffectID: 854faa1fe5ea30e449ac04648184e42e
+  m_EffectName: Attenuation
+  m_MixLevel: 910aaa83d5414e3498fb84ca172a4e08
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
