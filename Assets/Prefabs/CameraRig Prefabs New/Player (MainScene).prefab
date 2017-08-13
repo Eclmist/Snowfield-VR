@@ -342,13 +342,14 @@ GameObject:
   - component: {fileID: 4743751599607530}
   - component: {fileID: 20741590080772982}
   - component: {fileID: 114150299839540878}
-  - component: {fileID: 92869773239510448}
   - component: {fileID: 124345582822565776}
   - component: {fileID: 114520262155675150}
   - component: {fileID: 114076833246344092}
-  - component: {fileID: 114820345691343028}
+  - component: {fileID: 92876610653341372}
+  - component: {fileID: 114849059319250794}
+  - component: {fileID: 114793097272066368}
   m_Layer: 15
-  m_Name: VRCamera
+  m_Name: VRCamera (eye)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -516,7 +517,7 @@ Transform:
   m_GameObject: {fileID: 1358884343337532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children:
   - {fileID: 4247148866751168}
   - {fileID: 4429361974505800}
@@ -810,7 +811,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1771120410679574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7049043, y: 1, z: -0.0044680657}
+  m_LocalPosition: {x: 1.065, y: 0.923, z: 6.365}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4017875325413130}
@@ -966,7 +967,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.05
-  far clip plane: 300
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1266,7 +1267,7 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1415243659184106}
   m_Enabled: 1
---- !u!92 &92869773239510448
+--- !u!92 &92876610653341372
 Behaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1499,7 +1500,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellHandlerPrefab: {fileID: 0}
+  spellHandlerPrefab: {fileID: 114593021068837236, guid: 19f674c4f414434419b97b00f0df7c69,
+    type: 2}
 --- !u!114 &114377290625523260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1733,7 +1735,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a298a4a5e82644a962d3caeb929656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellHandlerPrefab: {fileID: 0}
+  spellHandlerPrefab: {fileID: 114593021068837236, guid: 19f674c4f414434419b97b00f0df7c69,
+    type: 2}
+--- !u!114 &114793097272066368
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1706666727654536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bca9ccf900ccc84c887d783321d27e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _head: {fileID: 4743751599607530}
+  _ears: {fileID: 0}
+  wireframe: 1
 --- !u!114 &114805396872487874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1759,20 +1776,6 @@ MonoBehaviour:
   controllerPrefab: {fileID: 168468, guid: 3f39fc63a93686e4a8e9168ee73f24d9, type: 2}
   showDebugText: 0
   spewDebugText: 0
---- !u!114 &114820345691343028
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1706666727654536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bca9ccf900ccc84c887d783321d27e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _head: {fileID: 4743751599607530}
-  _ears: {fileID: 0}
-  wireframe: 0
 --- !u!114 &114831225246987510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1818,6 +1821,18 @@ MonoBehaviour:
   menuOffset: 40
   scaleLimits: {x: 0.1, y: 5}
   scaleRate: 0.5
+--- !u!114 &114849059319250794
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1706666727654536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 016c63c7db9ec8f409264daf251dce28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resolutionScale: 1
 --- !u!114 &114857814440275270
 MonoBehaviour:
   m_ObjectHideFlags: 1
