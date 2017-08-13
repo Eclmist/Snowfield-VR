@@ -5,14 +5,6 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
 
-	[Tooltip("0 being midnight and 0.5 being noon")]
-	[SerializeField] [Range(0, 1)] private float dayStartAt;
-
-	[Tooltip("0 being midnight and 0.5 being noon")]
-	[SerializeField]
-	[Range(0, 1)]
-	private float nightStartAt;
-
 	[SerializeField]
     protected AudioSource ambient;
 
@@ -37,11 +29,12 @@ public class AudioManager : MonoBehaviour {
 		{
 
 			// if daytime
-			if (GameManager.Instance.GameClock.TimeOfDay > dayStartAt && GameManager.Instance.GameClock.TimeOfDay < nightStartAt)
+			if (GameManager.Instance.GameClock.IsDay)
 			{
 				if (!dayIsPlaying)
 				{
 					dayIsPlaying = true;
+					StopAllCoroutines();
 					StartCoroutine(FadeOut(nightTime));
 					StartCoroutine(StartPlayingAfterRandomTime(dayTime));
 				}
@@ -51,6 +44,7 @@ public class AudioManager : MonoBehaviour {
 				if (dayIsPlaying)
 				{
 					dayIsPlaying = false;
+					StopAllCoroutines();
 					StartCoroutine(FadeOut(dayTime));
 					StartCoroutine(StartPlayingAfterRandomTime(nightTime));
 				}
@@ -63,7 +57,7 @@ public class AudioManager : MonoBehaviour {
 
 	protected IEnumerator StartPlayingAfterRandomTime(AudioSource audio)
 	{
-		yield return new WaitForSeconds(Random.Range(5, 30));
+		yield return new WaitForSeconds(Random.Range(5, 20));
 
 		yield return StartCoroutine(FadeIn(audio));
 	}
@@ -73,7 +67,7 @@ public class AudioManager : MonoBehaviour {
 	protected IEnumerator FadeIn(AudioSource audio)
     {
 		audio.Play();
-
+	    audio.volume = 0;
 		while (audio.volume < 1)
         {
             audio.volume += Time.deltaTime;
