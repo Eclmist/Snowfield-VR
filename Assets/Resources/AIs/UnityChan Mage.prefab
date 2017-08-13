@@ -6465,7 +6465,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1614371202211268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.176205, y: -0.148, z: -4.0659714}
+  m_LocalPosition: {x: 0, y: -0.148, z: -0.17}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4821706783687900}
@@ -6658,7 +6658,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 9bec51fc47eda6047ba5cc01addbf46f, type: 2}
@@ -6690,7 +6690,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: f37e71293707f43b9b83c1925ad01bd7, type: 2}
@@ -6818,7 +6818,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: a0186681a218f4550a84e6f0488e8b61, type: 2}
@@ -7080,9 +7080,6 @@ MonoBehaviour:
   rightHand: {fileID: 0}
   thisCollider: {fileID: 0}
   inSanctuary: 0
-  inventory:
-  - {fileID: 114895676656246426, guid: 9e8beb17d354c124b91fedd5c3dda875, type: 2}
-  - {fileID: 114076423136048150, guid: 7458ca3f24ef4cc4e8324639381c1dd9, type: 2}
   data:
     jobList:
     - currentJobType: 2
@@ -7093,6 +7090,108 @@ MonoBehaviour:
         statsType: 1
       - value: 5
         statsType: 2
+    inventory:
+      inventoryItemsArr:
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
+      - itemID: -1
 --- !u!114 &114103034325250404
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -16,9 +16,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 8
   m_Fog: 1
-  m_FogColor: {r: 0.6409069, g: 0.51818836, b: 0.30906457, a: 1}
+  m_FogColor: {r: 0.38987756, g: 0.32543707, b: 0.24389507, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.044507697
+  m_FogDensity: 0.031742096
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.4627451, g: 0.5764706, b: 0.76862746, a: 1}
@@ -39,12 +39,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30484673, g: 0.4111554, b: 0.42361763, a: 1}
+  m_IndirectSpecularColor: {r: 0.33324972, g: 0.40233278, b: 0.41527045, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -65,7 +65,7 @@ LightmapSettings:
     m_CompAOExponent: 1
     m_CompAOExponentDirect: 0
     m_Padding: 2
-    m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000,
+    m_LightmapParameters: {fileID: 15200, guid: 0000000000000000f000000000000000,
       type: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
@@ -1353,7 +1353,7 @@ MonoBehaviour:
   savedUp: {x: -0.00000007996981, y: -1, z: -0.00000005527937}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0.22167969, y: 0.3623047}
+  savedTextUV0: {x: 0.22167969, y: 0.18017578}
   savedFill: 0
 --- !u!114 &34522312
 MonoBehaviour:
@@ -6666,7 +6666,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.03515625, y: 0.10546875}
+  savedTextUV0: {x: 0.017578125, y: 0.052734375}
   savedFill: 0
 --- !u!114 &103605746
 MonoBehaviour:
@@ -7053,7 +7053,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 121892542}
-  m_LocalRotation: {x: 0.25507408, y: -0.7099196, z: 0.5764218, w: 0.31414855}
+  m_LocalRotation: {x: 0.39678377, y: -0.17957741, z: 0.8966604, w: 0.079465315}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -10041,7 +10041,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1163674804
+  randomSeed: -948530048
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -34615,8 +34615,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   dayInSeconds: 20
-  timeline: 11.21
-  m_SunColor: {r: 1, g: 0.8458158, b: 0.71188504, a: 1}
+  timeline: 16.49
+  m_SunColor: {r: 1, g: 0.8216352, b: 0.6665464, a: 1}
   useSunColorGradient: 1
   sunColorGradient:
     serializedVersion: 2
@@ -34926,7 +34926,7 @@ MonoBehaviour:
   fogMode: 3
   useRenderSettingsFog: 1
   useFogDensityCurve: 1
-  m_FogDensity: 0.044507697
+  m_FogDensity: 0.031742096
   fogDensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -35004,7 +35004,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useFogColorGradient: 1
-  m_FogColor: {r: 0.6409069, g: 0.51818836, b: 0.30906457, a: 1}
+  m_FogColor: {r: 0.38987756, g: 0.32543707, b: 0.24389507, a: 1}
   fogColorGradient:
     serializedVersion: 2
     key0: {r: 0.011764706, g: 0.03529412, b: 0.14901961, a: 1}
@@ -35071,7 +35071,7 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   useAtmosphereThicknessCurve: 1
-  m_AtmosphereThickness: 1.1279769
+  m_AtmosphereThickness: 1.1133912
   atmosphereThicknessCurve:
     serializedVersion: 2
     m_Curve:
@@ -38168,9 +38168,9 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 691111381}
-  m_LocalRotation: {x: -0.25507402, y: 0.70991963, z: -0.5764218, w: -0.31414846}
+  m_LocalRotation: {x: 0.39678374, y: -0.17957743, z: 0.8966604, w: 0.07946527}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0001113, y: 1.0001358, z: 1.0001225}
+  m_LocalScale: {x: 1.0001655, y: 1.0001765, z: 1.0001459}
   m_Children: []
   m_Father: {fileID: 586800303}
   m_RootOrder: 2
@@ -38185,7 +38185,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.8458158, b: 0.71188504, a: 1}
+  m_Color: {r: 1, g: 0.8216352, b: 0.6665464, a: 1}
   m_Intensity: 1.4999999
   m_Range: 10
   m_SpotAngle: 30
@@ -40347,7 +40347,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 763010125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.292, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1314887161}
@@ -50137,7 +50137,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.02734375, y: 0}
+  savedTextUV0: {x: 0.013671875, y: 0}
   savedFill: 0
 --- !u!114 &1139310591
 MonoBehaviour:
@@ -59056,6 +59056,30 @@ Prefab:
     - target: {fileID: 4865900280986380, guid: 59ffd24d19c8d8b43883ba7f7467b4ce, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.09750749
+      objectReference: {fileID: 0}
+    - target: {fileID: 137164930873718736, guid: 59ffd24d19c8d8b43883ba7f7467b4ce,
+        type: 2}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 137926806253282836, guid: 59ffd24d19c8d8b43883ba7f7467b4ce,
+        type: 2}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 137319887765516460, guid: 59ffd24d19c8d8b43883ba7f7467b4ce,
+        type: 2}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 137602904461242714, guid: 59ffd24d19c8d8b43883ba7f7467b4ce,
+        type: 2}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194000900762700, guid: 59ffd24d19c8d8b43883ba7f7467b4ce, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 59ffd24d19c8d8b43883ba7f7467b4ce, type: 2}
@@ -76848,7 +76872,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.02734375, y: 0}
+  savedTextUV0: {x: 0.013671875, y: 0}
   savedFill: 0
 --- !u!114 &1559677394
 MonoBehaviour:
@@ -85513,9 +85537,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243664500400643508, guid: 0f2e7db0d0fb7114e93e56f061e15fbb,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: ea2f263d76e287b4ead3fa45b8b71fed, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 5b26e20930e73e4409a43c35aae04495, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.205
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -88956,7 +88980,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1875226236}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 5.869996, y: 3.1099997, z: -18.010004}
+  m_LocalPosition: {x: 5.87, y: 3.1099997, z: -18.11}
   m_LocalScale: {x: 1.4587713, y: 1.4587711, z: 1.458772}
   m_Children: []
   m_Father: {fileID: 492067135}
@@ -94248,7 +94272,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1419396496
+  randomSeed: -765273747
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -96605,7 +96629,7 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 3.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -98183,7 +98207,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: f8d543f45cf0b27448d69f4068a58af4, type: 2}
