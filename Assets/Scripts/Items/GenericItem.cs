@@ -36,7 +36,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	#region itemData
 
-	[SerializeField] private int itemID = -1;
+	[SerializeField][ReadOnly] private int itemID = -1;
 
 	public int ItemID
 
