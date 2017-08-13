@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlameChargeSpell : Spell
+public class FlamethrowerSpell : Spell
 {
     protected bool hasFlag = false;
     protected bool casted = false;
