@@ -27,9 +27,13 @@ public class GameClock {
         }
     }
 
-   
+	public bool IsDay
+	{
+		get { return TimeOfDay > 0.2F && TimeOfDay < 0.65F; }
+	}
 
-    public int Day
+
+	public int Day
     {
         get
         {
