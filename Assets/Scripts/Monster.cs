@@ -38,8 +38,14 @@ public class Monster : AI {
         base.TakeDamage(damage, attacker, type);
         if(StatContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
-            attacker.GainExperience(type, data.EXPGainedWhenKilled);
+            attacker.GainExperience(type, data.Tier * GameConstants.Instance.MonsterTierMultiplier * data.GetJob(JobType.COMBAT).Level);
         }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        WaveManager.Instance.DropEXP(transform.position, data.Tier * GameConstants.Instance.MonsterTierMultiplier * data.GetJob(JobType.COMBAT).Level);
     }
 
 

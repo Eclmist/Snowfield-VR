@@ -63,7 +63,7 @@ public class Shop : MonoBehaviour
 
         if (!locationNode)
         {
-            Debug.Log("Location for " + gameObject.name + ": store has not been set! Hence it wont be considered a shop");
+            Debug.Log("Location for " + gameObject.name + " has not been set! Hence it wont be considered a shop");
             Destroy(this);
         }
 

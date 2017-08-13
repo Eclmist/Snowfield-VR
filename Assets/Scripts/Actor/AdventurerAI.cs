@@ -186,12 +186,16 @@ public class AdventurerAI : FriendlyAI
         }
     }
 
-
+    public void NewTownVisit()
+    {
+        (currentFSM as AdventurerFSM).NewSpawn();
+        ResetAllInteraction();
+    }
 
     public override void Spawn()
     {
         base.Spawn();
-        (currentFSM as AdventurerFSM).NewSpawn();
+        
         if (statsContainer)
         {
             statsContainer.ResetCurrentVariables();

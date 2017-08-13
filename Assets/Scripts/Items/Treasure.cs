@@ -11,7 +11,6 @@ public class Treasure : MonoBehaviour, IDamagable {
     protected void Awake()
     {
         col = GetComponent<Collider>();
-        Debug.Log(col);
         col.isTrigger = true;
     }
 

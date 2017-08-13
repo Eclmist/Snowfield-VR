@@ -156,7 +156,6 @@ public class Ingot : BlacksmithItem {
     public override void SetupObject(GenericItemSceneData data)
     {
         base.SetupObject(data);
-        Debug.Log(((IngotSceneData)data).Temperature);
         currentTemperature = ((IngotSceneData)data).Temperature;
     }
     //--------------- Properties -----------------//

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour,ICanSerialize
+public class GameManager : MonoBehaviour, ICanSerialize
 {
 
     public static GameManager Instance;
@@ -122,10 +122,9 @@ public class GameManager : MonoBehaviour,ICanSerialize
         {
             if (gameClock.TimeOfDay < nightTime && gameClock.TimeOfDay > dayTime)
             {
-                if (!WaveManager.Instance.HasMonster)
-                    AIManager.Instance.InstantiateMerchant();
+                AIManager.Instance.InstantiateMerchant();
                 currentState = GameState.DAYMODE;
-
+                WaveManager.Instance.StopSpawn();
                 if (currentTax != 0)
                     MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }

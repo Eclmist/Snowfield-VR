@@ -55,6 +55,7 @@ public class Town : MonoBehaviour
     private void Start()
     {
         allShops.AddRange(GetComponentsInChildren<Shop>());
+        allShops.RemoveAll(Shop => Shop.Location == null);
     }
 
     public int Population//used to decide how many requests/day etc

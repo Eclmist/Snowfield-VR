@@ -78,8 +78,6 @@ public class QuestEntryGroup<T> where T : Quest
 {
     private QuestEntry<T> currentEntry;
 
-	private bool isCompleted;
-
 	private int progressionIndex;
 
 	private JobType jobType;
@@ -113,21 +111,10 @@ public class QuestEntryGroup<T> where T : Quest
 		}
 	}
 
-	public bool Completed
-	{
-		get
-		{
-			return isCompleted;
-		}
-		set
-		{
-			isCompleted = value;
-		}
-	}
+	
 
 	public QuestEntryGroup(JobType type)
-	{
-		isCompleted = false;
+    { 
 		progressionIndex = 0;
 		jobType = type;
 	}

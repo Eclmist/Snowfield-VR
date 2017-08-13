@@ -28,9 +28,13 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private int maxCost = 30;
     [SerializeField]
-    private float timeBetweenEachMonsterSpawn = .5f, timeBetweenEachGroupSpawn = 2f;
+    private float timeBetweenEachMonsterSpawn = 1f, timeBetweenEachGroupSpawn = 5f, minTimeBetweenEachWave = 30f, maxTimeBetweenEachWave = 60f;
     [SerializeField]
     private List<Monster> monstersInTheScene = new List<Monster>();
+
+    [SerializeField]
+    protected GameObject expCrateParticleSystem;
+
     protected void Awake()
     {
         if (!Instance)
@@ -105,29 +109,48 @@ public class WaveManager : MonoBehaviour
         }
         if (waveNumber % bossWaveNumbers == 0)
             spawnGroups.Add(bossGroup);
-        if (isSpawning)
-            StopAllCoroutines();
+
+        StopAllCoroutines();
         StartCoroutine(StartSpawn(spawnGroups, level));
+    }
+
+    public void StopSpawn()
+    {
+        isSpawning = false;
     }
 
     protected IEnumerator StartSpawn(List<WaveGroup> groups, int level)
     {
         isSpawning = true;
-        for (int i = 0; i < groups.Count; i++)
+        while (isSpawning)
         {
-
-            for (int j = 0; j < groups[i].monsters.Length; j++)
+            for (int i = 0; i < groups.Count; i++)
             {
-                Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
-                monstersInTheScene.Add(monster);
-                monster.Data.GetJob(JobType.COMBAT).SetLevel(level);
-				yield return new WaitForSeconds(timeBetweenEachMonsterSpawn);
+                if (isSpawning)
+                    for (int j = 0; j < groups[i].monsters.Length; j++)
+                    {
+                        Monster monster = Instantiate(groups[i].monsters[j], TownManager.Instance.CurrentTown.MonsterPoint.Position, Quaternion.identity).GetComponent<Monster>();
+                        monstersInTheScene.Add(monster);
+                        monster.Data.GetJob(JobType.COMBAT).SetLevel(level);
+                        yield return new WaitForSeconds(timeBetweenEachMonsterSpawn);
+                    }
+
+                yield return new WaitForSeconds(timeBetweenEachGroupSpawn);
             }
 
-            yield return new WaitForSeconds(timeBetweenEachGroupSpawn);
+            if (isSpawning)
+            {
+                float randomSpawnTime = UnityEngine.Random.Range(minTimeBetweenEachWave, maxTimeBetweenEachWave);
+                yield return new WaitForSeconds(randomSpawnTime);
+            }
         }
         isSpawning = false;
 
+    }
+
+    public void DropEXP(Vector3 position, int value)
+    {
+        //modifyValueHere;    
     }
 
 }

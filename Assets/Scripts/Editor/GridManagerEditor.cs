@@ -26,12 +26,12 @@ public class GridManagerEditor : Editor
         autoLink = GUILayout.Toggle(autoLink, "\n\nAutoLink(Toggle)\n\n", "Button");
         if (GUILayout.Button("Remove") && (Instance.selectedNode1 != null || Instance.selectedNode2 != null))
         {
-            if(Instance.selectedNode1 != null)
+            if (Instance.selectedNode1 != null)
             {
-                foreach(Node node in Instance.selectedNode1.Neighbours)
+                foreach (Node node in Instance.selectedNode1.Neighbours)
                 {
-					if(node)
-                    node.Neighbours.Remove(Instance.selectedNode1);
+                    if (node)
+                        node.Neighbours.Remove(Instance.selectedNode1);
                 }
 
                 DestroyImmediate(Instance.selectedNode1.gameObject);
@@ -48,19 +48,23 @@ public class GridManagerEditor : Editor
         }
         else if (GUILayout.Button("Link") && Instance.selectedNode1 != null && Instance.selectedNode2 != null)
         {
+            Debug.Log("hit");
             if (!Instance.selectedNode1.Neighbours.Contains(Instance.selectedNode2))
             {
                 Instance.selectedNode1.Neighbours.Add(Instance.selectedNode2);
+
+            }
+            if (!Instance.selectedNode2.Neighbours.Contains(Instance.selectedNode1))
+            {
                 Instance.selectedNode2.Neighbours.Add(Instance.selectedNode1);
             }
-        }else if(GUILayout.Button("UnLink") && Instance.selectedNode1 != null && Instance.selectedNode2 != null)
+        }
+        else if (GUILayout.Button("UnLink") && Instance.selectedNode1 != null && Instance.selectedNode2 != null)
         {
-            if (Instance.selectedNode1.Neighbours.Contains(Instance.selectedNode2))
-            {
-                Instance.selectedNode1.Neighbours.Remove(Instance.selectedNode2);
-                Instance.selectedNode2.Neighbours.Remove(Instance.selectedNode1);
-            }
-            
+
+            Instance.selectedNode1.Neighbours.Remove(Instance.selectedNode2);
+            Instance.selectedNode2.Neighbours.Remove(Instance.selectedNode1);
+
         }
 
     }
@@ -71,7 +75,7 @@ public class GridManagerEditor : Editor
 
         if (isToggled)
         {
-            
+
             Event currentEvent = Event.current;
 
             if (currentEvent.type == EventType.mouseDown && currentEvent.button == 0)
@@ -126,7 +130,7 @@ public class GridManagerEditor : Editor
                     else
                     {
                         Node newNode = Instantiate(Instance.nodePrefab, hit.point, Quaternion.identity);
-                        
+
                         if (newNode != null)
                         {
                             newNode.transform.parent = Instance.transform;

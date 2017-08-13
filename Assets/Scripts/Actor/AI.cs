@@ -9,7 +9,7 @@ public abstract class AI : Actor
 
     protected ActorFSM currentFSM;
 
-    protected GameObject spawnPS, disablePS;
+    protected GameObject disablePS;
 
 
     public override void Notify(AI ai)
@@ -84,17 +84,11 @@ public abstract class AI : Actor
     {
         gameObject.SetActive(true);
         Collider.enabled = true;
-        if (spawnPS)
-        {
-            GameObject ps = Instantiate(spawnPS, spawnPS.transform.position, spawnPS.transform.rotation);
-            ps.SetActive(true);
-            Destroy(ps, 3);
-        }
     }
 
     public virtual void Despawn()
     {
-        if (disablePS)
+        if (disablePS && StatContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0)
         {
             GameObject ps = Instantiate(disablePS, disablePS.transform.position, disablePS.transform.rotation);
             ps.SetActive(true);

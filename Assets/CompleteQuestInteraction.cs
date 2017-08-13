@@ -15,7 +15,7 @@ public class CompleteQuestInteraction : QuestInteraction
             if (completableGroup != null)
             {
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK,
-                    "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup),
+                    "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup.ProgressionIndex,completableGroup.JobType),
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
                 currentQuestGroup = completableGroup;
@@ -29,7 +29,7 @@ public class CompleteQuestInteraction : QuestInteraction
 
     public void CompleteQuestDelegate()
     {
-        StoryQuest quest = QuestManager.Instance.GetQuest(currentQuestGroup);
+        StoryQuest quest = QuestManager.Instance.GetQuest(currentQuestGroup.ProgressionIndex,currentQuestGroup.JobType);
         currentAI.GainExperience(JobType.COMBAT, quest.Experience);
         (currentAI as AdventurerAI).QuestBook.RequestNextQuest(currentQuestGroup);
     }

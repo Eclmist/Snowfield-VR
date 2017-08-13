@@ -19,16 +19,16 @@ public class QuestBook
     public void RequestNextQuest(QuestEntryGroup<StoryQuest> group)
     {
 
-        group.ProgressionIndex++;
-        StoryQuest newQuest = QuestManager.Instance.GetQuest(group);
+        int nextIndex = group.ProgressionIndex + 1;
+        StoryQuest newQuest = QuestManager.Instance.GetQuest(nextIndex, group.JobType);
 
-        if (newQuest == null)
-            group.Completed = true;
+        if (newQuest != null)
+            group.ProgressionIndex = nextIndex;
         else
-        {
-            QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay / 24f));
-            group.Quest = questEntry;
-        }
+            newQuest = QuestManager.Instance.GetQuest(group.ProgressionIndex, group.JobType);
+
+        QuestEntry<StoryQuest> questEntry = new QuestEntry<StoryQuest>((newQuest.RequiredLevel + 1) * (int)(GameManager.Instance.GameClock.SecondsPerDay / 24f));
+        group.Quest = questEntry;
 
     }
 
@@ -36,9 +36,7 @@ public class QuestBook
     {
         foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
-            if (group.Completed)
-                continue;
-            else if (group.Quest.Completed)
+            if (group.Quest.Completed)
             {
                 return group;
             }
@@ -52,9 +50,7 @@ public class QuestBook
     {
         foreach (QuestEntryGroup<StoryQuest> group in storyQuest)
         {
-            if (group.Completed)
-                continue;
-            else if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group))
+            if (!group.Quest.Started && QuestManager.Instance.CanStartQuest(group))
                 return group;
         }
 
@@ -94,11 +90,8 @@ public class QuestBook
         QuestEntry<StoryQuest> fastestQuest = null;
         foreach (QuestEntryGroup<StoryQuest> questEntryGroup in storyQuest)
         {
-            if (questEntryGroup.Completed)
-                continue;
-            else if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started && questEntryGroup.Quest.RemainingProgress <= shortestTime)
+            if (!questEntryGroup.Quest.Completed && questEntryGroup.Quest.Started && questEntryGroup.Quest.RemainingProgress <= shortestTime)
             {
-
                 shortestTime = questEntryGroup.Quest.RemainingProgress;
                 fastestQuest = questEntryGroup.Quest;
             }
@@ -106,5 +99,5 @@ public class QuestBook
         return fastestQuest;
     }
 
-  
+
 }

@@ -43,7 +43,14 @@ public class Weapon : Equipment
         }
     }
 
-	protected override void Start()
+    public override string Description
+    {
+        get
+        {
+            return base.Description + "\n" + "Damage:" + damage;
+        }
+    }
+    protected override void Start()
     {
 		base.Start();
         modRen = GetComponent<ModifyRenderer>();

@@ -428,6 +428,7 @@ public abstract class ActorFSM : MonoBehaviour
 		}
 		else
 		{
+            Debug.Log("cantfind");
 			pathFound = false;
 			requestedPath = false;
 		}
