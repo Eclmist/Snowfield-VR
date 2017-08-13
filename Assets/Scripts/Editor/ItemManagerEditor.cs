@@ -167,6 +167,7 @@ public class ItemManagerEditor : Editor {
                    
 
                 file.WriteLine(line);
+                g.GetComponent<GenericItem>().ItemID = x;
                 
             }
 
