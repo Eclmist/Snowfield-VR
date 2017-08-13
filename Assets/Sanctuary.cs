@@ -35,7 +35,6 @@ public class Sanctuary : MonoBehaviour
 
     protected void OnTriggerExit(Collider col)
     {
-        Debug.Log(col);
         if ((protectionMask.value & 1 << col.gameObject.layer) != 0)
         {
             Actor actor = col.GetComponentInParent<Actor>();

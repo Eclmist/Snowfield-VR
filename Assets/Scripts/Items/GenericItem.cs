@@ -56,28 +56,9 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	protected int damage;
 
 
-
-
-
-	[SerializeField]
-
-
-	protected string m_name;
-
-
-
-
-
 	protected AudioSource audioSource;
 
-
-
-
-
 	#endregion GenericItem
-
-
-
 
 
 	#region IInteractable
@@ -131,6 +112,13 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	#endregion
 
 
+    public virtual string Description
+    {
+        get
+        {
+            return name;
+        }
+    }
 
 
 
@@ -211,26 +199,6 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-
-	public string Name
-
-
-
-
-
-	{
-
-
-		get { return this.m_name; }
-
-
-
-
-
-		set { this.m_name = value; }
-
-
-	}
 
 
 

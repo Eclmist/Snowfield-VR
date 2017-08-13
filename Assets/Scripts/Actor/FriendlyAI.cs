@@ -62,5 +62,12 @@ public abstract class FriendlyAI : AI {
 
         return false;
     }
-
+    
+    public void ResetAllInteraction()
+    {
+        foreach (InteractionsWithPlayer interaction in interactionsWithPlayer)
+        {
+            interaction.Interacted = false;
+        }
+    }
 }

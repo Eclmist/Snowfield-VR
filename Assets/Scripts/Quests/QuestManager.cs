@@ -41,14 +41,14 @@ public class QuestManager : MonoBehaviour
         storylines[0].Clear();
     }
 
-    public StoryQuest GetQuest(QuestEntryGroup<StoryQuest> line)//Get Quest based of Entry group index
+    public StoryQuest GetQuest(int progressionIndex, JobType type)//Get Quest based of Entry group index
     {
         foreach (StoryLine myLine in storylines)
         {
-            if (myLine.JobType == line.JobType)
+            if (myLine.JobType == type)
             {
-                if (line.ProgressionIndex < myLine.Quests.Count)
-                    return myLine.Quests[line.ProgressionIndex];
+                if (progressionIndex < myLine.Quests.Count)
+                    return myLine.Quests[progressionIndex];
                 break;
             }
         }
@@ -57,7 +57,7 @@ public class QuestManager : MonoBehaviour
 
     public bool CanStartQuest(QuestEntryGroup<StoryQuest> questEntry)
     {
-        StoryQuest quest = GetQuest(questEntry);
+        StoryQuest quest = GetQuest(questEntry.ProgressionIndex, questEntry.JobType);
         if (Player.Instance.Data.GetJob(quest.JobType).Level >= quest.RequiredLevel)
             return true;
         else

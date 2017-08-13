@@ -54,13 +54,8 @@ public class TownManager : MonoBehaviour
     {
         List<Shop> possibleShops = new List<Shop>();
         possibleShops.AddRange(currentTown.Shops);
-        foreach (Shop shop in visitedShop)
-        {
-            if (possibleShops.Contains(shop))
-                possibleShops.Remove(shop);
-        }
+        possibleShops.RemoveAll(Shop => visitedShop.Contains(Shop));
 
-        possibleShops.RemoveAll(Shop => Shop.Owner == null);
         if (possibleShops.Count != 0)
         {
             int shopIndex = UnityEngine.Random.Range(0, possibleShops.Count);

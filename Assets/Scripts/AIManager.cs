@@ -47,10 +47,16 @@ public class AIManager : MonoBehaviour, ICanSerialize
 
     protected void Start()
     {
+        StartCoroutine(LateStart());
+
+    }
+
+    protected IEnumerator LateStart()
+    {
+        yield return new WaitForEndOfFrame();
         GenerateBaseAIs();
         if (canSpawnAI)
             StartSpawningAllAdventurerAIs();
-
     }
 
     public void GenerateBaseAIs()

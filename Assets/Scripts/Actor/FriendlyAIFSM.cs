@@ -11,6 +11,16 @@ public class FriendlyAiFSM : ActorFSM
 
     protected FriendlyAI currentFriendlyAI;
 
+    public override void ChangeState(FSMState state)
+    {
+        base.ChangeState(state);
+        switch (state)
+        {
+            case FSMState.SHOPPING:
+                visitedShop.Add(targetShop);
+                break;
+        }
+    }
     public override AI CurrentAI
     {
         get
@@ -26,6 +36,12 @@ public class FriendlyAiFSM : ActorFSM
     }
     protected virtual void UpdateShoppingState()
     {
+        
+        if (targetShop.Owner == null)
+        {
+            ChangeState(FSMState.IDLE);
+            return;
+        }
         float val = Random.value;
         Node shopPoint = targetShop.GetRandomPoint(transform.position);
         if ((val > .5 || targetShop.InteractionNode.Occupied) && shopPoint != null)
@@ -38,7 +54,7 @@ public class FriendlyAiFSM : ActorFSM
         }
         else
         {
-            visitedShop.Add(targetShop);
+            
             if ((!(targetShop.Owner is Player) || ((targetShop.Owner is Player) && currentFriendlyAI.IsInteractionAvailable())) && !targetShop.InteractionNode.Occupied)
             {
                 ChangePath(targetShop.InteractionNode);
@@ -54,6 +70,7 @@ public class FriendlyAiFSM : ActorFSM
 
     protected override void UpdateIdleState()
     {
+       
         if (pathFound)
         {
             ChangeState(FSMState.PETROL);
@@ -61,10 +78,12 @@ public class FriendlyAiFSM : ActorFSM
         else if (!requestedPath)
         {
             Shop _targetShop = TownManager.Instance.GetRandomShop(visitedShop);
+            
             if (_targetShop != null)//And check for anymore shop
             {
                 targetShop = _targetShop;
                 AStarManager.Instance.RequestPath(transform.position, _targetShop.Location.Position, ChangePath);
+                
                 requestedPath = true;
                 nextState = FSMState.SHOPPING;
 

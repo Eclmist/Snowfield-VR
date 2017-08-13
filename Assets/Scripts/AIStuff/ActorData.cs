@@ -139,6 +139,7 @@ public class AdventurerAIData : ActorData
         questBook = new QuestBook();
         characterCustomizeInfo = _ci;
         inventory = new Inventory();
+        inventory.AddToInventory(WeaponTierManager.Instance.GetWeapon(PhysicalMaterial.Type.BRONZE, 1));
     }
 
     public QuestBook QuestBook
@@ -154,13 +155,13 @@ public class AdventurerAIData : ActorData
 public class MonsterData : ActorData
 {
     [SerializeField]
-    protected int expPerLevel;
+    protected int monsterTier;
 
-    public int EXPGainedWhenKilled
+    public int Tier
     {
         get
         {
-            return expPerLevel * GetJob(JobType.COMBAT).Level;
+            return monsterTier;
         }
     }
 

@@ -11,6 +11,15 @@ public class GameConstants{
 
     private float dropRate = 1f;
 
+    protected int monsterTierMultiplier = 1000;
+
+    public int MonsterTierMultiplier
+    {
+        get
+        {
+            return monsterTierMultiplier;
+        }
+    }
     public float ItemDropRate
     {
         get
