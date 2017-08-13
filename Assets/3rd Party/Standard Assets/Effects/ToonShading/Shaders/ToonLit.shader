@@ -34,7 +34,10 @@ inline half4 LightingToonRamp (SurfaceOutput s, half3 lightDir, half atten)
 	half3 ramp = tex2D (_Ramp, float2(d,d)).rgb;
 	
 	half4 c;
-	c.rgb = s.Albedo * max(0.3, _LightColor0.rgb * ramp * (atten * 2));
+	//c.rgb = s.Albedo * ramp *  * _LightColor0.rgb;
+	
+	c.rgb = s.Albedo * ramp;// _LightColor0.rgb;
+	//c.rgb -= 0.1 * s.Albedo * atten;
 	c.a = 0;
 	return c;
 }
@@ -49,7 +52,7 @@ struct Input {
 
 void surf (Input IN, inout SurfaceOutput o) {
 	half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-	o.Albedo = c.rgb;
+	o.Albedo = c.rgb * 0.8;
 	o.Alpha = c.a;
 }
 ENDCG
