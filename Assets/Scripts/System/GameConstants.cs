@@ -11,7 +11,7 @@ public class GameConstants{
 
     private float dropRate = 1f;
 
-    protected int monsterTierMultiplier = 1000;
+    protected int monsterTierMultiplier = 1;
 
     public int MonsterTierMultiplier
     {

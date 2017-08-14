@@ -13,6 +13,6 @@ public class TargetRevenue : MonoBehaviour
 	void Update ()
     {
         if(revenueText)
-            revenueText.text = "Upcoming tax:" + GameManager.Instance.Tax + "\n" + "Gold after deduction:" + (Player.Instance.Gold - GameManager.Instance.Tax);
+            revenueText.text = "Upcoming tax:" + Player.Instance.Tax + "\n" + "Gold after deduction:" + (Player.Instance.Gold - Player.Instance.Tax);
 	}
 }

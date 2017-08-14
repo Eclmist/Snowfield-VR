@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4547189047920590}
   - component: {fileID: 33989817492081852}
   - component: {fileID: 23294408217926818}
-  - component: {fileID: 114261370407999040}
   - component: {fileID: 95334777567336692}
+  - component: {fileID: 114247601357221146}
   m_Layer: 0
   m_Name: expCrate
   m_TagString: Untagged
@@ -54,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1732779707954152}
   m_LocalRotation: {x: -0.70090926, y: 0, z: 0, w: 0.7132505}
-  m_LocalPosition: {x: 12.61491, y: -0.066403635, z: 6.894657}
+  m_LocalPosition: {x: 12.050636, y: -0.13804288, z: 3.8622093}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 4749936059972384}
@@ -123,7 +123,7 @@ Animator:
   m_GameObject: {fileID: 1732779707954152}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f2afb79c7ec3e9942b503df3f3cacf6b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 50ed8d54f8933e74fa997b0493e42914, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -131,7 +131,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114261370407999040
+--- !u!114 &114247601357221146
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -139,11 +139,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1732779707954152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f552f4233ed764a817691837d0f1dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 461349cc1ea889940999284ee9295148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionDistance: 4.75
-  flySpeed: 3
+  detectionDistance: 4
+  flySpeed: 5
   particleEffect: {fileID: 198928385150913760}
 --- !u!198 &198928385150913760
 ParticleSystem:
@@ -178,7 +178,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1767228480
+  randomSeed: 68704489
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3189,8 +3189,8 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36ae616305c847f448fc51db7dcacd3f, type: 2}
-  - {fileID: 2100000, guid: 36ae616305c847f448fc51db7dcacd3f, type: 2}
+  - {fileID: 2100000, guid: c08bd407ba87e3a4ca02845dbb46bdeb, type: 2}
+  - {fileID: 2100000, guid: c08bd407ba87e3a4ca02845dbb46bdeb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
 
     [SerializeField]
-    [Range(0.5f, 1)]
+    [Range(0.25f, 1)]
     private float nightTime = .25f, dayTime = .75f;
     [SerializeField]
     [Range(0, 1)]
@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
                 currentState = GameState.DAYMODE;
                 WaveManager.Instance.StopSpawn();
                 if (Player.Instance.Tax != 0)
-                    MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
+                    MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + Player.Instance.Tax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
 

@@ -18,7 +18,7 @@ public class LightManager : MonoBehaviour
 
 	private GameClock clock;
 
-	private List<Renderer> shuffleBag;
+	private List<Renderer> shuffleBag = new List<Renderer>();
 
 	protected void Start ()
 	{

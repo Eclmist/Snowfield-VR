@@ -66,6 +66,7 @@ public class MessageManager : MonoBehaviour
     }
 
     public static MessageManager Instance;
+
     public static bool knowHowToUseMail = false;
 
     [SerializeField]

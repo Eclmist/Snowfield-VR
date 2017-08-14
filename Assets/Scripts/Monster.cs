@@ -45,7 +45,9 @@ public class Monster : AI {
     public override void Die()
     {
         base.Die();
+
         WaveManager.Instance.DropEXP(transform.position, data.Tier * GameConstants.Instance.MonsterTierMultiplier * data.GetJob(JobType.COMBAT).Level);
+		Debug.Log(data.Tier * GameConstants.Instance.MonsterTierMultiplier * data.GetJob(JobType.COMBAT).Level);
     }
 
 
