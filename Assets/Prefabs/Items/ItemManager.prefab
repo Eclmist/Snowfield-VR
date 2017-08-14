@@ -1,0 +1,329 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1195202974920924}
+  m_IsPrefabParent: 1
+--- !u!1 &1195202974920924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4454161312478164}
+  - component: {fileID: 114961762393702372}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4454161312478164
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195202974920924}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114961762393702372
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195202974920924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8af9cdbd747a941b9e25b122c124fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: Assets/item_catalog.txt
+  itemDataList:
+  - ID: 0
+    prefab: {fileID: 1668011802753318, guid: f041b55929e11de409850ef87330b7f5, type: 2}
+    levelUnlocked: 1
+    icon: {fileID: 21300000, guid: a2e79b7c905ded24aa73c60d70ec1b06, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 1
+    prefab: {fileID: 1940380544830368, guid: db4225d1757824243b1bcdfb755e0a2f, type: 2}
+    levelUnlocked: 2
+    icon: {fileID: 21300000, guid: 6d800a324384dc04eb33e7c0690edaaf, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 2
+    prefab: {fileID: 1909934928214322, guid: abf38aae2e8a38b4f874eb6f4281906e, type: 2}
+    levelUnlocked: 3
+    icon: {fileID: 21300000, guid: 2143b99e091fe194d911b7fcc11a2740, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 15
+  - ID: 3
+    prefab: {fileID: 1668011802753318, guid: cb0e20587745302459149466fb320ca2, type: 2}
+    levelUnlocked: 4
+    icon: {fileID: 21300000, guid: ffea454af77835548bd2c63186479fdb, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 20
+  - ID: 4
+    prefab: {fileID: 1542399956369312, guid: 519644e81420f6249930d676000eeeb9, type: 2}
+    levelUnlocked: 5
+    icon: {fileID: 21300000, guid: 9f7e6fb8e571b3c439ea9b141b11a5eb, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 30
+  - ID: 5
+    prefab: {fileID: 1469478897470098, guid: 68451ca3c72ce004ebc1a70f468dcaf2, type: 2}
+    levelUnlocked: 6
+    icon: {fileID: 21300000, guid: a5b1eb75052951647b8232ef9abf99d1, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 40
+  - ID: 6
+    prefab: {fileID: 1249424407007966, guid: 7458ca3f24ef4cc4e8324639381c1dd9, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: bca0c6fee1a72c14c8009c380272af67, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 7
+    prefab: {fileID: 1828534775533718, guid: 26f31dbd8fbfabe4292d6488a2553e7d, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 1f6d7be35bca30d4dad2d4f9425aab83, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 8
+    prefab: {fileID: 1828534775533718, guid: 07bd5f090d30d91409c77da105345681, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 25e64347ab3cfc84ebf39b751a75efe3, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 9
+    prefab: {fileID: 1828534775533718, guid: aac7418bb0482714f8faf4cb259ba340, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 0c1a0a72b20f5a548984ae09cef93449, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 10
+    prefab: {fileID: 1828534775533718, guid: 9de986ef3be5d97449c212467d4dbc8b, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 3bccca553eb5cf145b7068629f3b5a4a, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 11
+    prefab: {fileID: 1828534775533718, guid: 6f7b9946c9d0d9b48aed7c96eca20975, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: d50dc7bc3933dd64eb5a9b61ba9c6098, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 12
+    prefab: {fileID: 1828534775533718, guid: abead814586489e4ca0ba7eefd5339a9, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 686bd558b9cf8574abd6f7e5856b51f9, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 13
+    prefab: {fileID: 1828534775533718, guid: 55a6dbc946fd9bd4281c54204397dd4a, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 5460ad9c03e62bb4781462b3bebf811a, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 14
+    prefab: {fileID: 1828534775533718, guid: 3bd027c1f4bc293498dfa6c14acedf45, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: daee7d1ff9bdab9468ffd9c1517a236f, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 15
+    prefab: {fileID: 1828534775533718, guid: 46201b1ddaf0f214eab2737ff9007a25, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: b72891c4db07e6347a454273bd4a25d2, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 16
+    prefab: {fileID: 1828534775533718, guid: 6df2ef99148999649b6eda93e70b968a, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: a30d3e9330c1e6c468766e580a2d769f, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 17
+    prefab: {fileID: 1828534775533718, guid: e45c0bda4015ab3468e7cf6aee829b08, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: fb804c85c3b6a9f49a8c90abe1bed389, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 18
+    prefab: {fileID: 1828534775533718, guid: 9f65dd0ad5263bf4394fbfeb11ee037e, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 09b7f226b14b37e409f3ec22a9714dbb, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 19
+    prefab: {fileID: 1828534775533718, guid: 295691c22df3ba6459cfe4e6785f7c9a, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 191febcea5f3bca4da5a3398ffd5aae0, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 20
+    prefab: {fileID: 1828534775533718, guid: dab5a16218987c64ab894d2b092e6868, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 1ccb23a543c0bce47bd32032cf7d3f1f, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 21
+    prefab: {fileID: 1828534775533718, guid: 03947693361cecb47a8d126485f2e4e5, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 94b438d6d4747d64b92a448729675969, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 22
+    prefab: {fileID: 1828534775533718, guid: 644583e62f4a83746a47ba786b71310f, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: ffaea4f97fe24c14f9562843b12b61f4, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 23
+    prefab: {fileID: 1828534775533718, guid: a3f065c999999964a82ec38cfca0c494, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: baf17f005a4bab84da286a75ab890e40, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 24
+    prefab: {fileID: 1828534775533718, guid: 24ad19ea0ea1b774c8470ea04dc3ca3a, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 93c4a8a54fab4a448a1025aa33259745, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 25
+    prefab: {fileID: 1828534775533718, guid: 9422235119de1994dbf4520d0d9e09da, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: ae7bd7c8399a81d45bbb91c99be879b3, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 26
+    prefab: {fileID: 1828534775533718, guid: d086dd27cc70ce041aabc2c485be2329, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 190321cb821bf02488caafcab7d596d4, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 27
+    prefab: {fileID: 1828534775533718, guid: ce01f96aa7605ca44b09e5bb01408cf7, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: aaa72b8fe5e338a4ba49b34f73f00165, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 28
+    prefab: {fileID: 1828534775533718, guid: 4be5961ac6f14e04da0c9028e17ca2a9, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 1ba1a658b63e35046891f4c205f197b9, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 29
+    prefab: {fileID: 1828534775533718, guid: 716dde61d49a47c46b26ec653417b806, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 6da1a32dc7aa3374a8ef80cc1fd5df67, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 30
+    prefab: {fileID: 1828534775533718, guid: d52ced4344bd8cb4fb835e2bd172a873, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 09e74dba23b588f44b9e708f55cc2ae2, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 150
+  - ID: 31
+    prefab: {fileID: 165702, guid: 882f7775899d7ad478685cb50951da84, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: cd5b89f69c7494046bbbf1ab5508e5eb, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 32
+    prefab: {fileID: 156756, guid: 29409ab8ee9a23a4b9f425834081f484, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: f5a1bb9e2e301a64ba80c4444b16462f, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 33
+    prefab: {fileID: 166430, guid: 118a72ccc58f3944c97115d5590b9d9c, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 99b4bab75a760bd4d8a47e049a223eb4, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 34
+    prefab: {fileID: 134104, guid: 029b646bdfd24784a8759662b9e48207, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 77b6c0b1ec0e930439b3f68ed7d452c4, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 35
+    prefab: {fileID: 161486, guid: 6010e11fdc462e1468efb191fcc93293, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: ee6991ad09531314b8211340391153ac, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 36
+    prefab: {fileID: 144894, guid: 614bc1fd55f58c545adf53d4d31c4ca7, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: cc3d067e1ffa9074ba1cbb828ddee76c, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 37
+    prefab: {fileID: 170562, guid: 15735fe5d18c3724895cd351cd0debd1, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 1460ff0f35a78814ea6a1a85544cd436, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  - ID: 38
+    prefab: {fileID: 116658, guid: 268f63586c447c8419f98f5a1e7ff5ea, type: 2}
+    levelUnlocked: 999
+    icon: {fileID: 21300000, guid: 57ba35826eced77499464c954fa8833f, type: 3}
+    maxStackSize: 64
+    jobType: 0
+    cost: 10
+  ingotItemDataList: []

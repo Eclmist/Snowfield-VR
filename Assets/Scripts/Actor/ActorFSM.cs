@@ -453,7 +453,10 @@ public abstract class ActorFSM : MonoBehaviour
 		if (target != null)
 		{
 			GenericItem currentUseWeapon = CurrentAI.returnSlotItem(animUseSlot);
-			if (Mathf.Abs(angle) < 30)
+            Vector3 lookAtDir = (target.transform.position - eye.position).normalized;
+            Ray ray = new Ray(eye.position, lookAtDir);
+            RaycastHit hit;
+			if (Mathf.Abs(angle) < 30 && target.Collider.Raycast(ray, out hit, attackRange))
 			{
 				CurrentAI.Attack(currentUseWeapon, target);
 			}

@@ -40,6 +40,8 @@ public abstract class AI : Actor
 
     public override void TakeDamage(float damage, Actor attacker,JobType type)
     {
+        damage = CombatManager.Instance.GetDamageDealt(damage, transform);
+
         base.TakeDamage(damage, attacker, type);
 
         currentFSM.DamageTaken(attacker);

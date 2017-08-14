@@ -176,14 +176,26 @@ public class MonsterData : ActorData
 public class PlayerData : ActorData
 { 
     [SerializeField]
-    protected int gold, expCrates;
+    protected int gold, expCrates,currentTax;
 
     public PlayerData(ActorData data, string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
         gold = 0;
         expCrates = 0;
+        currentTax = 0;
     }
 
+    public int Tax
+    {
+        get
+        {
+            return currentTax;
+        }
+        set
+        {
+            currentTax = value;
+        }
+    }
     public int Gold
     {
         get

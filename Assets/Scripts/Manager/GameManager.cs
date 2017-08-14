@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     private GameClock gameClock;
 
-    protected int currentTax = 0;
-
     public GameClock GameClock
     {
         get
@@ -30,7 +28,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
 
     [SerializeField]
-    [Range(0.5f, 1)]
+    [Range(0.25f, 1)]
     private float nightTime = .25f, dayTime = .75f;
     [SerializeField]
     [Range(0, 1)]
@@ -38,13 +36,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     #endregion
 
-    public int Tax
-    {
-        get
-        {
-            return currentTax;
-        }
-    }
+
 
     public enum GameState
     {
@@ -101,10 +93,6 @@ public class GameManager : MonoBehaviour, ICanSerialize
     {
         GameHandle();
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
 
     }
 
@@ -114,8 +102,8 @@ public class GameManager : MonoBehaviour, ICanSerialize
         {
             if (gameClock.TimeOfDay > nightTime || gameClock.TimeOfDay < dayTime)
             {
-                AddPlayerGold(-currentTax);
-                currentTax = 0;
+                AddPlayerGold(-Player.Instance.Tax);
+                Player.Instance.Tax = 0;
                 PrepareForNight();
             }
         }
@@ -126,8 +114,8 @@ public class GameManager : MonoBehaviour, ICanSerialize
                 AIManager.Instance.InstantiateMerchant();
                 currentState = GameState.DAYMODE;
                 WaveManager.Instance.StopSpawn();
-                if (currentTax != 0)
-                    MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
+                if (Player.Instance.Tax != 0)
+                    MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + Player.Instance.Tax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
 
@@ -143,7 +131,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     public void AddTax(int value)
     {
-        currentTax += value;
+        Player.Instance.Tax += value;
     }
     //   private void RequestBoardUpdate()
     //   {
@@ -165,7 +153,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save(SerializedFileName, gameClock);
+        SerializeManager.Save(SerializedFileName, gameClock);
     }
 
 }

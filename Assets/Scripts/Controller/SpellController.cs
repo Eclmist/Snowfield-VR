@@ -72,7 +72,6 @@ public class SpellController : MonoBehaviour
         else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
             isChecking = false;
 
-		Debug.Log("hittt");
         if (isChecking && controllerRef.Velocity.magnitude > forceToDisable)
         {
             isChecking = false;
