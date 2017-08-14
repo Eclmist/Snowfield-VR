@@ -90,7 +90,7 @@ public class AdventurerFSM : FriendlyAIFSM
 		else
 			animator.SetBool("Attacking", true);
 
-		currentUseWeapon = (Weapon)currentFriendlyAI.returnEquipment(animUseSlot);
+		currentUseWeapon = (Weapon)currentFriendlyAI.returnSlotItem(animUseSlot);
 		if ((currentUseWeapon == null || !currentUseWeapon.Powered) && attackTimer <= 0)
 		{
 			attackTimer = 20;
@@ -101,7 +101,7 @@ public class AdventurerFSM : FriendlyAIFSM
 	public void StartCharge()
 	{
 
-		currentUseWeapon = (Weapon)currentFriendlyAI.returnEquipment(animUseSlot);
+		currentUseWeapon = (Weapon)currentFriendlyAI.returnSlotItem(animUseSlot);
 
 		if (currentUseWeapon != null)
 		{

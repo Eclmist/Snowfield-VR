@@ -5,6 +5,7 @@ using UnityEngine;
 public class VR_Controller_Custom : MonoBehaviour
 {
 
+	public static VR_Controller_Custom Left, Right;
 	public enum Controller_Handle
 	{
 		LEFT,
@@ -93,6 +94,10 @@ public class VR_Controller_Custom : MonoBehaviour
 	void Awake()
 	{
 		hand = GetComponent<Valve.VR.InteractionSystem.Hand>();
+		if (handle == Controller_Handle.LEFT)
+			Left = this;
+		else if (handle == Controller_Handle.RIGHT)
+			Right = this;
 	}
 
 	private void FixedUpdate()

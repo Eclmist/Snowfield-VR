@@ -10,9 +10,9 @@ public class SpellController : MonoBehaviour
 
 	protected CaptureHand handRef;
 
-    protected bool isChecking = false;
+    protected bool isChecking = false, isActivated = false;
 
-    protected float forceToDisable = .1f;
+    protected float forceToDisable = .2f;
 
     protected float timeToActivateInSeconds = 1f;
 	[SerializeField]
@@ -44,14 +44,19 @@ public class SpellController : MonoBehaviour
 		}
 		else if(controllerRef.Device != null)
 		{
-            CheckForStateChange();
+			if (controllerRef.CurrentItemInHand != null)
+				return;
 
-			if (timer > .25f && handRef.HandState != CaptureHand.State.ACTIVATED)
+			CheckForStateChange();
+
+			if (isActivated)
 			{
-				
-				handRef.HandState = CaptureHand.State.ACTIVATED;
+				if (controllerRef.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && handRef.HandState == CaptureHand.State.DEACTIVATED)
+					handRef.HandState = CaptureHand.State.ACTIVATED;
+				else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger) && handRef.HandState == CaptureHand.State.ACTIVATED)
+					handRef.HandState = CaptureHand.State.DEACTIVATED;
 			}
-			else if(timer < .25f && handRef.HandState != CaptureHand.State.DEACTIVATED)
+			else if(handRef.HandState == CaptureHand.State.ACTIVATED)
 			{
 				handRef.HandState = CaptureHand.State.DEACTIVATED;
 			}
@@ -61,22 +66,24 @@ public class SpellController : MonoBehaviour
 
     protected void CheckForStateChange()
     {
-        if (controllerRef.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && controllerRef.CurrentItemInHand == null)
+		
+        if (controllerRef.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
             isChecking = true;
         else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
             isChecking = false;
 
+		Debug.Log("hittt");
         if (isChecking && controllerRef.Velocity.magnitude > forceToDisable)
         {
             isChecking = false;
         }
 
         if (isChecking)
-            timer += timer + Time.deltaTime;
+            timer += Time.deltaTime;
         else
-            timer = timer - Time.deltaTime < 0 ? 0 : timer - Time.deltaTime;
+            timer =0;
 
-        if(timer == timeToActivateInSeconds)
+        if(timer > timeToActivateInSeconds)
         {
             SwitchState();
         }
@@ -85,11 +92,9 @@ public class SpellController : MonoBehaviour
 
     protected void SwitchState()
     {
-        if (handRef.HandState == CaptureHand.State.ACTIVATED)
-            handRef.HandState = CaptureHand.State.DEACTIVATED;
-        else
-            handRef.HandState = CaptureHand.State.ACTIVATED;
-
+		isActivated = !isActivated;
+		Debug.Log(isActivated);
+		controllerRef.Vibrate(1);
         timer = 0;
         isChecking = false;
     }

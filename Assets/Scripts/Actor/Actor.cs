@@ -94,17 +94,24 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     {
         if (target != null && target.CanBeAttacked)
         {
-            float damage = item != null ? item.Damage : 0;
 
-            damage = damage + statsContainer.GetStat(Stats.StatsType.ATTACK).Current * scale;
-            float randomVal = Random.Range(0.8f, 1.2f);
-            DealDamage(damage * randomVal, target,JobType.COMBAT);
+			float damage = 0;
+			if(item != null)
+			{
+				damage = item.Damage;
+				CombatManager.Instance.PlayRandomHitSoundAt(target.transform);
+			}
+
+			damage = damage + statsContainer.GetStat(Stats.StatsType.ATTACK).Current * scale;
+            
+            DealDamage(damage, target,JobType.COMBAT);
         }
     }
 
     public virtual void DealDamage(float damage, IDamagable target, JobType damageType)
     {
-        target.TakeDamage(damage, this,damageType);
+		float randomVal = Random.Range(0.8f, 1.2f);
+		target.TakeDamage(damage * randomVal, this,damageType);
     }
 
 
@@ -112,9 +119,9 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
 
 
 
-    public virtual void ChangeWield(Equipment item)
+    public virtual void ChangeWield(GenericItem item, EquipSlot.EquipmentSlotType type)
     {
-        switch (item.Slot)
+        switch (type)
         {
             case EquipSlot.EquipmentSlotType.LEFTHAND:
                 leftHand.Item = item;
@@ -127,7 +134,7 @@ public abstract class Actor : MonoBehaviour, IHaveStats, IDamagable
     }
 
 
-    public Equipment returnEquipment(EquipSlot.EquipmentSlotType slot)
+    public virtual GenericItem returnSlotItem(EquipSlot.EquipmentSlotType slot)
     {
         switch (slot)
         {

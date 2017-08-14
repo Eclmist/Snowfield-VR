@@ -47,7 +47,7 @@ public class Weapon : Equipment
     {
         get
         {
-            return base.Description + "\n" + "Damage:" + damage;
+            return base.Description +  "Damage:" + damage;
         }
     }
     protected override void Start()

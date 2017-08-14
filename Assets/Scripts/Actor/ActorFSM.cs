@@ -452,7 +452,7 @@ public abstract class ActorFSM : MonoBehaviour
 
 		if (target != null)
 		{
-			Weapon currentUseWeapon = (Weapon)CurrentAI.returnEquipment(animUseSlot);
+			GenericItem currentUseWeapon = CurrentAI.returnSlotItem(animUseSlot);
 			if (Mathf.Abs(angle) < 30)
 			{
 				CurrentAI.Attack(currentUseWeapon, target);

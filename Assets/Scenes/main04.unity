@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.30548683, g: 0.4112752, b: 0.4242639, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1333,7 +1333,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &34522311
 MonoBehaviour:
@@ -1350,9 +1350,9 @@ MonoBehaviour:
   DoNotTesselate: 0
   savedPos: {x: 0, y: 0, z: 0}
   savedUp: {x: -0.00000007996981, y: -1, z: -0.00000005527937}
-  savedRectSize: {x: 160, y: 30}
-  savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0.22167969, y: 0.3623047}
+  savedRectSize: {x: 200, y: 100}
+  savedColor: {r: 1, g: 1, b: 1, a: 1}
+  savedTextUV0: {x: 0, y: 0.0009765625}
   savedFill: 0
 --- !u!114 &34522312
 MonoBehaviour:
@@ -1367,7 +1367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1375,19 +1375,21 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 99d0521893ea91b4a9718a0abb4ec05c, type: 3}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 1
-    m_AlignByGeometry: 0
+    m_Alignment: 3
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 'Hi
+
+'
 --- !u!222 &34522313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6665,7 +6667,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0, y: 0.0078125}
+  savedTextUV0: {x: 0.0078125, y: 0}
   savedFill: 0
 --- !u!114 &103605746
 MonoBehaviour:
@@ -27886,10 +27888,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 5000
+  baseHealth: 100
   baseHealthRegen: 0
   baseAttack: 0
-  baseMana: 100000000
+  baseMana: 1000
   baseManaRegen: 0
   baseMagic: 0
 --- !u!82 &503836136
@@ -46290,7 +46292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &993600223
 Transform:
   m_ObjectHideFlags: 0
@@ -50044,7 +50046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   protectionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 40960
 --- !u!1 &1117051438
 GameObject:
   m_ObjectHideFlags: 0
@@ -50601,7 +50603,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.15234375, y: 0}
+  savedTextUV0: {x: 0.015625, y: 0.009277344}
   savedFill: 0
 --- !u!114 &1139310591
 MonoBehaviour:
@@ -74803,6 +74805,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1476933019}
   m_Mesh: {fileID: 4344442, guid: 98c8480358542874ab37c50aac44643e, type: 2}
+--- !u!135 &1477060673 stripped
+SphereCollider:
+  m_PrefabParentObject: {fileID: 135773222621127064, guid: 8bd1d949de6e92c4ca1ff31f0360c139,
+    type: 2}
+  m_PrefabInternal: {fileID: 729173256}
 --- !u!1 &1479166263
 GameObject:
   m_ObjectHideFlags: 0
@@ -77136,8 +77143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
-  thisCollider: {fileID: 0}
-  inSanctuary: 1
+  thisCollider: {fileID: 1477060673}
+  inSanctuary: 0
   height: 1.75
   dink: {fileID: 0}
   vivePosition: {fileID: 1324922539}
@@ -77153,6 +77160,11 @@ MonoBehaviour:
         statsType: 2
     gold: 2000
     expBottles: 0
+  healthBarImage: {fileID: 1412117427}
+  manaBarImage: {fileID: 1896850138}
+  healthBarText: {fileID: 1139310592}
+  manaBarText: {fileID: 1559677395}
+  itemWieldInfo: {fileID: 34522312}
 --- !u!1 &1540344090
 GameObject:
   m_ObjectHideFlags: 0
@@ -77563,7 +77575,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.15234375, y: 0}
+  savedTextUV0: {x: 0.015625, y: 0.009277344}
   savedFill: 0
 --- !u!114 &1559677394
 MonoBehaviour:
@@ -84046,7 +84058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   protectionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 40960
 --- !u!1 &1703693140
 GameObject:
   m_ObjectHideFlags: 0
