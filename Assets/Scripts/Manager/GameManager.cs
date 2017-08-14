@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     private GameClock gameClock;
 
-    protected int currentTax = 0;
-
     public GameClock GameClock
     {
         get
@@ -38,13 +36,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     #endregion
 
-    public int Tax
-    {
-        get
-        {
-            return currentTax;
-        }
-    }
+
 
     public enum GameState
     {
@@ -110,8 +102,8 @@ public class GameManager : MonoBehaviour, ICanSerialize
         {
             if (gameClock.TimeOfDay > nightTime || gameClock.TimeOfDay < dayTime)
             {
-                AddPlayerGold(-currentTax);
-                currentTax = 0;
+                AddPlayerGold(-Player.Instance.Tax);
+                Player.Instance.Tax = 0;
                 PrepareForNight();
             }
         }
@@ -122,7 +114,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
                 AIManager.Instance.InstantiateMerchant();
                 currentState = GameState.DAYMODE;
                 WaveManager.Instance.StopSpawn();
-                if (currentTax != 0)
+                if (Player.Instance.Tax != 0)
                     MessageManager.Instance.SendMail("INVOICE:" + gameClock.TimeOfDay + ":D", "The town has suffered a total of " + currentTax + " in damages. Please acquire the amount by the start of the following night\n\nFrom:\nSecretary of State Van Allen", null);
             }
         }
@@ -139,7 +131,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     public void AddTax(int value)
     {
-        currentTax += value;
+        Player.Instance.Tax += value;
     }
     //   private void RequestBoardUpdate()
     //   {

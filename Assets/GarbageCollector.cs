@@ -22,7 +22,7 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
         GenericItem[] allObjects = FindObjectsOfType<GenericItem>();
         foreach (GenericItem item in allObjects)
         {
-            if (item.isActiveAndEnabled && !item.GetComponent<DroppedItem>())
+            if (item.isActiveAndEnabled && !item.GetComponent<DroppedItem>() && !item.GetComponent<IgnoreSave>())
                 allData.Add(item.GetSceneData());
         }
         SerializeManager.Save(SerializedFileName, allData);

@@ -190,7 +190,17 @@ public class Player : Actor,ICanSerialize
         SerializeManager.Save(SerializedFileName, data);
     }
 
-
+    public int Tax
+    {
+        get
+        {
+            return data.Tax;
+        }
+        set
+        {
+            data.Tax = value;
+        }
+    }
 
     public void AddGold(int value)
     {
