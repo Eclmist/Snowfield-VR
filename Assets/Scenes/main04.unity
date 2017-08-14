@@ -16,9 +16,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 8
   m_Fog: 1
-  m_FogColor: {r: 0.38987756, g: 0.32543707, b: 0.24389507, a: 1}
+  m_FogColor: {r: 0.6239426, g: 0.50516754, b: 0.30474907, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.031742096
+  m_FogDensity: 0.04492696
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.4627451, g: 0.5764706, b: 0.76862746, a: 1}
@@ -44,7 +44,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1352,7 +1352,7 @@ MonoBehaviour:
   savedUp: {x: -0.00000007996981, y: -1, z: -0.00000005527937}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  savedTextUV0: {x: 0.22167969, y: 0.18115234}
+  savedTextUV0: {x: 0, y: 0.001953125}
   savedFill: 0
 --- !u!114 &34522312
 MonoBehaviour:
@@ -6665,7 +6665,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.2685547, y: 0.25268555}
+  savedTextUV0: {x: 0.03515625, y: 0.10546875}
   savedFill: 0
 --- !u!114 &103605746
 MonoBehaviour:
@@ -7095,7 +7095,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 3
   m_TerrainData: {fileID: 15600000, guid: f6cd20a566184a84cbe969b810e98bdc, type: 2}
-  m_TreeDistance: 315
+  m_TreeDistance: 90
   m_TreeBillboardDistance: 100
   m_TreeCrossFadeLength: 0
   m_TreeMaximumFullLODCount: 50
@@ -7140,7 +7140,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 121892542}
-  m_LocalRotation: {x: 0.39678377, y: -0.17957741, z: 0.8966604, w: 0.079465315}
+  m_LocalRotation: {x: 0.24885702, y: -0.7211, z: 0.5623724, w: 0.31909603}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -34977,8 +34977,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   dayInSeconds: 20
-  timeline: 16.49
-  m_SunColor: {r: 1, g: 0.8216352, b: 0.6665464, a: 1}
+  timeline: 11.06
+  m_SunColor: {r: 1, g: 0.8448354, b: 0.71004677, a: 1}
   useSunColorGradient: 1
   sunColorGradient:
     serializedVersion: 2
@@ -35288,7 +35288,7 @@ MonoBehaviour:
   fogMode: 3
   useRenderSettingsFog: 1
   useFogDensityCurve: 1
-  m_FogDensity: 0.031742096
+  m_FogDensity: 0.04492696
   fogDensityCurve:
     serializedVersion: 2
     m_Curve:
@@ -35366,7 +35366,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useFogColorGradient: 1
-  m_FogColor: {r: 0.38987756, g: 0.32543707, b: 0.24389507, a: 1}
+  m_FogColor: {r: 0.6239426, g: 0.50516754, b: 0.30474907, a: 1}
   fogColorGradient:
     serializedVersion: 2
     key0: {r: 0.011764706, g: 0.03529412, b: 0.14901961, a: 1}
@@ -35433,7 +35433,7 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   useAtmosphereThicknessCurve: 1
-  m_AtmosphereThickness: 1.1133912
+  m_AtmosphereThickness: 1.1284289
   atmosphereThicknessCurve:
     serializedVersion: 2
     m_Curve:
@@ -38203,7 +38203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8af54b2bb5bac5b44a9072b40a9dd2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsPerDay: 300
+  secondsPerDay: 41
   nightTime: 0.7
   dayTime: 0.5
   startTime: 0.5
@@ -38581,9 +38581,9 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 691111381}
-  m_LocalRotation: {x: 0.39678374, y: -0.17957743, z: 0.8966604, w: 0.07946527}
+  m_LocalRotation: {x: -0.24885698, y: 0.72110003, z: -0.5623723, w: -0.31909603}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0001655, y: 1.0001765, z: 1.0001459}
+  m_LocalScale: {x: 1.0001659, y: 1.0001775, z: 1.0001464}
   m_Children: []
   m_Father: {fileID: 586800303}
   m_RootOrder: 2
@@ -38598,7 +38598,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.8216352, b: 0.6665464, a: 1}
+  m_Color: {r: 1, g: 0.8448354, b: 0.71004677, a: 1}
   m_Intensity: 1.4999999
   m_Range: 10
   m_SpotAngle: 30
@@ -50595,7 +50595,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.13867188, y: 0.37597656}
+  savedTextUV0: {x: 0.02734375, y: 0}
   savedFill: 0
 --- !u!114 &1139310591
 MonoBehaviour:
@@ -77557,7 +77557,7 @@ MonoBehaviour:
   savedUp: {x: -0.000000079642305, y: -1, z: -0.000000058808908}
   savedRectSize: {x: 160, y: 30}
   savedColor: {r: 1, g: 1, b: 1, a: 1}
-  savedTextUV0: {x: 0.13867188, y: 0.37597656}
+  savedTextUV0: {x: 0.02734375, y: 0}
   savedFill: 0
 --- !u!114 &1559677394
 MonoBehaviour:
