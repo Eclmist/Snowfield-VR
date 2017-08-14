@@ -28,11 +28,11 @@ public class UltimateSpell : Spell{
 
 			Debug.Log(transform.position);
 
-			//float yRot = Player.Instance.transform.rotation.eulerAngles.y;
-			//var rot = transform.rotation;
+			float yRot = Player.Instance.transform.rotation.eulerAngles.y;
+			var rot = transform.rotation;
 
-			//rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
-			//transform.rotation = rot;
+			rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
+			transform.rotation = rot;
 
 			this.gameObject.SetActive(true);
 			handler.Castor.StatContainer.ReduceMana(manaCost);

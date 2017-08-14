@@ -24,12 +24,13 @@ public class BoltSpell : Spell {
 
         if (castCount <= 0)
         {
-            var em = this.gameObject.GetComponent<ParticleSystem>().emission;
+			var em = this.gameObject.GetComponentInChildren<ParticleSystem>().emission;
             em.enabled = false;
-            Destroy(this.gameObject, 1);
 
-            handler.DecastSpell();
-        }
+			handler.DecastSpell();
+
+			Destroy(this.gameObject, 3);
+		}
     }
 
     public override void OnTriggerPress()
