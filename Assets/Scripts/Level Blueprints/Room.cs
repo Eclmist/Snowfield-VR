@@ -300,8 +300,6 @@ namespace Opening_Room
 
 			sequenceObjects.rumble.Stop();
 			sequenceObjects.cupboardAnimator.enabled = true;
-			sequenceObjects.lightBar.SetActive(false);
-
 		}
 
 		private IEnumerator WaitForKeyboard(string hoverhint)
