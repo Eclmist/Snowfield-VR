@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdventurerFSM : FriendlyAiFSM
+public class AdventurerFSM : FriendlyAIFSM
 {
 
 	protected Weapon currentUseWeapon;

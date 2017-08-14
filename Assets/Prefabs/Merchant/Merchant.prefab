@@ -2290,9 +2290,9 @@ GameObject:
   - component: {fileID: 136226813177809766}
   - component: {fileID: 114846463376387884}
   - component: {fileID: 114567727350506488}
-  - component: {fileID: 114925076327116356}
   - component: {fileID: 114681965416773610}
   - component: {fileID: 114901309230577958}
+  - component: {fileID: 114947478129002964}
   m_Layer: 13
   m_Name: Merchant
   m_TagString: Untagged
@@ -5049,7 +5049,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1749048398151742}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.631859, y: -0.08019805, z: -8.247986}
+  m_LocalPosition: {x: 1.004425, y: -0.1296885, z: 8.130379}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 4896593472166260}
@@ -6080,9 +6080,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114205117225891188}
   normalColor: {r: 1, g: 0, b: 0, a: 1}
@@ -6540,9 +6537,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
-  triggerEnterVibration: 0.8
-  triggerExitVibration: 0.3
-  triggerPressVibration: 0
   useTransitions: 1
   targetGraphic: {fileID: 114593189450084142}
   normalColor: {r: 0, g: 0.67058825, b: 1, a: 1}
@@ -6682,12 +6676,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buyableGenericItems:
-  - {fileID: 114308482139829528, guid: 68451ca3c72ce004ebc1a70f468dcaf2, type: 2}
-  - {fileID: 114700504229554748, guid: f041b55929e11de409850ef87330b7f5, type: 2}
-  - {fileID: 114978090926272030, guid: db4225d1757824243b1bcdfb755e0a2f, type: 2}
+  - {fileID: 114700642715980082, guid: 614bc1fd55f58c545adf53d4d31c4ca7, type: 2}
+  - {fileID: 114215048349759894, guid: 882f7775899d7ad478685cb50951da84, type: 2}
+  - {fileID: 114453515608252938, guid: 118a72ccc58f3944c97115d5590b9d9c, type: 2}
   merchantPanel: {fileID: 114515514687552524, guid: bff7bb38f04255d4fa2e5d4a6b64abc4,
     type: 2}
-  offsetFromMerchant: 1
+  offsetFromMerchant: {x: 0, y: 0, z: 0}
 --- !u!114 &114574792944905104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6870,9 +6864,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
-  spawnPS: {fileID: 0}
-  disablePS: {fileID: 198150793232273606, guid: 2f3aa3ed109ed2d458175e27e73ee383,
-    type: 2}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   data:
     jobList:
     - currentJobType: 2
@@ -7148,14 +7141,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-  - value: 100
-    statsType: 0
-  - value: 2
-    statsType: 1
-  - value: 15
-    statsType: 2
-  allStats: []
+  baseHealth: 0
+  baseHealthRegen: 0
+  baseAttack: 0
+  baseMana: 0
+  baseManaRegen: 0
+  baseMagic: 0
 --- !u!114 &114874223546166078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7241,7 +7232,7 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.49019608}
   m_EffectDistance: {x: 0.01, y: 0.01}
   m_UseGraphicAlpha: 1
---- !u!114 &114925076327116356
+--- !u!114 &114947478129002964
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -7256,11 +7247,14 @@ MonoBehaviour:
   detectionDistance: 10
   attackRange: 0
   currentState: 0
-  movementSpeed: 3
+  movementSpeed: 1
+  aggroLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2
-    m_Bits: 4294909951
+    m_Bits: 0
   animUseSlot: 0
 --- !u!114 &114977738860645156
 MonoBehaviour:

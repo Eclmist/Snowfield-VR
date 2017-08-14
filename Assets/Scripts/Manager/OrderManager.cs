@@ -102,6 +102,7 @@ public class OrderManager : MonoBehaviour
                     case JobType.BLACKSMITH:
 
                         Ingot tempIngot = ItemManager.Instance.GetRandomUnlockedIngot();
+                        ItemData tempIngotItemData = ItemManager.Instance.GetItemData(tempIngot.ItemID);
                         Debug.Log(tempIngot.name);
                         ItemData refData = WeaponTierManager.Instance.GetRandomWeaponInTypeClass(tempIngot.PhysicalMaterial.type);
                         Debug.Log("Current order is: " + refData.ObjectReference.name);
@@ -113,7 +114,7 @@ public class OrderManager : MonoBehaviour
 
                         newOrder = new Order(((job.Level * levelToDurationMultiplier) + baseDuration)
 
-                    , job.Level * currentMaterial.CostMultiplier,
+                    ,  refData.Cost * tempIngotItemData.Cost,
 
                     refData.ItemID,
                     currentMaterial.type);
