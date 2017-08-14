@@ -26,9 +26,9 @@ public class EquipSlot : MonoBehaviour {
     }
 
     [SerializeField]
-    private Equipment slotItem;
+    private GenericItem slotItem;
 
-    public Equipment Item
+    public GenericItem Item
     {
         get
         {

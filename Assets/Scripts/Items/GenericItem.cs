@@ -321,6 +321,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 		rigidBody.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("Player");
 		base.OnTriggerPress(controller);
+		
 
 	}
 

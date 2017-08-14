@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class Player : Actor,ICanSerialize
 {
 
@@ -20,6 +20,13 @@ public class Player : Actor,ICanSerialize
     [SerializeField]
     protected PlayerData data;
 
+	[SerializeField]
+	protected Image healthBarImage, manaBarImage;
+	[SerializeField]
+	protected Text healthBarText, manaBarText;
+	[SerializeField]
+	protected Text itemWieldInfo;
+
     protected float currentGroundHeight = 1;
 
     public float CurrentGroundHeight
@@ -32,7 +39,51 @@ public class Player : Actor,ICanSerialize
         }
     }
 
-    public string SerializedFileName
+	protected void Update()
+	{
+		UpdateUI();
+	}
+
+	protected void UpdateUI()
+	{
+		ActiveStats health = statsContainer.GetStat(Stats.StatsType.HEALTH);
+		ActiveStats mana = statsContainer.GetStat(Stats.StatsType.MANA);
+		healthBarImage.fillAmount = Mathf.Lerp(healthBarImage.fillAmount,health.Percentage,Time.deltaTime);
+		manaBarImage.fillAmount = Mathf.Lerp(manaBarImage.fillAmount, mana.Percentage, Time.deltaTime);
+
+		healthBarText.text = health.Current + "/" + health.Max;
+		manaBarText.text = mana.Current + "/" + mana.Max;
+		GenericItem itemL = returnSlotItem(EquipSlot.EquipmentSlotType.LEFTHAND);
+		GenericItem itemR = returnSlotItem(EquipSlot.EquipmentSlotType.RIGHTHAND);
+
+		String text = "L: ";
+		if (itemL)
+			text += itemL.Description;
+		text += "\nR: ";
+		if(itemR)
+			text += itemR.Description;
+
+		itemWieldInfo.text = text;
+	}
+
+	public override GenericItem returnSlotItem(EquipSlot.EquipmentSlotType slot)
+	{
+		switch (slot)
+		{
+			case EquipSlot.EquipmentSlotType.LEFTHAND:
+				if (VR_Controller_Custom.Left.CurrentItemInHand is GenericItem)
+					return VR_Controller_Custom.Left.CurrentItemInHand as GenericItem;
+				break;
+
+			case EquipSlot.EquipmentSlotType.RIGHTHAND:
+				if (VR_Controller_Custom.Right.CurrentItemInHand is GenericItem)
+					return VR_Controller_Custom.Right.CurrentItemInHand as GenericItem;
+				break;
+
+		}
+		return null;
+	}
+	public string SerializedFileName
     {
         get
         {
@@ -125,8 +176,14 @@ public class Player : Actor,ICanSerialize
     {
         SteamVR_Fade.Start(Color.clear, 0);
         SteamVR_Fade.Start(Color.black, 3);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		StartCoroutine(DieRoutine());
     }
+
+	protected IEnumerator DieRoutine()
+	{
+		yield return new WaitForSecondsRealtime(3);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
 
     public void Save()
     {
