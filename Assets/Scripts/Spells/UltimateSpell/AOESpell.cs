@@ -31,11 +31,7 @@ public class AOESpell : MonoBehaviour
 
 		col = this.gameObject.GetComponent<BoxCollider>();
 
-		col.enabled = false;
-
 		transform.parent = null;
-
-		//transform.position = new Vector3(Player.Instance.transform.position.x + 2, Player.Instance.transform.position.y, Player.Instance.transform.position.z);
 	}
 
 	// Update is called once per frame
@@ -48,24 +44,33 @@ public class AOESpell : MonoBehaviour
 		}
 		else
 		{
-			col.size.Set(col.size.x + (1 * Time.deltaTime), col.size.y, col.size.z + (1 * Time.deltaTime));
+            CheckCooldown();
+
+            if(cooldown >= 1)
+            {
+                col.enabled = false;
+            }
 		}
 	}
 
 	void CheckCooldown()
 	{
-		if (cooldown >= colliderEnableTime)
+		if (cooldown >= colliderEnableTime && col.enabled == false)
 		{
 			col.enabled = true;
 			colliderEnabled = true;
-		}
+            cooldown = 0;
+        }
+        else
+        {
+            cooldown += Time.deltaTime;
+        }
 	}
 
-	//private void OnTriggerStay(Collider other)
-	//{
-	//	Monster mob = other.GetComponent<Monster>();
+    private void OnTriggerStay(Collider other)
+    {
+        Monster mob = other.GetComponent<Monster>();
 
-	//	if (mob)
-	//		mob.TakeDamage(damage, Player.Instance);
-	//}
+        Player.Instance.CastSpell(damage, mob);
+    }
 }
