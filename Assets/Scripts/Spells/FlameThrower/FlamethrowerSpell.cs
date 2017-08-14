@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlameChargeSpell : Spell
+public class FlamethrowerSpell : Spell
 {
     protected bool hasFlag = false;
     protected bool casted = false;
@@ -65,7 +65,7 @@ public class FlameChargeSpell : Spell
             em.enabled = false;
             emsmoke.enabled = false;
 
-            Destroy(gameObject, 0.5f);
+            Destroy(this, 0.5f);
 
             casted = false;
 

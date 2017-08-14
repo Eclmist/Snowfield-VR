@@ -10,9 +10,12 @@ public class BoltSpell : Spell {
     [SerializeField]
     private int castCount;
 
-    protected void Start()
+    public override void InitializeSpell(SpellHandler handler)
     {
-        transform.parent = null;
+        base.InitializeSpell(handler);
+        transform.position = handler.transform.position;
+        transform.rotation = handler.transform.rotation;
+        transform.parent = handler.transform;
     }
 
     public override void Update()
