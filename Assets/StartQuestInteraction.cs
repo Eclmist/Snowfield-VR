@@ -19,7 +19,7 @@ public class StartQuestInteraction : QuestInteraction
                     "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest.ProgressionIndex, startableQuest.JobType).Name + " \n(Requires " + expectedCrateNumber + " EXPCrates)",
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
-				if (expectedCrateNumber > Player.Instance.EXPBottles)
+				if (expectedCrateNumber > Player.Instance.EXPCrates)
 				{
 					op.GetButton(0).GetComponent<Collider>().enabled = false;
 					Debug.Log("Checked");

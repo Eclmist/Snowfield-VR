@@ -197,15 +197,15 @@ public class Player : Actor,ICanSerialize
         Gold += value;
     }
 
-    public int EXPBottles
+    public int EXPCrates
     {
         get
         {
-            return data.EXPBottles;
+            return data.EXPCrates;
         }
         set
         {
-            data.EXPBottles = value;
+            data.EXPCrates = value;
         }
     }
 

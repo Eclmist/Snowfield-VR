@@ -14,8 +14,12 @@ public class WaveGroup : IComparable
         return this.cost.CompareTo(other.cost);
     }
 }
+
+
 public class WaveManager : MonoBehaviour
 {
+
+
 
     public static WaveManager Instance;
     protected bool isSpawning = false;
@@ -33,7 +37,10 @@ public class WaveManager : MonoBehaviour
     private List<Monster> monstersInTheScene = new List<Monster>();
 
     [SerializeField]
-    protected GameObject expCrateParticleSystem;
+    private ExpCrate singleCrate;
+    [SerializeField]
+    private ExpCrate clusterCrate;
+    
 
     protected void Awake()
     {
@@ -149,8 +156,12 @@ public class WaveManager : MonoBehaviour
     }
 
     public void DropEXP(Vector3 position, int value)
-    {
-        //modifyValueHere;    
+    {      
+        if(value > 1)
+            Instantiate(clusterCrate, position, clusterCrate.transform.rotation).SetAmountToDrop(value);
+        else if(value == 1)
+            Instantiate(singleCrate, position, singleCrate.transform.rotation).SetAmountToDrop(value);
+
     }
 
 }
