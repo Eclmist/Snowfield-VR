@@ -101,10 +101,6 @@ public class GameManager : MonoBehaviour, ICanSerialize
     {
         GameHandle();
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
 
     }
 
@@ -165,7 +161,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save(SerializedFileName, gameClock);
+        SerializeManager.Save(SerializedFileName, gameClock);
     }
 
 }

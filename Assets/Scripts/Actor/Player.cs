@@ -187,7 +187,7 @@ public class Player : Actor,ICanSerialize
 
     public void Save()
     {
-        //SerializeManager.Save(SerializedFileName,data);
+        SerializeManager.Save(SerializedFileName, data);
     }
 
 
