@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour, ICanSerialize
     protected void Update()
     {
         GameHandle();
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

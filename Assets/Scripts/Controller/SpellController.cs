@@ -10,6 +10,11 @@ public class SpellController : MonoBehaviour
 
 	protected CaptureHand handRef;
 
+    protected bool isChecking = false;
+
+    protected float forceToDisable = .1f;
+
+    protected float timeToActivateInSeconds = 1f;
 	[SerializeField]
 	protected SpellHandler spellHandlerPrefab;
 	protected float timer = 0f;
@@ -39,10 +44,7 @@ public class SpellController : MonoBehaviour
 		}
 		else if(controllerRef.Device != null)
 		{
-			if (controllerRef.Device.GetPress(SteamVR_Controller.ButtonMask.Trigger) && controllerRef.CurrentItemInHand == null)
-				timer += Time.deltaTime;
-			else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
-				timer = 0;
+            CheckForStateChange();
 
 			if (timer > .25f && handRef.HandState != CaptureHand.State.ACTIVATED)
 			{
@@ -56,6 +58,42 @@ public class SpellController : MonoBehaviour
 		}
 
 	}
+
+    protected void CheckForStateChange()
+    {
+        if (controllerRef.Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger) && controllerRef.CurrentItemInHand == null)
+            isChecking = true;
+        else if (controllerRef.Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
+            isChecking = false;
+
+        if (isChecking && controllerRef.Velocity.magnitude > forceToDisable)
+        {
+            isChecking = false;
+        }
+
+        if (isChecking)
+            timer += timer + Time.deltaTime;
+        else
+            timer = timer - Time.deltaTime < 0 ? 0 : timer - Time.deltaTime;
+
+        if(timer == timeToActivateInSeconds)
+        {
+            SwitchState();
+        }
+        
+    }
+
+    protected void SwitchState()
+    {
+        if (handRef.HandState == CaptureHand.State.ACTIVATED)
+            handRef.HandState = CaptureHand.State.DEACTIVATED;
+        else
+            handRef.HandState = CaptureHand.State.ACTIVATED;
+
+        timer = 0;
+        isChecking = false;
+    }
+
 	void OnEnable()
 	{
 		GestureRecognizer.GestureDetectedEvent += OnGestureDetected;
