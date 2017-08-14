@@ -136,19 +136,39 @@ public class Nagano : MonoBehaviour,ICanSerialize
 	}
 
 
-	//----------- Level Events -----------------------------------------------------------------------------------------------------------//
+    //----------- Level Events -----------------------------------------------------------------------------------------------------------//
 
-	#region Welcome event
-	
+    #region Welcome event
+
+    private bool openMailCoroutineRunning = false;
+
 	public void WelcomeEvent()
 	{
 		if(GameManager.firstGame)
 		{
-			MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
-			CompleteCurrentEvent();
+            if(!openMailCoroutineRunning)
+            {
+                openMailCoroutineRunning = true;
+                MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
+                StartCoroutine(OpenMailRoutine());
+            }
+            
 		}
 			
 	}
+
+    private IEnumerator OpenMailRoutine()
+    {
+        ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Open inbox");
+
+        while(!MessageManager.knowHowToUseMail)
+        {
+            yield return null;
+        }
+
+        HideAllControllerHints();
+        CompleteCurrentEvent();
+    }
 
 
 	#endregion

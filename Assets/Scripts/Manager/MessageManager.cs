@@ -66,6 +66,7 @@ public class MessageManager : MonoBehaviour
     }
 
     public static MessageManager Instance;
+    public static bool knowHowToUseMail = false;
 
     [SerializeField]
     private GameObject MailInterface;
@@ -126,6 +127,8 @@ public class MessageManager : MonoBehaviour
     // Call this function when displaying the UI or else mail would not update
     public void DisplayMailInterface()
     {
+        knowHowToUseMail = true;
+
         foreach (Mail m in inbox)
         {
             CreateInteractableMail(m);
