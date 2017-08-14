@@ -462,7 +462,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058723867434626}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.622025, y: -0.107628584, z: -7.7412415}
+  m_LocalPosition: {x: 12.858143, y: -0.14799976, z: -3.3887138}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4691359436869102}
@@ -1030,6 +1030,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   data:
     jobList:
     - currentJobType: 2
@@ -1040,7 +1042,7 @@ MonoBehaviour:
         statsType: 1
       - value: 10
         statsType: 2
-    expPerLevel: 100000
+    monsterTier: 0
 --- !u!114 &114709402411241018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1191,7 +1193,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1444713348
+  randomSeed: 1832833875
   InitialModule:
     serializedVersion: 3
     enabled: 1

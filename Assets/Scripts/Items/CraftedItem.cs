@@ -107,7 +107,7 @@ public class CraftedItem : GenericItem
 	{
 		base.OnTriggerEnter(collision);
 
-		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && !collision.isTrigger)
+		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && (!collision.isTrigger || collision.GetComponent<VR_Interactable_UI>()))
 		{
 			currentInteractingController.Vibrate(currentInteractingController.Velocity.magnitude > maxSwingForce ? 10 : (currentInteractingController.Velocity.magnitude / maxSwingForce) * 10);
 
@@ -119,7 +119,7 @@ public class CraftedItem : GenericItem
 	{
 		base.OnTriggerStay(collision);
 
-		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && !collision.isTrigger)
+		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && (!collision.isTrigger || collision.GetComponent<VR_Interactable_UI>()))
 		{
 			colObject = collision;
 		}
@@ -138,7 +138,7 @@ public class CraftedItem : GenericItem
 	{
 		base.OnTriggerExit(collision);
 
-		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && !collision.isTrigger)
+		if (currentInteractingController != null && currentInteractingController != collision.GetComponentInParent<VR_Controller_Custom>() && (!collision.isTrigger || collision.GetComponent<VR_Interactable_UI>()))
 		{
 			colObject = null;
 		}

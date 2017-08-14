@@ -39,8 +39,16 @@ public class MorphingTable : MonoBehaviour
 		{
 			Ingot ingot = other.gameObject.GetComponent<Ingot>();
 
-			if (ingot != null && ingot.LinkedController == null)
+			if (ingot != null)// && ingot.LinkedController == null)
 			{
+				var linkedController = ingot.LinkedController;
+
+				if (linkedController)
+				{
+					linkedController.SetInteraction(null);
+					ingot.LinkedController = null;
+				}
+
 				ingotReference = ingot;
 				ingot.GetComponent<Rigidbody>().isKinematic = true;
 				LockIntoPosition(ingot.transform);
@@ -48,20 +56,20 @@ public class MorphingTable : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerStay(Collider other)
-	{
-		if (ingotReference == null)
-		{
-			Ingot ingot = other.GetComponent<Ingot>();
+	//private void OnTriggerStay(Collider other)
+	//{
+	//	if (ingotReference == null)
+	//	{
+	//		Ingot ingot = other.GetComponent<Ingot>();
 
-			if (ingot != null && ingot.LinkedController == null)
-			{
-				ingotReference = ingot;
-				ingot.GetComponent<Rigidbody>().isKinematic = true;
-				LockIntoPosition(ingot.transform);
-			}
-		}
-	}
+	//		if (ingot != null && ingot.LinkedController == null)
+	//		{
+	//			ingotReference = ingot;
+	//			ingot.GetComponent<Rigidbody>().isKinematic = true;
+	//			LockIntoPosition(ingot.transform);
+	//		}
+	//	}
+	//}
 
 	
 

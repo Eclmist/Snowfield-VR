@@ -100,8 +100,11 @@ namespace Opening_Room
 				currentEvent = events[0];
 				events.RemoveAt(0);
 
-				if (!currentEvent.enabled)
-					currentEvent = null;
+				if (Application.isEditor)
+				{
+					if (!currentEvent.enabled)
+						currentEvent = null;
+				}
 			}
 
 			if (currentEvent.startDelay < timer)
@@ -424,7 +427,7 @@ namespace Opening_Room
 			{
 				ControllerButtonHints.ShowTextHint(hand, btn, text, glowbtn);
 
-				AudioSource.PlayClipAtPoint(sequenceObjects.notificationSound, hand.transform.position);
+				AudioSource.PlayClipAtPoint(sequenceObjects.notificationSound, hand.transform.position, 0.1F);
 			}
 
 
