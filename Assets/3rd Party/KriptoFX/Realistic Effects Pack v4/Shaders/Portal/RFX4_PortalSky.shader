@@ -4,12 +4,13 @@
 // Upgrade NOTE: replaced '_Object2World' with '_Object2World'
 
 Shader "KriptoFX/RFX4/Portal/PortalSky" {
-	Properties {
-	_TintColor ("Tint Color", Color) = (0.5,0.5,0.5,1)
-	_TurbulenceMask ("Turbulence Mask", 2D) = "white" {}
-	_Cube ("Environment Map", Cube) = "" {}
+	Properties{
+	_TintColor("Tint Color", Color) = (0.5,0.5,0.5,1)
+	_TurbulenceMask("Turbulence Mask", 2D) = "white" {}
+	_Cube("Environment Map", Cube) = "" {}
 	_NoiseScale("Noize Scale (XYZ) Height (W)", Vector) = (1, 1, 1, 0.2)
-}
+	_Emission("Emission Scale", Range(1,10)) = 1
+	}
 Category {
 	
 	Tags { "Queue"="Transparent-1" "IgnoreProjector"="True" "RenderType"="Transparent" }
@@ -51,6 +52,7 @@ Category {
 			};
 			
 			float4 _MainTex_ST;
+			float _Emission;
 
 			v2f vert (appdata_t v)
 			{
@@ -73,7 +75,7 @@ Category {
 			half4 frag (v2f i) : SV_Target
 			{
 				float4 cubeTex = texCUBE(_Cube, i.viewDir)*_TintColor;
-				return cubeTex;
+				return cubeTex * _Emission;
 			}
 			ENDCG 
 		}
