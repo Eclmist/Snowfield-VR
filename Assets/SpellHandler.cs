@@ -30,6 +30,8 @@ public class SpellHandler : VR_Interactable_Object
     {
         if (currentInteractingController.InteractedObject == this)
             currentInteractingController.SetInteraction(null);
+
+		Destroy(this.gameObject, 3);
     }
 
     public override void OnTriggerPress(VR_Controller_Custom controller)
