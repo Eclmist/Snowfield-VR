@@ -13,23 +13,28 @@ public class UltimateSpell : Spell{
     {
         base.InitializeSpell(handler);
 
-        transform.position = Player.Instance.transform.position + Player.Instance.transform.forward * offset.z;
-
-        float yRot = Player.Instance.transform.rotation.eulerAngles.y;
-        var rot = transform.rotation;
-
-        rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
-        transform.rotation = rot;
-
-		//transform.parent = handler.transform;
-
 		if (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
 		{
+			Vector3 playerFor = Player.Instance.transform.forward;
+			playerFor.y = 0;
+			playerFor.Normalize();
 
-			Debug.Log("Casted");
+			playerFor = Player.Instance.transform.position + playerFor * offset.z;
+
+			RaycastHit hit;
+			Physics.Raycast(playerFor, Vector3.down, out hit);
+
+			transform.position = hit.point;
+
+			Debug.Log(transform.position);
+
+			//float yRot = Player.Instance.transform.rotation.eulerAngles.y;
+			//var rot = transform.rotation;
+
+			//rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
+			//transform.rotation = rot;
 
 			this.gameObject.SetActive(true);
-
 			handler.Castor.StatContainer.ReduceMana(manaCost);
 
 			handler.DecastSpell();
