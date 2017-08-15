@@ -45,23 +45,23 @@ public class CheatManager : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            
+			WaveManager.Instance.SpawnWave(9);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-
-        }
+			WaveManager.Instance.SpawnWave(10);
+		}
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-
+			TimeScaleHack.Instance.StartHack(3);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-
-        }
+			TimeScaleHack.Instance.StartHack(.25f);
+		}
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-
+			AIManager.Instance.InstantiateMerchant();
         }
 
 
