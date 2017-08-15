@@ -16,19 +16,21 @@ public class ModifyRenderer : MonoBehaviour {
 		}
 	}
 
-	public void SetFloat(string shaderVar, float value)
+	public void SetFloat(string shaderVar, float value, int index = 0)
 	{
 		foreach (Renderer ren in renderers)
 		{
-			ren.material.SetFloat(shaderVar, value);
+			if (index < ren.materials.Length)
+				ren.materials[index].SetFloat(shaderVar, value);
 		}
 	}
 
-	public void SetColor(string shaderVar, Color value)
+	public void SetColor(string shaderVar, Color value, int index = 0)
 	{
 		foreach (Renderer ren in renderers)
 		{
-			ren.material.SetColor(shaderVar, value);
+			if (index < ren.materials.Length)
+				ren.materials[index].SetColor(shaderVar, value);
 		}
 	}
 
