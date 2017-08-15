@@ -18,6 +18,8 @@ public class RotatableObject : VR_Interactable_Object
     private Transform pivot;
     [Range(0,150)][Tooltip("Multiplier of the force that is added to the object on movement")][SerializeField]
     private float force;
+
+	public static readonly int interatableStaticLayerIndex = 17;
     // Use this for initialization
     protected override void Awake()
     {
@@ -28,7 +30,14 @@ public class RotatableObject : VR_Interactable_Object
     protected override void Start()
     {
         base.Start();
-        joint.useLimits = true;
+		gameObject.layer = interatableStaticLayerIndex;   //Set layer to 8 (interactable)
+
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			(transform.GetChild(i)).gameObject.layer = interatableStaticLayerIndex;
+		}
+
+		joint.useLimits = true;
         JointLimits limit = joint.limits;
         limit.max = maxRotationValue;
         limit.min = minRotationalValue;

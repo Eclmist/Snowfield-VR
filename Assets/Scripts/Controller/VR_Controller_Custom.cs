@@ -114,7 +114,7 @@ public class VR_Controller_Custom : MonoBehaviour
 
 		if (overlappedInteractableObject == null || overlappedInteractableObject.LinkedController != this) //if controller not already held on to some object
 		{
-			Collider[] overlappedColliders = Physics.OverlapSphere(hand.hoverSphereTransform.position, hand.hoverSphereRadius, LayerMask.GetMask("Interactable", "Player"));
+			Collider[] overlappedColliders = Physics.OverlapSphere(hand.hoverSphereTransform.position, hand.hoverSphereRadius, LayerMask.GetMask("Interactable", "Player", "InteractableStatic"));
 
 			if (overlappedColliders.Length > 0)
 			{
