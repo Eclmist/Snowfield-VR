@@ -71,6 +71,6 @@ public class AOESpell : MonoBehaviour
     {
         Monster mob = other.GetComponent<Monster>();
 
-        Player.Instance.CastSpell(damage, mob);
+        Player.Instance.CastSpell(Player.Instance.StatContainer.GetStat(Stats.StatsType.MAGIC).Current * damage, mob);
     }
 }

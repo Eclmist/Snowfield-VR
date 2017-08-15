@@ -33,7 +33,7 @@ public class FlameThrowerCollider : MonoBehaviour {
         {
             Monster mob = other.GetComponent<Monster>();
 			if (mob)
-				Player.Instance.CastSpell(DPS / 2, mob);
+				Player.Instance.CastSpell(Player.Instance.StatContainer.GetStat(Stats.StatsType.MAGIC).Current * (DPS / 2), mob);
 
             seconds = 0;
         }
