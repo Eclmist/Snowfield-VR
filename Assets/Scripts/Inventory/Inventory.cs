@@ -58,7 +58,7 @@ public class Inventory
         public void EmptySlot()
         {
             currentStack = 0;
-            storedItem = null;
+            StoredItem = null;
 
         }
 

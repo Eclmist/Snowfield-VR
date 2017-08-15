@@ -60,15 +60,38 @@ public class ScrollReader : MonoBehaviour
 				scrollReference = scroll;
 				scroll.GetComponent<Rigidbody>().isKinematic = true;
 				LockIntoPosition(scroll.transform);
-
-				gestureTrailObjectReference = 
-					Instantiate(scroll.trailGestureObject, trailTargetPosition.position, trailTargetPosition.rotation);
-
-				flipRef = Instantiate(onePageFlip, pageflipPosition.position, pageflipPosition.rotation);
-
-				name.text = scroll.name;
+				StopAllCoroutines();
+				StartCoroutine(ShowNewSpell(scroll));
 			}
 		}
+	}
+
+	IEnumerator ShowNewSpell(MagicScroll scroll)
+	{
+
+		flipRef = Instantiate(onePageFlip, pageflipPosition.position, pageflipPosition.rotation);
+		name.CrossFadeAlpha(0, 0, true);
+		name.CrossFadeAlpha(1, 0.75F, false);
+		name.text = scroll._Name;
+
+		yield return new WaitForSeconds(0.75F);
+
+		gestureTrailObjectReference =
+Instantiate(scroll.trailGestureObject, trailTargetPosition.position, trailTargetPosition.rotation);
+
+		//float val = 0;
+
+		//TrailRenderer[] trailRenderers = gestureTrailObjectReference.GetComponentsInChildren<TrailRenderer>();
+		//while (val < 1)
+		//{
+		//	val += Time.deltaTime;
+
+		//	foreach (TrailRenderer t in trailRenderers)
+		//	{
+		//		t.widthMultiplier = val;
+		//		yield return null;
+		//	}
+		//}
 	}
 
 	//private void OnTriggerStay(Collider other)
