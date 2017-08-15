@@ -180,7 +180,7 @@ public class PlayerData : ActorData
 
     public PlayerData(ActorData data, string _name, string _prefabPath = "") : base(data, _name, _prefabPath)
     {
-        gold = 0;
+        gold = 9000;
         expCrates = 0;
         currentTax = 0;
     }

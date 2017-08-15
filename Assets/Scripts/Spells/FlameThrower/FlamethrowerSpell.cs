@@ -16,11 +16,6 @@ public class FlamethrowerSpell : Spell
         smoke = transform.GetChild(0).GetChild(0).gameObject;
     }
 
-    public override void InitializeSpell(SpellHandler handler)
-    {
-        base.InitializeSpell(handler);
-		
-    }
 
     public override void Update()
     {
@@ -29,7 +24,7 @@ public class FlamethrowerSpell : Spell
 		transform.rotation = handler.transform.rotation;
 		if (casted)
         {
-            handler.Castor.StatContainer.ReduceMana(manaCost * Time.deltaTime);
+			handler.Castor.StatContainer.ReduceMana(manaCost * Time.deltaTime);
         }
     }
 

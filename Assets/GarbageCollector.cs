@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GarbageCollector : MonoBehaviour, ICanSerialize
 {
+
+	protected List<GenericItem> allExistingItem = new List<GenericItem>();
     protected void Start()
     {
+		GetExistingItems();
         Load();
     }
 
@@ -20,9 +23,13 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
     {
         List<GenericItemSceneData> allData = new List<GenericItemSceneData>();
         GenericItem[] allObjects = FindObjectsOfType<GenericItem>();
+
         foreach (GenericItem item in allObjects)
         {
-            if (item.isActiveAndEnabled && !item.GetComponent<DroppedItem>() && !item.GetComponent<IgnoreSave>())
+			if (allExistingItem.Contains(item))
+				continue;
+
+            if (item.isActiveAndEnabled && !item.GetComponent<DroppedItem>())
                 allData.Add(item.GetSceneData());
         }
         SerializeManager.Save(SerializedFileName, allData);
@@ -33,6 +40,7 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
     public void Load()
     {
         List<GenericItemSceneData> allData = (List<GenericItemSceneData>)SerializeManager.Load(SerializedFileName);
+		
         if (allData != null)
             foreach (GenericItemSceneData data in allData)
             {
@@ -45,4 +53,13 @@ public class GarbageCollector : MonoBehaviour, ICanSerialize
 
             }
     }
+
+	protected void GetExistingItems()
+	{
+		GenericItem[] allObjects = FindObjectsOfType<GenericItem>();
+		foreach (GenericItem item in allObjects)
+		{
+			allExistingItem.Add(item);
+		}
+	}
 }
