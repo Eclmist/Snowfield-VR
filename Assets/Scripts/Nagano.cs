@@ -93,8 +93,9 @@ public class Nagano : MonoBehaviour,ICanSerialize
 
 			currentEvent = events[0];
 			events.RemoveAt(0);
+            SaveManager.Instance.Save();
 
-			if (!currentEvent.enabled || currentEvent.EventIndex < previousIndex)
+            if (!currentEvent.enabled || currentEvent.EventIndex < previousIndex)
 				currentEvent = null;
 		}
 
@@ -148,6 +149,7 @@ public class Nagano : MonoBehaviour,ICanSerialize
 		{
             if(!openMailCoroutineRunning)
             {
+              
 				Teleport.instance.CancelTeleportHint();
                 openMailCoroutineRunning = true;
 				StartCoroutine(OpenMailRoutine());
@@ -192,7 +194,8 @@ public class Nagano : MonoBehaviour,ICanSerialize
         
 		if (!blacksmithCoroutineRunning)
 		{
-			blacksmithCoroutineRunning = true;
+ 
+            blacksmithCoroutineRunning = true;
 			StartCoroutine(HeadToBlackSmithAreaRoutine());
 		}
 
@@ -308,7 +311,8 @@ public class Nagano : MonoBehaviour,ICanSerialize
 	{
 		if(OrderBoard.Instance.CurrentNumberOfOrders > 0 && !sellingRoutineStarted)
 		{
-			sellingRoutineStarted = true;
+         
+            sellingRoutineStarted = true;
 			startingNumberOfOrders = OrderBoard.Instance.CurrentNumberOfOrders;
 			StartCoroutine(SellingRoutine());
 		}
