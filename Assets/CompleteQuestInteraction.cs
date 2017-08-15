@@ -15,7 +15,7 @@ public class CompleteQuestInteraction : QuestInteraction
             if (completableGroup != null)
             {
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_OK,
-                    "Quest", "Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup.ProgressionIndex,completableGroup.JobType),
+                    "Quest", "<b>Complete Quest: " + QuestManager.Instance.GetQuest(completableGroup.ProgressionIndex,completableGroup.JobType) + "</b>",
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Ok, CompleteQuestDelegate);
                 currentQuestGroup = completableGroup;

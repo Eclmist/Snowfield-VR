@@ -17,55 +17,86 @@ public class Portal : MonoBehaviour
 
 	public GameObject[] disableWhenEnteringLeft;
 	public GameObject[] disableWhenEnteringRight;
-
-
+    public GameObject buyLibrary;
+    public GameObject buyUIReference;
 	public float range;
 	public float UiZOffset = 0.262F;
 
 	bool leftShown;
 	bool rightShown;
+    bool buyShown;
 
 	protected void Update()
 	{
-		//Left door
-		if (Vector3.Distance(portalLeft.transform.position, Player.Instance.transform.position) < range)
-		{
-			if (!leftShown)
-			{
-				leftShown = true;
-				leftUIReference = Instantiate(leftUIPrefab, portalLeft.transform.position + portalLeft.transform.forward * UiZOffset, portalLeft.transform.rotation);
-				leftUIReference.GetComponent<OptionPane>().SetEvent(OptionPane.ButtonType.Ok, new UnityEngine.Events.UnityAction(WarpToRight));
-			}
-		}
-		else
-		{
-			if (leftShown)
-			{
-				leftShown = false;
-				leftUIReference.GetComponent<OptionPane>().ClosePane();
-				leftUIReference = null;
-			}
-		}
+        if (Player.Instance.Data.GetJob(JobType.MAGIC) != null)
+        {
+            //Left door
+            if (Vector3.Distance(portalLeft.transform.position, Player.Instance.transform.position) < range)
+            {
+                if (!leftShown)
+                {
+                    leftShown = true;
+                    leftUIReference = Instantiate(leftUIPrefab, portalLeft.transform.position + portalLeft.transform.forward * UiZOffset, portalLeft.transform.rotation);
+                    leftUIReference.GetComponent<OptionPane>().SetEvent(OptionPane.ButtonType.Ok, new UnityEngine.Events.UnityAction(WarpToRight));
+                }
+            }
+            else
+            {
+                if (leftShown)
+                {
+                    leftShown = false;
+                    leftUIReference.GetComponent<OptionPane>().ClosePane();
+                    leftUIReference = null;
+                }
+            }
 
-		//Right door
-		if (Vector3.Distance(portalRight.transform.position, Player.Instance.transform.position) < range)
-		{
-			if (!rightShown)
-			{
-				rightShown = true;
-				rightUIReference = Instantiate(rightUIPrefab, portalRight.transform.position + portalRight.transform.forward * UiZOffset, portalRight.transform.rotation);
-				rightUIReference.GetComponent<OptionPane>().SetEvent(OptionPane.ButtonType.Ok, new UnityEngine.Events.UnityAction(WarpToLeft));
-			}
-		}
-		else
-		{
-			if (rightShown)
-			{
-				rightShown = false;
-				rightUIReference.GetComponent<OptionPane>().ClosePane();
-				rightUIReference = null;
-			}
-		}
+            //Right door
+            if (Vector3.Distance(portalRight.transform.position, Player.Instance.transform.position) < range)
+            {
+                if (!rightShown)
+                {
+                    rightShown = true;
+                    rightUIReference = Instantiate(rightUIPrefab, portalRight.transform.position + portalRight.transform.forward * UiZOffset, portalRight.transform.rotation);
+                    rightUIReference.GetComponent<OptionPane>().SetEvent(OptionPane.ButtonType.Ok, new UnityEngine.Events.UnityAction(WarpToLeft));
+                }
+            }
+            else
+            {
+                if (rightShown)
+                {
+                    rightShown = false;
+                    rightUIReference.GetComponent<OptionPane>().ClosePane();
+                    rightUIReference = null;
+                }
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(portalLeft.transform.position, Player.Instance.transform.position) < range)
+            {
+                if (!buyShown)
+                {
+                    buyShown = true;
+                    buyUIReference = Instantiate(buyLibrary, portalLeft.transform.position + portalLeft.transform.forward * UiZOffset, portalLeft.transform.rotation);
+
+                    OptionPane op = buyUIReference.GetComponent<OptionPane>();
+                    op.SetEvent(OptionPane.ButtonType.Yes, new UnityEngine.Events.UnityAction(GameManager.Instance.GetMagicRole));
+                    if (Player.Instance.Gold < 5000f)
+                    {
+                        op.GetButton(0).GetComponent<Collider>().enabled = false;
+                    }
+                }
+            }
+            else
+            {
+                if (buyShown)
+                {
+                    buyShown = false;
+                    buyUIReference.GetComponent<OptionPane>().ClosePane();
+                    buyUIReference = null;
+                }
+            }
+        }
 	}
 
 	protected void OnDrawGizmos()

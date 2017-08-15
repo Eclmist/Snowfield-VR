@@ -156,4 +156,10 @@ public class GameManager : MonoBehaviour, ICanSerialize
         SerializeManager.Save(SerializedFileName, gameClock);
     }
 
+    public void GetMagicRole()
+    {
+        Player.Instance.Data.AddJob(JobType.MAGIC);
+        Player.Instance.Gold -= 5000;
+    }
+
 }
