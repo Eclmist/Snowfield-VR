@@ -32,7 +32,8 @@ public class InGameUIActivation : MonoBehaviour
 					if (menu != null)
 					{
 						iGMA.Deactivate();
-						menu.SetActive(false);
+                        iGMA.InGameAppear(false);
+                        menu.SetActive(false);
 					}
 
 					Vector3 localOffset = Vector3.zero;
@@ -40,7 +41,9 @@ public class InGameUIActivation : MonoBehaviour
 					localOffset += transform.up * offset.y;
 					localOffset += transform.forward * offset.z;
 
-					menu.SetActive(true);
+                    menu.SetActive(true);
+                    iGMA.InGameAppear(true);
+
 					menu.transform.position = currentInteractingCtrl.transform.position + localOffset;
 					menu.transform.rotation = Quaternion.Euler(Quaternion.identity.x, currentInteractingCtrl.Device.transform.rot.eulerAngles.y + 180, Quaternion.identity.z);
 
@@ -51,6 +54,7 @@ public class InGameUIActivation : MonoBehaviour
 					if (menu != null && currentInteractingCtrl.UI == null)
 					{
 						iGMA.Deactivate();
+                        iGMA.InGameAppear(false);
 						menu.SetActive(false);
 					}
 				}
