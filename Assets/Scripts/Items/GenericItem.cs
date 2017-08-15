@@ -22,6 +22,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	protected float collisionVibrationMagnitude = 0.002F;
 
 	protected JobType jobType;
+	[SerializeField]protected string _name;
 
 
 	public JobType JobType
@@ -119,6 +120,12 @@ public class GenericItem : VR_Interactable_Object, IDamage
             return name;
         }
     }
+
+	public string _Name
+	{
+		get { return this._name; }
+	}
+
 
 
 
