@@ -21,9 +21,10 @@ public class Merchant : MonoBehaviour
     
     public MerchantPanel SpawnMerchantPanel()
     {
-        MerchantPanel panelInstance = Instantiate(merchantPanel, transform.position + (transform.forward * offsetFromMerchant.z)  + (transform.up * offsetFromMerchant.y), merchantPanel.transform.rotation);
+        MerchantPanel panelInstance = Instantiate(merchantPanel, transform.position + (transform.forward * offsetFromMerchant.z)  + (transform.up * offsetFromMerchant.y), transform.rotation);
         panelInstance.InitializeAndDisplayCatalog(buyableItemData);
-		panelInstance.transform.LookAt(Player.Instance.transform);
+		
+
 
         return panelInstance;
     }

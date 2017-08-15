@@ -42,12 +42,15 @@ public class Portal : MonoBehaviour
             }
             else
             {
-                if (leftShown)
-                {
-                    leftShown = false;
-                    leftUIReference.GetComponent<OptionPane>().ClosePane();
-                    leftUIReference = null;
-                }
+				if (leftShown)
+				{
+					leftShown = false;
+					if (leftUIReference)
+					{
+						leftUIReference.GetComponent<OptionPane>().ClosePane();
+						leftUIReference = null;
+					}
+				}
             }
 
             //Right door
@@ -62,12 +65,15 @@ public class Portal : MonoBehaviour
             }
             else
             {
-                if (rightShown)
-                {
-                    rightShown = false;
-                    rightUIReference.GetComponent<OptionPane>().ClosePane();
-                    rightUIReference = null;
-                }
+				if (rightShown)
+				{
+					rightShown = false;
+					if (rightUIReference)
+					{
+						rightUIReference.GetComponent<OptionPane>().ClosePane();
+						rightUIReference = null;
+					}
+				}
             }
         }
         else
@@ -89,12 +95,15 @@ public class Portal : MonoBehaviour
             }
             else
             {
-                if (buyShown)
-                {
-                    buyShown = false;
-                    buyUIReference.GetComponent<OptionPane>().ClosePane();
-                    buyUIReference = null;
-                }
+				if (buyShown)
+				{
+					buyShown = false;
+					if (buyUIReference)
+					{
+						buyUIReference.GetComponent<OptionPane>().ClosePane();
+						buyUIReference = null;
+					}
+				}
             }
         }
 	}
@@ -124,11 +133,11 @@ public class Portal : MonoBehaviour
 		{
 			case 0:
 				targetTransform = portalLeft.transform;
-				targetRotation = new Vector3(0, 180, 0);
+				targetRotation = new Vector3(0, 90, 0);
 				break;
 			case 1:
 				targetTransform = portalRight.transform;
-				targetRotation = new Vector3(0, 90, 0);
+				targetRotation = new Vector3(0, 0, 0);
 				break;
 			default:
 				Debug.Log("Wrong Warp INDEX!!!!");
@@ -154,9 +163,9 @@ public class Portal : MonoBehaviour
 		Vector3 position = targetTransform.transform.position + targetTransform.forward;
 		position.y = 0;
 		CameraRig.transform.position = position;
-		var rot = CameraRig.transform.rotation;//= Quaternion.LookRotation(targetTransform.forward);
-		rot.eulerAngles = targetRotation;
-		CameraRig.transform.rotation = rot;
+		//var rot = Player.Instance.transform.rotation;//= Quaternion.LookRotation(targetTransform.forward);
+		//rot.eulerAngles = targetRotation;
+		//Player.Instance.transform.rotation = rot;
 
 		foreach (GameObject g in disableWhenEnteringLeft)
 		{
