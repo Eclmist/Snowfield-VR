@@ -142,7 +142,8 @@ public class Ingot : BlacksmithItem {
             {   
                 // Fail
                 tempKill.Kill();
-                Destroy(this.gameObject); 
+				gameObject.SetActive(false);
+				Destroy(gameObject,3);
             }
         }
     }

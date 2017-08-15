@@ -116,7 +116,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1909934928214322}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.3565445, y: -0.0958751, z: -5.2633286}
+  m_LocalPosition: {x: 8.610373, y: 0.9452032, z: -3.2808106}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4875494690433038}
@@ -477,7 +477,6 @@ MonoBehaviour:
   maxLerpForce: 10
   itemID: 2
   damage: 0
-  m_name: Iron Ingot
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
   physicalMaterial:
@@ -490,6 +489,8 @@ MonoBehaviour:
   meshRenderer: {fileID: 0}
   currentTemperature: 0
   heatSourceDetected: 0
+  onAnvil: 0
+  isMorphable: 0
 --- !u!114 &114971395219382924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -510,7 +511,7 @@ MonoBehaviour:
   minThicknessSide: 0.4
   distanceThreshold: 0.05
   randomJitter: 0
-  deformationAmount: 0.02
+  deformationAmount: 0.005
 --- !u!198 &198959388205982384
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1213,8 +1214,8 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - time: 0
-      minCount: 50
-      maxCount: 50
+      minCount: 200
+      maxCount: 200
       cycleCount: 1
       repeatInterval: 0.01
   SizeModule:

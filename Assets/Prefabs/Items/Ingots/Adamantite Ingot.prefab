@@ -104,7 +104,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469478897470098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.482456, y: -0.09587511, z: -6.8543396}
+  m_LocalPosition: {x: 8.620905, y: 0.94520295, z: -3.834685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4094835905845008}
@@ -486,7 +486,6 @@ MonoBehaviour:
   maxLerpForce: 10
   itemID: 5
   damage: 0
-  m_name: Adamantite Ingot
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
   physicalMaterial:
@@ -499,6 +498,8 @@ MonoBehaviour:
   meshRenderer: {fileID: 0}
   currentTemperature: 0
   heatSourceDetected: 0
+  onAnvil: 0
+  isMorphable: 0
 --- !u!114 &114519759778842550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1213,8 +1214,8 @@ ParticleSystem:
     m_BurstCount: 1
     m_Bursts:
     - time: 0
-      minCount: 50
-      maxCount: 50
+      minCount: 200
+      maxCount: 200
       cycleCount: 1
       repeatInterval: 0.01
   SizeModule:
