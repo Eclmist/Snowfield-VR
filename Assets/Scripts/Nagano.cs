@@ -17,8 +17,8 @@ public class LevelEvent
     public UnityEvent invokableEventUpdate;
     [Range(0, 100)] public float startDelay;
     public bool enabled = true;
-    private int eventIndex;
-
+    [SerializeField][ReadOnly]private int eventIndex;
+	
     public int EventIndex
     {
         get { return this.eventIndex; }
@@ -171,6 +171,7 @@ public class Nagano : MonoBehaviour,ICanSerialize
 
         HideAllControllerHints();
         CompleteCurrentEvent();
+		Debug.Log(previousIndex);
     }
 
 
