@@ -9,6 +9,7 @@ public struct InGameMenuPrefabs
     public GameObject settingsScreen;
     public GameObject quitPrompt;
     public GameObject mailScreen;
+    public Animator buttons;
 }
 
 
@@ -17,7 +18,7 @@ public class InGameMenuArea : MonoBehaviour
 {
     [SerializeField]
     private InGameMenuPrefabs prefabs;
-   
+    
     public void CharacterActivation(bool active)
     {
         if (prefabs.characterScreen != null)
@@ -53,11 +54,16 @@ public class InGameMenuArea : MonoBehaviour
         SettingsActivation(false);
         QuitGamePrompt(false);
         MailActivation(false);
+        
     }
 
     public void QuitGame()
     {
         Application.Quit();
     }
-    
+
+    public void InGameAppear(bool i)
+    {
+        prefabs.buttons.SetBool("Activate", i);
+    }
 }
