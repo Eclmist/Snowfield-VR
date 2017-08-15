@@ -189,7 +189,6 @@ namespace Edwon.VR.Gesture
 			if (state == VRGestureCaptureState.Capturing)
 			{
 				CapturePoint();
-				Debug.Log("capturing");
 			}
 
 		}

@@ -7,11 +7,11 @@ public class GameConstants{
 
     private float experienceRate = 1, experienceConstant = 0.5F;//Or whatever value
 
-    private float respawnTimePerLevel = 5f, dropItemDespawnRate = 30f;
+    private float respawnTimePerLevel = 20f, dropItemDespawnRate = 30f;
 
-    private float dropRate = 1f;
+    private float dropRate = .5f;
 
-    protected int monsterTierMultiplier = 1;
+    protected int monsterTierMultiplier = 2;
 
     public int MonsterTierMultiplier
     {

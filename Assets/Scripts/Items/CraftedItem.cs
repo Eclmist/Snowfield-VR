@@ -63,7 +63,6 @@ public class CraftedItem : GenericItem
 		}
 		else
 		{
-			Debug.Log(colObject);
 			removable = false;
 		}
 	}
