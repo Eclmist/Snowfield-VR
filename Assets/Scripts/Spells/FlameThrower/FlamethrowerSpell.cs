@@ -61,7 +61,7 @@ public class FlamethrowerSpell : Spell
             em.enabled = false;
             emsmoke.enabled = false;
 
-            Destroy(this, 0.25f);
+            Destroy(this.gameObject, 0.25f);
 
             casted = false;
 
