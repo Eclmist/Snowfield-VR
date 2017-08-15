@@ -6,8 +6,8 @@ using UnityEngine.Video;
 [System.Serializable]
 public struct TrailerItem
 {
-    public Camera cam1, cam2, cam3, cam4;
-    public GameObject mouse, mail;
+    public Camera cam1, cam2, cam3, cam4, cam5;
+    public GameObject mouse, mail, cupboard;
     public VideoPlayer glitchL, glitchC, glitchR, glitchTV;
     public MeshRenderer TV;
 }
@@ -17,7 +17,7 @@ public class Trailer : MonoBehaviour {
     [SerializeField]
     private TrailerItem trailerItem;
 
-    private Animator[] camAnim = new Animator[4];
+    private Animator[] camAnim = new Animator[5];
 	// Use this for initialization
 	void Start ()
     {
@@ -25,6 +25,7 @@ public class Trailer : MonoBehaviour {
         camAnim[1] = trailerItem.cam2.GetComponent<Animator>();
         camAnim[2] = trailerItem.cam3.GetComponent<Animator>();
         camAnim[3] = trailerItem.cam4.GetComponent<Animator>();
+        camAnim[4] = trailerItem.cam5.GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -72,8 +73,30 @@ public class Trailer : MonoBehaviour {
             if (Input.GetKey(KeyCode.F4))
             {
                 trailerItem.cam4.gameObject.SetActive(true);
-                StartCoroutine(Wait(0.75f));
+                StartCoroutine(WaitForCam3(0.75f));
                 StartCoroutine(WaitForGlitch(0.25f));
+                //camAnim[3].SetBool("Transit", true);
+            }
+            else
+            {
+                if(!Input.GetKey(KeyCode.F5))
+                {
+                    trailerItem.glitchL.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    trailerItem.glitchR.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    trailerItem.glitchC.gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    trailerItem.mouse.SetActive(true);
+                }
+                trailerItem.cam4.gameObject.SetActive(false);
+                camAnim[3].SetBool("Transit", false);
+                trailerItem.TV.enabled = true;
+
+            }
+
+            if (Input.GetKey(KeyCode.F5))
+            {
+                trailerItem.cam5.gameObject.SetActive(true);
+                camAnim[4].SetBool("Transit", true);
+                StartCoroutine(WaitForCupboard(0.2f));
                 //camAnim[3].SetBool("Transit", true);
             }
             else
@@ -81,15 +104,14 @@ public class Trailer : MonoBehaviour {
                 trailerItem.glitchL.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 trailerItem.glitchR.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 trailerItem.glitchC.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                trailerItem.cam4.gameObject.SetActive(false);
+                trailerItem.cam5.gameObject.SetActive(false);
                 camAnim[3].SetBool("Transit", false);
-                trailerItem.mouse.SetActive(true);
-                trailerItem.TV.enabled = true;
+                trailerItem.cupboard.GetComponent<Animator>().enabled = false;
             }
         }
     }
 
-    IEnumerator Wait(float i)
+    IEnumerator WaitForCam3(float i)
     {
         yield return new WaitForSeconds(i);
         camAnim[3].SetBool("Transit", true);
@@ -99,7 +121,7 @@ public class Trailer : MonoBehaviour {
     {
         trailerItem.TV.enabled = false;
         trailerItem.glitchTV.Play();
-        yield return new WaitForSeconds(i );
+        yield return new WaitForSeconds(i);
         trailerItem.mouse.SetActive(false);
         trailerItem.glitchC.gameObject.GetComponent<MeshRenderer>().enabled = true;
         trailerItem.glitchC.Play();
@@ -109,5 +131,11 @@ public class Trailer : MonoBehaviour {
         yield return new WaitForSeconds(i);
         trailerItem.glitchR.gameObject.GetComponent<MeshRenderer>().enabled = true;
         trailerItem.glitchR.Play(); 
+    }
+
+    IEnumerator WaitForCupboard(float i)
+    {
+        yield return new WaitForSeconds(i);
+        trailerItem.cupboard.GetComponent<Animator>().enabled = true;
     }
 }

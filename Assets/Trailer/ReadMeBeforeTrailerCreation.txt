@@ -17,3 +17,5 @@ Clip 3 (Disable Camera1 and 2)
 Clip 4 (Disable Camera1 and 3)
 1) TrailerCamera2 animation, parameter Next sets to true.
 2) Enable Glitch of all computer.
+
+Press F1 for cam1, F2 for cam2, so on and so for.
