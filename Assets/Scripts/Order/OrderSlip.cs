@@ -156,6 +156,7 @@ public class OrderSlip : VR_Interactable_UI
 
                         int reduction = WeaponTierManager.Instance.GetNumberOfTiersInClass(tempType);
                         reward /= reduction;
+                        Player.Instance.GainExperience(tempData.JobType, reward);
                         isCorrect = true;
 
                     }
