@@ -5,7 +5,9 @@ using UnityEngine;
 public class Hammer : BlacksmithItem
 {
 	private AudioSource source;
-
+	public GameObject spark;
+	public bool varyingSparkEmission;
+	public float varyingEmissionMultiplier;
 	private float timeSinceLastHit = 0;
 	private Vector3 originalPosition, originalRotation;
 	protected override void Start()
@@ -43,8 +45,25 @@ public class Hammer : BlacksmithItem
 			}
 
 			if (source)
+			{
 				source.PlayOneShot(source.clip, collision.relativeVelocity.magnitude / 3);
 
+				GameObject s = GameObject.Instantiate(spark, collision.contacts[0].point, Quaternion.identity);
+				var emission = s.GetComponent<ParticleSystem>().emission;
+
+				if (!varyingSparkEmission)
+				{
+					emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0, 50, 200) });
+				}
+				else
+				{
+					emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0,
+						(short)(collision.relativeVelocity.magnitude * varyingEmissionMultiplier / 4),
+						(short)(collision.relativeVelocity.magnitude * varyingEmissionMultiplier)) });
+				}
+
+				emission.enabled = true;
+			}
 
 			timeSinceLastHit = 0;
 

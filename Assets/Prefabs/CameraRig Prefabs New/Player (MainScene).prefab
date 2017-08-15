@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 54603124750173006}
   - component: {fileID: 114886217916729724}
   - component: {fileID: 114350389200846922}
+  - component: {fileID: 114142056452588488}
   m_Layer: 15
   m_Name: Hand2
   m_TagString: Untagged
@@ -225,8 +226,6 @@ GameObject:
   - component: {fileID: 114036266192207270}
   - component: {fileID: 114161132442480140}
   - component: {fileID: 114939243126948612}
-  - component: {fileID: 114258374562594620}
-  - component: {fileID: 114654980936453966}
   m_Layer: 0
   m_Name: FallbackObjects
   m_TagString: MainCamera
@@ -1348,6 +1347,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menu: {fileID: 0}
   offset: {x: -0.07, y: -0.05, z: 0.08}
+--- !u!114 &114142056452588488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417805208827910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb148b10d046f141adc872e9be75149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 0}
+  offset: {x: -0.07, y: -0.05, z: 0.08}
 --- !u!114 &114146482954486746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1445,23 +1457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highLightMaterial: {fileID: 2100000, guid: 7b939e5e799d98a469f594828ebab52e, type: 2}
   fireHapticsOnHightlight: 1
---- !u!114 &114258374562594620
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1504160406501886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd294edf9b3c759449abde690d31e2c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: e69621cd053fe4148bc009f9a99b079c, type: 3}
-  replacement: {fileID: 4800000, guid: a8c68191404e72b419fdfa66f9167664, type: 3}
-  blur: {fileID: 4800000, guid: 9c1ddeca4c3e2554dba2b43f9789a25c, type: 3}
-  downsample: 1
-  blurIteration: 4
-  offset: {x: 0.002, y: 0.002}
 --- !u!114 &114300993275269924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1635,18 +1630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handle: 0
---- !u!114 &114654980936453966
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1504160406501886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: dbf4a95682ba0184386a7f1c75bd94d7, type: 2}
 --- !u!114 &114696515548027438
 MonoBehaviour:
   m_ObjectHideFlags: 1
