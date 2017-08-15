@@ -19,16 +19,15 @@ public class FlamethrowerSpell : Spell
     public override void InitializeSpell(SpellHandler handler)
     {
         base.InitializeSpell(handler);
-		transform.position = handler.transform.position;
-		transform.rotation = handler.transform.rotation;
-        transform.parent = handler.transform;
+		
     }
 
     public override void Update()
     {
         base.Update();
-
-        if (casted)
+		transform.position = handler.transform.position;
+		transform.rotation = handler.transform.rotation;
+		if (casted)
         {
             handler.Castor.StatContainer.ReduceMana(manaCost * Time.deltaTime);
         }
