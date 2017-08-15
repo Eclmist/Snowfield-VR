@@ -41,8 +41,9 @@ public class InGameMenuArea : MonoBehaviour
     {
         if (prefabs.mailScreen != null)
 		{
-			prefabs.mailScreen.SetActive(active);
 
+			prefabs.mailScreen.SetActive(active);
+            prefabs.mailScreen.GetComponent<Animator>().SetBool("Activate", active);
 			if(active)
 				MessageManager.Instance.DisplayMailInterface();
 		}
@@ -54,7 +55,6 @@ public class InGameMenuArea : MonoBehaviour
         SettingsActivation(false);
         QuitGamePrompt(false);
         MailActivation(false);
-        
     }
 
     public void QuitGame()
