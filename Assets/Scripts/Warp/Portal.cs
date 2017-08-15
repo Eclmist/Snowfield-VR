@@ -18,7 +18,7 @@ public class Portal : MonoBehaviour
 	public GameObject[] disableWhenEnteringLeft;
 	public GameObject[] disableWhenEnteringRight;
     public GameObject buyLibrary;
-    public GameObject buyUIReference;
+    private GameObject buyUIReference;
 	public float range;
 	public float UiZOffset = 0.262F;
 
