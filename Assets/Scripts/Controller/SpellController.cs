@@ -123,7 +123,7 @@ public class SpellController : MonoBehaviour
             {
                 controllerRef.Vibrate(10);
 
-                handler.CastSpell(spell, controllerRef, Player.Instance);
+                currentHandler.CastSpell(spell, controllerRef, Player.Instance);
             }
         }
     }
