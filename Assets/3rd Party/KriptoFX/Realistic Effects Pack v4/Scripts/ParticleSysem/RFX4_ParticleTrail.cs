@@ -49,43 +49,45 @@ public class RFX4_ParticleTrail : MonoBehaviour
     ParticleSystem.Particle[] particles;
     TrailRenderer[] trails;
     private Color psColor;
-    private Transform targetT;
+
+    public Transform targetT;
+
     private int layer;
     private bool isLocalSpace = true;
     private Transform t;
     //private bool isInitialized;
-    protected GameObject monster;
-    protected float nearestDistance = 0;
+    //protected GameObject monster;
+    //protected float nearestDistance = 0;
 
-    [SerializeField]
-    protected GameObject point;
+    //[SerializeField]
+    //protected GameObject point;
 
     void OnEnable()
     {
-        if (Target != null) targetT = Target.transform;
+        //if (Target != null) targetT = Target.transform;
 
-        if (Target == null)
-        {
-            Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
+        //if (Target == null)
+        //{
+        //    Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
 
-            if(col != null)
-            {
-                foreach (Collider c in col)
-                {
-                    Monster mob = c.GetComponent<Monster>();
+        //    if(col != null)
+        //    {
+        //        foreach (Collider c in col)
+        //        {
+        //            Monster mob = c.GetComponent<Monster>();
 
-                    if(mob)
-                    monster = mob.gameObject;
+        //            if(mob)
+        //            monster = mob.gameObject;
 
-                }
+        //        }
 
-                if (monster != null)
-                {
-                    Target = monster;
-                    targetT = Target.transform;
-                }
-            }
-        }
+        //        if (monster != null)
+        //        {
+        //            Target = monster;
+        //            targetT = Target.transform;
+        //        }
+        //    }
+        //}
 
         ps = GetComponent<ParticleSystem>();
        // ps.startRotation3D = new Vector3(100000, 100000, 100000);
@@ -126,28 +128,28 @@ public class RFX4_ParticleTrail : MonoBehaviour
 
     private void Update()
     {
-		if (monster == null || Target.GetComponent<Monster>().StatContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0 || Target == null)
-		{
-			Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
+		//if (monster == null || Target.GetComponent<Monster>().StatContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0 || Target == null)
+		//{
+		//	Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
 
-			if (col != null)
-			{
-				foreach (Collider c in col)
-				{
-					Monster mob = c.GetComponent<Monster>();
+		//	if (col != null)
+		//	{
+		//		foreach (Collider c in col)
+		//		{
+		//			Monster mob = c.GetComponent<Monster>();
 
-					if (mob)
-						monster = mob.gameObject;
+		//			if (mob)
+		//				monster = mob.gameObject;
 
-				}
+		//		}
 
-				if (monster != null)
-				{
-					Target = monster;
-					targetT = Target.transform;
-				}
-			}
-		}
+		//		if (monster != null)
+		//		{
+		//			Target = monster;
+		//			targetT = Target.transform;
+		//		}
+		//	}
+		//}
 
         if (dict.Count > 10)
             RemoveEmptyTrails();
