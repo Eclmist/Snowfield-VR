@@ -55,6 +55,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4955557533023890}
+  - component: {fileID: 114810403408694862}
   m_Layer: 0
   m_Name: Warp Bolt
   m_TagString: Untagged
@@ -102,7 +103,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4247598539817934}
-  - component: {fileID: 114133881528300392}
   m_Layer: 0
   m_Name: Effect6_Optimized
   m_TagString: Untagged
@@ -452,7 +452,7 @@ MonoBehaviour:
   TimeDelay: 0
   CollidesWith:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294868991
   EffectsOnCollision:
   - {fileID: 181074, guid: f59f6967a2c806540b4a69b74032fe1a, type: 2}
   - {fileID: 1318245354652410, guid: 7053e7f3a3a34ae4b95e314ccc7ee0e2, type: 2}
@@ -463,18 +463,6 @@ MonoBehaviour:
   - {fileID: 1401481522005934}
   HUE: -1
   CollidedInstances: []
---- !u!114 &114133881528300392
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1664401815916522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8410750655a2d2f489c642c14c30aaec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeactivateTime: 2.6
 --- !u!114 &114344986284898074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -670,6 +658,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   AproximatedFlyDistance: -1
+--- !u!114 &114810403408694862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1231236553583686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13007466adcfb24188374e43b224c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 4
 --- !u!198 &198145291397440734
 ParticleSystem:
   m_ObjectHideFlags: 1

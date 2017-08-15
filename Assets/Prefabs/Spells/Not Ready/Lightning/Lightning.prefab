@@ -36,8 +36,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4137438151995020}
-  - component: {fileID: 114892617751023558}
   - component: {fileID: 114712979576860078}
+  - component: {fileID: 114920909705826850}
   m_Layer: 0
   m_Name: Lightning
   m_TagString: Untagged
@@ -190,7 +190,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4630407402185632}
-  - component: {fileID: 114637019908970438}
   m_Layer: 0
   m_Name: Effect10Optimized
   m_TagString: Untagged
@@ -712,7 +711,7 @@ MonoBehaviour:
   RaycastDistance: 100
   Effects:
   - {fileID: 183336, guid: 3da5b72e78c819b4290273a86568da21, type: 2}
-  - {fileID: 1318245354652410, guid: 7053e7f3a3a34ae4b95e314ccc7ee0e2, type: 2}
+  - {fileID: 1318245354652410, guid: f5069f20b6536b84bb62ac39bf7d0e8f, type: 2}
   Offset: 0.2
   TimeDelay: 3
   DestroyTime: 5
@@ -992,18 +991,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   AproximatedFlyDistance: -1
---- !u!114 &114637019908970438
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1566430357580878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8410750655a2d2f489c642c14c30aaec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeactivateTime: 7
 --- !u!114 &114712979576860078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1029,7 +1016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LightIntencityMultiplayer: 0.6
   Shadows: 0
---- !u!114 &114892617751023558
+--- !u!114 &114920909705826850
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1037,11 +1024,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1098979546519600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39f4aa099d8cf04582fbedae32d07e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 83c38d704fcba11498c03c5c408303a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaCost: 100
-  offset: {x: 0, y: 0, z: 4}
+  manaCost: 500
+  attackRadius: 5
 --- !u!182 &182341391012344614
 WindZone:
   m_ObjectHideFlags: 1

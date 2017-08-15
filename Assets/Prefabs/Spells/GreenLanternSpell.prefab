@@ -139,6 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4533842175331954}
   - component: {fileID: 114928634250633472}
+  - component: {fileID: 114394127634975882}
   m_Layer: 0
   m_Name: GreenLanternSpell
   m_TagString: Untagged
@@ -819,6 +820,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeactivateTime: 6
+--- !u!114 &114394127634975882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1665723412436812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda584441f0019f4685a47d065284e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaCost: 20
 --- !u!114 &114457471569438906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -980,7 +993,7 @@ MonoBehaviour:
   TimeDelay: 0
   CollidesWith:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294934527
   EffectsOnCollision:
   - {fileID: 167520, guid: f3b6bcc909e8cd2498f7c7e6191e0e98, type: 2}
   - {fileID: 1318245354652410, guid: 7053e7f3a3a34ae4b95e314ccc7ee0e2, type: 2}

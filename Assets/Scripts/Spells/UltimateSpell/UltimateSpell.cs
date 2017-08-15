@@ -26,8 +26,6 @@ public class UltimateSpell : Spell{
 
 			transform.position = hit.point;
 
-			Debug.Log(transform.position);
-
 			float yRot = Player.Instance.transform.rotation.eulerAngles.y;
 			var rot = transform.rotation;
 

@@ -54,10 +54,39 @@ public class RFX4_ParticleTrail : MonoBehaviour
     private bool isLocalSpace = true;
     private Transform t;
     //private bool isInitialized;
+    protected GameObject monster;
+    protected float nearestDistance = 0;
+
+    [SerializeField]
+    protected GameObject point;
 
     void OnEnable()
     {
         if (Target != null) targetT = Target.transform;
+
+        if (Target == null)
+        {
+            Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
+
+            if(col != null)
+            {
+                foreach (Collider c in col)
+                {
+                    Monster mob = c.GetComponent<Monster>();
+
+                    if(mob)
+                    monster = mob.gameObject;
+
+                }
+
+                if (monster != null)
+                {
+                    Target = monster;
+                    targetT = Target.transform;
+                }
+            }
+        }
+
         ps = GetComponent<ParticleSystem>();
        // ps.startRotation3D = new Vector3(100000, 100000, 100000);
 
@@ -222,5 +251,11 @@ public class RFX4_ParticleTrail : MonoBehaviour
             if(trailRenderer.Value!=null) Destroy(trailRenderer.Value.gameObject);
         }
         dict.Clear();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(point.transform.position, 8);
     }
 }

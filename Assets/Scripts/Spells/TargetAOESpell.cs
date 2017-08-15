@@ -17,12 +17,26 @@ public class TargetAOESpell : Spell {
     {
         base.InitializeSpell(handler);
 
-        nearestMob = CheckForMonsterDistance();
-
-        if(nearestMob != null)
+        if(Player.Instance.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
         {
-            transform.position = new Vector3(nearestMob.transform.position.x, nearestMob.transform.position.y + 4, nearestMob.transform.position.z);
-            transform.parent = nearestMob.transform;
+            nearestMob = CheckForMonsterDistance();
+
+            if (nearestMob != null)
+            {
+                transform.position = new Vector3(nearestMob.transform.position.x, nearestMob.transform.position.y + 4, nearestMob.transform.position.z);
+                transform.parent = nearestMob.transform;
+
+                this.gameObject.SetActive(true);
+
+                handler.Castor.StatContainer.ReduceMana(manaCost);
+            }
+
+            handler.DecastSpell();
+        }
+        else
+        {
+            handler.DecastSpell();
+            Destroy(this.gameObject, 1);
         }
         
     }

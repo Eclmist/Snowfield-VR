@@ -209,6 +209,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4096116949270776}
+  - component: {fileID: 114491344690760404}
+  - component: {fileID: 114859743048661666}
   m_Layer: 0
   m_Name: ChargingLaserSpell
   m_TagString: Untagged
@@ -1740,6 +1742,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ActivatedGameObject: {fileID: 1898895839265356}
   Delay: 1.4
+--- !u!114 &114491344690760404
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1492204105792782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13007466adcfb24188374e43b224c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 6
 --- !u!114 &114666786803866608
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1965,6 +1979,18 @@ MonoBehaviour:
   GraphIntensityMultiplier: 1
   IsLoop: 0
   canUpdate: 0
+--- !u!114 &114859743048661666
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1492204105792782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda584441f0019f4685a47d065284e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaCost: 50
 --- !u!114 &114917408808633400
 MonoBehaviour:
   m_ObjectHideFlags: 1

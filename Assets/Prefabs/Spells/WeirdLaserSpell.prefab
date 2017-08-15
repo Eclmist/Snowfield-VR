@@ -105,6 +105,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4688870051746628}
+  - component: {fileID: 114455871677069154}
+  - component: {fileID: 114756284918571818}
   m_Layer: 0
   m_Name: WeirdLaserSpell
   m_TagString: Untagged
@@ -421,7 +423,7 @@ MonoBehaviour:
   TimeDelay: 0.05
   CollidesWith:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294934527
   EffectsOnCollision:
   - {fileID: 1318245354652410, guid: 7053e7f3a3a34ae4b95e314ccc7ee0e2, type: 2}
   CollisionOffset: 0
@@ -520,6 +522,18 @@ MonoBehaviour:
     m_RotationOrder: 0
   AproximatedFlyDistance: 7
   SmoothCurves: 1
+--- !u!114 &114455871677069154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668213391869242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b13007466adcfb24188374e43b224c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 3
 --- !u!114 &114603522630371766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -623,6 +637,18 @@ MonoBehaviour:
     m_RotationOrder: 0
   AproximatedFlyDistance: 7
   SmoothCurves: 1
+--- !u!114 &114756284918571818
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668213391869242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda584441f0019f4685a47d065284e60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manaCost: 20
 --- !u!114 &114884272703887480
 MonoBehaviour:
   m_ObjectHideFlags: 1
