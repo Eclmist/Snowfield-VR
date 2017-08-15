@@ -104,16 +104,16 @@ public class OrderSlip : VR_Interactable_UI
     {
         CloseCurrentPane();
 
-        OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
+		if (currentInteractingController && currentInteractingController.CurrentItemInHand)
+			if (currentInteractingController.CurrentItemInHand is Weapon)
+				interactingWeapon = currentInteractingController.CurrentItemInHand as Weapon;
+
+		OptionPane op = UIManager.Instance.InstantiateOptions(transform.position, Player.Instance.transform, transform);
 
         currentOP = op;
         op.transform.LookAt(Player.Instance.transform);
-        if (currentInteractingController.CurrentItemInHand is Weapon)
-            interactingWeapon = currentInteractingController.CurrentItemInHand as Weapon;
 
-
-
-        op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
+		op.SetEvent(OptionPane.ButtonType.Yes, TryConfirmOrder);
         op.SetEvent(OptionPane.ButtonType.No, SpawnDetailsPanel);
         op.SetEvent(OptionPane.ButtonType.Cancel, CloseCurrentPane);
 
@@ -123,6 +123,7 @@ public class OrderSlip : VR_Interactable_UI
     {
         if (currentOP)
         {
+			interactingWeapon = null;
             currentOP.Destroy();
         }
     }
@@ -133,8 +134,9 @@ public class OrderSlip : VR_Interactable_UI
         bool isCorrect = false;
 
 
-        if (interactingWeapon)
+		if (interactingWeapon)
         {
+
             if (interactingWeapon.ItemID == order.ItemID)
             {
                 isCorrect = true;
@@ -170,8 +172,6 @@ public class OrderSlip : VR_Interactable_UI
 
             OrderEnd(true);
 
-            CloseCurrentPane();
-
             GameManager.Instance.AddPlayerGold(reward);
             TextSpawnerManager.Instance.SpawnText("+" + reward, Color.green, transform);
 
@@ -192,8 +192,9 @@ public class OrderSlip : VR_Interactable_UI
         }
 
 
+		CloseCurrentPane();
 
-    }
+	}
 
     private void SpawnDetailsPanel()
     {

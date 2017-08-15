@@ -12,6 +12,8 @@ public class Snapper : MonoBehaviour {
 
 	protected bool isSnapped;   // current item snapped
 
+	protected bool leftInitialPointFarEnough;
+
 	void Start()
 	{
 		if (!snapItem || !lockTransform)
@@ -33,23 +35,27 @@ public class Snapper : MonoBehaviour {
 				isSnapped = false;
 			}
 		}
+		else
+		{
+			if (Vector3.Distance(snapItem.transform.position, lockTransform.position) > 0.5F)
+			{
+				leftInitialPointFarEnough = true;
+			}
+		}
 	}
 
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (!isSnapped)
+		if (!isSnapped && leftInitialPointFarEnough)
 		{
 			var i = other.GetComponentInParent<VR_Interactable_Object>();
 
 			if (i != null)
 			{
-				Debug.Log("2");
-
 				if (i == snapItem)// && ingot.LinkedController == null)
 				{
 
-					Debug.Log("3");
 					var linkedController = i.LinkedController;
 
 					if (linkedController)
@@ -69,6 +75,7 @@ public class Snapper : MonoBehaviour {
 	{
 		t.position = lockTransform.position;
 		t.rotation = lockTransform.rotation;
+		leftInitialPointFarEnough = false;
 	}
 
 	//private void OnTriggerStay(Collider other)
