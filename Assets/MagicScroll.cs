@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagicScroll : MonoBehaviour {
+public class MagicScroll : GenericItem {
 
     public GameObject trailGestureObject;
 

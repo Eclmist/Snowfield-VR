@@ -57,8 +57,8 @@ GameObject:
   - component: {fileID: 23776267243689042}
   - component: {fileID: 82268937336845124}
   - component: {fileID: 54687813599034726}
-  - component: {fileID: 114716889945780450}
   - component: {fileID: 114864386188035902}
+  - component: {fileID: 136070842594185960}
   m_Layer: 0
   m_Name: TargetLightning
   m_TagString: Untagged
@@ -405,27 +405,6 @@ MonoBehaviour:
   GraphTimeMultiplier: 1
   GraphIntensityMultiplier: 0.2
   IsLoop: 1
---- !u!114 &114716889945780450
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1878408289409796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8d78c52d19394e954dcd30ccc4a8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactable: 1
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  interactSound: {fileID: 0}
-  directionalMultiplier: 5
-  maxLerpForce: 10
-  _name: 
-  itemID: 43
-  damage: 0
-  maxVelocityDamageMultiplier: 5
-  maxSwingForce: 0
 --- !u!114 &114743920122318118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -450,8 +429,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: 1
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  interactSound: {fileID: 0}
+  directionalMultiplier: 5
+  maxLerpForce: 10
+  _name: 
+  itemID: 43
+  damage: 0
+  maxVelocityDamageMultiplier: 5
+  maxSwingForce: 0
   trailGestureObject: {fileID: 1194829745479110, guid: 2d8b01328edf4f64baa78f2c62aa7847,
     type: 2}
+--- !u!136 &136070842594185960
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878408289409796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.059088465
+  m_Height: 0.58534014
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.000000014901161, z: 0}
 --- !u!198 &198421535039795472
 ParticleSystem:
   m_ObjectHideFlags: 1
