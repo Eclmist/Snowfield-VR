@@ -33,7 +33,7 @@ public class Order
 
     public string Name
     {
-        get { return ItemManager.Instance.GetItemData(ItemID).ObjectReference.name; }
+        get { return ItemManager.Instance.GetItemData(ItemID).GenericItem._Name; }
     }
 
     public Sprite Sprite

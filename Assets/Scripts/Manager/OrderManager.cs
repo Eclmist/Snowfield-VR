@@ -103,9 +103,9 @@ public class OrderManager : MonoBehaviour
 
                         Ingot tempIngot = ItemManager.Instance.GetRandomUnlockedIngot();
                         ItemData tempIngotItemData = ItemManager.Instance.GetItemData(tempIngot.ItemID);
-                        Debug.Log(tempIngot.name);
+               
                         ItemData refData = WeaponTierManager.Instance.GetRandomWeaponInTypeClass(tempIngot.PhysicalMaterial.type);
-                        Debug.Log("Current order is: " + refData.ObjectReference.name);
+                       
                         PhysicalMaterial currentMaterial = null;
                         CraftedItem tempCraftedItem = refData.ObjectReference.GetComponent<CraftedItem>();
 
