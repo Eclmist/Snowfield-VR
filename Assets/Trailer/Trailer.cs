@@ -40,8 +40,8 @@ public class Trailer : MonoBehaviour {
             }
             else
             {
-                trailerItem.cam1.gameObject.SetActive(false);
                 camAnim[0].SetBool("Transit", false);
+                trailerItem.cam1.gameObject.SetActive(false);
             }
 
             if (Input.GetKey(KeyCode.F2))
@@ -51,8 +51,8 @@ public class Trailer : MonoBehaviour {
             }
             else
             {
-                trailerItem.cam2.gameObject.SetActive(false);
                 camAnim[1].SetBool("Transit", false);
+                trailerItem.cam2.gameObject.SetActive(false);
             }
 
             if (Input.GetKey(KeyCode.F3))
@@ -66,8 +66,8 @@ public class Trailer : MonoBehaviour {
             else
             {
                 trailerItem.mail.SetActive(false);
-                trailerItem.cam3.gameObject.SetActive(false);
                 camAnim[2].SetBool("Transit", false);
+                trailerItem.cam3.gameObject.SetActive(false);
             }
 
             if (Input.GetKey(KeyCode.F4))
@@ -85,10 +85,11 @@ public class Trailer : MonoBehaviour {
                     trailerItem.glitchR.gameObject.GetComponent<MeshRenderer>().enabled = false;
                     trailerItem.glitchC.gameObject.GetComponent<MeshRenderer>().enabled = false;
                     trailerItem.mouse.SetActive(true);
+                    trailerItem.TV.enabled = false;
                 }
-                trailerItem.cam4.gameObject.SetActive(false);
                 camAnim[3].SetBool("Transit", false);
-                trailerItem.TV.enabled = true;
+                trailerItem.cam4.gameObject.SetActive(false);
+
 
             }
 
@@ -104,8 +105,8 @@ public class Trailer : MonoBehaviour {
                 trailerItem.glitchL.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 trailerItem.glitchR.gameObject.GetComponent<MeshRenderer>().enabled = false;
                 trailerItem.glitchC.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                trailerItem.cam5.gameObject.SetActive(false);
                 camAnim[3].SetBool("Transit", false);
+                trailerItem.cam5.gameObject.SetActive(false);
                 trailerItem.cupboard.GetComponent<Animator>().enabled = false;
             }
         }
