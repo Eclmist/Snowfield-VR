@@ -26,12 +26,14 @@ public class Weapon : Equipment
     private float fadeSpeed = 5;
     [SerializeField]
     private XftWeapon.XWeaponTrail trail;
-
+	[SerializeField]
+	private int materialIndex;
     
     private float timeSinceStartCharge = 0;
     private float emissiveSlider = 0;
-    private ModifyRenderer modRen;
-    private bool charge = false, powered = false;
+	private ModifyRenderer modRen;
+
+	private bool charge = false, powered = false;
     protected override void Awake()
     {
         base.Awake();
@@ -78,6 +80,7 @@ public class Weapon : Equipment
         {
             if (charge)
             {
+
                 if (emissiveSlider < 1)
                 {
                     emissiveSlider += fadeSpeed * Time.deltaTime;
@@ -92,7 +95,8 @@ public class Weapon : Equipment
             }
             else
             {
-                if (emissiveSlider > 0)
+
+				if (emissiveSlider > 0)
                 {
                     emissiveSlider -= fadeSpeed * Time.deltaTime;
                     if (emissiveSlider < 0)
@@ -108,7 +112,7 @@ public class Weapon : Equipment
 
             if (trail != null)
                 trail.MyColor = targetColor / 2;
-            modRen.SetColor("_EmissionColor", targetColor);
+            modRen.SetColor("_EmissionColor", targetColor, materialIndex);
 
             if (timeSinceStartCharge > chargeDuration + 1)
                 charge = false;
