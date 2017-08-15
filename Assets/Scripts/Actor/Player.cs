@@ -25,9 +25,20 @@ public class Player : Actor,ICanSerialize
 	[SerializeField]
 	protected Text healthBarText, manaBarText;
 	[SerializeField]
-	protected Text itemWieldInfo;
+	protected Image leftHandAttackImage, leftHandShieldImage, leftHandMagicImage;
 
-    protected float currentGroundHeight = 1;
+	[SerializeField]
+	protected Image rightHandAttackImage, rightHandShieldImage, rightHandMagicImage;
+
+	[SerializeField]
+	protected Text leftHandAttackText, leftHandShieldText, leftHandMagicText;
+
+	[SerializeField]
+	protected Text goldText, manaCratesText;
+
+
+
+	protected float currentGroundHeight = 1;
 
     public float CurrentGroundHeight
     {
@@ -53,17 +64,8 @@ public class Player : Actor,ICanSerialize
 
 		healthBarText.text = health.Current + "/" + health.Max;
 		manaBarText.text = mana.Current + "/" + mana.Max;
-		GenericItem itemL = returnSlotItem(EquipSlot.EquipmentSlotType.LEFTHAND);
-		GenericItem itemR = returnSlotItem(EquipSlot.EquipmentSlotType.RIGHTHAND);
-
-		String text = "L: ";
-		if (itemL)
-			text += itemL.Description;
-		text += "\nR: ";
-		if(itemR)
-			text += itemR.Description;
-
-		itemWieldInfo.text = text;
+		
+		
 	}
 
 	public override GenericItem returnSlotItem(EquipSlot.EquipmentSlotType slot)
