@@ -15,9 +15,15 @@ public class AdventurerFSM : FriendlyAIFSM
 		}
 	}
 
+    public override void DamageTaken(Actor attacker)
+    {
+        if (attacker is Monster)
+        {
+            base.DamageTaken(attacker);
+        }
+    }
 
-
-	protected override bool CheckForTargets()
+    protected override bool CheckForTargets()
 	{
 		bool hasTarget = base.CheckForTargets();
 		if (!hasTarget && WaveManager.Instance.HasMonster)

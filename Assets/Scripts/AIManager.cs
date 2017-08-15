@@ -164,6 +164,9 @@ public class AIManager : MonoBehaviour, ICanSerialize
                 timeToSpawn -= intervalBetweenInvoke;
             }
         }
+        while (!currentAI.CanSpawn())
+            yield return new WaitForEndOfFrame();
+
         currentAI.transform.position = spawnNode.Position;
         currentAI.Spawn();
     }

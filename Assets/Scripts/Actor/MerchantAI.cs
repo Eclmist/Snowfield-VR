@@ -30,19 +30,8 @@ public class MerchantAI : FriendlyAI {
         merChant = GetComponent<Merchant>();
     }
 
-    public override void Spawn()
+    public override bool CanSpawn()
     {
-        if (WaveManager.Instance.HasMonster)
-            StartCoroutine(WaitForTownToBeSafe());
-        else
-            base.Spawn();
+        return !WaveManager.Instance.HasMonster;
     }
-
-    protected IEnumerator WaitForTownToBeSafe()
-    {
-        while (WaveManager.Instance.HasMonster)
-            yield return new WaitForEndOfFrame();
-        base.Spawn();
-    }
-   
 }

@@ -18,7 +18,7 @@ public abstract class FriendlyAI : AI {
         }
     }
 
- 
+    
 
     public bool Interacting
     {

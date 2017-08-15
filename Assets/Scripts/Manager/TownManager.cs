@@ -25,17 +25,20 @@ public class TownManager : MonoBehaviour
         }
     }
 
-    //public IEnumerator SpawnCoroutine(
-
-    void Update()
+    public Shop GetSpecificShop(Actor shopOwner)
     {
-        UpdateTown();
+        List<Shop> tempList = new List<Shop>();
+        tempList.AddRange(currentTown.Shops);
+        tempList.RemoveAll(Shop => Shop.Owner != shopOwner);
+        foreach(Shop n in tempList)
+        {
+            if (n.Owner == shopOwner)
+                return n;
+        }
+        return null;
     }
 
-    private void UpdateTown()
-    {
-        
-    }
+   
     public Node GetRandomSpawnPoint()
     {
         int shopIndex = UnityEngine.Random.Range(0, currentTown.SpawnPoint.Count);

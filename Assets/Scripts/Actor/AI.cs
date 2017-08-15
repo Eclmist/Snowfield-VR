@@ -67,6 +67,11 @@ public abstract class AI : Actor
     }
     public abstract void Interact(Actor actor);
 
+    public virtual bool CanSpawn()
+    {
+        return true;
+    }
+
     public void Stun()
     {
         currentFSM.SetStun(1);

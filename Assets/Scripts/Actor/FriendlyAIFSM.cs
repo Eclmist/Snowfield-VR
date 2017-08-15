@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FriendlyAIFSM : ActorFSM
+public abstract class FriendlyAIFSM : ActorFSM
 {
 
     protected List<Shop> visitedShop = new List<Shop>();
@@ -121,13 +121,7 @@ public class FriendlyAIFSM : ActorFSM
 
     }
 
-    public override void DamageTaken(Actor attacker)
-    {
-        if (attacker is Monster)
-        {
-            base.DamageTaken(attacker);
-        }
-    }
+   
     public IEnumerator Interact(Actor actor)
     {
         target = actor;

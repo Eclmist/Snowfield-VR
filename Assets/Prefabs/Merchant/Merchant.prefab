@@ -2292,7 +2292,7 @@ GameObject:
   - component: {fileID: 114567727350506488}
   - component: {fileID: 114681965416773610}
   - component: {fileID: 114901309230577958}
-  - component: {fileID: 114947478129002964}
+  - component: {fileID: 114209888389297926}
   m_Layer: 13
   m_Name: Merchant
   m_TagString: Untagged
@@ -6224,6 +6224,30 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114209888389297926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1749048398151742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8158fb6a30277f14b8a09d7e9b1b81a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eye: {fileID: 4671378848234612}
+  detectionDistance: 10
+  attackRange: 0
+  currentState: 0
+  movementSpeed: 1
+  aggroLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  minimumDistToAvoid: 0.25
+  avoidanceIgnoreMask:
+    serializedVersion: 2
+    m_Bits: 4294909951
+  animUseSlot: 0
 --- !u!114 &114213319823343054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7232,30 +7256,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.49019608}
   m_EffectDistance: {x: 0.01, y: 0.01}
   m_UseGraphicAlpha: 1
---- !u!114 &114947478129002964
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1749048398151742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2db2df5dd1a1a43903131c8be0bfe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eye: {fileID: 4671378848234612}
-  detectionDistance: 10
-  attackRange: 0
-  currentState: 0
-  movementSpeed: 1
-  aggroLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  minimumDistToAvoid: 0.25
-  avoidanceIgnoreMask:
-    serializedVersion: 2
-    m_Bits: 0
-  animUseSlot: 0
 --- !u!114 &114977738860645156
 MonoBehaviour:
   m_ObjectHideFlags: 1
