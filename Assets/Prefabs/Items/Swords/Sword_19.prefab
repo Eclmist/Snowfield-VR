@@ -41,6 +41,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1520756827674306
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4182425280462332}
+  m_Layer: 8
+  m_Name: EndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1527228782506300
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +81,7 @@ GameObject:
   - component: {fileID: 4105108896590764}
   - component: {fileID: 114954059703202468}
   m_Layer: 8
-  m_Name: Weapon Trail
+  m_Name: GenericTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +133,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1728046165035238
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4116135487064200}
+  - component: {fileID: 114208821731775764}
+  m_Layer: 8
+  m_Name: Weapon Trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1792103093755144
 GameObject:
   m_ObjectHideFlags: 1
@@ -129,6 +160,21 @@ GameObject:
   - component: {fileID: 65197911121842932}
   m_Layer: 8
   m_Name: Blade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1801105309038578
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4347774326051636}
+  m_Layer: 8
+  m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +245,35 @@ Transform:
   - {fileID: 4191146295890772}
   - {fileID: 4372867956958970}
   m_Father: {fileID: 4405941743629066}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4116135487064200
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728046165035238}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4182425280462332}
+  - {fileID: 4347774326051636}
+  m_Father: {fileID: 4405941743629066}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4182425280462332
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520756827674306}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.65, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4116135487064200}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4191146295890772
 Transform:
@@ -213,6 +287,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4105108896590764}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4347774326051636
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1801105309038578}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.17500001, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4116135487064200}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4372867956958970
 Transform:
@@ -238,6 +325,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4741039283784006}
+  - {fileID: 4116135487064200}
   - {fileID: 4105108896590764}
   m_Father: {fileID: 4691143568452478}
   m_RootOrder: 1
@@ -518,7 +606,7 @@ MonoBehaviour:
   maxLerpForce: 10
   _name: Eternal Harmony
   itemID: 24
-  damage: 10
+  damage: 12
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
   fakeSelf: {fileID: 1118612114818878, guid: cc4f61d424f52b1449647571e8124d7e, type: 2}
@@ -526,7 +614,8 @@ MonoBehaviour:
   weaponTier: 0
   pivot: {fileID: 4959806982878586}
   slot: 1
-  range: 2.5
+  chargedMultiplier: 5
+  manaCost: 10
   chargeDuration: 10
   emissiveCurve:
     serializedVersion: 2
@@ -548,7 +637,27 @@ MonoBehaviour:
     m_RotationOrder: 0
   emissiveColor: {r: 0.85294116, g: 2, b: 1.0032456, a: 1}
   fadeSpeed: 5
-  trail: {fileID: 114954059703202468}
+  trail: {fileID: 114208821731775764}
+--- !u!114 &114208821731775764
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728046165035238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseWith2D: 0
+  SortingLayerName: 
+  SortingOrder: 0
+  PointStart: {fileID: 4347774326051636}
+  PointEnd: {fileID: 4182425280462332}
+  MaxFrame: 14
+  Granularity: 60
+  MyColor: {r: 0.42647058, g: 1, b: 0.5016228, a: 1}
+  MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114513600482140086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -587,7 +696,7 @@ MonoBehaviour:
   PointEnd: {fileID: 4191146295890772}
   MaxFrame: 14
   Granularity: 60
-  MyColor: {r: 1, g: 1, b: 1, a: 1}
+  MyColor: {r: 1, g: 1, b: 0.9137255, a: 1}
   MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114972715100739010
 MonoBehaviour:

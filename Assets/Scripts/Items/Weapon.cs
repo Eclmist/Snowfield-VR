@@ -6,8 +6,10 @@ using System;
 public class Weapon : Equipment
 {
 
+    [Header("Weapon Efficiency")]
+
     [SerializeField]
-    protected float range;
+    private float chargedMultiplier, manaCost;
 
     [Header("Weapon Charge")]
     [SerializeField]
@@ -25,6 +27,7 @@ public class Weapon : Equipment
     [SerializeField]
     private XftWeapon.XWeaponTrail trail;
 
+    
     private float timeSinceStartCharge = 0;
     private float emissiveSlider = 0;
     private ModifyRenderer modRen;
@@ -43,23 +46,34 @@ public class Weapon : Equipment
         }
     }
 
+    public override float Damage
+    {
+        get
+        {
+            if (!powered)
+                return base.Damage;
+            else
+                return base.Damage * chargedMultiplier;
+        }
+    }
     public override string Description
     {
         get
         {
-            return base.Description +  "Damage:" + damage;
+            return base.Description + "Damage:" + damage;
         }
     }
     protected override void Start()
     {
-		base.Start();
+        base.Start();
         modRen = GetComponent<ModifyRenderer>();
 
     }
 
+
     protected override void Update()
     {
-		base.Update();
+        base.Update();
         if (modRen)
         {
             if (charge)
@@ -101,17 +115,6 @@ public class Weapon : Equipment
         }
     }
 
-    public float Range
-    {
-        get
-        {
-            return range;
-        }
-        set
-        {
-            range = value;
-        }
-    }
 
 
     protected override void OnTriggerEnter(Collider collision)
@@ -126,7 +129,7 @@ public class Weapon : Equipment
                 Player.Instance.Attack(this, target);
             }
         }
-    
+
     }
 
     public override void Unequip()
@@ -156,12 +159,16 @@ public class Weapon : Equipment
         }
     }
 
-	protected override void OnGripHold()
+    protected override void OnGripHold()
     {
-        StartCharge();
+        if (!charge && Player.Instance.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
+        {
+            Player.Instance.StatContainer.ReduceMana(manaCost);
+            StartCharge();
+        }
     }
 
-	protected override void OnGripRelease()
+    protected override void OnGripRelease()
     {
         EndCharge();
     }

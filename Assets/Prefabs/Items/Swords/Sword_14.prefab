@@ -11,6 +11,21 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1828534775533718}
   m_IsPrefabParent: 1
+--- !u!1 &1052940222883996
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4572807217515196}
+  m_Layer: 8
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1061932944170298
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +71,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1641427730410174
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4675474274193436}
+  - component: {fileID: 114093226487820200}
+  m_Layer: 8
+  m_Name: Weapon Trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1643497900324890
 GameObject:
   m_ObjectHideFlags: 1
@@ -66,7 +97,7 @@ GameObject:
   - component: {fileID: 4105108896590764}
   - component: {fileID: 114954059703202468}
   m_Layer: 8
-  m_Name: Weapon Trail
+  m_Name: GenericTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,6 +144,21 @@ GameObject:
   - component: {fileID: 4882120997383876}
   m_Layer: 8
   m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1786544320578744
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4109226467215048}
+  m_Layer: 8
+  m_Name: EndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +245,20 @@ Transform:
   - {fileID: 4191146295890772}
   - {fileID: 4372867956958970}
   m_Father: {fileID: 4405941743629066}
-  m_RootOrder: 1
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4109226467215048
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786544320578744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.614, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4675474274193436}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4191146295890772
 Transform:
@@ -238,6 +297,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4741039283784006}
+  - {fileID: 4675474274193436}
   - {fileID: 4105108896590764}
   m_Father: {fileID: 4691143568452478}
   m_RootOrder: 1
@@ -267,6 +327,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4741039283784006}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4572807217515196
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1052940222883996}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.149, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4675474274193436}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4675474274193436
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1641427730410174}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4109226467215048}
+  - {fileID: 4572807217515196}
+  m_Father: {fileID: 4405941743629066}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4691143568452478
 Transform:
@@ -500,6 +588,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114093226487820200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1641427730410174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseWith2D: 0
+  SortingLayerName: 
+  SortingOrder: 0
+  PointStart: {fileID: 4572807217515196}
+  PointEnd: {fileID: 4109226467215048}
+  MaxFrame: 14
+  Granularity: 60
+  MyColor: {r: 0.42647058, g: 0.8338742, b: 1, a: 1}
+  MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114207906280770662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -518,7 +626,7 @@ MonoBehaviour:
   maxLerpForce: 10
   _name: Bloodweep
   itemID: 19
-  damage: 10
+  damage: 340
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
   fakeSelf: {fileID: 1118612114818878, guid: 9f31814122a27dc49b07a14f4db9f424, type: 2}
@@ -526,7 +634,8 @@ MonoBehaviour:
   weaponTier: 0
   pivot: {fileID: 4959806982878586}
   slot: 1
-  range: 2.5
+  chargedMultiplier: 8
+  manaCost: 100
   chargeDuration: 10
   emissiveCurve:
     serializedVersion: 2
@@ -548,7 +657,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   emissiveColor: {r: 0.85294116, g: 1.6677485, b: 2, a: 1}
   fadeSpeed: 5
-  trail: {fileID: 114954059703202468}
+  trail: {fileID: 114093226487820200}
 --- !u!114 &114513600482140086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -587,7 +696,7 @@ MonoBehaviour:
   PointEnd: {fileID: 4191146295890772}
   MaxFrame: 14
   Granularity: 60
-  MyColor: {r: 1, g: 1, b: 1, a: 1}
+  MyColor: {r: 1, g: 1, b: 0.9137255, a: 1}
   MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114972715100739010
 MonoBehaviour:

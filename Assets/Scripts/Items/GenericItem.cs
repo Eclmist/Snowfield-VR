@@ -159,7 +159,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 
 
-	public float Damage
+	public virtual float Damage
 
 
 	{
