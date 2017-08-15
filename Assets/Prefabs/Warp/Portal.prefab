@@ -34,6 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4244087526530092}
+  - component: {fileID: 114607042033939958}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -97,3 +98,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114607042033939958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1502943086364352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e67833d34535f547837388fda9830e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraRig: {fileID: 0}
+  portalLeft: {fileID: 1224286199266430}
+  leftUIPrefab: {fileID: 1611829771522640, guid: 93cf91c0be22e81449d2ba087e303b4e,
+    type: 2}
+  portalRight: {fileID: 1582859958165546}
+  rightUIPrefab: {fileID: 1618890088672784, guid: f33026778eae1e849b515abc1eb441a1,
+    type: 2}
+  disableWhenEnteringLeft:
+  - {fileID: 0}
+  disableWhenEnteringRight:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  buyLibrary: {fileID: 1686980311353216, guid: f7b8b48fbfedf1a48a01e87c5e9c4d17, type: 2}
+  range: 1.51
+  UiZOffset: 0.262
