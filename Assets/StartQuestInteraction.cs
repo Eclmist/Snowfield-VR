@@ -16,7 +16,7 @@ public class StartQuestInteraction : QuestInteraction
             {
                 int expectedCrateNumber = QuestManager.Instance.GetQuest(startableQuest.ProgressionIndex,startableQuest.JobType).ExpectedCrates;
                 OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO,
-                    "Quest", "Start Quest: " + QuestManager.Instance.GetQuest(startableQuest.ProgressionIndex, startableQuest.JobType).Name + " \n(Requires " + expectedCrateNumber + " EXPCrates)",
+                    "Quest", "<b>Start Quest: " + QuestManager.Instance.GetQuest(startableQuest.ProgressionIndex, startableQuest.JobType).Name + " \n(Requires " + expectedCrateNumber + " EXPCrates) </b>",
                     transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartQuestYESDelegate);
 				if (expectedCrateNumber > Player.Instance.EXPCrates)
