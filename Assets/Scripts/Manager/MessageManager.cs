@@ -67,7 +67,7 @@ public class MessageManager : MonoBehaviour
 
     public static MessageManager Instance;
 
-    public static bool knowHowToUseMail = false;
+    public bool knowHowToUseMail = false;
 
     [SerializeField]
     private GameObject MailInterface;
@@ -115,10 +115,6 @@ public class MessageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SendMail("Debug Mail", "This is a debug mail.\n\nFrom:\nYue Peng", null);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            DisplayMailInterface();
         }
 
         UpdateUnreadCounter();

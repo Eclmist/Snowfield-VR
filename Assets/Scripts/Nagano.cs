@@ -148,9 +148,9 @@ public class Nagano : MonoBehaviour,ICanSerialize
 		{
             if(!openMailCoroutineRunning)
             {
+				Teleport.instance.CancelTeleportHint();
                 openMailCoroutineRunning = true;
-                MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
-                StartCoroutine(OpenMailRoutine());
+				StartCoroutine(OpenMailRoutine());
             }
             
 		}
@@ -159,11 +159,14 @@ public class Nagano : MonoBehaviour,ICanSerialize
 
     private IEnumerator OpenMailRoutine()
     {
-        ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Open inbox");
 
-        while(!MessageManager.knowHowToUseMail)
+		MessageManager.Instance.SendMail("Welcome", "You have been assigned the role of a merchant in this wonderful world. Here you can craft weapons and sell them to players. Have fun!\n\nFrom:\n???", null);
+		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Open inbox");
+
+		while (!MessageManager.Instance.knowHowToUseMail)
         {
-            yield return null;
+				
+			yield return null;
         }
 
         HideAllControllerHints();
@@ -278,7 +281,7 @@ public class Nagano : MonoBehaviour,ICanSerialize
 	{
 		ShowControllerHints(Valve.VR.EVRButtonId.k_EButton_ApplicationMenu, "Check your mail");
 
-		yield return new WaitForSeconds(6f);
+		yield return new WaitForSeconds(4f);
 
 		HideAllControllerHints();
 		CompleteCurrentEvent();
