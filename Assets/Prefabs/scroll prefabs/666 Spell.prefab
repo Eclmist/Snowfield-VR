@@ -57,8 +57,8 @@ GameObject:
   - component: {fileID: 23372354937145006}
   - component: {fileID: 82434411962985652}
   - component: {fileID: 54868547538933952}
-  - component: {fileID: 114462905988096786}
   - component: {fileID: 114614577181213254}
+  - component: {fileID: 136190603937820000}
   m_Layer: 0
   m_Name: 666 Spell
   m_TagString: Untagged
@@ -259,7 +259,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Material: {fileID: 2100000, guid: 4ceb6068f99cd1246bd7d6feec2a93ac, type: 2}
   IsFirstMaterial: 0
---- !u!114 &114462905988096786
+--- !u!114 &114614577181213254
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1282185586947880}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8d78c52d19394e954dcd30ccc4a8c, type: 3}
+  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
@@ -394,17 +394,6 @@ MonoBehaviour:
   damage: 0
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
---- !u!114 &114614577181213254
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1282185586947880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   trailGestureObject: {fileID: 1860556002364602, guid: 0f2631efbd5e2c349ada3c0959d43ce8,
     type: 2}
 --- !u!114 &114982188361812848
@@ -505,3 +494,16 @@ MonoBehaviour:
   GraphTimeMultiplier: 1
   GraphIntensityMultiplier: 1
   IsLoop: 1
+--- !u!136 &136190603937820000
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1282185586947880}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.059088465
+  m_Height: 0.58534014
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.000000014901161, z: 0}

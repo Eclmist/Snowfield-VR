@@ -56,8 +56,8 @@ GameObject:
   - component: {fileID: 23165475794384996}
   - component: {fileID: 82830525176941010}
   - component: {fileID: 54780125366174334}
-  - component: {fileID: 114723886707873418}
   - component: {fileID: 114897899837184998}
+  - component: {fileID: 136257788980649850}
   m_Layer: 0
   m_Name: RandomDecalSpell
   m_TagString: Untagged
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeshObject: {fileID: 1319690258223040}
   IsActive: 1
---- !u!114 &114723886707873418
+--- !u!114 &114897899837184998
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1319690258223040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8d78c52d19394e954dcd30ccc4a8c, type: 3}
+  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
@@ -439,19 +439,21 @@ MonoBehaviour:
   damage: 0
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
---- !u!114 &114897899837184998
-MonoBehaviour:
+  trailGestureObject: {fileID: 1172845397614912, guid: 1c78515bb06876d4796da0009ed25401,
+    type: 2}
+--- !u!136 &136257788980649850
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1319690258223040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailGestureObject: {fileID: 1172845397614912, guid: 1c78515bb06876d4796da0009ed25401,
-    type: 2}
+  m_Radius: 0.059088465
+  m_Height: 0.58534014
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.000000014901161, z: 0}
 --- !u!198 &198776871387581668
 ParticleSystem:
   m_ObjectHideFlags: 1

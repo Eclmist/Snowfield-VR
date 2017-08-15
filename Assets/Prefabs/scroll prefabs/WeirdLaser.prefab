@@ -57,8 +57,8 @@ GameObject:
   - component: {fileID: 23347831063403810}
   - component: {fileID: 82201932121696350}
   - component: {fileID: 54530560817320694}
-  - component: {fileID: 114666968467003940}
   - component: {fileID: 114994801169528744}
+  - component: {fileID: 136244965448475444}
   m_Layer: 0
   m_Name: WeirdLaser
   m_TagString: Untagged
@@ -258,7 +258,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -405,7 +405,7 @@ MonoBehaviour:
   GraphTimeMultiplier: 1
   GraphIntensityMultiplier: 0.2
   IsLoop: 1
---- !u!114 &114666968467003940
+--- !u!114 &114994801169528744
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -413,7 +413,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1790200505820302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75f8d78c52d19394e954dcd30ccc4a8c, type: 3}
+  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: 1
@@ -426,17 +426,6 @@ MonoBehaviour:
   damage: 0
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
---- !u!114 &114994801169528744
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1790200505820302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5d37f9db68bb8e48a17e7e880deb9bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   trailGestureObject: {fileID: 1758606338967730, guid: 798bec4dee622a548bf30c00134e3c43,
     type: 2}
 --- !u!114 &114996278397256142
@@ -452,6 +441,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MeshObject: {fileID: 1790200505820302}
   IsActive: 1
+--- !u!136 &136244965448475444
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1790200505820302}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.059088465
+  m_Height: 0.58534014
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.000000014901161, z: 0}
 --- !u!198 &198646950816081680
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -15,6 +15,10 @@ public class Portal : MonoBehaviour
 	public GameObject rightUIPrefab;
 	private GameObject rightUIReference;
 
+	public GameObject[] disableWhenEnteringLeft;
+	public GameObject[] disableWhenEnteringRight;
+
+
 	public float range;
 	public float UiZOffset = 0.262F;
 
@@ -99,11 +103,40 @@ public class Portal : MonoBehaviour
 				Debug.Log("Wrong Warp INDEX!!!!");
 				return;
 		}
+
+		if (!alreadyRunning)
+		{
+			StartCoroutine(Warp(targetTransform, targetRotation, index));
+		}
+	}
+
+	bool alreadyRunning;
+
+	IEnumerator Warp(Transform targetTransform, Vector3 targetRotation, int index)
+	{
+		alreadyRunning = true;
+		SteamVR_Fade.Start(Color.clear, 0);
+		SteamVR_Fade.Start(Color.white, 0.5F);
+
+		yield return new WaitForSeconds(0.5F);
+
 		Vector3 position = targetTransform.transform.position + targetTransform.forward;
 		position.y = 0;
 		CameraRig.transform.position = position;
 		var rot = CameraRig.transform.rotation;//= Quaternion.LookRotation(targetTransform.forward);
 		rot.eulerAngles = targetRotation;
 		CameraRig.transform.rotation = rot;
+
+		foreach (GameObject g in disableWhenEnteringLeft)
+		{
+			g.SetActive(index == 1);
+		}
+
+		foreach (GameObject g in disableWhenEnteringRight)
+		{
+			g.SetActive(index == 0);
+		}
+
+		alreadyRunning = false;
 	}
 }
