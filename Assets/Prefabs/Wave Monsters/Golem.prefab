@@ -897,17 +897,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
+  thisCollider: {fileID: 0}
+  inSanctuary: 0
   data:
     jobList:
     - currentJobType: 2
       additionalStatsPerLevel:
-      - value: 10
+      - value: 150
         statsType: 0
-      - value: 1
+      - value: 5
         statsType: 1
       - value: 10
         statsType: 2
-    expPerLevel: 100000
+    monsterTier: 4
 --- !u!114 &114577512198510862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -919,9 +921,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 50
-  baseHealthRegen: 1
-  baseAttack: 10
+  baseHealth: 450
+  baseHealthRegen: 10
+  baseAttack: 50
   baseMana: 0
   baseManaRegen: 0
   baseMagic: 0
@@ -943,7 +945,7 @@ MonoBehaviour:
   movementSpeed: 2
   aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 40960
   minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2

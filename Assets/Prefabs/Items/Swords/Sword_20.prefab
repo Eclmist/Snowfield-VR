@@ -26,6 +26,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1169147207488206
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4991477696657282}
+  m_Layer: 8
+  m_Name: EndPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1518068599467638
 GameObject:
   m_ObjectHideFlags: 1
@@ -66,7 +81,7 @@ GameObject:
   - component: {fileID: 4105108896590764}
   - component: {fileID: 114954059703202468}
   m_Layer: 8
-  m_Name: Weapon Trail
+  m_Name: GenericTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,6 +128,22 @@ GameObject:
   - component: {fileID: 4882120997383876}
   m_Layer: 8
   m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1755599561926358
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4714409240810766}
+  - component: {fileID: 114857211417795218}
+  m_Layer: 8
+  m_Name: Weapon Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,6 +217,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1975535445557732
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4697720754019256}
+  m_Layer: 8
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4105108896590764
 Transform:
   m_ObjectHideFlags: 1
@@ -199,7 +245,7 @@ Transform:
   - {fileID: 4191146295890772}
   - {fileID: 4372867956958970}
   m_Father: {fileID: 4405941743629066}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4191146295890772
 Transform:
@@ -238,6 +284,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4741039283784006}
+  - {fileID: 4714409240810766}
   - {fileID: 4105108896590764}
   m_Father: {fileID: 4691143568452478}
   m_RootOrder: 1
@@ -283,6 +330,34 @@ Transform:
   - {fileID: 4872450242431162}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4697720754019256
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975535445557732}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.17500001, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4714409240810766}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4714409240810766
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1755599561926358}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4991477696657282}
+  - {fileID: 4697720754019256}
+  m_Father: {fileID: 4405941743629066}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4741039283784006
 Transform:
@@ -339,6 +414,19 @@ Transform:
   m_Father: {fileID: 4691143568452478}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
+--- !u!4 &4991477696657282
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1169147207488206}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6786, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4714409240810766}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23185042757832860
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -518,7 +606,7 @@ MonoBehaviour:
   maxLerpForce: 10
   _name: Purifier
   itemID: 25
-  damage: 10
+  damage: 1000
   maxVelocityDamageMultiplier: 5
   maxSwingForce: 0
   fakeSelf: {fileID: 1118612114818878, guid: 304b900f98b7e774096e039c9991257f, type: 2}
@@ -526,7 +614,8 @@ MonoBehaviour:
   weaponTier: 0
   pivot: {fileID: 4959806982878586}
   slot: 1
-  range: 2.5
+  chargedMultiplier: 5
+  manaCost: 1000
   chargeDuration: 10
   emissiveCurve:
     serializedVersion: 2
@@ -548,7 +637,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   emissiveColor: {r: 2, g: 1.778499, b: 0.85294116, a: 1}
   fadeSpeed: 5
-  trail: {fileID: 114954059703202468}
+  trail: {fileID: 114857211417795218}
 --- !u!114 &114513600482140086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -569,6 +658,26 @@ MonoBehaviour:
   Granularity: 60
   MyColor: {r: 1, g: 1, b: 1, a: 1}
   MyMaterial: {fileID: 2100000, guid: e3ccb23597d510a4eb2ef53e4ac9e258, type: 2}
+--- !u!114 &114857211417795218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1755599561926358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseWith2D: 0
+  SortingLayerName: 
+  SortingOrder: 0
+  PointStart: {fileID: 4697720754019256}
+  PointEnd: {fileID: 4991477696657282}
+  MaxFrame: 14
+  Granularity: 60
+  MyColor: {r: 1, g: 0.8892495, b: 0.42647058, a: 1}
+  MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114954059703202468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -587,7 +696,7 @@ MonoBehaviour:
   PointEnd: {fileID: 4191146295890772}
   MaxFrame: 14
   Granularity: 60
-  MyColor: {r: 1, g: 1, b: 1, a: 1}
+  MyColor: {r: 1, g: 1, b: 0.9137255, a: 1}
   MyMaterial: {fileID: 2100000, guid: a2082fe995cdefc44adb395dcdae551e, type: 2}
 --- !u!114 &114972715100739010
 MonoBehaviour:

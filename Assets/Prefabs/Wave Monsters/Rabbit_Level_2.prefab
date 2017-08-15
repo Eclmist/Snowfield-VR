@@ -1013,12 +1013,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eye: {fileID: 4204016364171236}
   detectionDistance: 10
-  attackRange: 1.5
+  attackRange: 2
   currentState: 0
   movementSpeed: 2
   aggroLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 40960
   minimumDistToAvoid: 0.25
   avoidanceIgnoreMask:
     serializedVersion: 2
@@ -1035,8 +1035,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3363ebed85f5c43a7660974e38a08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 50
-  baseHealthRegen: 1
+  baseHealth: 75
+  baseHealthRegen: 0.5
   baseAttack: 10
   baseMana: 0
   baseManaRegen: 0
@@ -1060,11 +1060,11 @@ MonoBehaviour:
     jobList:
     - currentJobType: 2
       additionalStatsPerLevel:
-      - value: 10
+      - value: 50
         statsType: 0
-      - value: 1
+      - value: 2
         statsType: 1
-      - value: 10
+      - value: 15
         statsType: 2
     monsterTier: 1
 --- !u!136 &136909033890309818
