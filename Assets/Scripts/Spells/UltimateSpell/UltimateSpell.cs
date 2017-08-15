@@ -20,6 +20,7 @@ public class UltimateSpell : Spell{
 			playerFor.Normalize();
 
 			playerFor = Player.Instance.transform.position + playerFor * offset.z;
+			playerFor += Player.Instance.transform.right * offset.x;
 
 			RaycastHit hit;
 			Physics.Raycast(playerFor, Vector3.down, out hit);

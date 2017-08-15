@@ -15,41 +15,53 @@ public class TargetSingle : Spell {
 
         if (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
         {
-            Vector3 target = Player.Instance.transform.position + Player.Instance.transform.forward * 3;
+            Vector3 target = Player.Instance.transform.position + Player.Instance.transform.forward * 7;
 
-            Collider[] col = Physics.OverlapSphere(target, 3);
+            Collider[] col = Physics.OverlapSphere(target, 7);
 
             foreach (Collider c in col)
             {
                 Monster mob = c.GetComponent<Monster>();
 
-                float distance = Vector3.Distance(Player.Instance.transform.position, mob.gameObject.transform.position);
+				if (mob)
+				{
+					float distance = Vector3.Distance(Player.Instance.transform.position, mob.gameObject.transform.position);
 
-                if (distance <= nearestDistance || nearestDistance == 0)
-                {
-                    monster = mob.gameObject;
-                    nearestDistance = distance;
-                }
+					if (distance <= nearestDistance || nearestDistance == 0)
+					{
+						monster = mob.gameObject;
+						nearestDistance = distance;
+					}
+				}
             }
 
             if(monster != null && nearestDistance != 0)
             {
-                readyToLookAt = true;
-            }
+				readyToLookAt = true;
+			}
+			else
+			{
+				handler.DecastSpell();
+				Destroy(this.gameObject, 1);
+			}
 
-            //Instantiate and rotate Rotate to monster
-            transform.position = Player.Instance.transform.position + Player.Instance.transform.forward * 1;
+			if (readyToLookAt)
+			{
+				Debug.Log("Instantiate");
+				//Instantiate and rotate Rotate to monster
+				transform.position = Player.Instance.transform.position + Player.Instance.transform.forward * 1;
 
-            float yRot = Player.Instance.transform.rotation.eulerAngles.y;
-            var rot = transform.rotation;
+				float yRot = Player.Instance.transform.rotation.eulerAngles.y;
+				var rot = transform.rotation;
 
-            rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
-            transform.rotation = rot;
+				rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
+				transform.rotation = rot;
 
-            this.gameObject.SetActive(true);
-            handler.Castor.StatContainer.ReduceMana(manaCost);
+				this.gameObject.SetActive(true);
+				handler.Castor.StatContainer.ReduceMana(manaCost);
 
-            handler.DecastSpell();
+				handler.DecastSpell();
+			}
         }
         else
         {

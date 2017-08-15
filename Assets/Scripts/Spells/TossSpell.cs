@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TossSpell : Spell
 {
-    [SerializeField]
-    protected GameObject controller;
 
     public override void InitializeSpell(SpellHandler handler)
     {
@@ -13,15 +11,16 @@ public class TossSpell : Spell
 
         if (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
         {
-            transform.position = controller.transform.position;
+			this.gameObject.SetActive(true);
 
-            float yRot = controller.transform.rotation.eulerAngles.y;
+			transform.position = handler.LinkedController.transform.position;
+
+            float yRot = Player.Instance.transform.rotation.eulerAngles.y;
             var rot = transform.rotation;
 
             rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
             transform.rotation = rot;
 
-            this.gameObject.SetActive(true);
             handler.Castor.StatContainer.ReduceMana(manaCost);
 
             handler.DecastSpell();

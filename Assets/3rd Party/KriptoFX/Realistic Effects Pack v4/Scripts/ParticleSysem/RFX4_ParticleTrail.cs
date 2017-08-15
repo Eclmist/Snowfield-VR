@@ -126,6 +126,29 @@ public class RFX4_ParticleTrail : MonoBehaviour
 
     private void Update()
     {
+		if (monster == null || Target.GetComponent<Monster>().StatContainer.GetStat(Stats.StatsType.HEALTH).Current <= 0 || Target == null)
+		{
+			Collider[] col = Physics.OverlapSphere(point.transform.position, 4);
+
+			if (col != null)
+			{
+				foreach (Collider c in col)
+				{
+					Monster mob = c.GetComponent<Monster>();
+
+					if (mob)
+						monster = mob.gameObject;
+
+				}
+
+				if (monster != null)
+				{
+					Target = monster;
+					targetT = Target.transform;
+				}
+			}
+		}
+
         if (dict.Count > 10)
             RemoveEmptyTrails();
 
@@ -251,11 +274,5 @@ public class RFX4_ParticleTrail : MonoBehaviour
             if(trailRenderer.Value!=null) Destroy(trailRenderer.Value.gameObject);
         }
         dict.Clear();
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(point.transform.position, 8);
     }
 }
