@@ -7,8 +7,9 @@ public class InGameMenuButton : VR_Button {
     
     private Animator anim;
     // Use this for initialization
-    void Start ()
+    protected override void Start ()
     {
+        base.Start();
         anim = GetComponentInChildren<Animator>();
 	}
 

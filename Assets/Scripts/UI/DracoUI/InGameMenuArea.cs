@@ -9,6 +9,7 @@ public struct InGameMenuPrefabs
     public GameObject settingsScreen;
     public GameObject quitPrompt;
     public GameObject mailScreen;
+    public Animator buttons;
 }
 
 
@@ -17,7 +18,7 @@ public class InGameMenuArea : MonoBehaviour
 {
     [SerializeField]
     private InGameMenuPrefabs prefabs;
-   
+    
     public void CharacterActivation(bool active)
     {
         if (prefabs.characterScreen != null)
@@ -40,8 +41,9 @@ public class InGameMenuArea : MonoBehaviour
     {
         if (prefabs.mailScreen != null)
 		{
-			prefabs.mailScreen.SetActive(active);
 
+			prefabs.mailScreen.SetActive(active);
+            prefabs.mailScreen.GetComponent<Animator>().SetBool("Activate", active);
 			if(active)
 				MessageManager.Instance.DisplayMailInterface();
 		}
@@ -59,5 +61,9 @@ public class InGameMenuArea : MonoBehaviour
     {
         Application.Quit();
     }
-    
+
+    public void InGameAppear(bool i)
+    {
+        prefabs.buttons.SetBool("Activate", i);
+    }
 }
