@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public struct InGameMenuPrefabs
 {
+    public GameObject loadScreen;
     public GameObject settingsScreen;
     public GameObject quitPrompt;
     public GameObject mailScreen;
@@ -41,6 +42,13 @@ public class InGameMenuArea : MonoBehaviour
             prefabs.settingsScreen.SetActive(active);
     }
 
+    public void LoadPrompt(bool active)
+    {
+        if (prefabs.settingsScreen != null)
+            prefabs.loadScreen.SetActive(active);
+    }
+
+
     public void QuitGamePrompt(bool active)
     { 
         if(prefabs.quitPrompt != null)
@@ -61,6 +69,7 @@ public class InGameMenuArea : MonoBehaviour
 
     public void Deactivate()
     {
+        LoadPrompt(false);
         SettingsActivation(false);
         QuitGamePrompt(false);
         MailActivation(false);
