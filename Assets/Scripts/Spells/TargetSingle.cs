@@ -42,12 +42,11 @@ public class TargetSingle : Spell {
 			else
 			{
 				handler.DecastSpell();
-				Destroy(this.gameObject, 1);
+				Destroy(this.gameObject, 0.1f);
 			}
 
 			if (readyToLookAt)
 			{
-				Debug.Log("Instantiate");
 				//Instantiate and rotate Rotate to monster
 				transform.position = Player.Instance.transform.position + Player.Instance.transform.forward * 1;
 

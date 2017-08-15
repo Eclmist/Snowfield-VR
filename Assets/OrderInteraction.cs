@@ -16,7 +16,7 @@ public class OrderInteraction : InteractionsWithPlayer
             currentOrder = OrderManager.Instance.GenerateOrder();
             if (currentOrder != null)
             {
-                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + currentOrder.Name, transform.position, Player.Instance.transform, transform);
+                OptionPane op = UIManager.Instance.Instantiate(UIType.OP_YES_NO, "Order", "Start Order: " + "<b>" + currentOrder.Name + "</b>", transform.position, Player.Instance.transform, transform);
                 op.SetEvent(OptionPane.ButtonType.Yes, StartOrderYesDelegate);
                 op.SetEvent(OptionPane.ButtonType.No, StartOrderNoDelegate);
                 currentUI = op;
