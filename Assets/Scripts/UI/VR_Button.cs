@@ -33,18 +33,30 @@ public class VR_Button : VR_Interactable_UI
 
 	[SerializeField] public VR_Button_Events events;
 
+	protected override void Start()
+	{
+		OnInteractableChange();
+		targetGraphic.color = Color.white;
+		targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
+
+	}
+
 	protected override void OnInteractableChange()
 	{
 		base.OnInteractableChange();
 
-        if (!targetGraphic)
-        {
-            targetGraphic = GetComponent<Image>();
+		if (!targetGraphic)
+		{
+			targetGraphic = GetComponent<Image>();
 
-            if (targetGraphic)
-                targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
-        }
-    }
+			if (targetGraphic)
+				targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
+		}
+		else
+		{
+			targetGraphic.CrossFadeColor((interactable ? normalColor : disabledColor), fadeDuration, true, true);
+		}
+	}
 
 	protected override void OnControllerEnter()
 	{
