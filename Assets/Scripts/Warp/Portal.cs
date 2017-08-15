@@ -137,6 +137,8 @@ public class Portal : MonoBehaviour
 			g.SetActive(index == 0);
 		}
 
+		SteamVR_Fade.Start(Color.clear, 0.5F);
+
 		alreadyRunning = false;
 	}
 }
