@@ -34,8 +34,13 @@ public class Player : Actor,ICanSerialize
 	protected Text leftHandAttackText, leftHandShieldText, leftHandMagicText;
 
 	[SerializeField]
-	protected Text goldText, manaCratesText;
+	protected Text rightHandAttackText, rightHandShieldText, rightHandMagicText;
 
+	[SerializeField]
+	protected Text goldText, cratesText;
+
+	[SerializeField]
+	protected Text leftHandItem, rightHandItem;
 
 
 	protected float currentGroundHeight = 1;
@@ -62,10 +67,57 @@ public class Player : Actor,ICanSerialize
 		healthBarImage.fillAmount = Mathf.Lerp(healthBarImage.fillAmount,health.Percentage,Time.deltaTime);
 		manaBarImage.fillAmount = Mathf.Lerp(manaBarImage.fillAmount, mana.Percentage, Time.deltaTime);
 
-		healthBarText.text = health.Current + "/" + health.Max;
-		manaBarText.text = mana.Current + "/" + mana.Max;
-		
-		
+		healthBarText.text = (int)health.Current + "/" + health.Max;
+		manaBarText.text = (int)mana.Current + "/" + mana.Max;
+
+
+		GenericItem lhitem = returnSlotItem(EquipSlot.EquipmentSlotType.LEFTHAND);
+		GenericItem rhitem = returnSlotItem(EquipSlot.EquipmentSlotType.RIGHTHAND);
+		int maxValue = 9999;
+		int currentValue = lhitem == null ? 0 : (int)lhitem.Damage;
+
+		leftHandItem.text = lhitem == null ? "Nothing" : lhitem._Name;
+		if (lhitem == null || lhitem.JobType == JobType.COMBAT)
+		{
+			leftHandAttackImage.fillAmount = (currentValue / maxValue) <= 1 ? (float)currentValue / maxValue : 1;
+			leftHandMagicImage.fillAmount = 0 / maxValue;
+			leftHandAttackText.text = currentValue + "/" + maxValue;
+			leftHandMagicText.text = 0 + "/" + maxValue;
+		}
+		else if (lhitem == null || lhitem.JobType == JobType.BLACKSMITH)
+		{
+			leftHandMagicImage.fillAmount = (float)currentValue / maxValue <= 1 ? (float)currentValue / maxValue : 1;
+			leftHandAttackImage.fillAmount = 0 / (float)maxValue;
+			leftHandMagicText.text = currentValue + "/" + maxValue;
+			leftHandAttackText.text = 0 + "/" + maxValue;
+		}
+		leftHandShieldImage.fillAmount = 0;
+		leftHandShieldText.text = 0 + "/" + maxValue;
+
+		currentValue = rhitem == null ? 0 : (int)rhitem.Damage;
+		rightHandItem.text = rhitem == null ? "Nothing" : rhitem._Name;
+
+		if (rhitem == null  || rhitem.JobType == JobType.BLACKSMITH)
+		{
+			rightHandAttackImage.fillAmount = (float)currentValue / maxValue <= 1 ? (float)currentValue / maxValue : 1;
+			rightHandMagicImage.fillAmount = 0 / (float)maxValue;
+			rightHandAttackText.text = currentValue + "/" + maxValue;
+			rightHandMagicText.text = 0 + "/" + maxValue;
+		}
+		else if (rhitem == null || rhitem.JobType == JobType.MAGIC)
+		{
+			rightHandMagicImage.fillAmount = currentValue / maxValue <= 1 ? (float)currentValue / maxValue : 1;
+			rightHandAttackImage.fillAmount = 0 / maxValue;
+			rightHandMagicText.text = currentValue + "/" + maxValue;
+			rightHandAttackText.text = 0 + "/" + maxValue;
+		}
+
+		rightHandShieldImage.fillAmount = 0;
+		rightHandShieldText.text = 0 + "/" + maxValue;
+
+		goldText.text = Gold.ToString();
+		cratesText.text = EXPCrates.ToString();
+
 	}
 
 	public override GenericItem returnSlotItem(EquipSlot.EquipmentSlotType slot)

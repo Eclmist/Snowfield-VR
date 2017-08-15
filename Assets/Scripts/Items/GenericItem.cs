@@ -22,7 +22,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	protected float collisionVibrationMagnitude = 0.002F;
 
 	protected JobType jobType;
-	[SerializeField]protected string _name;
+	[SerializeField] protected string _name;
 
 
 	public JobType JobType
@@ -37,7 +37,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	#region itemData
 
-	[SerializeField][ReadOnly] private int itemID = -1;
+	[SerializeField] [ReadOnly] private int itemID = -1;
 
 	public int ItemID
 
@@ -113,15 +113,15 @@ public class GenericItem : VR_Interactable_Object, IDamage
 	#endregion
 
 
-    public virtual string Description
-    {
-        get
-        {
-            return name;
-        }
-    }
+	public virtual string Description
+	{
+		get
+		{
+			return name;
+		}
+	}
 
-	public string _Name
+	public virtual string _Name
 	{
 		get { return this._name; }
 	}
@@ -167,19 +167,16 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 		get
 
-
 		{
 
-
 			if (currentInteractingController != null)
+			{
+				float val = currentInteractingController.Velocity.magnitude;
+				if (val < 1)
+					val = 1;
+				return val < maxVelocityDamageMultiplier ? (int)(val * damage) : damage * maxVelocityDamageMultiplier;
 
-
-
-
-
-				return currentInteractingController.Velocity.magnitude < maxVelocityDamageMultiplier ? (int)(currentInteractingController.Velocity.magnitude * damage) : damage * maxVelocityDamageMultiplier;
-
-
+			}
 			else if (isFlying)
 
 
@@ -328,7 +325,7 @@ public class GenericItem : VR_Interactable_Object, IDamage
 		rigidBody.isKinematic = false;
 		gameObject.layer = LayerMask.NameToLayer("Player");
 		base.OnTriggerPress(controller);
-		
+
 
 	}
 
@@ -389,16 +386,16 @@ public class GenericItem : VR_Interactable_Object, IDamage
 
 	}
 
-    public virtual GenericItemSceneData GetSceneData()
-    {
-        return new GenericItemSceneData(itemID, transform.position, transform.rotation);
-    }
+	public virtual GenericItemSceneData GetSceneData()
+	{
+		return new GenericItemSceneData(itemID, transform.position, transform.rotation);
+	}
 
-    public virtual void SetupObject(GenericItemSceneData data)
-    {
-        transform.position = data.Position;
-        transform.rotation = data.Rotation;
-        itemID = data.ID;
-    }
+	public virtual void SetupObject(GenericItemSceneData data)
+	{
+		transform.position = data.Position;
+		transform.rotation = data.Rotation;
+		itemID = data.ID;
+	}
 
 }

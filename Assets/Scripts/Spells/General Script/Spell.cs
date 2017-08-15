@@ -49,8 +49,15 @@ public abstract class Spell : MonoBehaviour
     protected SpellHandler handler;
 
     [SerializeField]
-    protected float manaCost;
+    protected float manaCost, _DPS;
 
+	public float DPS
+	{
+		get
+		{
+			return _DPS;
+		}
+	}
     public virtual void InitializeSpell(SpellHandler _handler)
     {
         handler = _handler;
