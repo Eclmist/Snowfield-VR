@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct InGameMenuPrefabs
 {
-    public GameObject characterScreen;
     public GameObject settingsScreen;
     public GameObject quitPrompt;
     public GameObject mailScreen;
@@ -18,11 +18,21 @@ public class InGameMenuArea : MonoBehaviour
 {
     [SerializeField]
     private InGameMenuPrefabs prefabs;
-    
-    public void CharacterActivation(bool active)
+
+    //public void CharacterActivation(bool active)
+    //{
+    //    if (prefabs.characterScreen != null)
+    //        prefabs.characterScreen.SetActive(active);
+    //}
+
+    public void SaveGame()
     {
-        if (prefabs.characterScreen != null)
-            prefabs.characterScreen.SetActive(active);
+        SaveManager.Instance.Save();
+    }
+
+    public void LoadGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void SettingsActivation(bool active)
@@ -51,7 +61,6 @@ public class InGameMenuArea : MonoBehaviour
 
     public void Deactivate()
     {
-        CharacterActivation(false);
         SettingsActivation(false);
         QuitGamePrompt(false);
         MailActivation(false);
