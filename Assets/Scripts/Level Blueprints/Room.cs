@@ -217,22 +217,31 @@ namespace Opening_Room
 
 			sequenceObjects.tv.Pause();
 
-			yield return StartCoroutine(WaitForKeyboard("Yes"));
+			yield return StartCoroutine(WaitForKeyboard("??"));
 
-			//sequenceObjects.tv.Play();
+			sequenceObjects.tv.Play();
 
-			//while (sequenceObjects.tv.time < 10)
-			//{
-			//	yield return null;
-			//}
+			while (sequenceObjects.tv.time < 10)
+			{
+				yield return null;
+			}
 
-			//sequenceObjects.tv.Pause();
+			sequenceObjects.tv.Pause();
 
-			//yield return StartCoroutine(WaitForKeyboard());
+			yield return StartCoroutine(WaitForKeyboard("??????"));
 
-			//sequenceObjects.tv.Play();
-			// Make crazy shit happen here
+			sequenceObjects.tv.Play();
 
+			while (sequenceObjects.tv.time < 15)
+			{
+				yield return null;
+			}
+
+			sequenceObjects.tv.Pause();
+
+			yield return StartCoroutine(WaitForKeyboard("dafaq"));
+
+			/// CRAZZZZZZZZZY SHIT HERE
 			sequenceObjects.lamp.TurnOn(false);
 			sequenceObjects.lamp.interactable = false;
 
