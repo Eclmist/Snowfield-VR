@@ -49,6 +49,8 @@ public class FlamethrowerSpell : Spell
     {
         if (casted)
         {
+            handler.DecastSpell();
+
             var em = flamethrower.GetComponent<ParticleSystem>().emission;
 
             var emsmoke = smoke.GetComponent<ParticleSystem>().emission;
@@ -59,11 +61,10 @@ public class FlamethrowerSpell : Spell
             em.enabled = false;
             emsmoke.enabled = false;
 
-            Destroy(this, 0.5f);
+            Destroy(this, 0.25f);
 
             casted = false;
 
-            handler.DecastSpell();
         }
     }
 }
