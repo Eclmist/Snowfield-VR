@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 114672562024825962}
   - component: {fileID: 114670685506538674}
   - component: {fileID: 114435651350003370}
+  - component: {fileID: 114455743906613820}
   m_Layer: 0
   m_Name: Trail (1)
   m_TagString: Untagged
@@ -291,7 +292,7 @@ GameObject:
   - component: {fileID: 114331505158798620}
   - component: {fileID: 114295742656357288}
   m_Layer: 0
-  m_Name: TargetLightningSpell
+  m_Name: AOELightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -310,6 +311,7 @@ GameObject:
   - component: {fileID: 114105282662709726}
   - component: {fileID: 114439302620663732}
   - component: {fileID: 114307258815160820}
+  - component: {fileID: 114650362569104968}
   m_Layer: 0
   m_Name: Trail (3)
   m_TagString: Untagged
@@ -348,6 +350,7 @@ GameObject:
   - component: {fileID: 114345083871502986}
   - component: {fileID: 114354198547889354}
   - component: {fileID: 114321765228265758}
+  - component: {fileID: 114829226630856836}
   m_Layer: 0
   m_Name: Trail (2)
   m_TagString: Untagged
@@ -1213,7 +1216,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   AproximatedFlyDistance: 4
   SmoothCurves: 1
-  point: {fileID: 1152341512732404}
+  targetT: {fileID: 0}
 --- !u!114 &114107626350928582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1433,7 +1436,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   AproximatedFlyDistance: 4
   SmoothCurves: 1
-  point: {fileID: 1540383722568740}
+  targetT: {fileID: 0}
 --- !u!114 &114354198547889354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1683,6 +1686,19 @@ MonoBehaviour:
   DestroyAfterDisabling: 1
   HUE: -1
   CollidedInstances: []
+--- !u!114 &114455743906613820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1642007228703406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9e517e1ca00d84cad406dda21edf99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trail: {fileID: 114672562024825962}
+  point: {fileID: 1188621373533422}
 --- !u!114 &114621924401538780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1695,6 +1711,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableEmissionTime: 5
+--- !u!114 &114650362569104968
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1837196552804550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9e517e1ca00d84cad406dda21edf99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trail: {fileID: 114105282662709726}
+  point: {fileID: 1152341512732404}
 --- !u!114 &114670685506538674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1809,7 +1838,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   AproximatedFlyDistance: 4
   SmoothCurves: 1
-  point: {fileID: 1188621373533422}
+  targetT: {fileID: 0}
 --- !u!114 &114715241652829280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1853,6 +1882,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeactivateTime: 4
+--- !u!114 &114829226630856836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1896113349929106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9e517e1ca00d84cad406dda21edf99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trail: {fileID: 114345083871502986}
+  point: {fileID: 1540383722568740}
 --- !u!114 &114920106608366982
 MonoBehaviour:
   m_ObjectHideFlags: 1
