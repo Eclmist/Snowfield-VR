@@ -28,6 +28,7 @@ public class WeaponTierManager : MonoBehaviour {
         public float SuccessRate
         {
         	get {return this.successRate;}
+            set { this.successRate = value; }
         }
 
         public List<ItemData> TierList
@@ -157,6 +158,14 @@ public class WeaponTierManager : MonoBehaviour {
 
 
     	return -1;
+    }
+
+    public void SetAlwaysSuccessRate()
+    {
+        foreach(WeaponClass wc in weaponClassList)
+        {
+            wc.SuccessRate = 100;
+        }
     }
 
 
