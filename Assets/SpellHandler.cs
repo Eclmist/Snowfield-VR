@@ -7,7 +7,15 @@ public class SpellHandler : VR_Interactable_Object
 
     protected Actor castor;
     protected Spell currentSpell;
+	protected bool hasSpell;
 
+	public bool HasSpell
+	{
+		get
+		{
+			return hasSpell;
+		}
+	}
     public Actor Castor
     {
         get
@@ -22,17 +30,15 @@ public class SpellHandler : VR_Interactable_Object
         currentInteractingController = _useController;
         currentInteractingController.SetInteraction(this);
         Spell spell = Instantiate(_currentSpell).GetComponent<Spell>();
+		hasSpell = true;
         spell.InitializeSpell(this);
 
     }
 
     public void DecastSpell()
     {
-        if (currentInteractingController.CurrentItemInHand == this)
-            currentInteractingController.SetInteraction(null);
-
-		Destroy(this.gameObject, 3);
-    }
+		hasSpell = false;
+	}
 
     public override void OnTriggerPress(VR_Controller_Custom controller)
     {
@@ -49,4 +55,6 @@ public class SpellHandler : VR_Interactable_Object
     {
 
     }
+
+	
 }
