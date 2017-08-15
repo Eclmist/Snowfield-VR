@@ -2,86 +2,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetLightningSpell : Spell
-{
+public class TargetLightningSpell : Spell {
 
     [SerializeField]
-    private Vector3 offset;
+    protected float attackRadius;
 
-    [SerializeField]
-    protected RFX4_ParticleTrail trail1;
+    protected float nearestDistance = 0;
 
-    [SerializeField]
-    protected RFX4_ParticleTrail trail2;
+    protected GameObject monster;
 
-    [SerializeField]
-    protected RFX4_ParticleTrail trail3;
+    protected GameObject nearestMob;
 
-    [SerializeField]
-    protected float DPS;
-
-    protected float seconds;
-
-    public override void InitializeSpell(SpellHandler _handler)
+    public override void InitializeSpell(SpellHandler handler)
     {
-        base.InitializeSpell(_handler);
+        base.InitializeSpell(handler);
 
-        if (handler.Castor.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
+        if(Player.Instance.StatContainer.GetStat(Stats.StatsType.MANA).Current >= manaCost)
         {
-            Vector3 playerFor = Player.Instance.transform.forward;
-            playerFor.y = 0;
-            playerFor.Normalize();
+            nearestMob = CheckForMonsterDistance();
 
-            playerFor = Player.Instance.transform.position + playerFor * offset.z;
+            if (nearestMob != null)
+            {
+                transform.position = new Vector3(nearestMob.transform.position.x, nearestMob.transform.position.y + 2, nearestMob.transform.position.z);
+                transform.parent = nearestMob.transform;
 
-            RaycastHit hit;
-            Physics.Raycast(playerFor, Vector3.down, out hit);
+                this.gameObject.SetActive(true);
 
-            transform.position = hit.point;
-
-            float yRot = Player.Instance.transform.rotation.eulerAngles.y;
-            var rot = transform.rotation;
-
-            rot.eulerAngles = new Vector3(transform.rotation.x, yRot, transform.rotation.z);
-            transform.rotation = rot;
-
-            this.gameObject.SetActive(true);
-            handler.Castor.StatContainer.ReduceMana(manaCost);
+                handler.Castor.StatContainer.ReduceMana(manaCost);
+			}
+			else
+			{
+				handler.DecastSpell();
+			}
 
             handler.DecastSpell();
         }
         else
         {
-            //Not Enough mana
             handler.DecastSpell();
-            Destroy(this.gameObject, 0.1f);
+            Destroy(this.gameObject, 1);
         }
+        
     }
 
-    public override void Update()
+    protected GameObject CheckForMonsterDistance()
     {
-        base.Update();
+		
+		Vector3 target = Player.Instance.transform.position + Player.Instance.transform.forward * 10;
 
-        seconds += Time.deltaTime;
+		Collider[] hitColliders = Physics.OverlapSphere(Player.Instance.transform.position, 10);
 
-        if (seconds >= 0.5f)
+        foreach (Collider c in hitColliders)
         {
-            if (trail1.Target != null)
-            {
-                Player.Instance.CastSpell(DPS / 2, trail1.Target.GetComponent<Monster>());
-            }
+            Monster mob = c.GetComponent<Monster>();
 
-            if (trail2.Target != null)
-            {
-                Player.Instance.CastSpell(DPS / 2, trail2.Target.GetComponent<Monster>());
-            }
+			if (mob)
+			{
+				float distance = Vector3.Distance(Player.Instance.transform.position, mob.gameObject.transform.position);
 
-            if (trail3.Target != null)
-            {
-                Player.Instance.CastSpell(DPS / 2, trail3.Target.GetComponent<Monster>());
-            }
-
-            seconds = 0;
+				if (distance <= nearestDistance || nearestDistance == 0)
+				{
+					monster = mob.gameObject;
+					nearestDistance = distance;
+				}
+			}
         }
+
+        return monster;
     }
+
 }
