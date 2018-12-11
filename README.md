@@ -2,7 +2,7 @@
 Snowfield is a virtual reality RPG game set in a medieval fantasy town. Play as a merchant struggling to earn his keep by crafting and selling weapons to adventurers. Defend your territory from monsters with masterful sword skills, or cast formidable spells with your hands to become the best sorcerer in a town where time seemingly never passes.
 
 ## Team Members:
-- Samuel Ng - Project Lead & Technical Artist
+- Samuel Ng - Project Lead & Graphics Programmer
 - Looi Yue Peng - Gameplay Programmer
 - Tan Chen Xiang - Gameplay Programmer (AI)
 - Ivan Leong Jit Kiong - Tools Programmer
