@@ -12,7 +12,7 @@ Snowfield is a virtual reality RPG game set in a medieval fantasy town. Play as 
 Unity3D, HTC Vive
 
 ## About
-Snowfield is a final year VR project that developed during my time in Singapore polytecnic.
+Snowfield is a VR project that was developed by a team of passionate game developers from Singapore Polytecnic.
 
 The player will be able to craft weapons and potions, sell and buy items from adventurers, and participate in combat with hostile creatures.
 
